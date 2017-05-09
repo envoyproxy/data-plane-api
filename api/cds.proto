@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 import "api/address.proto";
-import "api/node.proto";
+import "api/base.proto";
+import "api/health_check.proto";
 import "api/ssl_context.proto";
 
 import "google/protobuf/wrappers.proto";
@@ -19,61 +20,6 @@ message ClusterDiscoveryRequest {
 
 message ClusterDiscoveryResponse {
   repeated Cluster cluster = 1;
-}
-
-message Duration {
-  google.protobuf.UInt32Value milliseconds = 1;
-}
-
-message HealthCheck {
-  // The time to wait for a health check response. If the timeout is reached the
-  // health check attempt will be considered a failure.
-  Duration timeout = 1;
-  // The interval between health checks.
-  Duration interval = 2;
-  // An optional jitter amount in millseconds. If specified, during every
-  // internal Envoy will add 0 to interval_jitter to the wait time.
-  Duration interval_jitter = 3;
-
-  // The number of unhealthy health checks required before a host is marked
-  // unhealthy. Note that for http health checking if a host responds with 503
-  // this threshold is ignored and the host is considered unhealthy immediately.
-  google.protobuf.UInt32Value unhealthy_threshold = 4;
-  // The number of healthy health checks required before a host is marked
-  // healthy. Note that during startup, only a single successful health check is
-  // required to mark a host healthy.
-  google.protobuf.UInt32Value healthy_threshold = 5;
-
-  // Non-serving port for health checking.
-  google.protobuf.UInt32Value alt_port = 6;
-  // Reuse health check connection between health checks. Default is true.
-  google.protobuf.BoolValue reuse_connection = 7;
-
-  // Describes the encoding of the payload bytes in the payload
-  message Payload {
-    oneof payload {
-      google.protobuf.StringValue text = 1;
-      google.protobuf.BytesValue binary = 2;
-    }
-  }
-  message HttpHealthCheck {
-    // TODO(htuch): Figure out what this is.
-    string host = 1;
-    // This parameter is required if the type is http. It species the HTTP path
-    // that will be requested during health checking. For example /healthcheck.
-    string path = 2;
-    Payload send = 3;
-    Payload receive = 4;
-  }
-  message TcpHealthCheck {
-    // Empty payloads imply a connect-only health check.
-    Payload send = 1;
-    Payload receive = 2;
-  }
-  oneof health_checker {
-    HttpHealthCheck http_health_check = 8;
-    TcpHealthCheck tcp_health_check = 9;
-  }
 }
 
 // Circuit breaking settings can be specified individually for each defined
@@ -156,7 +102,7 @@ message Cluster {
   // Optional active health checking configuration for the cluster. If no
   // configuration is specified no health checking will be done and all cluster
   // members will be considered healthy at all times.
-  HealthCheck health_check = 7;
+  repeated HealthCheck health_check = 7;
 
   // Optional maximum requests for a single upstream connection. This parameter
   // is respected by both the HTTP/1.1 and HTTP/2 connection pool

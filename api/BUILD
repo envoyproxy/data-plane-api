@@ -6,8 +6,14 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "node",
-    srcs = ["node.proto"],
+    name = "base",
+    srcs = ["base.proto"],
+)
+
+api_proto_library(
+    name = "health_check",
+    srcs = ["health_check.proto"],
+    deps = [":base"],
 )
 
 api_proto_library(
@@ -20,7 +26,8 @@ api_proto_library(
     srcs = ["cds.proto"],
     deps = [
         ":address",
-        ":node",
+        ":base",
+        ":health_check",
         ":ssl_context",
     ],
 )
@@ -30,7 +37,7 @@ api_proto_library(
     srcs = ["lds.proto"],
     deps = [
         ":address",
-        ":node",
+        ":base",
         ":ssl_context",
     ],
 )
@@ -38,5 +45,5 @@ api_proto_library(
 api_proto_library(
     name = "rds",
     srcs = ["rds.proto"],
-    deps = [":node"],
+    deps = [":base"],
 )

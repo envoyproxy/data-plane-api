@@ -5,7 +5,7 @@
 syntax = "proto3";
 
 import "api/address.proto";
-import "api/node.proto";
+import "api/base.proto";
 import "api/ssl_context.proto";
 
 import "google/protobuf/struct.proto";
