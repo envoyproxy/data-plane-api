@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+// Identifies location of where either Envoy runs or where upstream hosts run.
+message Locality {
+  // Region this zone belongs to.
+  string region = 1;
+
+  // Availability Zone (AZ) in AWS, Zone in GCP.
+  string zone = 2;
+
+  // When used for locality of upstream hosts, this field further splits zone
+  // into smaller chunks of sub_zones so they can be load balanced
+  // independently
+  string sub_zone = 3;
+}
+
+// Identifies a specific Envoy instance. Remote server may have per Envoy configuration.
+message Node {
+  string id = 1;
+  google.protobuf.Struct metadata = 2;
+  Locality locality = 3;
+}
