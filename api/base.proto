@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "api/address.proto";
+
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -26,4 +28,8 @@ message Node {
 
 message Duration {
   google.protobuf.UInt32Value milliseconds = 1;
+}
+
+message Endpoint {
+  Address address = 1;
 }
