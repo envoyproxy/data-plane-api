@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-import "api/address.proto";
 import "api/base.proto";
+import "api/health_check.proto";
 
 import "google/protobuf/wrappers.proto";
 
@@ -47,34 +47,18 @@ message EndpointDiscoveryRequest {
   Node node = 2;
 }
 
-enum HealthStatus {
-  UNKNOWN = 0;
-  HEALTHY = 1;
-  UNHEALTHY = 2;
-  // Connection draining in progress -
-  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
-  // and
-  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
-  DRAINING = 3;
-  // This value is used by HDS Remote server. From Envoy’s perspective
-  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
-  TIMEOUT = 4;
-}
-
 message LbEndpoint {
-  // Endpoint host address.
-  Address address = 1;
-  // Optional health status when known and supplied by EDS server.
-  HealthStatus health_status = 2;
+  EndpointHealth endpoint_health = 1;
   // The optional canary status of the upstream host. Envoy uses the canary
   // status for various statistics and load balancing tasks documented
   // elsewhere.
-  google.protobuf.BoolValue canary = 3;
+  google.protobuf.BoolValue canary = 2;
   // The optional load balancing weight of the upstream host, in the range 1 -
   // 100. Envoy uses the load balancing weight in some of the built in load
-  // balancers.
-  // TODO(htuch): How does this combine with the LocalityEndpoints weight?
-  google.protobuf.UInt32Value load_balancing_weight = 4;
+  // balancers. All load balancing weights in a locality must sum to 100%.
+  // The effective load balancing weight is load_balancing_weight multiplied by
+  // the locality wide load_balancing_weight.
+  google.protobuf.UInt32Value load_balancing_weight = 3;
 }
 
 // All endpoints belonging to a Locality.
@@ -82,10 +66,9 @@ message LocalityEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
-  // Optional: Per region/zone/sub_zone weight - range 1-100.
-  // TODO(htuch): Is there some restriction that all weights in a cluster must
-  // sum to 100? Do we want to be more specific and have per-zone and
-  // per-subzone as distinct weights for example? Can the weight also be 0?
+  // Optional: Per region/zone/sub_zone weight - range 1-100. All load balancing
+  // weights in a cluster must sum to 100%. If unspecified, each locality is
+  // presumed to have equal weight in a cluster.
   google.protobuf.UInt32Value load_balancing_weight = 3;
 }
 
@@ -134,12 +117,13 @@ message UpstreamLocalityStats {
   // The total number of unfinished requests
   uint64 total_requests_in_progress = 3;
   // The number of errors since the last report.
-  // TODO(htuch): Ideally we would have the tcp_errors key be TcpErrorType, but
-  // enums are not supported as map key types.
   enum TcpErrorType {
     TIMEOUT = 0;
     // TODO(htuch): Fill in additional TcpErrorType values.
   }
+  // TODO(htuch): Ideally we would have the tcp_errors key be TcpErrorType, but
+  // enums are not supported as map key types. Maybe make this a repeated
+  // message with TcpErrorType x uint64 pairs.
   map<uint32, uint64> tcp_errors = 4;
   // HTTP status code, count
   map<uint32, uint64> http_errors = 5;
@@ -167,11 +151,15 @@ message LoadBalanceRequest {
 message ClusterLoadBalance {
   string cluster_name = 1;
   repeated LocalityEndpoints endpoints = 2;
-  // Add equivalent of drop overload.
-  // TODO(htuch): This needs to be elaborated on. Unclear how failover_endpoints
-  // and drop_overload relate.
+  // In the case where all endpoints for a particular zone/subzone are
+  // unavailable/unhealthy, additional endpoints are given out for use in case
+  // of catastrophic failure. They also have weights.
   repeated LocalityEndpoints failover_endpoints = 3;
   message Policy {
+    // Percentage of traffic (0-100) that should be dropped. This
+    // action allows protection of upstream hosts should they unable to
+    // recover from an outage or should they be unable to autoscale and hence
+    // overall incoming traffic volume need to be trimmed to protect them.
     double drop_overload = 1;
   }
   Policy policy = 4;
@@ -179,5 +167,6 @@ message ClusterLoadBalance {
 
 message LoadBalanceResponse {
   repeated ClusterLoadBalance clusters = 1;
+  // The default is 10 seconds.
   Duration load_reporting_interval = 2;
 }

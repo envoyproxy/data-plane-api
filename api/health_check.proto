@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "api/address.proto";
 import "api/base.proto";
 
 import "google/protobuf/wrappers.proto";
@@ -55,4 +56,26 @@ message HealthCheck {
     HttpHealthCheck http_health_check = 8;
     TcpHealthCheck tcp_health_check = 9;
   }
+}
+
+enum HealthStatus {
+  // UNKNOWN should be treated by Envoy as HEALTHY.
+  UNKNOWN = 0;
+  HEALTHY = 1;
+  UNHEALTHY = 2;
+  // Connection draining in progress -
+  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
+  // and
+  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
+  DRAINING = 3;
+  // This value is used by HDS Remote server. From Envoy’s perspective
+  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
+  TIMEOUT = 4;
+}
+
+message EndpointHealth {
+  // Endpoint host address.
+  Address address = 1;
+  // Optional health status when known and supplied by EDS server.
+  HealthStatus health_status = 2;
 }
