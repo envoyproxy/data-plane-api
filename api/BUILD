@@ -33,6 +33,15 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "eds",
+    srcs = ["eds.proto"],
+    deps = [
+        ":address",
+        ":base",
+    ],
+)
+
+api_proto_library(
     name = "lds",
     srcs = ["lds.proto"],
     deps = [

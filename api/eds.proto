@@ -1,0 +1,183 @@
+syntax = "proto3";
+
+import "api/address.proto";
+import "api/base.proto";
+
+import "google/protobuf/wrappers.proto";
+
+service EndpointDiscoveryService {
+  // Translation of REST API to gRPC
+  rpc Get(stream EndpointDiscoveryRequest)
+      returns (stream EndpointDiscoveryResponse) {
+  }
+
+  // Advanced API to allow for multi-dimensional load balancing by remote
+  // server. The steps are:
+  // 1, The management server is configured with per cluster/zone/load metric
+  //    capacity configuration. The capacity configuration definition is
+  //    outside of the scope of this document.
+  // 2. Envoy issues LoadBalanceRequest for a list of clusters it wants to load
+  //    balance to (instead of using a basic EndpointDiscoveryRequest).
+  // 3. Once a connection establishes, the management server publishes
+  //    LoadBalanceResponse for all clusters requested in the first
+  //    LoadBalanceRequest. This message contains per cluster/per Locality
+  //    information.
+  // 4. For each cluster, Envoy load balances incoming traffic to upstream hosts
+  //    based on per-zone weights and/or per-instance weights (if specified)
+  //    based on intra-zone LbPolicy.
+  // 5. When upstream hosts reply, they optionally add header <define header
+  //    name> with ASCII representation of EndpointLoadMetricStats.
+  // 6. Envoy aggregates load reports over the period of time given to it in
+  //    LoadBalanceResponse.load_reporting_interval. This includes aggregation
+  //    stats Envoy maintains by itself (total_requests, rpc_errors etc.) as
+  //    well as load metrics from upstream hosts.
+  // 7. When the timer of load_reporting_interval expires, Envoy sends new
+  //    LoadBalanceRequest filled with load reports for each cluster.
+  // 8. The management server uses the load reports from all reported Envoys
+  //    from around the world, computes global assignment and prepares traffic
+  //    assignment destined for each zone Envoys are located in. Goto 3.
+  // TODO(htuch): Add @amb67's diagram.
+  rpc BalanceLoad(stream LoadBalanceRequest)
+      returns (stream LoadBalanceResponse) {
+  }
+}
+
+message EndpointDiscoveryRequest {
+  repeated string cluster_name = 1;
+  Node node = 2;
+}
+
+enum HealthStatus {
+  UNKNOWN = 0;
+  HEALTHY = 1;
+  UNHEALTHY = 2;
+  // Connection draining in progress -
+  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
+  // and
+  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
+  DRAINING = 3;
+  // This value is used by HDS Remote server. From Envoy’s perspective
+  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
+  TIMEOUT = 4;
+}
+
+message LbEndpoint {
+  // Endpoint host address.
+  Address address = 1;
+  // Optional health status when known and supplied by EDS server.
+  HealthStatus health_status = 2;
+  // The optional canary status of the upstream host. Envoy uses the canary
+  // status for various statistics and load balancing tasks documented
+  // elsewhere.
+  google.protobuf.BoolValue canary = 3;
+  // The optional load balancing weight of the upstream host, in the range 1 -
+  // 100. Envoy uses the load balancing weight in some of the built in load
+  // balancers.
+  // TODO(htuch): How does this combine with the LocalityEndpoints weight?
+  google.protobuf.UInt32Value load_balancing_weight = 4;
+}
+
+// All endpoints belonging to a Locality.
+message LocalityEndpoints {
+  Locality locality = 1;
+  repeated LbEndpoint lb_endpoints = 2;
+
+  // Optional: Per region/zone/sub_zone weight - range 1-100.
+  // TODO(htuch): Is there some restriction that all weights in a cluster must
+  // sum to 100? Do we want to be more specific and have per-zone and
+  // per-subzone as distinct weights for example? Can the weight also be 0?
+  google.protobuf.UInt32Value load_balancing_weight = 3;
+}
+
+message ClusterEndpoints {
+  string cluster_name = 1;
+  repeated LocalityEndpoints locality_endpoints = 2;
+}
+
+message EndpointDiscoveryResponse {
+  repeated ClusterEndpoints cluster_endpoints = 1;
+}
+
+// Example load report from a single request:
+//
+// [metric name, metric value]
+// * cpu_seconds, 0.7
+// * flash_utilization, 75
+//
+// When aggregating Envoy needs to count how many request's load reports
+// included each metric type, so Envoy can account for requests that don't
+// include that metric type. e.g.:
+//
+// [name, count, sum of values]
+// * cpu_seconds, 10, 17.5
+// * flash_utilization, 5, 375
+message EndpointLoadMetricStats {
+  // Name of the metric; may be empty.
+  string metric_name = 1;
+  // Number of calls that finished and included this metric.
+  uint64 num_requests_finished_with_metric = 2;
+  // Sum of metric values across all calls that finished with this metric for
+  // load_reporting_interval.
+  double total_metric_value = 3;
+}
+
+// These are stats Envoy reports to GLB every so often. Report frequency is
+// defined by LoadBalanceResponse.interval
+// Stats per upstream region/zone and optionally per subzone
+message UpstreamLocalityStats {
+  // Name of zone, region and optionally endpoint group this metrics was
+  // collected from. Zone and region names could be empty if unknown.
+  string Locality = 1;
+
+  // The total number of requests sent by this Envoy since the last report.
+  uint64 total_requests = 2;
+  // The total number of unfinished requests
+  uint64 total_requests_in_progress = 3;
+  // The number of errors since the last report.
+  // TODO(htuch): Ideally we would have the tcp_errors key be TcpErrorType, but
+  // enums are not supported as map key types.
+  enum TcpErrorType {
+    TIMEOUT = 0;
+    // TODO(htuch): Fill in additional TcpErrorType values.
+  }
+  map<uint32, uint64> tcp_errors = 4;
+  // HTTP status code, count
+  map<uint32, uint64> http_errors = 5;
+  // GRCP status code, count
+  map<uint32, uint64> grpc_errors = 6;
+  // The number of dropped requests since the last report.
+  uint64 dropped_requests = 7;
+
+  // Stats for multi-dimensional load balancing.
+  repeated EndpointLoadMetricStats load_metric_stats = 8;
+}
+
+// Per cluster stats
+message ClusterStats {
+  string cluster_name = 1;
+  // Need at least one.
+  repeated UpstreamLocalityStats upstream_locality_stats = 2;
+}
+
+message LoadBalanceRequest {
+  Node node = 1;  // zone/region where this Envoy runs
+  repeated ClusterStats cluster_stats = 3;
+}
+
+message ClusterLoadBalance {
+  string cluster_name = 1;
+  repeated LocalityEndpoints endpoints = 2;
+  // Add equivalent of drop overload.
+  // TODO(htuch): This needs to be elaborated on. Unclear how failover_endpoints
+  // and drop_overload relate.
+  repeated LocalityEndpoints failover_endpoints = 3;
+  message Policy {
+    double drop_overload = 1;
+  }
+  Policy policy = 4;
+}
+
+message LoadBalanceResponse {
+  repeated ClusterLoadBalance clusters = 1;
+  Duration load_reporting_interval = 2;
+}
