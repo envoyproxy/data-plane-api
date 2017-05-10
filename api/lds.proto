@@ -4,6 +4,8 @@
 
 syntax = "proto3";
 
+package envoy.api.v1beta1;
+
 import "api/node.proto";
 
 import "google/protobuf/struct.proto";
@@ -16,6 +18,11 @@ import "google/protobuf/wrappers.proto";
 service ListenerDiscoveryService {
   rpc StreamListeners(ListenerDiscoveryRequest) returns
       (stream ListenerDiscoverResponse) {}
+
+  rpc FetchListeners(ListenerDiscoveryRequest)
+    returns (ListenerDiscoverResponse) {
+    option (google.api.http) = { post: "/v1beta1/discovery:listeners" body: "*" };
+  }
 }
 
 message ListenerDiscoveryRequest {
