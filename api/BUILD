@@ -17,8 +17,8 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "ssl_context",
-    srcs = ["ssl_context.proto"],
+    name = "tls_context",
+    srcs = ["tls_context.proto"],
 )
 
 api_proto_library(
@@ -28,7 +28,7 @@ api_proto_library(
         ":address",
         ":base",
         ":health_check",
-        ":ssl_context",
+        ":tls_context",
     ],
 )
 
@@ -38,7 +38,7 @@ api_proto_library(
     deps = [
         ":address",
         ":base",
-        ":ssl_context",
+        ":tls_context",
     ],
 )
 

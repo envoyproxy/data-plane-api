@@ -29,9 +29,9 @@ message TlsParameters {
   repeated google.protobuf.StringValue ecdh_curves = 4;
 }
 
-// SSL certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
+// TLS certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
 // be loaded from either.
-message SslCertificate {
+message TlsCertificate {
   DataSource cert_chain = 1;
   DataSource private_key = 2;
   DataSource ocsp_staple = 3;
@@ -39,7 +39,7 @@ message SslCertificate {
 }
 
 message CertificateValidationContext {
-  // SSL certificate data containing certificate authority certificates to use
+  // TLS certificate data containing certificate authority certificates to use
   // in verifying a presented certificate. If not specified and a certificate is
   // presented it will not be verified.
   DataSource ca_cert = 1;
@@ -59,9 +59,9 @@ message CertificateValidationContext {
   google.protobuf.BoolValue require_signed_certificate_timestamp = 5;
 }
 
-message UpstreamSslContext {
+message UpstreamTlsContext {
   // Client certificate to present to backend.
-  SslCertificate client_certificate = 1;
+  TlsCertificate client_certificate = 1;
 
   // SNI string to use when creating TLS backend connections.
   google.protobuf.StringValue sni = 2;
@@ -77,12 +77,12 @@ message UpstreamSslContext {
 }
 
 // [V2-API-DIFF] This has been reworked to support alternative modes of
-// certificate/key delivery, for consistency with the upstream SSL context and
-// to segregate the client/server aspects of the SSL context.
-message DownstreamSslContext {
-  // Multiple SSL certificates can be associated with the same context, e.g. to
+// certificate/key delivery, for consistency with the upstream TLS context and
+// to segregate the client/server aspects of the TLS context.
+message DownstreamTlsContext {
+  // Multiple TLS certificates can be associated with the same context, e.g. to
   // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
-  repeated SslCertificate ssl_certificates = 1;
+  repeated TlsCertificate tls_certificates = 1;
 
   // Supplies the list of ALPN protocols that the listener should expose.
   repeated google.protobuf.StringValue alpn_protocols = 2;
