@@ -3,7 +3,7 @@ syntax = "proto3";
 import "api/address.proto";
 import "api/base.proto";
 import "api/health_check.proto";
-import "api/ssl_context.proto";
+import "api/tls_context.proto";
 
 import "google/protobuf/wrappers.proto";
 
@@ -115,7 +115,7 @@ message Cluster {
 
   // The TLS configuration for connections to the upstream cluster. If no TLS
   // configuration is specified, TLS will not be used for new connections.
-  UpstreamSslContext ssl_context = 10;
+  UpstreamTlsContext tls_context = 10;
 
   oneof protocol_options {
     TcpProtocolOptions tcp_protocol_options = 11;

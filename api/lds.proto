@@ -6,7 +6,7 @@ syntax = "proto3";
 
 import "api/address.proto";
 import "api/base.proto";
-import "api/ssl_context.proto";
+import "api/tls_context.proto";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
@@ -64,11 +64,11 @@ message FilterChainMatch {
   google.protobuf.UInt32Value suffix_len = 5;
 }
 
-// Grouping of FilterChainMatch criteria, DownstreamSslContext, the actual filter chain
+// Grouping of FilterChainMatch criteria, DownstreamTlsContext, the actual filter chain
 // and related parameters.
 message FilterChain {
   FilterChainMatch filter_chain_match = 1;
-  DownstreamSslContext ssl_context = 2;
+  DownstreamTlsContext tls_context = 2;
   // A list of individual network filters that make up the filter chain for
   // connections established with the listener. Order matters as the filters are
   // processed sequentially as connection events happen.  Note: If the filter

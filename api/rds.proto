@@ -356,7 +356,7 @@ message VirtualHost {
   // The first route that matches will be used.
   repeated Route routes = 3;
 
-  enum SslRequirementType {
+  enum TlsRequirementType {
     // No TLS requirement for the virtual host.
     NONE = 0;
     // External requests must use TLS. If a request is external and it is not
@@ -367,7 +367,7 @@ message VirtualHost {
     ALL = 2;
   }
   // Specifies the type of TLS enforcement the virtual host expects.
-  SslRequirementType require_ssl = 4;
+  TlsRequirementType require_tls = 4;
 
   // A list of virtual clusters defined for this virtual host. Virtual clusters
   // are used for additional statistics gathering.
