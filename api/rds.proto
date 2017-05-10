@@ -6,12 +6,20 @@ syntax = "proto3";
 
 import "api/node.proto";
 
+package envoy.api.v1beta1;
+
+import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 service RouteDiscoveryService {
   rpc StreamRoutes(RouteDiscoveryRequest)
       returns (stream RouteDiscoveryResponse) {
+  }
+
+  rpc FetchRoutes(RouteDiscoveryRequest)
+    returns (RouteDiscoveryResponse) {
+      option (google.api.http) = { post: "/v1beta1/discovery:routes" body: "*" };
   }
 }
 
@@ -48,7 +56,7 @@ message WeightedCluster {
   message ClusterWeight {
     // Name of the upstream cluster. The cluster must exist in the cluster
     // manager configuration.
-    google.protobuf.StringValue name = 1;
+    string name = 1;
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
