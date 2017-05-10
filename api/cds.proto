@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+import "api/address.proto";
+import "api/base.proto";
+import "api/health_check.proto";
+import "api/ssl_context.proto";
+
+import "google/protobuf/wrappers.proto";
+
+service ClusterDiscoveryService {
+  // Return list of all clusters, this proxy will load balance to.
+  rpc StreamClusters(ClusterDiscoveryRequest)
+      returns (stream ClusterDiscoveryResponse) {
+  }
+}
+
+message ClusterDiscoveryRequest {
+  Node node = 1;
+}
+
+message ClusterDiscoveryResponse {
+  repeated Cluster cluster = 1;
+}
+
+// Circuit breaking settings can be specified individually for each defined
+// priority.
+message CircuitBreakers {
+  message Thresholds {
+    // The maximum number of connections that Envoy will make to the upstream
+    // cluster. If not specified, the default is 1024. See the circuit
+    // breaking overview for more information.
+    google.protobuf.UInt32Value max_connections = 1;
+    // The maximum number of pending requests that Envoy will allow to the
+    // upstream cluster. If not specified, the default is 1024. See the circuit
+    // breaking overview for more information.
+    google.protobuf.UInt32Value max_pending_requests = 2;
+    // The maximum number of parallel requests that Envoy will make to the
+    // upstream cluster. If not specified, the default is 1024. See the circuit
+    // breaking overview for more information.
+    google.protobuf.UInt32Value max_requests = 3;
+    // The maximum number of parallel retries that Envoy will allow to the
+    // upstream cluster. If not specified, the default is 3. See the circuit
+    // breaking overview for more information.
+    google.protobuf.UInt32Value max_retries = 4;
+  }
+
+  Thresholds default_priority = 1;
+  Thresholds high_priority = 2;
+}
+
+
+message TcpProtocolOptions {
+}
+
+message Http1ProtocolOptions {
+}
+
+message Http2ProtocolOptions {
+  // Default is false.
+  bool disable_dynamic_table = 1;
+  uint32 per_stream_buffer_limit_bytes = 2;
+}
+
+message GrpcProtocolOptions {
+  uint32 per_stream_buffer_limit_bytes = 1;
+}
+
+message Cluster {
+  // Supplies the name of the cluster which must be unique across all clusters.
+  // The cluster name is used when emitting statistics. The cluster name can be
+  // at most 60 characters long, and must not contain :.
+  google.protobuf.StringValue name = 1;
+
+  // The service discovery type to use for resolving the cluster.
+  enum DiscoveryType {
+    STATIC = 0;
+    STRICT_DNS = 1;
+    LOGICAL_DNS = 2;
+    EDS = 3;
+  }
+  DiscoveryType type = 2;
+
+  // The timeout for new network connections to hosts in the cluster.
+  Duration connect_timeout = 3;
+  // Soft limit on size of the cluster’s connections read and write buffers. If
+  // unspecified, an implementation defined default is applied (1MiB).
+  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 4;
+
+  // The load balancer type to use when picking a host in the cluster.
+  enum LbPolicy {
+    ROUND_ROBIN = 0;
+    LEAST_REQUEST = 1;
+    RING_HASH = 2;
+    RANDOM = 3;
+  }
+  LbPolicy lb_policy = 5;
+
+  // If the service discovery type is static, strict_dns, or logical_dns
+  // the hosts array is required.
+  repeated Address hosts = 6;
+
+  // Optional active health checking configuration for the cluster. If no
+  // configuration is specified no health checking will be done and all cluster
+  // members will be considered healthy at all times.
+  repeated HealthCheck health_check = 7;
+
+  // Optional maximum requests for a single upstream connection. This parameter
+  // is respected by both the HTTP/1.1 and HTTP/2 connection pool
+  // implementations. If not specified, there is no limit. Setting this
+  // parameter to 1 will effectively disable keep alive.
+  google.protobuf.UInt32Value max_requests_per_connection = 8;
+
+  // Optional circuit breaking settings for the cluster.
+  CircuitBreakers circuit_breakers = 9;
+
+  // The TLS configuration for connections to the upstream cluster. If no TLS
+  // configuration is specified, TLS will not be used for new connections.
+  UpstreamSslContext ssl_context = 10;
+
+  oneof protocol_options {
+    TcpProtocolOptions tcp_protocol_options = 11;
+    Http1ProtocolOptions http_protocol_options  = 12;
+    Http2ProtocolOptions http2_protocol_options  = 13;
+    GrpcProtocolOptions grpc_protocol_options  = 14;
+  }
+
+  // If the dns refresh rate is specified and the cluster type is either
+  // strict_dns, or logical_dns, this value is used as the cluster’s dns refresh
+  // rate. If this setting is not specified, the value defaults to 5000. For
+  // cluster types other than strict_dns and logical_dns this setting is
+  // ignored.
+  Duration dns_refresh_rate = 15;
+
+  // If specified, outlier detection will be enabled for this upstream cluster.
+  message OutlierDetection {
+    // The number of consecutive 5xx responses before a consecutive 5xx ejection
+    // occurs. Defaults to 5.
+    google.protobuf.UInt32Value consecutive_5xx = 1;
+    // The time interval between ejection analysis sweeps. This can result in
+    // both new ejections as well as hosts being returned to service. Defaults
+    // to 10000ms or 10s.
+    Duration interval = 2;
+    // The base time that a host is ejected for. The real time is equal to the
+    // base time multiplied by the number of times the host has been ejected.
+    // Defaults to 30000ms or 30s.
+    Duration base_ejection_time = 3;
+    // The maximum % of an upstream cluster that can be ejected due to outlier
+    // detection. Defaults to 10%.
+    google.protobuf.UInt32Value max_ejection_percent = 4;
+    // The % chance that a host will be actually ejected when an outlier status
+    // is detected through consecutive 5xx. This setting can be used to disable
+    // ejection or to ramp it up slowly. Defaults to 100.
+    google.protobuf.UInt32Value enforcing_consecutive_5xx = 5;
+    // The % chance that a host will be actually ejected when an outlier status
+    // is detected through success rate statistics. This setting can be used to
+    // disable ejection or to ramp it up slowly. Defaults to 100.
+    google.protobuf.UInt32Value enforcing_success_rate = 6;
+    // The number of hosts in a cluster that must have enough request volume to
+    // detect success rate outliers. If the number of hosts is less than this
+    // setting, outlier detection via success rate statistics is not performed
+    // for any host in the cluster. Defaults to 5.
+    google.protobuf.UInt32Value success_rate_minimum_hosts = 7;
+    // The minimum number of total requests that must be collected in one
+    // interval (as defined by interval_ms above) to include this host in
+    // success rate based outlier detection. If the volume is lower than this
+    // setting, outlier detection via success rate statistics is not performed
+    // for that host. Defaults to 100.
+    google.protobuf.UInt32Value success_rate_request_volume = 8;
+    // This factor is used to determine the ejection threshold for success rate
+    // outlier ejection. The ejection threshold is the difference between the
+    // mean success rate, and the product of this factor and the standard
+    // deviation of the mean success rate: mean - (stdev *
+    // success_rate_stdev_factor). This factor is divided by a thousand to get a
+    // double. That is, if the desired factor is 1.9, the runtime value should
+    // be 1900. Defaults to 1900.
+    google.protobuf.UInt32Value success_rate_stdev_factor = 9;
+  }
+  OutlierDetection outlier_detection = 16;
+}

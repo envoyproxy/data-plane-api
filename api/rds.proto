@@ -4,7 +4,7 @@
 
 syntax = "proto3";
 
-import "api/node.proto";
+import "api/base.proto";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";

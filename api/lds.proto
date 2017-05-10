@@ -4,7 +4,9 @@
 
 syntax = "proto3";
 
-import "api/node.proto";
+import "api/address.proto";
+import "api/base.proto";
+import "api/ssl_context.proto";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
@@ -24,93 +26,6 @@ message ListenerDiscoveryRequest {
 
 message ListenerDiscoverResponse {
   repeated Listener listeners = 1;
-}
-
-// [V2-API-DIFF] Addresses now have .proto structure.
-message ListenerAddress {
-  message SocketAddress {
-    // Bind to 0.0.0.0 or :: to support the use of prefix/suffix matching in
-    // FilterChainMatch.
-    google.protobuf.StringValue address = 1;
-    google.protobuf.UInt32Value port = 2;
-  }
-  message Pipe {
-    google.protobuf.StringValue path = 1;
-  }
-  oneof address {
-    SocketAddress socket_address = 1;
-    Pipe pipe = 2;
-  }
-}
-
-message DataSource {
-  oneof specifier {
-    google.protobuf.StringValue filename = 1;
-    google.protobuf.BytesValue inline = 2;
-  }
-}
-
-// SSL certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
-// be loaded from either.
-message SslCertificate {
-  DataSource cert_chain = 1;
-  DataSource private_key = 2;
-  DataSource ocsp_staple = 3;
-  repeated DataSource signed_certificate_timestamp = 4;
-}
-
-message ClientSslContext {
-  // SSL certificate data containing certificate authority certificates to use
-  // in verifying a presented client side certificate. If not specified and a
-  // client certificate is presented it will not be verified.
-  DataSource ca_cert = 1;
-
-  // If specified, Envoy will verify (pin) the hash of the presented client side
-  // certificate.
-  google.protobuf.StringValue verify_certificate_hash = 2;
-
-  // An optional list of subject alt names. If specified, Envoy will verify that
-  // the client certificate’s subject alt name matches one of the specified
-  // values.
-  repeated google.protobuf.StringValue verify_subject_alt_name = 3;
-
-  // Client must present a signed time-stamped OCSP response.
-  google.protobuf.BoolValue require_ocsp_staple = 4;
-
-  // Client must present signed certificate time-stamp.
-  google.protobuf.BoolValue require_signed_certificate_timestamp = 5;
-}
-
-// [V2-API-DIFF] This has been reworked to support alternative modes of
-// certificate/key delivery, for consistency with the upstream SSL context and
-// to segregate the client/server aspects of the SSL context.
-message SslContext {
-  // Multiple SSL certificates can be associated with the same context, e.g. to
-  // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
-  repeated SslCertificate ssl_certificates = 1;
-
-  ClientSslContext client_ssl_context = 2;
-
-  // Supplies the list of ALPN protocols that the listener should expose.
-  repeated google.protobuf.StringValue alpn_protocols = 3;
-
-  enum TLSProtocol {
-    TLS_AUTO = 0;
-    TLSv1_0 = 1;
-    TLSv1_1 = 2;
-    TLSv1_2 = 3;
-    TLSv1_3 = 4;
-  }
-  // Allowed TLS protocols.
-  TLSProtocol tls_minimum_protocol_version = 4;
-  TLSProtocol tls_maximum_protocol_version = 5;
-
-  // If specified, the TLS listener will only support the specified cipher list.
-  repeated google.protobuf.StringValue cipher_suites = 6;
-
-  // If specified, the TLS connection will only support the specified ECDH
-  // curves. If not specified, the default curves (X25519, P-256) will be used.
-  repeated google.protobuf.StringValue ecdh_curves = 7;
 }
 
 message Filter {
@@ -149,11 +64,11 @@ message FilterChainMatch {
   google.protobuf.UInt32Value suffix_len = 5;
 }
 
-// Grouping of FilterChainMatch criteria, SslContext, the actual filter chain
+// Grouping of FilterChainMatch criteria, DownstreamSslContext, the actual filter chain
 // and related parameters.
 message FilterChain {
   FilterChainMatch filter_chain_match = 1;
-  SslContext ssl_context = 2;
+  DownstreamSslContext ssl_context = 2;
   // A list of individual network filters that make up the filter chain for
   // connections established with the listener. Order matters as the filters are
   // processed sequentially as connection events happen.  Note: If the filter
@@ -171,7 +86,7 @@ message FilterChain {
 
 message Listener {
   // The address that the listener should listen on.
-  ListenerAddress address = 1;
+  Address address = 1;
 
   // A list of filter chains to consider for this listener. The FilterChain with
   // the most specific FilterChainMatch criteria is used on a connection. The
