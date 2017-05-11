@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 // [V2-API-DIFF] Addresses now have .proto structure.
@@ -23,16 +22,16 @@ message Address {
     string path = 1;
   }
   // Support pluggable resolvers.
-  message ResolverAddress {
+  message Resolver {
     // Name of the resolver. This must have been registered with Envoy.
     string name = 1;
-    // Opaque data passed to the resolver. The resolver will translate this
-    // to a SocketAddress.
-    google.protobuf.Struct data = 2;
+    // TODO(htuch): Do we need further extensibility or should we collapse
+    // Resolver to a string?
   }
+  // If not specified, the default DNS resolver is used.
+  Resolver resolver = 1;
   oneof address {
-    SocketAddress socket_address = 1;
-    Pipe pipe = 2;
-    ResolverAddress resolver_address = 3;
+    SocketAddress socket_address = 2;
+    Pipe pipe = 3;
   }
 }
