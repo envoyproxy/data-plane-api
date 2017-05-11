@@ -13,7 +13,7 @@ message Address {
     // matching in FilterChainMatch. For clusters, an address may be either an
     // IP or hostname to be resolved via DNS.
     google.protobuf.StringValue address = 2;
-    oneof port {
+    oneof port_specifier {
       google.protobuf.UInt32Value port = 3;
       string service = 4;
     }
