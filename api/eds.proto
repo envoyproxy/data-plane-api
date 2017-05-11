@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "api/address.proto";
 import "api/base.proto";
 import "api/health_check.proto";
 
@@ -48,18 +49,23 @@ message EndpointDiscoveryRequest {
 }
 
 message LbEndpoint {
-  EndpointHealth endpoint_health = 1;
+  // Endpoint host address.
+  Address address = 1;
+
+  // Optional health status when known and supplied by EDS server.
+  HealthStatus health_status = 2;
+
   // The optional canary status of the upstream host. Envoy uses the canary
   // status for various statistics and load balancing tasks documented
   // elsewhere.
-  google.protobuf.BoolValue canary = 2;
+  google.protobuf.BoolValue canary = 3;
   // The optional load balancing weight of the upstream host, in the range 1 -
   // 100. Envoy uses the load balancing weight in some of the built in load
   // balancers. All load balancing weights in a locality must sum to 100%.
   // The effective load balancing weight is load_balancing_weight multiplied by
   // the locality wide load_balancing_weight. If unspecified, each host is
   // presumed to have equal weight in a locality.
-  google.protobuf.UInt32Value load_balancing_weight = 3;
+  google.protobuf.UInt32Value load_balancing_weight = 4;
 }
 
 // All endpoints belonging to a Locality.

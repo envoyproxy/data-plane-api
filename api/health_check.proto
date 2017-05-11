@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "api/address.proto";
 import "api/base.proto";
 
 import "google/protobuf/wrappers.proto";
@@ -71,11 +70,4 @@ enum HealthStatus {
   // This value is used by HDS Remote server. From Envoy’s perspective
   // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
   TIMEOUT = 4;
-}
-
-message EndpointHealth {
-  // Endpoint host address.
-  Address address = 1;
-  // Optional health status when known and supplied by EDS server.
-  HealthStatus health_status = 2;
 }
