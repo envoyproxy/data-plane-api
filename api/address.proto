@@ -7,7 +7,6 @@ message Address {
   message SocketAddress {
     enum Protocol {
       TCP = 0;
-      UDP = 1;
     }
     Protocol protocol = 1;
     // For listeners, bind to 0.0.0.0 or :: to support the use of prefix/suffix
