@@ -15,7 +15,7 @@ message Address {
     google.protobuf.StringValue address = 2;
     oneof port {
       google.protobuf.UInt32Value port = 3;
-      string named_port = 4;
+      string service = 4;
     }
   }
   message Pipe {
