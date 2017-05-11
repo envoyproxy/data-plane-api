@@ -10,6 +10,7 @@ message Address {
     // IP or hostname to be resolved via DNS.
     google.protobuf.StringValue address = 1;
     google.protobuf.UInt32Value port = 2;
+    string service = 3;
   }
   message Pipe {
     google.protobuf.StringValue path = 1;
