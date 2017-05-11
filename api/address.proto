@@ -9,9 +9,10 @@ message Address {
       TCP = 0;
     }
     Protocol protocol = 1;
-    // For listeners, an empty address implies a bind to 0.0.0.0 or ::. This
-    // supports the use of prefix/suffix matching in FilterChainMatch. For
-    // clusters, an address may be either an IP or hostname to be resolved via
+    // For listeners, an empty address implies a bind to 0.0.0.0 or ::. It's
+    // still possible to distinguish on address via the prefix/suffix matching
+    // in FilterChainMatch after connection.
+    // For clusters, an address may be either an IP or hostname to be resolved via
     // DNS.
     string address = 2;
     oneof port {
