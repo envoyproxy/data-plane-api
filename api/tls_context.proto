@@ -60,36 +60,36 @@ message CertificateValidationContext {
 }
 
 message UpstreamTlsContext {
+  // TLS protocol versions, cipher suites etc.
+  TlsParameters tls_params = 1;
+
   // Client certificate to present to backend.
-  TlsCertificate client_certificate = 1;
+  TlsCertificate client_certificate = 2;
 
   // SNI string to use when creating TLS backend connections.
-  google.protobuf.StringValue sni = 2;
+  google.protobuf.StringValue sni = 3;
 
   // Protocols to negotiate over ALPN
-  repeated google.protobuf.StringValue alpn_protocols = 3;
+  repeated google.protobuf.StringValue alpn_protocols = 4;
 
   // How to validate the backend certificate.
-  CertificateValidationContext server_validation_context = 4;
-
-  // TLS protocol versions, cipher suites etc.
-  TlsParameters tls_params = 5;
+  CertificateValidationContext server_validation_context = 5;
 }
 
 // [V2-API-DIFF] This has been reworked to support alternative modes of
 // certificate/key delivery, for consistency with the upstream TLS context and
 // to segregate the client/server aspects of the TLS context.
 message DownstreamTlsContext {
+  // TLS protocol versions, cipher suites etc.
+  TlsParameters tls_params = 1;
+
   // Multiple TLS certificates can be associated with the same context, e.g. to
   // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
-  repeated TlsCertificate tls_certificates = 1;
+  repeated TlsCertificate tls_certificates = 2;
 
   // Supplies the list of ALPN protocols that the listener should expose.
-  repeated google.protobuf.StringValue alpn_protocols = 2;
+  repeated google.protobuf.StringValue alpn_protocols = 3;
 
   // How to validate the client certificate.
-  CertificateValidationContext client_validation_context = 3;
-
-  // TLS protocol versions, cipher suites etc.
-  TlsParameters tls_params = 4;
+  CertificateValidationContext client_validation_context = 4;
 }
