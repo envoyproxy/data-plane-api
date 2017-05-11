@@ -56,3 +56,18 @@ message HealthCheck {
     TcpHealthCheck tcp_health_check = 9;
   }
 }
+
+enum HealthStatus {
+  // UNKNOWN should be treated by Envoy as HEALTHY.
+  UNKNOWN = 0;
+  HEALTHY = 1;
+  UNHEALTHY = 2;
+  // Connection draining in progress -
+  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
+  // and
+  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
+  DRAINING = 3;
+  // This value is used by HDS Remote server. From Envoy’s perspective
+  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
+  TIMEOUT = 4;
+}
