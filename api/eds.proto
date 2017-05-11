@@ -79,11 +79,14 @@ message LocalityEndpoints {
   google.protobuf.UInt32Value load_balancing_weight = 3;
 }
 
-// Each route from RDS will map to a single cluster (or specify its own weights
-// for WeightedCluster which are discoverable by RDS). In EDS, each cluster is
-// treated independently from a LB perspective, with LB taking place between the
-// Localities within a cluster and at a finer granularity between the hosts
-// within a locality.
+// Each route from RDS will map to a single cluster or traffic split across
+// clusters using weights expressed in the RDS WeightedCluster.
+//
+// With EDS, each cluster is treated independently from a LB perspective, with
+// LB taking place between the Localities within a cluster and at a finer
+// granularity between the hosts within a locality. For a given cluster, the
+// effective weight of a host is its load_balancing_weight multiplied by the
+// load_balancing_weight of its Locality.
 message ClusterEndpoints {
   string cluster_name = 1;
   repeated LocalityEndpoints locality_endpoints = 2;
@@ -172,6 +175,7 @@ message ClusterLoadBalance {
     // action allows protection of upstream hosts should they unable to
     // recover from an outage or should they be unable to autoscale and hence
     // overall incoming traffic volume need to be trimmed to protect them.
+    // [V2-API-DIFF] This is known as maintenance mode in v1.
     double drop_overload = 1;
   }
   Policy policy = 4;
