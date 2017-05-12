@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+
 // [V2-API-DIFF] Addresses now have .proto structure.
 
 message Pipe {
@@ -21,7 +23,7 @@ message UnresolvedAddress {
     // DNS.
     string host_name = 2;
     oneof port_specifier {
-      uint32 port = 3;
+      google.protobuf.UInt32Value port = 3;
       string service_name = 4;
     }
   }
@@ -53,7 +55,7 @@ message ResolvedAddress {
     }
     Protocol protocol = 1;
     string ip_address = 2;
-    uint32 port = 3;
+    google.protobuf.UInt32Value port = 3;
   }
   oneof address {
     SocketAddress socket_address = 2;
