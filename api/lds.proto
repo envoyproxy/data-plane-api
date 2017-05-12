@@ -86,7 +86,7 @@ message FilterChain {
 
 message Listener {
   // The address that the listener should listen on.
-  Address address = 1;
+  UnresolvedAddress address = 1;
 
   // A list of filter chains to consider for this listener. The FilterChain with
   // the most specific FilterChainMatch criteria is used on a connection. The
