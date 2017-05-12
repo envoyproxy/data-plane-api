@@ -31,5 +31,5 @@ message Duration {
 }
 
 message Endpoint {
-  Address address = 1;
+  ResolvedAddress address = 1;
 }
