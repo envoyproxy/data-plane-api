@@ -87,10 +87,10 @@ message LocalityEndpoints {
   repeated Endpoint endpoints = 2;
 }
 
-// TODO(htuch): Do we need the cluster name and Locality in HDS? Doesn't Envoy
-// already know about the cluster name and locality for each Endpoint from EDS?
-// Is this to avoid having to maintain a reverse map in Envoy? If so, should add
-// some verbiage to that effect.
+// The cluster name and locality is provided to Envoy for the endpoints that it
+// health checks to support statistics reporting, logging and debugging by the
+// Envoy instance (outside of HDS). For maximum usefulness, it should match the
+// same cluster structure as that provided by EDS.
 message ClusterHealthCheck {
   string cluster_name = 1;
   repeated HealthCheck health_checks = 2;
