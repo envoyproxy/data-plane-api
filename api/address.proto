@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
-
 // [V2-API-DIFF] Addresses now have .proto structure.
 message Address {
   message SocketAddress {
@@ -16,12 +14,12 @@ message Address {
     // DNS.
     string address = 2;
     oneof port_specifier {
-      google.protobuf.UInt32Value port = 3;
+      uint32 port = 3;
       string service = 4;
     }
   }
   message Pipe {
-    google.protobuf.StringValue path = 1;
+    string path = 1;
   }
   oneof address {
     SocketAddress socket_address = 1;
