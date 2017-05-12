@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
-
 // [V2-API-DIFF] Addresses now have .proto structure.
 message Address {
   message SocketAddress {
@@ -9,17 +7,19 @@ message Address {
       TCP = 0;
     }
     Protocol protocol = 1;
-    // For listeners, bind to 0.0.0.0 or :: to support the use of prefix/suffix
-    // matching in FilterChainMatch. For clusters, an address may be either an
-    // IP or hostname to be resolved via DNS.
-    google.protobuf.StringValue address = 2;
+    // For listeners, an empty address implies a bind to 0.0.0.0 or ::. It's
+    // still possible to distinguish on address via the prefix/suffix matching
+    // in FilterChainMatch after connection.
+    // For clusters, an address may be either an IP or hostname to be resolved via
+    // DNS.
+    string address = 2;
     oneof port_specifier {
-      google.protobuf.UInt32Value port = 3;
+      uint32 port = 3;
       string service = 4;
     }
   }
   message Pipe {
-    google.protobuf.StringValue path = 1;
+    string path = 1;
   }
   oneof address {
     SocketAddress socket_address = 1;
