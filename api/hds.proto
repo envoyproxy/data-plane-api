@@ -51,11 +51,12 @@ service HealthDiscoveryService {
 // Defines supported protocols etc, so the management server can assign proper
 // endpoints to healthcheck.
 message Capability {
-  // TODO(htuch): Do we really need capability support? Won't all Envoys be
-  // capable of doing both HTTP and TCP?
+  // Different Envoy instances may have different capabilities (e.g. Redis)
+  // and/or have ports enabled for different protocols.
   enum Protocol {
     HTTP = 0;
     TCP = 1;
+    REDIS = 2;
   }
   repeated Protocol health_check_protocol = 1;
 }
@@ -75,8 +76,6 @@ message EndpointHealthResponse {
 }
 
 message HealthCheckRequestOrEndpointHealthResponse {
-  // TODO(htuch): Slight change to Envoy -> management server message stream to
-  // make use of oneof for clarity, confirm with @amb67 this is reasonable.
   oneof request_type {
     HealthCheckRequest health_check_request = 1;
     EndpointHealthResponse endpoint_health_response = 2;
@@ -100,6 +99,6 @@ message ClusterHealthCheck {
 
 message HealthCheckSpecifier {
   repeated ClusterHealthCheck health_check = 1;
-  // TODO(htuch): What is the default?
+  // The default is 1 second.
   Duration interval = 2;
 }
