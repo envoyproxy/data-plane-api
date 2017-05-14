@@ -105,7 +105,7 @@ message Cluster {
   // Optional active health checking configuration for the cluster. If no
   // configuration is specified no health checking will be done and all cluster
   // members will be considered healthy at all times.
-  repeated HealthCheck health_check = 8;
+  repeated HealthCheck health_checks = 8;
 
   // Optional maximum requests for a single upstream connection. This parameter
   // is respected by both the HTTP/1.1 and HTTP/2 connection pool
