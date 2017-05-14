@@ -31,7 +31,7 @@ message HealthCheck {
   // Describes the encoding of the payload bytes in the payload
   message Payload {
     oneof payload {
-      google.protobuf.StringValue text = 1;
+      string text = 1;
       google.protobuf.BytesValue binary = 2;
     }
   }

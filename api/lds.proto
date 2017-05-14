@@ -40,7 +40,7 @@ message Filter {
   Type type = 1;
   // The name of the filter to instantiate. The name must match a supported
   // filter.
-  google.protobuf.StringValue name = 2;
+  string name = 2;
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
   google.protobuf.Struct config = 3;
@@ -51,16 +51,16 @@ message Filter {
 message FilterChainMatch {
   // If non-empty, the SNI domains to consider. May contain a wildcard prefix,
   // e.g. *.example.com.
-  repeated google.protobuf.StringValue sni_domains = 1;
+  repeated string sni_domains = 1;
 
   // If non-empty, an IP address and prefix length to match addresses when the
   // listener is bound to 0.0.0.0/::.
-  google.protobuf.StringValue address_prefix = 2;
+  string address_prefix = 2;
   google.protobuf.UInt32Value prefix_len = 3;
 
   // If non-empty, an IP address and suffix length to match addresses when the
   // listener is bound to 0.0.0.0/::.
-  google.protobuf.StringValue address_suffix = 4;
+  string address_suffix = 4;
   google.protobuf.UInt32Value suffix_len = 5;
 }
 
