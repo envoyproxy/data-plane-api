@@ -4,6 +4,8 @@
 
 syntax = "proto3";
 
+package envoy.api.v2;
+
 import "api/base.proto";
 
 import "google/protobuf/struct.proto";

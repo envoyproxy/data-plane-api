@@ -4,6 +4,8 @@
 
 syntax = "proto3";
 
+package envoy.api.v2;
+
 import "api/address.proto";
 import "api/base.proto";
 import "api/tls_context.proto";
