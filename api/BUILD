@@ -8,6 +8,7 @@ api_proto_library(
 api_proto_library(
     name = "base",
     srcs = ["base.proto"],
+    deps = [":address"],
 )
 
 api_proto_library(
@@ -37,6 +38,15 @@ api_proto_library(
     srcs = ["eds.proto"],
     deps = [
         ":address",
+        ":base",
+        ":health_check",
+    ],
+)
+
+api_proto_library(
+    name = "hds",
+    srcs = ["hds.proto"],
+    deps = [
         ":base",
         ":health_check",
     ],

@@ -49,8 +49,7 @@ message EndpointDiscoveryRequest {
 }
 
 message LbEndpoint {
-  // Endpoint host address.
-  Address address = 1;
+  Endpoint endpoint = 1;
 
   // Optional health status when known and supplied by EDS server.
   HealthStatus health_status = 2;

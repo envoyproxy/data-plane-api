@@ -86,7 +86,7 @@ message FilterChain {
 
 message Listener {
   // The address that the listener should listen on.
-  Address address = 1;
+  UnresolvedAddress address = 1;
 
   // A list of filter chains to consider for this listener. The FilterChain with
   // the most specific FilterChainMatch criteria is used on a connection. The
@@ -113,6 +113,9 @@ message Listener {
   // the listener associated with the original destination port. If there is no
   // listener associated with the original destination port, the connection is
   // handled by the listener that receives it. Default is false.
+  // TODO(htuch): Clarify how use_original_dst interacts with listeners that
+  // bind to specific IP addresses, where we want the original destination IP to
+  // be used in the FilterChainMatch but not on bind.
   google.protobuf.BoolValue use_original_dst = 4;
 
   // Soft limit on size of the listener’s new connection read and write buffers.
