@@ -5,12 +5,21 @@ import "api/base.proto";
 import "api/health_check.proto";
 import "api/tls_context.proto";
 
+import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
 service ClusterDiscoveryService {
   // Return list of all clusters, this proxy will load balance to.
   rpc StreamClusters(ClusterDiscoveryRequest)
       returns (stream ClusterDiscoveryResponse) {
+  }
+
+  rpc FetchClusters(ClusterDiscoveryRequest)
+      returns (ClusterDiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:clusters"
+      body: "*"
+    };
   }
 }
 

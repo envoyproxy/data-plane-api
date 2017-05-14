@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/api/annotations.proto";
 import "api/base.proto";
 import "api/health_check.proto";
 
@@ -43,8 +44,19 @@ service HealthDiscoveryService {
   // TODO(htuch): How is can_healthcheck communicated to CDS to ensure the above
   // invariant?
   // TODO(htuch): Add @amb67's diagram.
-  rpc CheckHealth(stream HealthCheckRequestOrEndpointHealthResponse)
+  rpc StreamHealthCheck(stream HealthCheckRequestOrEndpointHealthResponse)
       returns (stream HealthCheckSpecifier) {
+  }
+
+  // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
+  // request/response. Should we add an identifier to the HealthCheckSpecifier
+  // to bind with the response?
+  rpc FetchHealthCheck(HealthCheckRequestOrEndpointHealthResponse)
+      returns (HealthCheckSpecifier) {
+    option (google.api.http) = {
+      post: "/v2/discovery:health_check"
+      body: "*"
+    };
   }
 }
 

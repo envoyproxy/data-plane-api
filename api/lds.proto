@@ -8,6 +8,7 @@ import "api/address.proto";
 import "api/base.proto";
 import "api/tls_context.proto";
 
+import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -18,6 +19,14 @@ import "google/protobuf/wrappers.proto";
 service ListenerDiscoveryService {
   rpc StreamListeners(ListenerDiscoveryRequest) returns
       (stream ListenerDiscoverResponse) {}
+
+  rpc FetchListeners(ListenerDiscoveryRequest)
+      returns (ListenerDiscoverResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:listeners"
+      body: "*"
+    };
+  }
 }
 
 message ListenerDiscoveryRequest {

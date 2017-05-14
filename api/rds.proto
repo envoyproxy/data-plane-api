@@ -6,12 +6,21 @@ syntax = "proto3";
 
 import "api/base.proto";
 
+import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 service RouteDiscoveryService {
   rpc StreamRoutes(RouteDiscoveryRequest)
       returns (stream RouteDiscoveryResponse) {
+  }
+
+  rpc FetchRoutes(RouteDiscoveryRequest)
+      returns (RouteDiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:routes"
+      body: "*"
+    };
   }
 }
 
