@@ -50,6 +50,10 @@ a tracking issue with the authors.
   used to generate xDS configuration are beyond the scope of the definitions in
   this repository.
 
+* Versioning will be expressed via [proto3 package
+  namespaces](https://developers.google.com/protocol-buffers/docs/proto3#packages),
+  i.e. `package envoy.api.v2;`.
+
 * [Wrapped](https://github.com/google/protobuf/blob/master/src/google/protobuf/wrappers.proto)
   protobuf fields should be used for all non-string [scalar
   types](https://developers.google.com/protocol-buffers/docs/proto3#scalar), to
