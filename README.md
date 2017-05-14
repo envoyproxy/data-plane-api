@@ -60,13 +60,13 @@ a tracking issue with the authors.
 
 Unless otherwise stated, the APIs with the same names as v1 APIs have a similar role.
 
-* [Cluster Discovery Service](api/cds.proto).
-* [Endpoint Discovery Service](api/eds.proto). This has the same role as SDS in the [v1 API](https://lyft.github.io/envoy/docs/configuration/cluster_manager/sds_api.html),
+* [Cluster Discovery Service (CDS)](api/cds.proto).
+* [Endpoint Discovery Service (EDS)](api/eds.proto). This has the same role as SDS in the [v1 API](https://lyft.github.io/envoy/docs/configuration/cluster_manager/sds_api.html),
   the new name better describes what the API does in practice. Advanced global load balancing capable of utilizing N-dimensional upstream metrics is now supported.
-* [Listener Discovery Service](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
-* Health Discovery Service. This new API supports efficient endpoint health discovery by the management server via the Envoy instances it manages.
+* [Listener Discovery Service (LDS)](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
+* [Health Discovery Service (HDS)](api/hds.proto). This new API supports efficient endpoint health discovery by the management server via the Envoy instances it manages.
 * Rate Limit Service.
-* [Route Discovery Service](api/rds.proto).
+* [Route Discovery Service (RDS)](api/rds.proto).
 
 ## Terminology
 
