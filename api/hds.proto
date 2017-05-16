@@ -1,8 +1,11 @@
 syntax = "proto3";
 
-import "google/api/annotations.proto";
+package envoy.api.v2;
+
 import "api/base.proto";
 import "api/health_check.proto";
+
+import "google/api/annotations.proto";
 
 // HDS is Health Discovery Service. It compliments Envoy’s health checking
 // service by designating this Envoy to be a healthchecker for a subset of hosts

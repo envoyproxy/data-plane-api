@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package envoy.api.v2;
+
 import "api/address.proto";
 import "api/base.proto";
 import "api/health_check.proto";
@@ -78,7 +80,7 @@ message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // The cluster name is used when emitting statistics. The cluster name can be
   // at most 60 characters long, and must not contain :.
-  google.protobuf.StringValue name = 1;
+  string name = 1;
 
   // The service discovery type to use for resolving the cluster.
   enum DiscoveryType {
