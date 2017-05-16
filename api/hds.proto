@@ -5,6 +5,8 @@ package envoy.api.v2;
 import "api/base.proto";
 import "api/health_check.proto";
 
+import "google/protobuf/duration.proto";
+
 // HDS is Health Discovery Service. It compliments Envoy’s health checking
 // service by designating this Envoy to be a healthchecker for a subset of hosts
 // in the cluster. The status of these health checks will be reported to the
@@ -102,5 +104,5 @@ message ClusterHealthCheck {
 message HealthCheckSpecifier {
   repeated ClusterHealthCheck health_check = 1;
   // The default is 1 second.
-  Duration interval = 2;
+  google.protobuf.Duration interval = 2;
 }

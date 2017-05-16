@@ -4,17 +4,18 @@ package envoy.api.v2;
 
 import "api/base.proto";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 message HealthCheck {
   // The time to wait for a health check response. If the timeout is reached the
   // health check attempt will be considered a failure.
-  Duration timeout = 1;
+  google.protobuf.Duration timeout = 1;
   // The interval between health checks.
-  Duration interval = 2;
+  google.protobuf.Duration interval = 2;
   // An optional jitter amount in millseconds. If specified, during every
   // internal Envoy will add 0 to interval_jitter to the wait time.
-  Duration interval_jitter = 3;
+  google.protobuf.Duration interval_jitter = 3;
 
   // The number of unhealthy health checks required before a host is marked
   // unhealthy. Note that for http health checking if a host responds with 503

@@ -7,6 +7,7 @@ import "api/base.proto";
 import "api/health_check.proto";
 import "api/tls_context.proto";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 service ClusterDiscoveryService {
@@ -83,7 +84,7 @@ message Cluster {
   DiscoveryType type = 2;
 
   // The timeout for new network connections to hosts in the cluster.
-  Duration connect_timeout = 3;
+  google.protobuf.Duration connect_timeout = 3;
   // Soft limit on size of the cluster’s connections read and write buffers. If
   // unspecified, an implementation defined default is applied (1MiB).
   google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 4;
@@ -134,7 +135,7 @@ message Cluster {
   // rate. If this setting is not specified, the value defaults to 5000. For
   // cluster types other than strict_dns and logical_dns this setting is
   // ignored.
-  Duration dns_refresh_rate = 16;
+  google.protobuf.Duration dns_refresh_rate = 16;
 
   // If specified, outlier detection will be enabled for this upstream cluster.
   message OutlierDetection {
@@ -144,11 +145,11 @@ message Cluster {
     // The time interval between ejection analysis sweeps. This can result in
     // both new ejections as well as hosts being returned to service. Defaults
     // to 10000ms or 10s.
-    Duration interval = 2;
+    google.protobuf.Duration interval = 2;
     // The base time that a host is ejected for. The real time is equal to the
     // base time multiplied by the number of times the host has been ejected.
     // Defaults to 30000ms or 30s.
-    Duration base_ejection_time = 3;
+    google.protobuf.Duration base_ejection_time = 3;
     // The maximum % of an upstream cluster that can be ejected due to outlier
     // detection. Defaults to 10%.
     google.protobuf.UInt32Value max_ejection_percent = 4;
