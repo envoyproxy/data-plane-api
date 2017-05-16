@@ -5,7 +5,7 @@ import "google/protobuf/wrappers.proto";
 message DataSource {
   oneof specifier {
     string filename = 1;
-    google.protobuf.BytesValue inline = 2;
+    bytes inline = 2;
   }
 }
 

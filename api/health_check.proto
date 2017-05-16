@@ -32,7 +32,7 @@ message HealthCheck {
   message Payload {
     oneof payload {
       string text = 1;
-      google.protobuf.BytesValue binary = 2;
+      bytes binary = 2;
     }
   }
   message HttpHealthCheck {
