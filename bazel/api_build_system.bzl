@@ -6,6 +6,8 @@ def api_proto_library(name, srcs = [], deps = []):
         srcs = srcs,
         default_runtime = "@protobuf//:protobuf",
         protoc = "@protobuf//:protoc",
-        deps = deps + ["@protobuf//:cc_wkt_protos"] +
-               ["@googleapis//:http_api_protos"],
+        deps = deps + [
+            "@googleapis//:http_api_protos",
+            "@protobuf//:cc_wkt_protos",
+        ],
     )
