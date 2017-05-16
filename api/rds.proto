@@ -23,7 +23,7 @@ message RouteDiscoveryRequest {
   // with multiple HTTP listeners (and associated HTTP connection manager
   // filters) to use different route configurations. Each listener will bind its
   // HTTP connection manager filter to a route table via this identifier.
-  google.protobuf.StringValue route_config_name = 2;
+  string route_config_name = 2;
 }
 
 message RouteDiscoveryResponse {
@@ -50,7 +50,7 @@ message WeightedCluster {
   message ClusterWeight {
     // Name of the upstream cluster. The cluster must exist in the cluster
     // manager configuration.
-    google.protobuf.StringValue name = 1;
+    string name = 1;
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
@@ -66,7 +66,7 @@ message WeightedCluster {
   // key for the cluster does not exist, the value specified in the
   // configuration file will be used as the default weight. See the runtime
   // documentation for how key names map to the underlying implementation.
-  google.protobuf.StringValue runtime_key_prefix = 2;
+  string runtime_key_prefix = 2;
 }
 
 message RouteMatch {
@@ -74,11 +74,11 @@ message RouteMatch {
     // If specified, the route is a prefix rule meaning that the prefix must
     // match the beginning of the :path header. Either prefix or path must be
     // specified.
-    google.protobuf.StringValue prefix = 1;
+    string prefix = 1;
     // If specified, the route is an exact path rule meaning that the path must
     // exactly match the :path header once the query string is removed. Either
     // prefix or path must be specified.
-    google.protobuf.StringValue path = 2;
+    string path = 2;
   }
   // Indicates that prefix/path matching should be case insensitive. The default
   // is true.
@@ -91,7 +91,7 @@ message RouteMatch {
     // Specifies the runtime key name that should be consulted to determine
     // whether the route matches or not. See the runtime documentation for how
     // key names map to the underlying implementation.
-    google.protobuf.StringValue key = 1;
+    string key = 1;
     // An integer between 0-100. Every time the route is considered for a match,
     // a random number between 0-99 is selected. If the number is <= the value
     // found in the key (checked first) or, if the key is not present, the
@@ -114,12 +114,12 @@ message ForwardAction {
   oneof cluster_specifier {
     // Indicates the upstream cluster to which the request should be forwarded
     // to.
-    google.protobuf.StringValue cluster = 1;
+    string cluster = 1;
     // Envoy will determine the cluster to route to by reading the value of the
     // HTTP header named by cluster_header from the request headers. If the
     // header is not found or the referenced cluster does not exist, Envoy will
     // return a 404 response.
-    google.protobuf.StringValue cluster_header = 2;
+    string cluster_header = 2;
     // Multiple upstream clusters can be specified for a given route. The
     // request is forwarded to one of the upstream clusters based on weights
     // assigned to each cluster. See traffic splitting for additional
@@ -130,11 +130,11 @@ message ForwardAction {
   // Indicates that during forwarding, the matched prefix (or path) should be
   // swapped with this value. This option allows application URLs to be rooted
   // at a different path from those exposed at the reverse proxy layer.
-  google.protobuf.StringValue prefix_rewrite = 4;
+  string prefix_rewrite = 4;
   oneof host_rewrite_specifier {
     // Indicates that during forwarding, the host header will be swapped with
     // this value.
-    google.protobuf.StringValue host_rewrite = 5;
+    string host_rewrite = 5;
     // Indicates that during forwarding, the host header will be swapped with
     // the hostname of the upstream host chosen by the cluster manager. This
     // option is applicable only when the destination cluster for a route is of
@@ -152,7 +152,7 @@ message ForwardAction {
   message RetryPolicy {
     // Specifies the conditions under which retry takes place. These are the
     // same conditions documented for x-envoy-retry-on.
-    google.protobuf.StringValue retry_on = 1;
+    string retry_on = 1;
     // Specifies the allowed number of retries. This parameter is optional and
     // defaults to 1. These are the same conditions documented for
     // x-envoy-max-retries.
@@ -169,14 +169,14 @@ message ForwardAction {
   message ShadowPolicy {
     // Specifies the cluster that requests will be shadowed to. The cluster must
     // exist in the cluster manager configuration.
-    google.protobuf.StringValue cluster = 1;
+    string cluster = 1;
     // If not specified, all requests to the target cluster will be shadowed. If
     // specified, Envoy will lookup the runtime key to get the % of requests to
     // shadow. Valid values are from 0 to 10000, allowing for increments of
     // 0.01% of requests to be shadowed. If the runtime key is specified in the
     // configuration but not present in runtime, 0 is the default and thus 0% of
     // requests will be shadowed.
-    google.protobuf.StringValue runtime_key = 2;
+    string runtime_key = 2;
   }
   ShadowPolicy shadow_policy = 9;
 
@@ -200,7 +200,7 @@ message ForwardAction {
   google.protobuf.BoolValue include_vh_rate_limits = 14;
 
   message HashPolicy {
-    google.protobuf.StringValue header_name = 1;
+    string header_name = 1;
     // Do we want to extend this for additional session affinity inputs?
     // [V2-API-DIFF]
   }
@@ -210,10 +210,10 @@ message ForwardAction {
 message RedirectAction {
   // A 302 redirect response will be sent which swaps the host portion of the
   // URL with this value.
-  google.protobuf.StringValue host_redirect = 1;
+  string host_redirect = 1;
   // A 302 redirect response will be sent which swaps the path portion of the
   // URL with this value.
-  google.protobuf.StringValue path_redirect = 2;
+  string path_redirect = 2;
 }
 
 // The match/action distinction in Route is surfaced explicitly in the v2 API
@@ -239,15 +239,15 @@ message Route {
 // side such that they include network level failures.
 message VirtualCluster {
   // Specifies a regex pattern to use for matching requests.
-  google.protobuf.StringValue pattern = 1;
+  string pattern = 1;
 
   // Specifies the name of the virtual cluster. The virtual cluster name as well
   // as the virtual host name are used when emitting statistics.
-  google.protobuf.StringValue name = 2;
+  string name = 2;
 
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
-  google.protobuf.StringValue method = 3;
+  string method = 3;
 
   // Optionally specifies the virtual cluster routing priority.
   // [V2-API-DIFF] Virtual clusters are promoted mostly as a logical grouping
@@ -268,7 +268,7 @@ message RateLimit {
   google.protobuf.UInt32Value stage = 1;
 
   // The key to be set in runtime to disable this rate limit configuration.
-  google.protobuf.StringValue disable_key = 2;
+  string disable_key = 2;
 
   message RateLimitAction {
     enum ActionType {
@@ -285,14 +285,14 @@ message RateLimit {
       // The header name to be queried from the request headers. The header’s
       // value is used to populate the value of the descriptor entry for the
       // descriptor_key.
-      google.protobuf.StringValue header_name = 1;
+      string header_name = 1;
       // The key to use in the descriptor entry.
-      google.protobuf.StringValue descriptor_key = 2;
+      string descriptor_key = 2;
     }
 
     message HeaderValueMatch {
       // The value to use in the descriptor entry.
-      google.protobuf.StringValue descriptor_value = 1;
+      string descriptor_value = 1;
       // If set to true, the action will append a descriptor entry when the
       // request matches the headers. If set to false, the action will append a
       // descriptor entry when the request does not match the headers. The
@@ -308,7 +308,7 @@ message RateLimit {
 
     oneof action_details {
       RequestHeaders request_headers = 2;
-      google.protobuf.StringValue generic_key = 3;
+      string generic_key = 3;
       HeaderValueMatch header_value_match = 4;
     }
   }
@@ -323,17 +323,17 @@ message RateLimit {
 // Header name/value pair.
 message HeaderValue {
   // Header name.
-  google.protobuf.StringValue key = 1;
+  string key = 1;
   // Header value.
-  google.protobuf.StringValue value = 2;
+  string value = 2;
 }
 
 message HeaderMatcher {
   // Specifies the name of the header in the request.
-  google.protobuf.StringValue name = 1;
+  string name = 1;
   // Specifies the value of the header. If the value is absent a request that
   // has the name header will match, regardless of the header’s value.
-  google.protobuf.StringValue value = 2;
+  string value = 2;
   // Specifies whether the header value is a regular expression or not.
   // Defaults to false.
   google.protobuf.BoolValue regex = 3;
@@ -342,7 +342,7 @@ message HeaderMatcher {
 message VirtualHost {
   // The logical name of the virtual host. This is used when emitting certain
   // statistics but is not relevant for forwarding.
-  google.protobuf.StringValue name = 1;
+  string name = 1;
 
   // A list of domains (host/authority header) that will be matched to this
   // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
@@ -352,7 +352,7 @@ message VirtualHost {
   // host/authority header. Only a single virtual host in the entire route
   // configuration can match on “*”. A domain must be unique across all virtual
   // hosts or the config will fail to load.
-  repeated google.protobuf.StringValue domains = 2;
+  repeated string domains = 2;
 
   // The list of routes that will be matched, in order, for incoming requests.
   // The first route that matches will be used.
@@ -393,7 +393,7 @@ message RouteConfiguration {
   // to be internal only. If they are found on external requests they will be
   // cleaned prior to filter invocation. See x-envoy-internal for more
   // information.
-  repeated google.protobuf.StringValue internal_only_headers = 2;
+  repeated string internal_only_headers = 2;
 
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes.
@@ -401,7 +401,7 @@ message RouteConfiguration {
 
   // Specifies a list of HTTP headers that should be removed from each response
   // that the connection manager encodes.
-  repeated google.protobuf.StringValue response_headers_to_remove = 4;
+  repeated string response_headers_to_remove = 4;
 
   // Specifies a list of HTTP headers that should be added to each request
   // forwarded by the HTTP connection manager. In the presence of duplicate
