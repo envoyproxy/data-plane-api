@@ -4,6 +4,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -26,10 +27,6 @@ message Node {
   string id = 1;
   google.protobuf.Struct metadata = 2;
   Locality locality = 3;
-}
-
-message Duration {
-  google.protobuf.UInt32Value milliseconds = 1;
 }
 
 message Endpoint {

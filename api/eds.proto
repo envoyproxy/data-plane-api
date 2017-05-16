@@ -6,6 +6,7 @@ import "api/address.proto";
 import "api/base.proto";
 import "api/health_check.proto";
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 service EndpointDiscoveryService {
@@ -186,5 +187,5 @@ message ClusterLoadBalance {
 message LoadBalanceResponse {
   repeated ClusterLoadBalance clusters = 1;
   // The default is 10 seconds.
-  Duration load_reporting_interval = 2;
+  google.protobuf.Duration load_reporting_interval = 2;
 }
