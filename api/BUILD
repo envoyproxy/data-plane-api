@@ -31,6 +31,7 @@ api_proto_library(
         ":health_check",
         ":tls_context",
     ],
+    has_services = 1,
 )
 
 api_proto_library(
@@ -41,6 +42,7 @@ api_proto_library(
         ":base",
         ":health_check",
     ],
+    has_services = 1,
 )
 
 api_proto_library(
@@ -50,6 +52,7 @@ api_proto_library(
         ":base",
         ":health_check",
     ],
+    has_services = 1,
 )
 
 api_proto_library(
@@ -60,10 +63,12 @@ api_proto_library(
         ":base",
         ":tls_context",
     ],
+    has_services = 1,
 )
 
 api_proto_library(
     name = "rds",
     srcs = ["rds.proto"],
     deps = [":base"],
+    has_services = 1,
 )
