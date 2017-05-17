@@ -4,9 +4,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 
-import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
-import "google/protobuf/wrappers.proto";
 
 // Identifies location of where either Envoy runs or where upstream hosts run.
 message Locality {
