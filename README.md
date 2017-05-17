@@ -50,6 +50,11 @@ a tracking issue with the authors.
   used to generate xDS configuration are beyond the scope of the definitions in
   this repository.
 
+* Listeners will be immutable. Any updates to a listener via LDS will require
+  the draining of existing connections for the specific bound IP/port. As a
+  result, new requests will only be guaranteed to observe the new configuration
+  after existing connections have drained or the drain timeout.
+
 * Versioning will be expressed via [proto3 package
   namespaces](https://developers.google.com/protocol-buffers/docs/proto3#packages),
   i.e. `package envoy.api.v2;`.
