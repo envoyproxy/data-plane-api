@@ -4,6 +4,7 @@ api_proto_library(
     name = "http_connection_manager",
     srcs = ["http_connection_manager.proto"],
     deps = [
+        "//api:base",
         "//api:cds",
         "//api:rds",
     ],
