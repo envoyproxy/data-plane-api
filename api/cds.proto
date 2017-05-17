@@ -176,8 +176,8 @@ message Cluster {
     // for any host in the cluster. Defaults to 5.
     google.protobuf.UInt32Value success_rate_minimum_hosts = 7;
     // The minimum number of total requests that must be collected in one
-    // interval (as defined by interval_ms above) to include this host in
-    // success rate based outlier detection. If the volume is lower than this
+    // interval (as defined by the interval duration above) to include this host
+    // in success rate based outlier detection. If the volume is lower than this
     // setting, outlier detection via success rate statistics is not performed
     // for that host. Defaults to 100.
     google.protobuf.UInt32Value success_rate_request_volume = 8;

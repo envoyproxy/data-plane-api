@@ -9,6 +9,7 @@ package envoy.api.v2;
 import "api/base.proto";
 
 import "google/api/annotations.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -156,7 +157,7 @@ message ForwardAction {
   // Note that this timeout includes all retries. See also
   // x-envoy-upstream-rq-timeout-ms, x-envoy-upstream-rq-per-try-timeout-ms, and
   // the retry overview.
-  google.protobuf.UInt32Value timeout_ms = 7;
+  google.protobuf.Duration timeout = 7;
 
   message RetryPolicy {
     // Specifies the conditions under which retry takes place. These are the
@@ -169,7 +170,7 @@ message ForwardAction {
     // Specifies a non-zero timeout per retry attempt. This parameter is
     // optional. The same conditions documented for
     // x-envoy-upstream-rq-per-try-timeout-ms apply.
-    google.protobuf.UInt32Value per_try_timeout_ms = 3;
+    google.protobuf.Duration per_try_timeout = 3;
   }
   // Indicates that the route has a retry policy.
   RetryPolicy retry_policy = 8;
