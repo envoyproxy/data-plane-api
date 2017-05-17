@@ -14,8 +14,6 @@ message Rds {
   // cluster must run a service that implements the RDS API. NOTE: This is the
   // name of a cluster defined in the cluster manager configuration, not the
   // full definition of a cluster as in the case of SDS and CDS.
-  // TODO(htuch): Should this be simplified to an UnresolvedAddress or the like
-  // in v2 API?
   string cluster = 1;
 
   // The name of the route configuration. This name will be passed to the RDS
@@ -240,6 +238,8 @@ message HttpConnectionManager {
   // manager will use the x-forwarded-for HTTP header. See the documentation for
   // x-forwarded-for, x-envoy-internal, and x-envoy-external-address for more
   // information.
+  // TODO(mattklein123): Clean this up, see also discussion in
+  // https://github.com/lyft/envoy/issues/794.
   google.protobuf.BoolValue use_remote_address = 14;
 
   // Whether the connection manager will generate the x-request-id header if it
