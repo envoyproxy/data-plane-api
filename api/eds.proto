@@ -5,13 +5,22 @@ package envoy.api.v2;
 import "api/base.proto";
 import "api/health_check.proto";
 
+import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 service EndpointDiscoveryService {
   // Translation of REST API to gRPC
-  rpc Get(stream EndpointDiscoveryRequest)
+  rpc StreamEndpoints(stream EndpointDiscoveryRequest)
       returns (stream EndpointDiscoveryResponse) {
+  }
+
+  rpc FetchEndpoints(EndpointDiscoveryRequest)
+      returns (EndpointDiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:endpoints"
+      body: "*"
+    };
   }
 
   // Advanced API to allow for multi-dimensional load balancing by remote
@@ -40,8 +49,19 @@ service EndpointDiscoveryService {
   //    from around the world, computes global assignment and prepares traffic
   //    assignment destined for each zone Envoys are located in. Goto 3.
   // TODO(htuch): Add @amb67's diagram.
-  rpc BalanceLoad(stream LoadBalanceRequest)
+  rpc StreamLoadBalance(stream LoadBalanceRequest)
       returns (stream LoadBalanceResponse) {
+  }
+
+  // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
+  // request/response. Should we add an identifier to the LoadBalanceResponse
+  // to bind with the response?
+  rpc FetchLoadBalance(LoadBalanceRequest)
+      returns (LoadBalanceResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:load_balance"
+      body: "*"
+    };
   }
 }
 
