@@ -1,6 +1,6 @@
 listeners {
-  resolved_address {
-    socket_address {
+  address {
+    named_address {
       protocol: TCP
       port {
         value: 80
