@@ -30,3 +30,12 @@ message Node {
 message Endpoint {
   ResolvedAddress address = 1;
 }
+
+// Runtime derived uint32 with a default when not specified.
+message RuntimeUInt32 {
+  // Default value if runtime value is not available.
+  uint32 default_value = 2;
+
+  // Runtime key to get value for comparision. This value is used if defined.
+  string runtime_key = 3;
+}
