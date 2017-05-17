@@ -23,7 +23,7 @@ message UnresolvedAddress {
     // in FilterChainMatch after connection.
     // For clusters, an address may be either an IP or hostname to be resolved via
     // DNS.
-    string host_name = 2;
+    string address = 2;
     oneof port_specifier {
       google.protobuf.UInt32Value port = 3;
       string service_name = 4;
