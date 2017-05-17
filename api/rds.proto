@@ -94,23 +94,16 @@ message RouteMatch {
   // is true.
   google.protobuf.BoolValue case_sensitive = 3;
 
+  // Indicates that the route should additionally match on a runtime key. An
+  // integer between 0-100. Every time the route is considered for a match, a
+  // random number between 0-99 is selected. If the number is <= the value found
+  // in the key (checked first) or, if the key is not present, the default
+  // value, the route is a match (assuming everything also about the route
+  // matches).
   // A runtime route configuration can be used to roll out route changes in a
   // gradual manner without full code/config deploys. Refer to traffic shifting
   // docs for additional documentation.
-  message Runtime {
-    // Specifies the runtime key name that should be consulted to determine
-    // whether the route matches or not. See the runtime documentation for how
-    // key names map to the underlying implementation.
-    string key = 1;
-    // An integer between 0-100. Every time the route is considered for a match,
-    // a random number between 0-99 is selected. If the number is <= the value
-    // found in the key (checked first) or, if the key is not present, the
-    // default value, the route is a match (assuming everything also about the
-    // route matches).
-    google.protobuf.UInt32Value default_value = 2;
-  }
-  // Indicates that the route should additionally match on a runtime key.
-  Runtime runtime = 4;
+  RuntimeUInt32 runtime = 4;
 
   // Specifies a set of headers that the route should match on. The router will
   // check the request’s headers against all the specified headers in the route

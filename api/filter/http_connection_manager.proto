@@ -38,11 +38,8 @@ message StatusCodeFilter {
   }
   Op op = 1;
 
-  // Default value to compare against if runtime value is not available.
-  google.protobuf.UInt32Value value = 2;
-
-  // Runtime key to get value for comparision. This value is used if defined.
-  string runtime_key = 3;
+  // Value to compare against.
+  RuntimeUInt32 value = 2;
 }
 
 // Filters on total request duration.
@@ -54,11 +51,8 @@ message DurationFilter {
   }
   Op op = 1;
 
-  // Default value to compare against if runtime value is not available.
-  google.protobuf.Duration value = 2;
-
-  // Runtime key to get value for comparision. This value is used if defined.
-  string runtime_key = 3;
+  // Value to compare against.
+  RuntimeUInt32 value = 2;
 }
 
 // Filters for requests that are not health check requests. A health check
@@ -79,7 +73,7 @@ message TraceableFilter {
 message RuntimeFilter {
   // Runtime key to get the percentage of requests to be sampled. This runtime
   // control is specified in the range 0-100 and defaults to 0.
-  string key = 1;
+  string runtime_key = 1;
 }
 
 // Performs a logical “and” operation on the result of each filter in filters.
