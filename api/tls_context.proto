@@ -46,9 +46,10 @@ message CertificateValidationContext {
   // presented it will not be verified.
   DataSource ca_cert = 1;
 
-  // If specified, Envoy will verify (pin) the hash of the presented
-  // certificate.
-  repeated string verify_certificate_hash = 2;
+  // If specified, Envoy will verify (pin) base64-encoded SHA-256 hash of
+  // the Subject Public Key Information (SPKI) of the presented certificate.
+  // This is the same format as used in HTTP Public Key Pinning.
+  repeated string verify_spki_sha256 = 2;
 
   // An optional list of subject alt names. If specified, Envoy will verify that
   // the certificate’s subject alt name matches one of the specified values.
