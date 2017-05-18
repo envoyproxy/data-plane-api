@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+import "google/protobuf/duration.proto";
+
+// [V2-API-DIFF] The route match now takes place in the FilterChainMatch table.
+message TcpProxy {
+  // The human readable prefix to use when emitting statistics for the
+  // TCP proxy filter. See the statistics documentation for more information.
+  string stat_prefix = 1;
+
+  // The upstream cluster to connect to.
+  string cluster = 2;
+
+  // [V2-API-DIFF] The idle timeout for connections managed by the TCP proxy
+  // filter. The idle timeout is defined as the period in which there is no
+  // active traffic. If not set, there is no idle timeout. When the idle timeout
+  // is reached the connection will be closed.
+  google.protobuf.Duration idle_timeout = 11;
+}
