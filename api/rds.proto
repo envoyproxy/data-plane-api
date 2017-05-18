@@ -189,25 +189,21 @@ message ForwardAction {
   // route.
   repeated HeaderValue request_headers_to_add = 11;
 
-  // Specifies a set of optional route configuration values that can be accessed
-  // by filters.
-  google.protobuf.Struct opaque_config = 12;
-
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
-  repeated RateLimit rate_limits = 13;
+  repeated RateLimit rate_limits = 12;
 
   // Specifies if the rate limit filter should include the virtual host rate
   // limits. By default, if the route configured rate limits, the virtual host
   // rate_limits are not applied to the request.
-  google.protobuf.BoolValue include_vh_rate_limits = 14;
+  google.protobuf.BoolValue include_vh_rate_limits = 13;
 
   message HashPolicy {
     string header_name = 1;
     // Do we want to extend this for additional session affinity inputs?
     // [V2-API-DIFF]
   }
-  repeated HashPolicy hash_policy = 15;
+  repeated HashPolicy hash_policy = 14;
 }
 
 message RedirectAction {
@@ -223,12 +219,16 @@ message RedirectAction {
 // [V2-API-DIFF].
 message Route {
   RouteMatch match = 1;
+
   oneof action {
     // Forward to some upstream cluster.
     ForwardAction forward = 2;
     // Return a 302 redirect.
     RedirectAction redirect = 3;
   }
+
+  // See base.Metadata description.
+  Metadata metadata = 4;
 }
 
 // A virtual cluster is a way of specifying a regex matching rule against

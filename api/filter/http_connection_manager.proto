@@ -113,6 +113,8 @@ message AccessLog {
   // default format.
   // TODO(dpn): This needs to be given some proto structure to allow control
   // over what gets included
+  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+  // can be accessed in the format specifier.
   string format = 2;
 
   // Filter which is used to determine if the access log needs to be written.
