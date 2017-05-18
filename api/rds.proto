@@ -168,20 +168,20 @@ message ForwardAction {
   // Indicates that the route has a retry policy.
   RetryPolicy retry_policy = 8;
 
-  // Indicates that the route has a shadow policy.
-  message ShadowPolicy {
-    // Specifies the cluster that requests will be shadowed to. The cluster must
+  // Indicates that the route has a request mirroring policy.
+  message RequestMirrorPolicy {
+    // Specifies the cluster that requests will be mirrored to. The cluster must
     // exist in the cluster manager configuration.
     string cluster = 1;
-    // If not specified, all requests to the target cluster will be shadowed. If
+    // If not specified, all requests to the target cluster will be mirrored. If
     // specified, Envoy will lookup the runtime key to get the % of requests to
-    // shadow. Valid values are from 0 to 10000, allowing for increments of
-    // 0.01% of requests to be shadowed. If the runtime key is specified in the
+    // mirror. Valid values are from 0 to 10000, allowing for increments of
+    // 0.01% of requests to be mirrored. If the runtime key is specified in the
     // configuration but not present in runtime, 0 is the default and thus 0% of
-    // requests will be shadowed.
+    // requests will be mirrored.
     string runtime_key = 2;
   }
-  ShadowPolicy shadow_policy = 9;
+  RequestMirrorPolicy request_mirror_policy = 9;
 
   RoutingPriority priority = 10;
 
