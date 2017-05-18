@@ -203,9 +203,15 @@ message ForwardAction {
   google.protobuf.BoolValue include_vh_rate_limits = 14;
 
   message HashPolicy {
-    string header_name = 1;
-    // Do we want to extend this for additional session affinity inputs?
-    // [V2-API-DIFF]
+    // [V2-API-DIFF] We expect additional hash policies in the future, e.g.
+    // cookie based, originating IP, etc.
+    oneof {
+      // The name of the request header that will be used to obtain the hash
+      // key. If the request header is not present, the load balancer will use a
+      // random number as the hash, effectively making the load balancing policy
+      // random.
+      string header_name = 1;
+    }
   }
   repeated HashPolicy hash_policy = 15;
 }
