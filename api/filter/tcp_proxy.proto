@@ -11,11 +11,15 @@ message TcpProxy {
   string stat_prefix = 1;
 
   // The upstream cluster to connect to.
+  // TODO(htuch): look into shared WeightedCluster support with RDS.
   string cluster = 2;
 
   // [V2-API-DIFF] The idle timeout for connections managed by the TCP proxy
   // filter. The idle timeout is defined as the period in which there is no
   // active traffic. If not set, there is no idle timeout. When the idle timeout
-  // is reached the connection will be closed.
-  google.protobuf.Duration idle_timeout = 11;
+  // is reached the connection will be closed. The distinction between
+  // downstream_idle_timeout/upstream_idle_timeout provides a means to set
+  // timeout based on the last byte sent on the downstream/upstream connection.
+  google.protobuf.Duration downstream_idle_timeout = 3;
+  google.protobuf.Duration upstream_idle_timeout = 4;
 }
