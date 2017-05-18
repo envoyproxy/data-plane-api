@@ -66,13 +66,27 @@ message FilterChainMatch {
 
   // If non-empty, an IP address and prefix length to match addresses when the
   // listener is bound to 0.0.0.0/::.
-  string address_prefix = 2;
-  google.protobuf.UInt32Value prefix_len = 3;
+  message CidrRange {
+    string address_prefix = 1;
+    google.protobuf.UInt32Value prefix_len = 2;
+  }
+  repeated CidrRange prefix_ranges = 3;
 
   // If non-empty, an IP address and suffix length to match addresses when the
   // listener is bound to 0.0.0.0/::.
   string address_suffix = 4;
   google.protobuf.UInt32Value suffix_len = 5;
+
+  // The criteria is satisfied if the source IP address of the downstream
+  // connection is contained in at least one of the specified subnets. If the
+  // parameter is not specified or the list is empty, the source IP address is
+  // ignored.
+  repeated CidrRange source_prefix_ranges = 6;
+
+  // The criteria is satisfied if the source port of the downstream connection
+  // is contained in at least one of the specified ports. If the parameter is
+  // not specified, the source port is ignored.
+  repeated google.protobuf.UInt32Value source_ports = 7;
 }
 
 // Grouping of FilterChainMatch criteria, DownstreamTlsContext, the actual filter chain
