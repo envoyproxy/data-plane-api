@@ -113,6 +113,14 @@ message AccessLog {
   // default format.
   // TODO(dpn): This needs to be given some proto structure to allow control
   // over what gets included
+  // [V2-API-DIFF] In addition to the existing format specifiers, the following
+  // additional specifiers will be available:
+  // %TLS_SNI_HOSTNAME%: SNI from handshake.
+  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
+  //                “TLSv1.2”, “QUIC”, and, in the future, “TLSv1.3”.
+  // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS or QUIC
+  //     handshake. The value is four hex digits defined by the IANA TLS Cipher
+  //     Suite Registry, e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
   string format = 2;
 
   // Filter which is used to determine if the access log needs to be written.
