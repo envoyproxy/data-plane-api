@@ -205,7 +205,7 @@ message ForwardAction {
   message HashPolicy {
     // [V2-API-DIFF] We expect additional hash policies in the future, e.g.
     // cookie based, originating IP, etc.
-    oneof {
+    oneof policy_specifier {
       // The name of the request header that will be used to obtain the hash
       // key. If the request header is not present, the load balancer will use a
       // random number as the hash, effectively making the load balancing policy
