@@ -93,7 +93,7 @@ message LbEndpoint {
 }
 
 // All endpoints belonging to a Locality.
-message LocalityEndpoints {
+message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
@@ -187,11 +187,11 @@ message LoadBalanceRequest {
 // load_balancing_weight of its Locality.
 message ClusterLoadBalance {
   string cluster_name = 1;
-  repeated LocalityEndpoints endpoints = 2;
+  repeated LocalityLbEndpoints endpoints = 2;
   // In the case where all endpoints for a particular zone/subzone are
   // unavailable/unhealthy, additional endpoints are given out for use in case
   // of catastrophic failure. They also have weights.
-  repeated LocalityEndpoints failover_endpoints = 3;
+  repeated LocalityLbEndpoints failover_endpoints = 3;
   message Policy {
     // Percentage of traffic (0-100) that should be dropped. This
     // action allows protection of upstream hosts should they unable to
