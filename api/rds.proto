@@ -80,19 +80,23 @@ message WeightedCluster {
 }
 
 message RouteMatch {
+  // A path specifier must be present.
   oneof path_specifier {
     // If specified, the route is a prefix rule meaning that the prefix must
-    // match the beginning of the :path header. Either prefix or path must be
-    // specified.
+    // match the beginning of the :path header.
     string prefix = 1;
+
     // If specified, the route is an exact path rule meaning that the path must
-    // exactly match the :path header once the query string is removed. Either
-    // prefix or path must be specified.
+    // exactly match the :path header once the query string is removed.
     string path = 2;
+
+    // If specified, the route is a regular expression match on the :path header
+    // once the query string is removed.
+    string regex = 3;
   }
   // Indicates that prefix/path matching should be case insensitive. The default
   // is true.
-  google.protobuf.BoolValue case_sensitive = 3;
+  google.protobuf.BoolValue case_sensitive = 4;
 
   // Indicates that the route should additionally match on a runtime key. An
   // integer between 0-100. Every time the route is considered for a match, a
@@ -103,14 +107,14 @@ message RouteMatch {
   // A runtime route configuration can be used to roll out route changes in a
   // gradual manner without full code/config deploys. Refer to traffic shifting
   // docs for additional documentation.
-  RuntimeUInt32 runtime = 4;
+  RuntimeUInt32 runtime = 5;
 
   // Specifies a set of headers that the route should match on. The router will
   // check the request’s headers against all the specified headers in the route
   // config. A match will happen if all the headers in the route are present in
   // the request with the same values (or based on presence if the value field
   // is not in the config).
-  repeated HeaderMatcher headers = 5;
+  repeated HeaderMatcher headers = 6;
 }
 
 message ForwardAction {
@@ -260,14 +264,6 @@ message VirtualCluster {
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
   string method = 3;
-
-  // Optionally specifies the virtual cluster routing priority.
-  // [V2-API-DIFF] Virtual clusters are promoted mostly as a logical grouping
-  // for the purposes of stats. This is an exception, where the forwarding
-  // action is modified by the virtual cluster. It would be good to understand
-  // if we want to do more or less in the way of overriding route forwarding
-  // actions via virtual clusters in the v2 API.
-  RoutingPriority priority = 4;
 }
 
 // See
