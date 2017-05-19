@@ -336,8 +336,15 @@ message RateLimit {
 message HeaderValue {
   // Header name.
   string key = 1;
-  // Header value.
+
+  // Header value. The same format specifier as used for HTTP access logging
+  // applies here, however unknown header values are replaced with the empty
+  // string instead of -. [V2-API-DIFF].
   string value = 2;
+
+  // Should the value be appended? If false (default), the value overrides
+  // existing values [V2-API-DIFF].
+  google.protobuf.BoolValue append = 3;
 }
 
 message HeaderMatcher {
