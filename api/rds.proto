@@ -40,17 +40,6 @@ message RouteDiscoveryResponse {
   RouteConfiguration route_table = 1;
 }
 
-// Envoy supports priority routing both at the route and the virtual cluster
-// level. The current priority implementation uses different connection pool
-// and circuit breaking settings for each priority level. This means that even
-// for HTTP/2 requests, two physical connections will be used to an upstream
-// host. In the future Envoy will likely support true HTTP/2 priority over a
-// single connection.
-enum RoutingPriority {
-  DEFAULT = 0;
-  HIGH = 1;
-}
-
 // Compared to the cluster field that specifies a single upstream cluster as the
 // target of a request, the weighted_clusters option allows for specification of
 // multiple upstream clusters along with weights that indicate the percentage of
