@@ -90,7 +90,7 @@ message RouteMatch {
     // exactly match the :path header once the query string is removed.
     string path = 2;
 
-    // IF specified, the route is a regular expression match on the :path header
+    // If specified, the route is a regular expression match on the :path header
     // once the query string is removed.
     string regex = 3;
   }
