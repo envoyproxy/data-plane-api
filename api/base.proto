@@ -31,6 +31,20 @@ message Endpoint {
   ResolvedAddress address = 1;
 }
 
+// Metadata provides additional inputs to filters based on matched listeners,
+// filter chains and routes. It is structured as a map from filter name (in
+// reverse DNS format) to metadata specific to the filter. Metadata key-values
+// for a filter are merged as connection and request handling occurs, with later
+// values for the same key overriding earlier values.
+//
+// An example use of metadata is providing additional values to
+// http_connection_manager in the envoy.http_connection_manager.access_log
+// namespace.
+message Metadata {
+  // Key is the reverse DNS filter name.
+  map<string, google.protobuf.Struct> filter_metadata = 1;
+}
+
 // Runtime derived uint32 with a default when not specified.
 message RuntimeUInt32 {
   // Default value if runtime value is not available.

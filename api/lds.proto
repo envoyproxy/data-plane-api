@@ -107,6 +107,9 @@ message FilterChain {
   // absent or set to false, Envoy will use the physical peer address of the
   // connection as the remote address.
   google.protobuf.BoolValue use_proxy_proto = 4;
+
+  // See base.Metadata description.
+  Metadata metadata = 5;
 }
 
 message Listener {
@@ -146,4 +149,7 @@ message Listener {
   // Soft limit on size of the listener’s new connection read and write buffers.
   // If unspecified, an implementation defined default is applied (1MiB).
   google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
+
+  // See base.Metadata description.
+  Metadata metadata = 6;
 }

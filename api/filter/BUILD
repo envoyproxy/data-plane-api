@@ -9,3 +9,18 @@ api_proto_library(
         "//api:rds",
     ],
 )
+
+api_proto_library(
+    name = "mongo_proxy",
+    srcs = ["mongo_proxy.proto"],
+)
+
+api_proto_library(
+    name = "rate_limit",
+    srcs = ["rate_limit.proto"],
+)
+
+api_proto_library(
+    name = "tcp_proxy",
+    srcs = ["tcp_proxy.proto"],
+)
