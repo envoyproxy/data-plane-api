@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+message MongoProxy {
+  // The human readable prefix to use when emitting statistics for the
+  // MongoDB proxy filter. See the statistics documentation for more information.
+  string stat_prefix = 1;
+
+  // The optional path to use for writing Mongo access logs. If not access log
+  // path is specified no access logs will be written. Note that access log is
+  // also gated by runtime.
+  string access_log = 2;
+}
