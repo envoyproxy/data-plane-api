@@ -168,20 +168,20 @@ message ForwardAction {
   // Indicates that the route has a retry policy.
   RetryPolicy retry_policy = 8;
 
-  // Indicates that the route has a shadow policy.
-  message ShadowPolicy {
-    // Specifies the cluster that requests will be shadowed to. The cluster must
+  // Indicates that the route has a request mirroring policy.
+  message RequestMirrorPolicy {
+    // Specifies the cluster that requests will be mirrored to. The cluster must
     // exist in the cluster manager configuration.
     string cluster = 1;
-    // If not specified, all requests to the target cluster will be shadowed. If
+    // If not specified, all requests to the target cluster will be mirrored. If
     // specified, Envoy will lookup the runtime key to get the % of requests to
-    // shadow. Valid values are from 0 to 10000, allowing for increments of
-    // 0.01% of requests to be shadowed. If the runtime key is specified in the
+    // mirror. Valid values are from 0 to 10000, allowing for increments of
+    // 0.01% of requests to be mirrored. If the runtime key is specified in the
     // configuration but not present in runtime, 0 is the default and thus 0% of
-    // requests will be shadowed.
+    // requests will be mirrored.
     string runtime_key = 2;
   }
-  ShadowPolicy shadow_policy = 9;
+  RequestMirrorPolicy request_mirror_policy = 9;
 
   RoutingPriority priority = 10;
 
@@ -189,25 +189,30 @@ message ForwardAction {
   // route.
   repeated HeaderValue request_headers_to_add = 11;
 
-  // Specifies a set of optional route configuration values that can be accessed
-  // by filters.
-  google.protobuf.Struct opaque_config = 12;
-
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
-  repeated RateLimit rate_limits = 13;
+  repeated RateLimit rate_limits = 12;
 
   // Specifies if the rate limit filter should include the virtual host rate
   // limits. By default, if the route configured rate limits, the virtual host
   // rate_limits are not applied to the request.
-  google.protobuf.BoolValue include_vh_rate_limits = 14;
+  google.protobuf.BoolValue include_vh_rate_limits = 13;
 
   message HashPolicy {
-    string header_name = 1;
-    // Do we want to extend this for additional session affinity inputs?
-    // [V2-API-DIFF]
+    // [V2-API-DIFF] We expect additional hash policies in the future, e.g.
+    // cookie based, originating IP, etc.
+    message Header {
+      // The name of the request header that will be used to obtain the hash
+      // key. If the request header is not present, the load balancer will use a
+      // random number as the hash, effectively making the load balancing policy
+      // random.
+      string header_name = 1;
+    }
+    oneof policy_specifier {
+      Header header = 1;
+    }
   }
-  repeated HashPolicy hash_policy = 15;
+  repeated HashPolicy hash_policy = 14;
 }
 
 message RedirectAction {
@@ -223,12 +228,16 @@ message RedirectAction {
 // [V2-API-DIFF].
 message Route {
   RouteMatch match = 1;
+
   oneof action {
     // Forward to some upstream cluster.
     ForwardAction forward = 2;
     // Return a 302 redirect.
     RedirectAction redirect = 3;
   }
+
+  // See base.Metadata description.
+  Metadata metadata = 4;
 }
 
 // A virtual cluster is a way of specifying a regex matching rule against

@@ -70,11 +70,13 @@ message Http1ProtocolOptions {
 message Http2ProtocolOptions {
   // Default is false.
   bool disable_dynamic_table = 1;
-  uint32 per_stream_buffer_limit_bytes = 2;
+  google.protobuf.UInt32Value per_stream_buffer_limit_bytes = 2;
+  google.protobuf.UInt32Value max_concurrent_streams = 3;
+  google.protobuf.UInt32Value initial_window_size = 4;
 }
 
 message GrpcProtocolOptions {
-  uint32 per_stream_buffer_limit_bytes = 1;
+  Http2ProtocolOptions http2_protocol_options = 1;
 }
 
 message Cluster {

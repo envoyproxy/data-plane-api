@@ -121,6 +121,8 @@ message AccessLog {
   // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
   //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
   //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+  // can be accessed in the format specifier.
   string format = 2;
 
   // Filter which is used to determine if the access log needs to be written.
