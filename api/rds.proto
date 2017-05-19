@@ -338,7 +338,8 @@ message HeaderValue {
   string key = 1;
 
   // Header value. The same format specifier as used for HTTP access logging
-  // applies here [V2-API-DIFF].
+  // applies here, however unknown header values are replaced with the empty
+  // string instead of -. [V2-API-DIFF].
   string value = 2;
 
   // Should the value be appended? If false (default), the value overrides
