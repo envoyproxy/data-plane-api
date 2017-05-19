@@ -80,7 +80,7 @@ Unless otherwise stated, the APIs with the same names as v1 APIs have a similar 
   endpoints. The health check subset may not be a subset of the Envoy instance's
   EDS endpoints.
 * [Listener Discovery Service (LDS)](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
-* Rate Limit Discovery Service (RLDS). This is the same as RDS in v1.
+* Rate Limit Discovery Service (RLDS). This is the same as RLS in v1.
 * [Route Discovery Service (RDS)](api/rds.proto).
 
 ## Terminology
