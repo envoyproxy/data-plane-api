@@ -10,10 +10,21 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 message EnvoyAccessLog {
-  // The request method, ie, "GET", "HEAD", "POST"
-  string request_method = 1;
+  enum RequestMethod {
+    METHOD_UNSPECIFIED = 0;
+    GET = 1;
+    HEAD = 2;
+    POST = 3;
+    PUT = 4;
+    DELETE = 5;
+    CONNECT = 6;
+    OPTIONS = 7;
+    TRACE = 8;
+  }
+  // The HTTP request method (RFC 7231/2616)
+  RequestMethod request_method = 1;
 
-  // The time we started servicing this request
+  // The time that Envoy started servicing this request
   google.protobuf.Timestamp start_time = 2;
 
   // Incoming protocol variation spoken
@@ -56,8 +67,12 @@ message EnvoyAccessLog {
   // Status flags about the response.
   repeated ResponseFlag response_flags = 4;
 
-  // The remote (upstream) host, as an IPv4 or IPv6 string.
-  // IPv6 addresses should be stored in canonical (compressed) format.
+  // The upstream host URL (Envoy connects to).
+  //
+  // For example, tcp://ip:port for TCP connections.
+  //
+  // IPv6 addresses should be stored in canonical (compressed) format using
+  // [address]:port notation.
   string upstream_host = 5;
 
   // The Upstream Cluster that the upstream host belongs to.
@@ -68,16 +83,16 @@ message EnvoyAccessLog {
   string destination_host = 7;
 
   // Size of the HTTP request body in bytes
-  google.protobuf.UInt64Value request_body_size = 8;
+  google.protobuf.UInt64Value request_body_bytes = 8;
 
   // Size of the HTTP response body in bytes
-  google.protobuf.UInt64Value response_body_size = 9;
+  google.protobuf.UInt64Value response_body_bytes = 9;
 
   // Size of the HTTP request headers in bytes
-  google.protobuf.UInt64Value request_hdrs_size = 10;
+  google.protobuf.UInt64Value request_headers_bytes = 10;
 
   // Size of the HTTP response headers in bytes
-  google.protobuf.UInt64Value response_hdrs_size = 11;
+  google.protobuf.UInt64Value response_headers_bytes = 11;
 
   // Whether the request arrived via a secure (TLS) protocol
   google.protobuf.BoolValue secure = 12;
@@ -92,9 +107,11 @@ message EnvoyAccessLog {
   string user_agent = 15;
 
   // Path
+  //
+  // This is the Path portion from the incoming request URI
   string path = 17;
 
-  // Referer field as sent by client HTTP
+  // Referer header as sent by client HTTP
   // (Referer is spelled to match the HTTP spec, not English).
   string referer = 18;
 
@@ -102,6 +119,11 @@ message EnvoyAccessLog {
   string forwarded_for = 19;
 
   // X-Request-Id request header
+  //
+  // This header is used by Envoy to uniquely identify a request.
+  // It will be generated for all external requests and internal requests that
+  // do not already have a request ID.  So this field can be guaranteed to exist
+  // and be unique for request tracing purposes.
   string request_id = 20;
 
   // HTTP2 :authority header value or HTTP1.1 Host header value
@@ -111,16 +133,16 @@ message EnvoyAccessLog {
   //
   // The total duration it took to service this request from the StartTime until
   // the response was written to the user.
-  google.protobuf.Duration duration = 22;
+  google.protobuf.Duration response_duration = 22;
 
-  // Upstream Service Time
+  // Upstream Service Time Duration
   //
-  // From the X-Envoy-Upstream-Service-Time response header, this is the amount it took
+  // From the X-Envoy-Upstream-Service-Time response header. This is the amount it took
   // the upstream server to service the request.
-  google.protobuf.Duration upstream_service_time = 23;
+  google.protobuf.Duration upstream_service_duration = 23;
 
 
-  // Original Path (X-Envoy-Original-Path)
+  // Original Path from the X-Envoy-Original-Path header.
   string original_path = 24;
 
   // Metadata in the envoy.http_connection_manager.access_log namespace
@@ -131,7 +153,7 @@ message EnvoyAccessLog {
   // that ID in this field and cross reference later.
   google.protobuf.Struct metadata = 25;
 
-  // Headers requested for logging but not covered by the specific fields above.
+  // Headers configured for logging but not covered by the specific fields above.
   repeated HeaderValue request_headers = 26;
   repeated HeaderValue response_headers = 27;
 }

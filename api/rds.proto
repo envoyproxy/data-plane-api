@@ -180,7 +180,7 @@ message ForwardAction {
 
   // Specifies a set of headers that will be added to requests matching this
   // route.
-  repeated HeaderValue request_headers_to_add = 11;
+  repeated HeaderValueOption request_headers_to_add = 11;
 
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
@@ -371,7 +371,7 @@ message VirtualHost {
   // Specifies a list of HTTP headers that should be added to each request
   // handled by this virtual host. In the presence of duplicate header keys,
   // precedence rules apply.
-  repeated HeaderValue request_headers_to_add = 7;
+  repeated HeaderValueOption request_headers_to_add = 7;
 }
 
 message RouteConfiguration {
@@ -386,7 +386,7 @@ message RouteConfiguration {
 
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes.
-  repeated HeaderValue response_headers_to_add = 3;
+  repeated HeaderValueOption response_headers_to_add = 3;
 
   // Specifies a list of HTTP headers that should be removed from each response
   // that the connection manager encodes.
@@ -395,5 +395,5 @@ message RouteConfiguration {
   // Specifies a list of HTTP headers that should be added to each request
   // forwarded by the HTTP connection manager. In the presence of duplicate
   // header keys, precendence rules apply.
-  repeated HeaderValue request_headers_to_add = 5;
+  repeated HeaderValueOption request_headers_to_add = 5;
 }
