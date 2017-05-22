@@ -10,7 +10,6 @@ import "api/base.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
-import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 service RouteDiscoveryService {
