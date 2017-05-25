@@ -20,10 +20,10 @@ import "google/protobuf/wrappers.proto";
 // allowed to drain from listeners that are no longer present.
 service ListenerDiscoveryService {
   rpc StreamListeners(ListenerDiscoveryRequest) returns
-      (stream ListenerDiscoverResponse) {}
+      (stream ListenerDiscoveryResponse) {}
 
   rpc FetchListeners(ListenerDiscoveryRequest)
-      returns (ListenerDiscoverResponse) {
+      returns (ListenerDiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:listeners"
       body: "*"
@@ -35,7 +35,7 @@ message ListenerDiscoveryRequest {
   Node node = 1;
 }
 
-message ListenerDiscoverResponse {
+message ListenerDiscoveryResponse {
   repeated Listener listeners = 1;
 }
 

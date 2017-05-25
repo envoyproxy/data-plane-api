@@ -53,7 +53,7 @@ if __name__ == '__main__':
   output_json_path = sys.argv[3]
   fragments = iter(sys.argv[4:])
 
-  listener_discover_response = lds_pb2.ListenerDiscoverResponse()
+  listener_discover_response = lds_pb2.ListenerDiscoveryResponse()
   with open(listeners_path, 'r') as f:
     text_format.Merge(f.read(), listener_discover_response)
 
