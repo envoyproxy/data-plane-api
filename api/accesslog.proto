@@ -153,8 +153,28 @@ message EnvoyAccessLog {
   // that ID in this field and cross reference later.
   google.protobuf.Struct metadata = 25;
 
-  // Headers configured for logging but not covered by the specific fields above.
+  // Headers configured for logging but not covered by a specific field.
   repeated HeaderValue request_headers = 26;
   repeated HeaderValue response_headers = 27;
+
+  // SNI hostname from handshake.
+  string tls_sni_hostname = 28;
+
+  // TLS Version or VERSION_UNSPECIFIED if TLS was not used
+  enum TLSVersion {
+    VERSION_UNSPECIFIED = 0;
+    TLSv1 = 1;
+    TLSv1_1 = 2;
+    TLSv1_2 = 3;
+    TLSv1_3 = 4;
+  }
+  TLSVersion tls_version = 29;
+
+  // TLS Cipher suite negotiated during TLS handshake.
+  // The value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  // eg, "009C" for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  //
+  // Here is is expressed as an integer.
+  google.protobuf.UInt32Value tls_cipher_suite = 30;
 }
 
