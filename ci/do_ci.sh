@@ -13,6 +13,6 @@ if [[ "$1" == "bazel.build" ]]; then
   bazel --batch build ${BAZEL_BUILD_OPTIONS} //...
   exit 0
 else
-  echo "Invalid do_ci.sh target, see ci/README.md for valid targets."
+  echo "Invalid do_ci.sh target. The only valid target is bazel.build."
   exit 1
 fi
