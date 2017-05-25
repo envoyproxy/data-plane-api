@@ -5,6 +5,7 @@ package envoy.api.v2;
 import "api/address.proto";
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
 
 // Identifies location of where either Envoy runs or where upstream hosts run.
 message Locality {
@@ -63,4 +64,27 @@ message RuntimeUInt32 {
 enum RoutingPriority {
   DEFAULT = 0;
   HIGH = 1;
+}
+
+// Header name/value pair.
+message HeaderValue {
+  // Header name.
+  string key = 1;
+
+  // Header value.
+  string value = 2;
+}
+
+// Header name/value pair plus option to control append behavior.
+message HeaderValueOption {
+  // Header Name/Value pair that this option applies to.
+  //
+  // The same format specifier as used for HTTP access logging applies here,
+  // however unknown header values are replaced with the empty string instead
+  // of -. [V2-API-DIFF].
+  HeaderValue header = 1;
+
+  // Should the value be appended? If false (default), the value overrides
+  // existing values [V2-API-DIFF].
+  google.protobuf.BoolValue append = 2;
 }
