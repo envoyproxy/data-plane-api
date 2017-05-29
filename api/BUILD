@@ -73,6 +73,12 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "rlds",
+    srcs = ["rlds.proto"],
+    has_services = 1,
+)
+
+api_proto_library(
     name = "rds",
     srcs = ["rds.proto"],
     has_services = 1,
