@@ -31,7 +31,7 @@ message ClusterDiscoveryRequest {
 }
 
 message ClusterDiscoveryResponse {
-  repeated Cluster cluster = 1;
+  repeated Cluster clusters = 1;
 }
 
 // Circuit breaking settings can be specified individually for each defined
