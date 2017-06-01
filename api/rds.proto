@@ -80,7 +80,7 @@ message RouteMatch {
     string path = 2;
 
     // If specified, the route is a regular expression match on the :path header
-    // once the query string is removed.
+    // once the query string is removed [V2-API-DIFF].
     string regex = 3;
   }
   // Indicates that prefix/path matching should be case insensitive. The default
