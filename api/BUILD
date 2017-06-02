@@ -1,17 +1,5 @@
 load("//bazel:api_build_system.bzl", "api_proto_library")
 
-cc_library(
-    name = "api_cc",
-    deps = [
-        ":cds",
-        ":eds",
-        ":hds",
-        ":rds",
-        ":rlds",
-    ],
-    visibility = ["//visibility:public"],
-)
-
 api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
