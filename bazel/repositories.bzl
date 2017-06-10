@@ -7,11 +7,19 @@ def api_dependencies():
         build_file_content = """
 load("@protobuf_bzl//:protobuf.bzl", "cc_proto_library", "py_proto_library")
 
-cc_proto_library(
-    name = "http_api_protos",
+filegroup(
+    name = "http_api_protos_src",
     srcs = [
         "google/api/annotations.proto",
         "google/api/http.proto",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "http_api_protos",
+    srcs = [
+        ":http_apis_protos_src",
     ],
     default_runtime = "//external:protobuf",
     protoc = "//external:protoc",
@@ -22,8 +30,7 @@ cc_proto_library(
 py_proto_library(
     name = "http_api_protos_py",
     srcs = [
-        "google/api/annotations.proto",
-        "google/api/http.proto",
+        ":http_apis_protos_src",
     ],
     include = ".",
     default_runtime = "//external:protobuf_python",
