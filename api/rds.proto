@@ -10,7 +10,6 @@ import "api/base.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
-import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 service RouteDiscoveryService {
@@ -80,7 +79,7 @@ message RouteMatch {
     string path = 2;
 
     // If specified, the route is a regular expression match on the :path header
-    // once the query string is removed.
+    // once the query string is removed [V2-API-DIFF].
     string regex = 3;
   }
   // Indicates that prefix/path matching should be case insensitive. The default
@@ -180,7 +179,7 @@ message ForwardAction {
 
   // Specifies a set of headers that will be added to requests matching this
   // route.
-  repeated HeaderValue request_headers_to_add = 11;
+  repeated HeaderValueOption request_headers_to_add = 11;
 
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
@@ -317,21 +316,6 @@ message RateLimit {
   repeated RateLimitAction actions = 3;
 }
 
-// Header name/value pair.
-message HeaderValue {
-  // Header name.
-  string key = 1;
-
-  // Header value. The same format specifier as used for HTTP access logging
-  // applies here, however unknown header values are replaced with the empty
-  // string instead of -. [V2-API-DIFF].
-  string value = 2;
-
-  // Should the value be appended? If false (default), the value overrides
-  // existing values [V2-API-DIFF].
-  google.protobuf.BoolValue append = 3;
-}
-
 message HeaderMatcher {
   // Specifies the name of the header in the request.
   string name = 1;
@@ -386,7 +370,7 @@ message VirtualHost {
   // Specifies a list of HTTP headers that should be added to each request
   // handled by this virtual host. In the presence of duplicate header keys,
   // precedence rules apply.
-  repeated HeaderValue request_headers_to_add = 7;
+  repeated HeaderValueOption request_headers_to_add = 7;
 }
 
 message RouteConfiguration {
@@ -401,7 +385,7 @@ message RouteConfiguration {
 
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes.
-  repeated HeaderValue response_headers_to_add = 3;
+  repeated HeaderValueOption response_headers_to_add = 3;
 
   // Specifies a list of HTTP headers that should be removed from each response
   // that the connection manager encodes.
@@ -410,5 +394,5 @@ message RouteConfiguration {
   // Specifies a list of HTTP headers that should be added to each request
   // forwarded by the HTTP connection manager. In the presence of duplicate
   // header keys, precendence rules apply.
-  repeated HeaderValue request_headers_to_add = 5;
+  repeated HeaderValueOption request_headers_to_add = 5;
 }

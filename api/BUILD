@@ -1,6 +1,12 @@
 load("//bazel:api_build_system.bzl", "api_proto_library")
 
 api_proto_library(
+    name = "accesslog",
+    srcs = ["accesslog.proto"],
+    deps = [":base"],
+)
+
+api_proto_library(
     name = "address",
     srcs = ["address.proto"],
 )
@@ -25,50 +31,56 @@ api_proto_library(
 api_proto_library(
     name = "cds",
     srcs = ["cds.proto"],
+    has_services = 1,
     deps = [
         ":address",
         ":base",
         ":health_check",
         ":tls_context",
     ],
-    has_services = 1,
 )
 
 api_proto_library(
     name = "eds",
     srcs = ["eds.proto"],
+    has_services = 1,
     deps = [
         ":address",
         ":base",
         ":health_check",
     ],
-    has_services = 1,
 )
 
 api_proto_library(
     name = "hds",
     srcs = ["hds.proto"],
+    has_services = 1,
     deps = [
         ":base",
         ":health_check",
     ],
-    has_services = 1,
 )
 
 api_proto_library(
     name = "lds",
     srcs = ["lds.proto"],
+    has_services = 1,
     deps = [
         ":address",
         ":base",
         ":tls_context",
     ],
+)
+
+api_proto_library(
+    name = "rlds",
+    srcs = ["rlds.proto"],
     has_services = 1,
 )
 
 api_proto_library(
     name = "rds",
     srcs = ["rds.proto"],
-    deps = [":base"],
     has_services = 1,
+    deps = [":base"],
 )
