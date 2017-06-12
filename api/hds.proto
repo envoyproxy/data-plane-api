@@ -52,6 +52,15 @@ service HealthDiscoveryService {
       returns (stream HealthCheckSpecifier) {
   }
 
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream control server.  Otherwise the request will
+  // be reissued with the current Node.
+  rpc BidiStreamHealthCheck(stream HealthCheckRequest)
+      returns (stream HealthCheckResponse) {
+  }
+
   // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
   // request/response. Should we add an identifier to the HealthCheckSpecifier
   // to bind with the response?
@@ -88,7 +97,8 @@ message EndpointHealth {
 }
 
 message EndpointHealthResponse {
-  repeated EndpointHealth endpoints_health = 1;
+  Node node = 1;
+  repeated EndpointHealth endpoints_health = 2;
 }
 
 message HealthCheckRequestOrEndpointHealthResponse {

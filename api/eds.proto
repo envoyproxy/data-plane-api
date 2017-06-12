@@ -15,6 +15,15 @@ service EndpointDiscoveryService {
       returns (stream EndpointDiscoveryResponse) {
   }
 
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream control server.  Otherwise the request will
+  // be reissued with the current Node.
+  rpc BidiStreamEndpoints(stream EndpointsDiscoveryRequest)
+      returns (stream EndpointsDiscoveryResponse) {
+  }
+
   rpc FetchEndpoints(EndpointDiscoveryRequest)
       returns (EndpointDiscoveryResponse) {
     option (google.api.http) = {
@@ -50,6 +59,15 @@ service EndpointDiscoveryService {
   //    assignment destined for each zone Envoys are located in. Goto 3.
   // TODO(htuch): Add @amb67's diagram.
   rpc StreamLoadAssignment(stream LoadAssignmentRequest)
+      returns (stream LoadAssignmentResponse) {
+  }
+
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream control server.  Otherwise the request will
+  // be reissued with the current Node.
+  rpc BidiStreamLoadAssignment(stream LoadAssignmentRequest)
       returns (stream LoadAssignmentResponse) {
   }
 
@@ -107,7 +125,8 @@ message LocalityLbEndpoints {
 }
 
 message EndpointDiscoveryResponse {
-  repeated ClusterLoadAssignment cluster_endpoints = 1;
+  Node node = 1;
+  repeated ClusterLoadAssignment cluster_endpoints = 2;
 }
 
 // Example load report from a single request:
@@ -204,7 +223,8 @@ message ClusterLoadAssignment {
 }
 
 message LoadAssignmentResponse {
-  repeated ClusterLoadAssignment clusters = 1;
+  Node node = 1;
+  repeated ClusterLoadAssignment clusters = 2;
   // The default is 10 seconds.
-  google.protobuf.Duration load_reporting_interval = 2;
+  google.protobuf.Duration load_reporting_interval = 3;
 }
