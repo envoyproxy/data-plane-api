@@ -17,6 +17,15 @@ service RouteDiscoveryService {
       returns (stream RouteDiscoveryResponse) {
   }
 
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream control server.  Otherwise the request will
+  // be reissued with the current Node.
+  rpc BidiStreamRoutes(stream RouteDiscoveryRequest)
+      returns (stream RouteDiscoveryResponse) {
+  }
+
   rpc FetchRoutes(RouteDiscoveryRequest)
       returns (RouteDiscoveryResponse) {
     option (google.api.http) = {
@@ -36,7 +45,8 @@ message RouteDiscoveryRequest {
 }
 
 message RouteDiscoveryResponse {
-  RouteConfiguration route_table = 1;
+  Node node = 1;
+  RouteConfiguration route_table = 2;
 }
 
 // Compared to the cluster field that specifies a single upstream cluster as the

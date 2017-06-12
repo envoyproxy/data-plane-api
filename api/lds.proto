@@ -22,6 +22,15 @@ service ListenerDiscoveryService {
   rpc StreamListeners(ListenerDiscoveryRequest) returns
       (stream ListenerDiscoveryResponse) {}
 
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream control server.  Otherwise the request will
+  // be reissued with the current Node.
+  rpc BidiStreamListeners(stream ListenerDiscoveryRequest)
+      returns (stream ListenerDiscoveryResponse) {
+  }
+
   rpc FetchListeners(ListenerDiscoveryRequest)
       returns (ListenerDiscoveryResponse) {
     option (google.api.http) = {
@@ -36,7 +45,8 @@ message ListenerDiscoveryRequest {
 }
 
 message ListenerDiscoveryResponse {
-  repeated Listener listeners = 1;
+  Node node = 1;
+  repeated Listener listeners = 2;
 }
 
 message Filter {

@@ -17,6 +17,15 @@ service ClusterDiscoveryService {
       returns (stream ClusterDiscoveryResponse) {
   }
 
+  // Similar to the above with the addition that after each published update
+  // Envoy will respond with a new discovery request.  In the event that the new
+  // update was accepted by Envoy, the new discovery request will contain the
+  // Node provided by the upstream management server.  Otherwise the request
+  // will be reissued with the current Node.
+  rpc BidiStreamClusters(stream ClusterDiscoveryRequest)
+      returns (stream ClusterDiscoveryResponse) {
+  }
+
   rpc FetchClusters(ClusterDiscoveryRequest)
       returns (ClusterDiscoveryResponse) {
     option (google.api.http) = {
@@ -31,7 +40,8 @@ message ClusterDiscoveryRequest {
 }
 
 message ClusterDiscoveryResponse {
-  repeated Cluster clusters = 1;
+  repeated Node node = 1;
+  repeated Cluster clusters = 2;
 }
 
 // Circuit breaking settings can be specified individually for each defined
