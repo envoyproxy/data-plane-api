@@ -96,7 +96,8 @@ message EndpointHealth {
 }
 
 message EndpointHealthResponse {
-  repeated EndpointHealth endpoints_health = 1;
+  Node node = 1;
+  repeated EndpointHealth endpoints_health = 2;
 }
 
 message HealthCheckRequestOrEndpointHealthResponse {
