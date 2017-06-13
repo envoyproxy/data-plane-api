@@ -13,11 +13,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 service RouteDiscoveryService {
-  rpc StreamRoutes(RouteDiscoveryRequest)
-      returns (stream RouteDiscoveryResponse) {
-  }
-
-  rpc BidiStreamRoutes(stream RouteDiscoveryRequest)
+  rpc StreamRoutes(stream RouteDiscoveryRequest)
       returns (stream RouteDiscoveryResponse) {
   }
 

@@ -19,10 +19,7 @@ import "google/protobuf/wrappers.proto";
 // consist of a complete update of all listeners. Existing connections will be
 // allowed to drain from listeners that are no longer present.
 service ListenerDiscoveryService {
-  rpc StreamListeners(ListenerDiscoveryRequest) returns
-      (stream ListenerDiscoveryResponse) {}
-
-  rpc BidiStreamListeners(stream ListenerDiscoveryRequest)
+  rpc StreamListeners(stream ListenerDiscoveryRequest)
       returns (stream ListenerDiscoveryResponse) {
   }
 

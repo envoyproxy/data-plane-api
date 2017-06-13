@@ -13,11 +13,7 @@ import "google/protobuf/wrappers.proto";
 
 service ClusterDiscoveryService {
   // Return list of all clusters, this proxy will load balance to.
-  rpc StreamClusters(ClusterDiscoveryRequest)
-      returns (stream ClusterDiscoveryResponse) {
-  }
-
-  rpc BidiStreamClusters(stream ClusterDiscoveryRequest)
+  rpc StreamClusters(stream ClusterDiscoveryRequest)
       returns (stream ClusterDiscoveryResponse) {
   }
 

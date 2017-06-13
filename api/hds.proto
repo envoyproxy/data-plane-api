@@ -52,10 +52,6 @@ service HealthDiscoveryService {
       returns (stream HealthCheckSpecifier) {
   }
 
-  rpc BidiStreamHealthCheck(stream HealthCheckRequest)
-      returns (stream HealthCheckSpecifier) {
-  }
-
   // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
   // request/response. Should we add an identifier to the HealthCheckSpecifier
   // to bind with the response?
@@ -82,12 +78,8 @@ message Capability {
 }
 
 message HealthCheckRequest {
-  // The version_info provided in the request messages will be the version_info
-  // received with the most recent successfully processed response or empty on
-  // the first request.
-  bytes version_info = 1;
-  Node node = 2;
-  Capability capability = 3;
+  Node node = 1;
+  Capability capability = 2;
 }
 
 message EndpointHealth {
@@ -122,8 +114,7 @@ message ClusterHealthCheck {
 }
 
 message HealthCheckSpecifier {
-  bytes version_info = 1;
-  repeated ClusterHealthCheck health_check = 2;
+  repeated ClusterHealthCheck health_check = 1;
   // The default is 1 second.
-  google.protobuf.Duration interval = 3;
+  google.protobuf.Duration interval = 2;
 }

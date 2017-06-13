@@ -15,10 +15,6 @@ service EndpointDiscoveryService {
       returns (stream EndpointDiscoveryResponse) {
   }
 
-  rpc BidiStreamEndpoints(stream EndpointDiscoveryRequest)
-      returns (stream EndpointDiscoveryResponse) {
-  }
-
   rpc FetchEndpoints(EndpointDiscoveryRequest)
       returns (EndpointDiscoveryResponse) {
     option (google.api.http) = {
@@ -54,10 +50,6 @@ service EndpointDiscoveryService {
   //    assignment destined for each zone Envoys are located in. Goto 3.
   // TODO(htuch): Add @amb67's diagram.
   rpc StreamLoadAssignment(stream LoadAssignmentRequest)
-      returns (stream LoadAssignmentResponse) {
-  }
-
-  rpc BidiStreamLoadAssignment(stream LoadAssignmentRequest)
       returns (stream LoadAssignmentResponse) {
   }
 
