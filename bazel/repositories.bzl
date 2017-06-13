@@ -19,7 +19,8 @@ filegroup(
 cc_proto_library(
     name = "http_api_protos",
     srcs = [
-        ":http_apis_protos_src",
+        "google/api/annotations.proto",
+        "google/api/http.proto",
     ],
     default_runtime = "//external:protobuf",
     protoc = "//external:protoc",
@@ -30,7 +31,8 @@ cc_proto_library(
 py_proto_library(
     name = "http_api_protos_py",
     srcs = [
-        ":http_apis_protos_src",
+        "google/api/annotations.proto",
+        "google/api/http.proto",
     ],
     include = ".",
     default_runtime = "//external:protobuf_python",
