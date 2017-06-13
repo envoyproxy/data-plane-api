@@ -7,6 +7,15 @@ def api_dependencies():
         build_file_content = """
 load("@protobuf_bzl//:protobuf.bzl", "cc_proto_library", "py_proto_library")
 
+filegroup(
+    name = "http_api_protos_src",
+    srcs = [
+        "google/api/annotations.proto",
+        "google/api/http.proto",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_proto_library(
     name = "http_api_protos",
     srcs = [
