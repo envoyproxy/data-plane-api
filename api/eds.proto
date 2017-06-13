@@ -66,8 +66,12 @@ service EndpointDiscoveryService {
 }
 
 message EndpointDiscoveryRequest {
-  repeated string cluster_name = 1;
-  Node node = 2;
+  // The version_info provided in the request messages will be the version_info
+  // received with the most recent successfully processed response or empty on
+  // the first request.
+  bytes version_info = 1;
+  repeated string cluster_name = 2;
+  Node node = 3;
 }
 
 message LbEndpoint {
@@ -107,7 +111,8 @@ message LocalityLbEndpoints {
 }
 
 message EndpointDiscoveryResponse {
-  repeated ClusterLoadAssignment cluster_endpoints = 1;
+  bytes version_info = 1;
+  repeated ClusterLoadAssignment cluster_endpoints = 2;
 }
 
 // Example load report from a single request:
@@ -173,7 +178,11 @@ message ClusterStats {
 }
 
 message LoadAssignmentRequest {
-  Node node = 1;  // zone/region where this Envoy runs
+  // The version_info provided in the request messages will be the version_info
+  // received with the most recent successfully processed response or empty on
+  // the first request.
+  bytes version_info = 1;
+  Node node = 2;  // zone/region where this Envoy runs
   repeated ClusterStats cluster_stats = 3;
 }
 
@@ -204,7 +213,8 @@ message ClusterLoadAssignment {
 }
 
 message LoadAssignmentResponse {
-  repeated ClusterLoadAssignment clusters = 1;
+  bytes version_info = 1;
+  repeated ClusterLoadAssignment clusters = 2;
   // The default is 10 seconds.
-  google.protobuf.Duration load_reporting_interval = 2;
+  google.protobuf.Duration load_reporting_interval = 3;
 }
