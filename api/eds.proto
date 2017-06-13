@@ -15,13 +15,8 @@ service EndpointDiscoveryService {
       returns (stream EndpointDiscoveryResponse) {
   }
 
-  // Similar to the above with the addition that after each published update
-  // Envoy will respond with a new discovery request.  In the event that the new
-  // update was accepted by Envoy, the new discovery request will contain the
-  // Node provided by the upstream control server.  Otherwise the request will
-  // be reissued with the current Node.
-  rpc BidiStreamEndpoints(stream EndpointsDiscoveryRequest)
-      returns (stream EndpointsDiscoveryResponse) {
+  rpc BidiStreamEndpoints(stream EndpointDiscoveryRequest)
+      returns (stream EndpointDiscoveryResponse) {
   }
 
   rpc FetchEndpoints(EndpointDiscoveryRequest)
@@ -62,11 +57,6 @@ service EndpointDiscoveryService {
       returns (stream LoadAssignmentResponse) {
   }
 
-  // Similar to the above with the addition that after each published update
-  // Envoy will respond with a new discovery request.  In the event that the new
-  // update was accepted by Envoy, the new discovery request will contain the
-  // Node provided by the upstream control server.  Otherwise the request will
-  // be reissued with the current Node.
   rpc BidiStreamLoadAssignment(stream LoadAssignmentRequest)
       returns (stream LoadAssignmentResponse) {
   }
@@ -84,8 +74,12 @@ service EndpointDiscoveryService {
 }
 
 message EndpointDiscoveryRequest {
-  repeated string cluster_name = 1;
-  Node node = 2;
+  // The version_info provided in the request messages will be the version_info
+  // received with the most recent successfully processed response or empty on
+  // the first request.
+  bytes version_info = 1;
+  repeated string cluster_name = 2;
+  Node node = 3;
 }
 
 message LbEndpoint {
@@ -125,7 +119,7 @@ message LocalityLbEndpoints {
 }
 
 message EndpointDiscoveryResponse {
-  Node node = 1;
+  bytes version_info = 1;
   repeated ClusterLoadAssignment cluster_endpoints = 2;
 }
 
@@ -192,7 +186,11 @@ message ClusterStats {
 }
 
 message LoadAssignmentRequest {
-  Node node = 1;  // zone/region where this Envoy runs
+  // The version_info provided in the request messages will be the version_info
+  // received with the most recent successfully processed response or empty on
+  // the first request.
+  bytes version_info = 1;
+  Node node = 2;  // zone/region where this Envoy runs
   repeated ClusterStats cluster_stats = 3;
 }
 
@@ -223,7 +221,7 @@ message ClusterLoadAssignment {
 }
 
 message LoadAssignmentResponse {
-  Node node = 1;
+  bytes version_info = 1;
   repeated ClusterLoadAssignment clusters = 2;
   // The default is 10 seconds.
   google.protobuf.Duration load_reporting_interval = 3;
