@@ -12,12 +12,17 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
+// The resource_names field in DiscoveryRequest specifies a route configuration.
+// This allows an Envoy configuration with multiple HTTP listeners (and
+// associated HTTP connection manager filters) to use different route
+// configurations. Each listener will bind its HTTP connection manager filter to
+// a route table via this identifier.
 service RouteDiscoveryService {
-  rpc StreamRoutes(stream RouteDiscoveryRequest)
+  rpc StreamRoutes(stream DiscoveryRequest)
       returns (stream RouteDiscoveryResponse) {
   }
 
-  rpc FetchRoutes(RouteDiscoveryRequest)
+  rpc FetchRoutes(DiscoveryRequest)
       returns (RouteDiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:routes"
@@ -26,22 +31,9 @@ service RouteDiscoveryService {
   }
 }
 
-message RouteDiscoveryRequest {
-  // The version_info provided in the request messages will be the version_info
-  // received with the most recent successfully processed response or empty on
-  // the first request.
-  bytes version_info = 1;
-  Node node = 2;
-  // The name of the route configuration. This allows an Envoy configuration
-  // with multiple HTTP listeners (and associated HTTP connection manager
-  // filters) to use different route configurations. Each listener will bind its
-  // HTTP connection manager filter to a route table via this identifier.
-  string route_config_name = 3;
-}
-
 message RouteDiscoveryResponse {
   bytes version_info = 1;
-  RouteConfiguration route_table = 2;
+  repeated RouteConfiguration resources = 2;
 }
 
 // Compared to the cluster field that specifies a single upstream cluster as the
