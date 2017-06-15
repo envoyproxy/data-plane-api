@@ -8,6 +8,8 @@ import "api/health_check.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 
+option cc_generic_services = true;
+
 // HDS is Health Discovery Service. It compliments Envoy’s health checking
 // service by designating this Envoy to be a healthchecker for a subset of hosts
 // in the cluster. The status of these health checks will be reported to the
