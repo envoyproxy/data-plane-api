@@ -9,6 +9,8 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
+option cc_generic_services = true;
+
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
   // to subscribe to updates for.
