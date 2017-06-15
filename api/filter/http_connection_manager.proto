@@ -103,27 +103,56 @@ message AccessLogFilter {
   }
 }
 
-message AccessLog {
-  // Path the access log is written to.
-  // TODO(dpn): Should this be a one_of and allow a remote log gRPC endpoint
-  // in conjunction with the proto access log format?
-  string path = 1;
+// Extra headers to include when doing AccessLogs via proto format.
+message HeaderSelection {
+  // Request headers to include in the AccessLog.
+  repeated string request_headers = 1;
+  // Response headers to include in the AccessLog.
+  repeated string response_headers = 2;
+}
 
-  // Access log format. Envoy supports custom access log formats as well as a
-  // default format.
-  // TODO(dpn): This needs to be given some proto structure to allow control
-  // over what gets included
-  // [V2-API-DIFF] In addition to the existing format specifiers, the following
-  // additional specifiers will be available:
-  // %TLS_SNI_HOSTNAME%: SNI from handshake.
-  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
-  //     “TLSv1.2”, “TLSv1.3”.
-  // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
-  //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
-  //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
-  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
-  // can be accessed in the format specifier.
-  string format = 2;
+message AccessLog {
+  // Destination location the access log is written to.
+  //
+  // Envoy supports logging to both RPC endpoints and local disk files.
+  // Behavior is set by choosing which of these is used.
+  oneof destination {
+    // A path to a local file
+    string path = 1;
+    // An RPC endpoint
+    string endpoint = 5;
+  }
+
+  // Content included in log entries.
+  //
+  // When logging to a file this is a format string which specifies what is
+  // included.
+  //
+  // When logging to an RPC endpoint all of the named fields in accesslog.proto
+  // are populated by default if the relevant data is available for the logged
+  // request.  Additional headers desired for logging can be specified in the
+  // HeaderSelection.
+  oneof content {
+    // Access log format for file logging.
+    //
+    // Envoy supports custom access log formats as well as a
+    // default format.
+    //
+    // [V2-API-DIFF] In addition to the existing format specifiers, the following
+    // additional specifiers will be available:
+    // %TLS_SNI_HOSTNAME%: SNI from handshake.
+    // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
+    //     “TLSv1.2”, “TLSv1.3”.
+    // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
+    //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+    //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+    // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+    // can be accessed in the format specifier.
+    string format = 2;
+
+    // Extra headers to include when RPC logging.
+    HeaderSelection headers = 4;
+  }
 
   // Filter which is used to determine if the access log needs to be written.
   AccessLogFilter filter = 3;
