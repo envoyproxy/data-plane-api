@@ -16,21 +16,16 @@ option cc_generic_services = true;
 // Return list of all clusters this proxy will load balance to.
 service ClusterDiscoveryService {
   rpc StreamClusters(stream DiscoveryRequest)
-      returns (stream ClusterDiscoveryResponse) {
+      returns (stream DiscoveryResponse) {
   }
 
   rpc FetchClusters(DiscoveryRequest)
-      returns (ClusterDiscoveryResponse) {
+      returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:clusters"
       body: "*"
     };
   }
-}
-
-message ClusterDiscoveryResponse {
-  bytes version_info = 1;
-  repeated Cluster resources = 2;
 }
 
 // Circuit breaking settings can be specified individually for each defined

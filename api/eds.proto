@@ -15,11 +15,11 @@ service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
   // to subscribe to updates for.
   rpc StreamEndpoints(stream DiscoveryRequest)
-      returns (stream EndpointDiscoveryResponse) {
+      returns (stream DiscoveryResponse) {
   }
 
   rpc FetchEndpoints(DiscoveryRequest)
-      returns (EndpointDiscoveryResponse) {
+      returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:endpoints"
       body: "*"
@@ -102,11 +102,6 @@ message LocalityLbEndpoints {
   // instead use the sum of all weights in the denominator when computing
   // effective the weight ratio as done in v1?
   google.protobuf.UInt32Value load_balancing_weight = 3;
-}
-
-message EndpointDiscoveryResponse {
-  bytes version_info = 1;
-  repeated ClusterLoadAssignment resources = 2;
 }
 
 // Example load report from a single request:

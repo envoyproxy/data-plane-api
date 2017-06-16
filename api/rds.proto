@@ -21,21 +21,16 @@ option cc_generic_services = true;
 // a route table via this identifier.
 service RouteDiscoveryService {
   rpc StreamRoutes(stream DiscoveryRequest)
-      returns (stream RouteDiscoveryResponse) {
+      returns (stream DiscoveryResponse) {
   }
 
   rpc FetchRoutes(DiscoveryRequest)
-      returns (RouteDiscoveryResponse) {
+      returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:routes"
       body: "*"
     };
   }
-}
-
-message RouteDiscoveryResponse {
-  bytes version_info = 1;
-  repeated RouteConfiguration resources = 2;
 }
 
 // Compared to the cluster field that specifies a single upstream cluster as the

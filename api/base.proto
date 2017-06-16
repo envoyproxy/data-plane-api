@@ -4,6 +4,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 
+import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -94,11 +95,19 @@ message HeaderValueOption {
 message DiscoveryRequest {
   // The version_info provided in the request messages will be the version_info
   // received with the most recent successfully processed response or empty on
-  // the first request.
-  bytes version_info = 1;
+  // the first request. It is expected that no new request is sent after a
+  // response is received until the Envoy instance is ready to ACK/NACK the new
+  // configuration. ACK/NACK takes place by returning the new API config version
+  // as applied or the previous API config version respectively.
+  string version_info = 1;
   Node node = 2;
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are
   // returned.
   repeated string resource_names = 3;
+}
+
+message DiscoveryResponse {
+  string version_info = 1;
+  repeated google.protobuf.Any resources = 2;
 }
