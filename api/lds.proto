@@ -22,21 +22,16 @@ option cc_generic_services = true;
 // allowed to drain from listeners that are no longer present.
 service ListenerDiscoveryService {
   rpc StreamListeners(stream DiscoveryRequest)
-      returns (stream ListenerDiscoveryResponse) {
+      returns (stream DiscoveryResponse) {
   }
 
   rpc FetchListeners(DiscoveryRequest)
-      returns (ListenerDiscoveryResponse) {
+      returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:listeners"
       body: "*"
     };
   }
-}
-
-message ListenerDiscoveryResponse {
-  bytes version_info = 1;
-  repeated Listener resources = 2;
 }
 
 message Filter {
