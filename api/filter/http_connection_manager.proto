@@ -120,8 +120,8 @@ message AccessLog {
     // A path to a local file
     string path = 1;
     // The name of an upstream cluster that hosts RPC endpoints for the
-    // AccessLog sink.  The cluster must provide an endpoint capable of
-    // receiving the AccessLog API.  The exact flavor of API spoken will
+    // AccessLog sink. The cluster must provide an endpoint capable of
+    // receiving the AccessLog API. The exact flavor of API spoken will
     // depend on the statically registered log interface module specified
     // in Envoy's startup configuration.
     string cluster = 5;
@@ -134,7 +134,7 @@ message AccessLog {
   //
   // When logging to an RPC endpoint all of the named fields in accesslog.proto
   // are populated by default if the relevant data is available for the logged
-  // request.  Additional headers desired for logging can be specified in the
+  // request. Additional headers desired for logging can be specified in the
   // HeaderSelection.
   oneof content {
     // Access log format for file logging.
