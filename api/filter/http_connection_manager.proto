@@ -115,12 +115,16 @@ message AccessLog {
   // Destination location the access log is written to.
   //
   // Envoy supports logging to both RPC endpoints and local disk files.
-  // Behavior is set by choosing which of these is used.
+  // Behavior is set by choosing which of these is used:
   oneof destination {
     // A path to a local file
     string path = 1;
-    // An RPC endpoint
-    string endpoint = 5;
+    // The name of an upstream cluster that hosts RPC endpoints for the
+    // AccessLog sink.  The cluster must provide an endpoint capable of
+    // receiving the AccessLog API.  The exact flavor of API spoken will
+    // depend on the statically registered log interface module specified
+    // in Envoy's startup configuration.
+    string cluster = 5;
   }
 
   // Content included in log entries.
