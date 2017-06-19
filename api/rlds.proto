@@ -61,26 +61,26 @@ message RateLimitDescriptor {
   repeated Entry entries = 1;
 }
 
-// Defines an actual rate limit in terms of requests per unit of time and the unit itself.
-message RateLimit {
-  enum Unit {
-    UNKNOWN = 0;
-    SECOND  = 1;
-    MINUTE  = 2;
-    HOUR    = 3;
-    DAY     = 4;
-  }
-
-  uint32 requests_per_unit = 1;
-  Unit unit = 2;
-}
-
 // A response from a ShouldRateLimit call.
 message RateLimitResponse {
   enum Code {
     UNKNOWN = 0;
     OK = 1;
     OVER_LIMIT = 2;
+  }
+
+  // Defines an actual rate limit in terms of requests per unit of time and the unit itself.
+  message RateLimit {
+    enum Unit {
+      UNKNOWN = 0;
+      SECOND  = 1;
+      MINUTE  = 2;
+      HOUR    = 3;
+      DAY     = 4;
+    }
+
+    uint32 requests_per_unit = 1;
+    Unit unit = 2;
   }
 
   message DescriptorStatus {
