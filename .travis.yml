@@ -7,7 +7,7 @@ install:
 matrix:
   fast_finish: true
 env:
-  - TEST_TYPE=bazel.build
+  - TEST_TYPE=bazel.test
 script: ./ci/ci_steps.sh
 
 branches:
