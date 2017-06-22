@@ -47,6 +47,10 @@ message WeightedCluster {
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
     google.protobuf.UInt32Value weight = 2;
+    // Optional endpoint metadata match criteria. Only endpoints in the upstream
+    // cluster with metadata matching that set in metadata_match will be
+    // considered. The filter name should be specified as "envoy.lb".
+    Metadata metadata_match = 3;
   }
   // Specifies one or more upstream clusters associated with the route.
   repeated ClusterWeight clusters = 1;
@@ -116,27 +120,32 @@ message ForwardAction {
     WeightedCluster weighted_clusters = 3;
   }
 
+  // Optional endpoint metadata match criteria. Only endpoints in the upstream
+  // cluster with metadata matching that set in metadata_match will be
+  // considered. The filter name should be specified as "envoy.lb".
+  Metadata metadata_match = 4;
+
   // Indicates that during forwarding, the matched prefix (or path) should be
   // swapped with this value. This option allows application URLs to be rooted
   // at a different path from those exposed at the reverse proxy layer.
-  string prefix_rewrite = 4;
+  string prefix_rewrite = 5;
   oneof host_rewrite_specifier {
     // Indicates that during forwarding, the host header will be swapped with
     // this value.
-    string host_rewrite = 5;
+    string host_rewrite = 6;
     // Indicates that during forwarding, the host header will be swapped with
     // the hostname of the upstream host chosen by the cluster manager. This
     // option is applicable only when the destination cluster for a route is of
     // type strict_dns or logical_dns. Setting this to true with other cluster
     // types has no effect.
-    google.protobuf.BoolValue auto_host_rewrite = 6;
+    google.protobuf.BoolValue auto_host_rewrite = 7;
   }
 
   // Specifies the timeout for the route. If not specified, the default is 15s.
   // Note that this timeout includes all retries. See also
   // x-envoy-upstream-rq-timeout-ms, x-envoy-upstream-rq-per-try-timeout-ms, and
   // the retry overview.
-  google.protobuf.Duration timeout = 7;
+  google.protobuf.Duration timeout = 8;
 
   message RetryPolicy {
     // Specifies the conditions under which retry takes place. These are the
@@ -152,7 +161,7 @@ message ForwardAction {
     google.protobuf.Duration per_try_timeout = 3;
   }
   // Indicates that the route has a retry policy.
-  RetryPolicy retry_policy = 8;
+  RetryPolicy retry_policy = 9;
 
   // Indicates that the route has a request mirroring policy.
   message RequestMirrorPolicy {
@@ -167,22 +176,22 @@ message ForwardAction {
     // requests will be mirrored.
     string runtime_key = 2;
   }
-  RequestMirrorPolicy request_mirror_policy = 9;
+  RequestMirrorPolicy request_mirror_policy = 10;
 
-  RoutingPriority priority = 10;
+  RoutingPriority priority = 11;
 
   // Specifies a set of headers that will be added to requests matching this
   // route.
-  repeated HeaderValueOption request_headers_to_add = 11;
+  repeated HeaderValueOption request_headers_to_add = 12;
 
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
-  repeated RateLimit rate_limits = 12;
+  repeated RateLimit rate_limits = 13;
 
   // Specifies if the rate limit filter should include the virtual host rate
   // limits. By default, if the route configured rate limits, the virtual host
   // rate_limits are not applied to the request.
-  google.protobuf.BoolValue include_vh_rate_limits = 13;
+  google.protobuf.BoolValue include_vh_rate_limits = 14;
 
   message HashPolicy {
     // [V2-API-DIFF] We expect additional hash policies in the future, e.g.
@@ -198,7 +207,7 @@ message ForwardAction {
       Header header = 1;
     }
   }
-  repeated HashPolicy hash_policy = 14;
+  repeated HashPolicy hash_policy = 15;
 }
 
 message RedirectAction {
