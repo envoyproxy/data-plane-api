@@ -11,8 +11,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
-option cc_generic_services = true;
-
 // Return list of all clusters this proxy will load balance to.
 service ClusterDiscoveryService {
   rpc StreamClusters(stream DiscoveryRequest)

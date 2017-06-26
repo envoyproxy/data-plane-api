@@ -12,8 +12,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
-option cc_generic_services = true;
-
 // The resource_names field in DiscoveryRequest specifies a route configuration.
 // This allows an Envoy configuration with multiple HTTP listeners (and
 // associated HTTP connection manager filters) to use different route

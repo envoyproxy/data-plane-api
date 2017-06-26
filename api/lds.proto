@@ -14,8 +14,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
-option cc_generic_services = true;
-
 // The Envoy instance initiates an RPC at startup to discover a list of
 // listeners. Updates are delivered via streaming from the LDS server and
 // consist of a complete update of all listeners. Existing connections will be
