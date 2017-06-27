@@ -1,0 +1,26 @@
+// This proto is expected to be provided on disk or via the command-line to
+// Envoy. It provides sufficient information for Envoy to fetch the rest of
+// its configuration from either disk or management server(s).
+
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "api/base.proto";
+import "api/cds.proto";
+
+message Bootstrap {
+  // Node identity to present to the management server and for instance
+  // identification purposes (e.g. in generated headers).
+  Node node = 1;
+  // All Listeners are provided by a single LDS configuration source.
+  ConfigSource lds_config = 2;
+  // All post-bootstrap Cluster definitions are provided by a single CDS
+  // configuration source.
+  ConfigSource cds_config = 3;
+  // If a network based configuration source is specified for cds_config, it's
+  // necessary to have some initial cluster definitions available to allow Envoy
+  // to know how to speak to the management server. These cluster definitions
+  // may not use EDS (i.e. they should be static IP or DNS-based).
+  repeated Cluster bootstrap_clusters = 4;
+}

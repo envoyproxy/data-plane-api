@@ -11,11 +11,8 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 message Rds {
-  // The name of an upstream cluster that hosts the route discovery service. The
-  // cluster must run a service that implements the RDS API. NOTE: This is the
-  // name of a cluster defined in the cluster manager configuration, not the
-  // full definition of a cluster as in the case of SDS and CDS.
-  string cluster = 1;
+  // Configuration source specifier for RDS.
+  ConfigSource rds_config = 1;
 
   // The name of the route configuration. This name will be passed to the RDS
   // API. This allows an Envoy configuration with multiple HTTP listeners (and
