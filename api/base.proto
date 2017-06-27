@@ -5,6 +5,7 @@ package envoy.api.v2;
 import "api/address.proto";
 
 import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -115,13 +116,17 @@ message DiscoveryResponse {
 message ApiConfigSource {
   // APIs may be fetched via either REST or gRPC.
   enum ApiType {
-    REST = 0;
-    GRPC = 1;
+    // REST legacy corresponds to the v1 API.
+    REST_LEGACY = 0;
+    REST = 1;
+    GRPC = 2;
   }
   ApiType api_type = 1;
   // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
   // will be cycled through if any kind of failure occurs.
   repeated string cluster_name = 2;
+  // For REST APIs, the delay between successive polls.
+  google.protobuf.Duration refresh_delay = 3;
 }
 
 // Configuration for listeners, clusters, routes, endpoints etc. may either be
