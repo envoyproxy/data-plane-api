@@ -42,6 +42,14 @@ message Endpoint {
 // An example use of metadata is providing additional values to
 // http_connection_manager in the envoy.http_connection_manager.access_log
 // namespace.
+//
+// For load balancing, Metadata provides a means to canary subset endpoints.
+// Endpoints have a Metadata object associated and routes contain a Metadata
+// object to match against. There are some well defined metadata used today for
+// this purpose:
+// - {"envoy.lb": {"canary": <bool> }}. This indicates the canary status of an
+//   endpoint and is used during header processing (x-envoy-upstream-canary) and
+//   for stats purposes.
 message Metadata {
   // Key is the reverse DNS filter name.
   map<string, google.protobuf.Struct> filter_metadata = 1;
