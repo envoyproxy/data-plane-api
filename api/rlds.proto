@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-option go_package = "ratelimit";
-
 package envoy.api.v2;
 
 service RateLimitDiscoveryService {
