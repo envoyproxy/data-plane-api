@@ -107,7 +107,7 @@ message Cluster {
   // service discovery type is strict_dns or logical_dns, dns_hosts is required.
   oneof hosts_specifier {
     ResolvedAddresses static_hosts = 7;
-    UnresolvedAddress dns_hosts = 8;
+    UnresolvedAddresses dns_hosts = 8;
   }
 
   // Optional active health checking configuration for the cluster. If no
