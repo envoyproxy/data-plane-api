@@ -375,25 +375,30 @@ message VirtualHost {
 }
 
 message RouteConfiguration {
+  // The name of the route configuration. For example, it might match the
+  // router_config_name in the HttpConnectionManager > route_specifier > rds
+  // message.
+  string name = 1;
+
   // An array of virtual hosts that make up the route table.
-  repeated VirtualHost virtual_hosts = 1;
+  repeated VirtualHost virtual_hosts = 2;
 
   // Specifies a list of HTTP headers that the connection manager will consider
   // to be internal only. If they are found on external requests they will be
   // cleaned prior to filter invocation. See x-envoy-internal for more
   // information.
-  repeated string internal_only_headers = 2;
+  repeated string internal_only_headers = 3;
 
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes.
-  repeated HeaderValueOption response_headers_to_add = 3;
+  repeated HeaderValueOption response_headers_to_add = 4;
 
   // Specifies a list of HTTP headers that should be removed from each response
   // that the connection manager encodes.
-  repeated string response_headers_to_remove = 4;
+  repeated string response_headers_to_remove = 5;
 
   // Specifies a list of HTTP headers that should be added to each request
   // forwarded by the HTTP connection manager. In the presence of duplicate
   // header keys, precendence rules apply.
-  repeated HeaderValueOption request_headers_to_add = 5;
+  repeated HeaderValueOption request_headers_to_add = 6;
 }
