@@ -135,4 +135,9 @@ message Listener {
 
   // See base.Metadata description.
   Metadata metadata = 5;
+
+  // The unique name of the listener. If no name is provided, Envoy will generate a
+  // UUID for internal use. The name is used for dynamic listener update and removal
+  // via the LDS APIs.
+  string name = 6;
 }
