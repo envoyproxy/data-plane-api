@@ -101,9 +101,9 @@ message RouteMatch {
   repeated HeaderMatcher headers = 6;
 }
 
-message ForwardAction {
+message RouteAction {
   oneof cluster_specifier {
-    // Indicates the upstream cluster to which the request should be forwarded
+    // Indicates the upstream cluster to which the request should be routed 
     // to.
     string cluster = 1;
     // Envoy will determine the cluster to route to by reading the value of the
@@ -112,7 +112,7 @@ message ForwardAction {
     // return a 404 response.
     string cluster_header = 2;
     // Multiple upstream clusters can be specified for a given route. The
-    // request is forwarded to one of the upstream clusters based on weights
+    // request is routed to one of the upstream clusters based on weights
     // assigned to each cluster. See traffic splitting for additional
     // documentation.
     WeightedCluster weighted_clusters = 3;
@@ -223,8 +223,8 @@ message Route {
   RouteMatch match = 1;
 
   oneof action {
-    // Forward to some upstream cluster.
-    ForwardAction forward = 2;
+    // Route request to some upstream cluster.
+    RouteAction route = 2;
     // Return a 302 redirect.
     RedirectAction redirect = 3;
   }
@@ -330,7 +330,7 @@ message HeaderMatcher {
 
 message VirtualHost {
   // The logical name of the virtual host. This is used when emitting certain
-  // statistics but is not relevant for forwarding.
+  // statistics but is not relevant for routing.
   string name = 1;
 
   // A list of domains (host/authority header) that will be matched to this
@@ -398,7 +398,7 @@ message RouteConfiguration {
   repeated string response_headers_to_remove = 5;
 
   // Specifies a list of HTTP headers that should be added to each request
-  // forwarded by the HTTP connection manager. In the presence of duplicate
+  // routed by the HTTP connection manager. In the presence of duplicate
   // header keys, precendence rules apply.
   repeated HeaderValueOption request_headers_to_add = 6;
 }
