@@ -129,8 +129,8 @@ message DiscoveryResponse {
   //   Since there is no sensible way to continue receiving configuration
   //   updates, Envoy will then terminate and apply production config from a
   //   clean slate.
-  // * --dry-run-canary flag. When set, a canary response will never be applied,
-  //   only validated via a dry run.
+  // * --dry-run-canary. When set, a canary response will never be applied, only
+  //   validated via a dry run.
   bool canary = 3;
 }
 
