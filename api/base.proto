@@ -119,11 +119,18 @@ message DiscoveryRequest {
 message DiscoveryResponse {
   string version_info = 1;
   repeated google.protobuf.Any resources = 2;
-  // If the --terminate-on-canary-transition-failure flag is set on the Envoy
-  // command line, Envoy will terminate if it is unable to apply a non-canary
-  // response while canary is active. If the --dry-run-canary flag is set on the
-  // Envoy command line, a canary response will never be applied, only validated
-  // as a dry run.
+  // Canary is used to support two Envoy command line flags:
+  // * --terminate-on-canary-transition-failure. When set, Envoy is able to
+  //   terminate if it detects that configuration is stuck at canary. Consider
+  //   this example sequence of updates:
+  //   - Management server applies a canary config successfully.
+  //   - Management server rolls back to a production config.
+  //   - Envoy rejects the new production config.
+  //   Since there is no sensible way to continue receiving configuration
+  //   updates, Envoy will then terminate and apply production config from a
+  //   clean slate.
+  // * --dry-run-canary flag. When set, a canary response will never be applied,
+  //   only validated via a dry run.
   bool canary = 3;
 }
 
