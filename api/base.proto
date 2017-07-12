@@ -119,6 +119,12 @@ message DiscoveryRequest {
 message DiscoveryResponse {
   string version_info = 1;
   repeated google.protobuf.Any resources = 2;
+  // If the --terminate-on-canary-transition-failure flag is set on the Envoy
+  // command line, Envoy will terminate if it is unable to apply a non-canary
+  // response while canary is active. If the --dry-run-canary flag is set on the
+  // Envoy command line, a canary response will never be applied, only validated
+  // as a dry run.
+  bool canary = 3;
 }
 
 message ApiConfigSource {
