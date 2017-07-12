@@ -110,13 +110,19 @@ message DiscoveryRequest {
   // the first request. It is expected that no new request is sent after a
   // response is received until the Envoy instance is ready to ACK/NACK the new
   // configuration. ACK/NACK takes place by returning the new API config version
-  // as applied or the previous API config version respectively.
+  // as applied or the previous API config version respectively. Each type_url
+  // (see below) has an independent version associated with it.
   string version_info = 1;
   Node node = 2;
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are
   // returned.
   repeated string resource_names = 3;
+  // Type of the resource that is being requested, e.g.
+  // "type.googleapis.com/envoy.api.v2.ClusterLoadAssignment". This is implicit
+  // in requests made via singleton xDS APIs such as CDS, LDS, etc. but is
+  // required for ADS.
+  string type_url = 4;
 }
 
 message DiscoveryResponse {
@@ -153,6 +159,10 @@ message ApiConfigSource {
   google.protobuf.Duration refresh_delay = 3;
 }
 
+// ADS will be used to fetch resources.
+message AggregatedConfigSource {
+}
+
 // Configuration for listeners, clusters, routes, endpoints etc. may either be
 // sourced from the filesystem or from an API source. Filesystem configs are
 // watched with inotify for updates.
@@ -160,5 +170,6 @@ message ConfigSource {
   oneof config_source_specifier {
     string path = 1;
     ApiConfigSource api_config_source = 2;
+    AggregatedConfigSource ads = 3;
   }
 }
