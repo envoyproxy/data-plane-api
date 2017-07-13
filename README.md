@@ -33,6 +33,12 @@ Draft work-in-progress. Input is welcome via issue filing. Small, localized PRs
 are also welcome, but any major changes or suggestions should be coordinated in
 a tracking issue with the authors.
 
+New features that correspond to the v2 API are initially tracked in this
+repository. When they are agreed upon and the related PRs are merged, they
+should be closed out and a corresponding issue created in
+https://github.com/lyft/envoy/ and tagged with `v2 API`. A reference to the
+closed issue should also be included.
+
 ## Principles
 
 * [Proto3](https://developers.google.com/protocol-buffers/docs/proto3) will be
