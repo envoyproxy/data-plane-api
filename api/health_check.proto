@@ -29,6 +29,15 @@ message HealthCheck {
   // Reuse health check connection between health checks. Default is true.
   google.protobuf.BoolValue reuse_connection = 7;
 
+  // The Envoy HTTP health checker supports the service_name option. If this
+  // option is set, the health checker additionally compares the value of the
+  // x-envoy-upstream-healthchecked-cluster response header to service_name. If
+  // the values do not match, the health check does not pass. The upstream
+  // health check filter appends x-envoy-upstream-healthchecked-cluster to the
+  // response headers. The appended value is determined by the --service-cluster
+  // command line option.
+  string service_name = 8;
+
   // Describes the encoding of the payload bytes in the payload
   message Payload {
     oneof payload {
@@ -50,11 +59,17 @@ message HealthCheck {
   message TcpHealthCheck {
     // Empty payloads imply a connect-only health check.
     Payload send = 1;
-    Payload receive = 2;
+    // When checking the response, “fuzzy” matching is performed such that each
+    // binary block must be found, and in the order specified, but not
+    // necessarly contiguous.
+    repeated Payload receive = 2;
+  }
+  message RedisHealthCheck {
   }
   oneof health_checker {
-    HttpHealthCheck http_health_check = 8;
-    TcpHealthCheck tcp_health_check = 9;
+    HttpHealthCheck http_health_check = 9;
+    TcpHealthCheck tcp_health_check = 10;
+    RedisHealthCheck redis_health_check = 11;
   }
 }
 
