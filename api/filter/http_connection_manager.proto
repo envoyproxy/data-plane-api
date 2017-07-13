@@ -160,24 +160,13 @@ message AccessLog {
 }
 
 message HttpFilter {
-  // The type of filter to instantiate. Most filters implement a specific type,
-  // though it is theoretically possible for a filter to be written such that it
-  // can operate in multiple modes. Supported types are decoder, encoder, and
-  // both.
-  enum Type {
-    BOTH = 0;
-    DECODER = 1;
-    ENCODER = 2;
-  }
-  Type type = 1;
-
   // The name of the filter to instantiate. The name must match a supported
   // filter.
-  string name = 2;
+  string name = 1;
 
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
-  google.protobuf.Struct config = 3;
+  google.protobuf.Struct config = 2;
 }
 
 message HttpConnectionManager {
