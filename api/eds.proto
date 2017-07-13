@@ -25,44 +25,35 @@ service EndpointDiscoveryService {
   }
 
   // Advanced API to allow for multi-dimensional load balancing by remote
-  // server. The steps are:
+  // server. For receiving LB assignments, the steps are:
   // 1, The management server is configured with per cluster/zone/load metric
   //    capacity configuration. The capacity configuration definition is
   //    outside of the scope of this document.
-  // 2. Envoy issues LoadAssignmentRequest for a list of clusters it wants to load
-  //    balance to (instead of using a basic EndpointDiscoveryRequest).
-  // 3. Once a connection establishes, the management server publishes
-  //    LoadAssignmentResponse for all clusters requested in the first
-  //    LoadAssignmentRequest. This message contains per cluster/per Locality
-  //    information.
-  // 4. For each cluster, Envoy load balances incoming traffic to upstream hosts
+  // 2. Envoy issues a standard {Stream,Fetch}Endpoints request for the clusters
+  //    to balance.
+  //
+  // Independently, Envoy will initiate a StreamLoadStats bidi stream with a
+  // management server:
+  // 1. Once a connection establishes, the management server publishes a
+  //    LoadStatsResponse for all clusters it is interested in learning load
+  //    stats about.
+  // 2. For each cluster, Envoy load balances incoming traffic to upstream hosts
   //    based on per-zone weights and/or per-instance weights (if specified)
-  //    based on intra-zone LbPolicy.
-  // 5. When upstream hosts reply, they optionally add header <define header
+  //    based on intra-zone LbPolicy. This information comes from the above
+  //    {Stream,Fetch}Endpoints.
+  // 3. When upstream hosts reply, they optionally add header <define header
   //    name> with ASCII representation of EndpointLoadMetricStats.
-  // 6. Envoy aggregates load reports over the period of time given to it in
-  //    LoadAssignmentResponse.load_reporting_interval. This includes aggregation
+  // 4. Envoy aggregates load reports over the period of time given to it in
+  //    LoadStatsResponse.load_reporting_interval. This includes aggregation
   //    stats Envoy maintains by itself (total_requests, rpc_errors etc.) as
   //    well as load metrics from upstream hosts.
-  // 7. When the timer of load_reporting_interval expires, Envoy sends new
-  //    LoadAssignmentRequest filled with load reports for each cluster.
-  // 8. The management server uses the load reports from all reported Envoys
+  // 5. When the timer of load_reporting_interval expires, Envoy sends new
+  //    LoadStatsRequest filled with load reports for each cluster.
+  // 6. The management server uses the load reports from all reported Envoys
   //    from around the world, computes global assignment and prepares traffic
-  //    assignment destined for each zone Envoys are located in. Goto 3.
-  // TODO(htuch): Add @amb67's diagram.
-  rpc StreamLoadAssignment(stream LoadAssignmentRequest)
-      returns (stream LoadAssignmentResponse) {
-  }
-
-  // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
-  // request/response. Should we add an identifier to the LoadAssignmentResponse
-  // to bind with the response?
-  rpc FetchLoadAssignment(LoadAssignmentRequest)
-      returns (LoadAssignmentResponse) {
-    option (google.api.http) = {
-      post: "/v2/discovery:load_assignment"
-      body: "*"
-    };
+  //    assignment destined for each zone Envoys are located in. Goto 2.
+  rpc StreamLoadStats(stream LoadStatsRequest)
+      returns (stream LoadStatsResponse) {
   }
 }
 
@@ -170,13 +161,9 @@ message ClusterStats {
   repeated UpstreamLocalityStats upstream_locality_stats = 2;
 }
 
-message LoadAssignmentRequest {
-  // The version_info provided in the request messages will be the version_info
-  // received with the most recent successfully processed response or empty on
-  // the first request.
-  bytes version_info = 1;
-  Node node = 2;  // zone/region where this Envoy runs
-  repeated ClusterStats cluster_stats = 3;
+message LoadStatsRequest {
+  Node node = 1;  // zone/region where this Envoy runs
+  repeated ClusterStats cluster_stats = 2;
 }
 
 // Each route from RDS will map to a single cluster or traffic split across
@@ -205,9 +192,9 @@ message ClusterLoadAssignment {
   Policy policy = 4;
 }
 
-message LoadAssignmentResponse {
-  bytes version_info = 1;
-  repeated ClusterLoadAssignment clusters = 2;
+message LoadStatsResponse {
+  // Clusters to report stats for.
+  repeated string clusters = 1;
   // The default is 10 seconds.
-  google.protobuf.Duration load_reporting_interval = 3;
+  google.protobuf.Duration load_reporting_interval = 2;
 }
