@@ -28,6 +28,9 @@ message Node {
   string id = 1;
   google.protobuf.Struct metadata = 2;
   Locality locality = 3;
+  // This is motivated by informing a management server during canary which
+  // version of Envoy is being tested in a heterogeneous fleet.
+  string build_version = 4;
 }
 
 message Endpoint {
