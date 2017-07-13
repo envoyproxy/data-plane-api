@@ -59,11 +59,11 @@ message Http1ProtocolOptions {
 }
 
 message Http2ProtocolOptions {
-  // Default is false.
-  bool disable_dynamic_table = 1;
-  google.protobuf.UInt32Value per_stream_buffer_limit_bytes = 2;
+  google.protobuf.UInt32Value per_stream_buffer_limit_bytes = 1;
+  google.protobuf.UInt32Value hpack_table_size = 2;
   google.protobuf.UInt32Value max_concurrent_streams = 3;
-  google.protobuf.UInt32Value initial_window_size = 4;
+  google.protobuf.UInt32Value initial_stream_window_size = 4;
+  google.protobuf.UInt32Value initial_connection_window_size = 5;
 }
 
 message GrpcProtocolOptions {
@@ -142,6 +142,29 @@ message Cluster {
   // ignored.
   google.protobuf.Duration dns_refresh_rate = 17;
 
+  // The DNS IP address resolution policy. The options are v4_only, v6_only, and
+  // auto. If this setting is not specified, the value defaults to v4_only. When
+  // v4_only is selected, the DNS resolver will only perform a lookup for
+  // addresses in the IPv4 family. If v6_only is selected, the DNS resolver will
+  // only perform a lookup for addresses in the IPv6 family. If auto is
+  // specified, the DNS resolver will first perform a lookup for addresses in
+  // the IPv6 family and fallback to a lookup for addresses in the IPv4 family.
+  // For cluster types other than strict_dns and logical_dns, this setting is
+  // ignored.
+  enum DnsLookupFamily {
+    AUTO = 0;
+    V4_ONLY = 1;
+    V6_ONLY = 2;
+  }
+  DnsLookupFamily dns_lookup_family = 18;
+
+  // If DNS resolvers are specified and the cluster type is either strict_dns,
+  // or logical_dns, this value is used to specify the cluster’s dns resolvers.
+  // If this setting is not specified, the value defaults to the default
+  // resolver, which uses /etc/resolv.conf for configuration. For cluster types
+  // other than strict_dns and logical_dns this setting is ignored.
+  ResolvedAddresses dns_resolvers = 19;
+
   // If specified, outlier detection will be enabled for this upstream cluster.
   message OutlierDetection {
     // The number of consecutive 5xx responses before a consecutive 5xx ejection
@@ -186,5 +209,5 @@ message Cluster {
     // be 1900. Defaults to 1900.
     google.protobuf.UInt32Value success_rate_stdev_factor = 9;
   }
-  OutlierDetection outlier_detection = 18;
+  OutlierDetection outlier_detection = 20;
 }
