@@ -33,6 +33,9 @@ Draft work-in-progress. Input is welcome via issue filing. Small, localized PRs
 are also welcome, but any major changes or suggestions should be coordinated in
 a tracking issue with the authors.
 
+Implementation work has begun and work items are tracked at
+[here](https://github.com/lyft/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
+
 New features that correspond to the v2 API are initially tracked in this
 repository. When they are agreed upon and the related PRs are merged, they
 should be closed out and a corresponding issue created in
