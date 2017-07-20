@@ -201,8 +201,24 @@ message RouteAction {
       // random.
       string header_name = 1;
     }
+    message Cookie {
+      // The name of the cookie that will be used to obtain the hash key. If the
+      // cookie is not present and ttl below is not set, the load balancer will
+      // use a random number as the hash, effectively making the load balancing
+      // policy random.
+      string name = 1;
+      // If specified, a cookie will be generated if not presented with the
+      // specified TTL.
+      google.protobuf.Duration ttl = 2;
+    }
+    message ConnectionProperties {
+      // Hash on source IP address.
+      bool source_ip = 1;
+    }
     oneof policy_specifier {
       Header header = 1;
+      Cookie cookie = 2;
+      ConnectionProperties connection_properties = 3;
     }
   }
   repeated HashPolicy hash_policy = 15;
