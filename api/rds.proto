@@ -207,8 +207,8 @@ message RouteAction {
       // use a random number as the hash, effectively making the load balancing
       // policy random.
       string name = 1;
-      // If specified, a cookie will be generated if not presented with the
-      // specified TTL.
+      // If specified, a cookie with the TTL will be generated if the cookie is
+      // not present.
       google.protobuf.Duration ttl = 2;
     }
     message ConnectionProperties {
