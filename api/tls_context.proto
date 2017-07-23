@@ -66,37 +66,43 @@ message CertificateValidationContext {
   google.protobuf.BoolValue require_signed_certificate_timestamp = 6;
 }
 
-message UpstreamTlsContext {
+// TLS context shared by both client and server TLS contexts.
+message CommonTlsContext {
   // TLS protocol versions, cipher suites etc.
   TlsParameters tls_params = 1;
+
+  // Protocols to negotiate over ALPN
+  repeated string alpn_protocols = 2;
+
+  // How to validate peer certificates.
+  CertificateValidationContext validation_context = 3;
+
+  // These fields are deprecated and only are used during the interim v1 -> v2
+  // transition period for internal purposes. They should not be used outside of
+  // the Envoy binary.
+  message DeprecatedV1 {
+    string alt_alpn_protocols = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 4;
+}
+
+message UpstreamTlsContext {
+  CommonTlsContext common_tls_context = 1;
 
   // Client certificate to present to backend.
   TlsCertificate client_certificate = 2;
 
   // SNI string to use when creating TLS backend connections.
   string sni = 3;
-
-  // Protocols to negotiate over ALPN
-  repeated string alpn_protocols = 4;
-
-  // How to validate the backend certificate.
-  CertificateValidationContext server_validation_context = 5;
 }
 
 // [V2-API-DIFF] This has been reworked to support alternative modes of
 // certificate/key delivery, for consistency with the upstream TLS context and
 // to segregate the client/server aspects of the TLS context.
 message DownstreamTlsContext {
-  // TLS protocol versions, cipher suites etc.
-  TlsParameters tls_params = 1;
+  CommonTlsContext common_tls_context = 1;
 
   // Multiple TLS certificates can be associated with the same context, e.g. to
   // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
   repeated TlsCertificate tls_certificates = 2;
-
-  // Supplies the list of ALPN protocols that the listener should expose.
-  repeated string alpn_protocols = 3;
-
-  // How to validate the client certificate.
-  CertificateValidationContext client_validation_context = 4;
 }
