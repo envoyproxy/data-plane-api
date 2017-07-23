@@ -76,6 +76,14 @@ message CommonTlsContext {
 
   // How to validate peer certificates.
   CertificateValidationContext server_validation_context = 3;
+
+  // These fields are deprecated and only are used during the interim v1 -> v2
+  // transition period for internal purposes. They should not be used outside of
+  // the Envoy binary.
+  message DeprecatedV1 {
+    string alt_alpn_protocols = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 4;
 }
 
 message UpstreamTlsContext {
