@@ -75,13 +75,12 @@ message LbEndpoint {
 
   // The optional load balancing weight of the upstream host, in the range 1 -
   // 100. Envoy uses the load balancing weight in some of the built in load
-  // balancers. All load balancing weights in a locality must sum to 100%.
-  // The effective load balancing weight is load_balancing_weight multiplied by
-  // the locality wide load_balancing_weight. If unspecified, each host is
-  // presumed to have equal weight in a locality.
-  // TODO(htuch): [V2-API-DIFF] Do we want all weights to sum to 100%, or to
-  // instead use the sum of all weights in the denominator when computing
-  // effective the weight ratio as done in v1?
+  // balancers. The load balancing weight for an endpoint is divided by the sum
+  // of the weights of all endpoints in the endpoint's locality to produce a
+  // percentage of traffic for the endpoint. This percentage is then further
+  // weighted by the endpoint's locality's load balancing weight from
+  // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
+  // weight in a locality.
   google.protobuf.UInt32Value load_balancing_weight = 4;
 }
 
@@ -90,12 +89,11 @@ message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
-  // Optional: Per region/zone/sub_zone weight - range 1-100. All load balancing
-  // weights in a cluster must sum to 100%. If unspecified, each locality is
-  // presumed to have equal weight in a cluster.
-  // TODO(htuch): [V2-API-DIFF] Do we want all weights to sum to 100%, or to
-  // instead use the sum of all weights in the denominator when computing
-  // effective the weight ratio as done in v1?
+  // Optional: Per region/zone/sub_zone weight - range 1-100. The load balancing
+  // weight for a locality is divided by the sum of the weights of all
+  // localities to produce the effective percentage of traffic for the locality.
+  // If unspecified, each locality is presumed to have equal weight in a
+  // cluster.
   google.protobuf.UInt32Value load_balancing_weight = 3;
 }
 
