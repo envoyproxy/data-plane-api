@@ -201,8 +201,35 @@ message RouteAction {
       // random.
       string header_name = 1;
     }
+    // Envoy supports two types of cookie affinity:
+    //
+    // 1. Passive. Envoy takes a cookie that's present in the cookies header and
+    //    hashes on its value.
+    //
+    // 2. Generated. Envoy generates and sets a cookie with an expiration (TTL)
+    //    on the first request from the client in its response to the client,
+    //    based on the endpoint the request gets sent to. The client then
+    //    presents this on the next and all subsequent requests, the hash of
+    //    this is sufficient to ensure these requests get sent to the same
+    //    endpoint.
+    message Cookie {
+      // The name of the cookie that will be used to obtain the hash key. If the
+      // cookie is not present and ttl below is not set, the load balancer will
+      // use a random number as the hash, effectively making the load balancing
+      // policy random.
+      string name = 1;
+      // If specified, a cookie with the TTL will be generated if the cookie is
+      // not present.
+      google.protobuf.Duration ttl = 2;
+    }
+    message ConnectionProperties {
+      // Hash on source IP address.
+      bool source_ip = 1;
+    }
     oneof policy_specifier {
       Header header = 1;
+      Cookie cookie = 2;
+      ConnectionProperties connection_properties = 3;
     }
   }
   repeated HashPolicy hash_policy = 15;
