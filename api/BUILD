@@ -48,6 +48,7 @@ api_proto_library(
         ":base",
         ":health_check",
         ":tls_context",
+        ":protocol",
     ],
 )
 
@@ -81,6 +82,11 @@ api_proto_library(
         ":base",
         ":tls_context",
     ],
+)
+
+api_proto_library(
+    name = "protocol",
+    srcs = ["protocol.proto"],
 )
 
 api_proto_library(

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "google/protobuf/wrappers.proto";
+
+message TcpProtocolOptions {
+}
+
+message Http1ProtocolOptions {
+}
+
+message Http2ProtocolOptions {
+  google.protobuf.UInt32Value per_stream_buffer_limit_bytes = 1;
+  google.protobuf.UInt32Value hpack_table_size = 2;
+  google.protobuf.UInt32Value max_concurrent_streams = 3;
+  google.protobuf.UInt32Value initial_stream_window_size = 4;
+  google.protobuf.UInt32Value initial_connection_window_size = 5;
+}
+
+message GrpcProtocolOptions {
+  Http2ProtocolOptions http2_protocol_options = 1;
+}
