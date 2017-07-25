@@ -103,7 +103,7 @@ message RouteMatch {
 
 message RouteAction {
   oneof cluster_specifier {
-    // Indicates the upstream cluster to which the request should be routed 
+    // Indicates the upstream cluster to which the request should be routed
     // to.
     string cluster = 1;
     // Envoy will determine the cluster to route to by reading the value of the
