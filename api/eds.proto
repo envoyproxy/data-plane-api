@@ -126,7 +126,7 @@ message EndpointLoadMetricStats {
 message UpstreamLocalityStats {
   // Name of zone, region and optionally endpoint group this metrics was
   // collected from. Zone and region names could be empty if unknown.
-  string Locality = 1;
+  Locality locality = 1;
 
   // The total number of requests sent by this Envoy since the last report.
   uint64 total_requests = 2;
