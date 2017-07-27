@@ -40,6 +40,19 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "ads",
+    srcs = ["ads.proto"],
+    has_services = 1,
+    deps = [
+        ":base",
+        ":cds",
+        ":eds",
+        ":lds",
+        ":rds",
+    ],
+)
+
+api_proto_library(
     name = "cds",
     srcs = ["cds.proto"],
     has_services = 1,
