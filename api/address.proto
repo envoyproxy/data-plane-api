@@ -56,6 +56,8 @@ message ResolvedAddress {
       TCP = 0;
     }
     Protocol protocol = 1;
+    // IP address as returned by inet_ntop(), with IPv6 addresses additionally
+    // enclosed in brackets, e.g. [2001:700:300:1800::f].
     string ip_address = 2;
     google.protobuf.UInt32Value port = 3;
   }
