@@ -128,7 +128,13 @@ message UpstreamLocalityStats {
   // collected from. Zone and region names could be empty if unknown.
   Locality locality = 1;
 
-  // The total number of requests sent by this Envoy since the last report.
+  // The total number of requests sent by this Envoy since the last report. A
+  // single HTTP or gRPC request or stream is counted as one request. A TCP
+  // connection is also treated as one request. The following property should
+  // hold:
+  //   total_requests = total_successful_requests + total_requests_in_progress +
+  //       sum(tcp_errors) + sum(http_errors) + sum(grpc_errors) +
+  //       total_dropped_requests
   uint64 total_requests = 2;
   // The total number of unfinished requests
   uint64 total_requests_in_progress = 3;
@@ -145,8 +151,10 @@ message UpstreamLocalityStats {
   map<uint32, uint64> http_errors = 5;
   // GRCP status code, count
   map<uint32, uint64> grpc_errors = 6;
-  // The number of dropped requests since the last report.
-  uint64 dropped_requests = 7;
+
+  // The number of dropped requests since the last report. This covers requests
+  // deliberately dropped by the drop_overload policy and circuit breaking.
+  uint64 total_dropped_requests = 7;
 
   // Stats for multi-dimensional load balancing.
   repeated EndpointLoadMetricStats load_metric_stats = 8;
