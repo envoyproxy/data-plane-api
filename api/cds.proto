@@ -68,7 +68,14 @@ message Cluster {
   DiscoveryType type = 2;
 
   // Only valid when discovery type is EDS.
-  ConfigSource eds_config = 3;
+  message EdsClusterConfig {
+    ConfigSource eds_config = 1;
+    // Optional alternative to cluster name to present to EDS. This does not
+    // have the same restrictions as cluster name, i.e. it may be arbritary
+    // length and contain ':'.
+    string service_name = 2;
+  }
+  EdsClusterConfig eds_cluster_config = 3;
 
   // The timeout for new network connections to hosts in the cluster.
   google.protobuf.Duration connect_timeout = 4;
@@ -198,12 +205,4 @@ message Cluster {
     google.protobuf.UInt32Value success_rate_stdev_factor = 9;
   }
   OutlierDetection outlier_detection = 20;
-
-  // These fields are deprecated and only are used during the interim v1 -> v2
-  // transition period for internal purposes. They should not be used outside of
-  // the Envoy binary.
-  message DeprecatedV1 {
-    string service_name = 1;
-  }
-  DeprecatedV1 deprecated_v1 = 21;
 }
