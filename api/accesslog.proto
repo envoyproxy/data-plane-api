@@ -10,17 +10,6 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 message EnvoyAccessLog {
-  enum RequestMethod {
-    METHOD_UNSPECIFIED = 0;
-    GET = 1;
-    HEAD = 2;
-    POST = 3;
-    PUT = 4;
-    DELETE = 5;
-    CONNECT = 6;
-    OPTIONS = 7;
-    TRACE = 8;
-  }
   // The HTTP request method (RFC 7231/2616)
   RequestMethod request_method = 1;
 
