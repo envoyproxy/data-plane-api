@@ -279,7 +279,12 @@ message VirtualCluster {
 
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
-  string method = 3;
+  RequestMethod method = 3;
+
+  message DeprecatedV1 {
+    RoutingPriority priority = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 4;
 }
 
 // See
