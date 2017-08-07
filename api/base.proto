@@ -25,12 +25,15 @@ message Locality {
 
 // Identifies a specific Envoy instance. Remote server may have per Envoy configuration.
 message Node {
+  // An opaque node identifier for the Envoy node. This must be set.
   string id = 1;
-  google.protobuf.Struct metadata = 2;
-  Locality locality = 3;
+  // The cluster that the Envoy node belongs to. This must be set.
+  string cluster = 2;
+  google.protobuf.Struct metadata = 3;
+  Locality locality = 4;
   // This is motivated by informing a management server during canary which
   // version of Envoy is being tested in a heterogeneous fleet.
-  string build_version = 4;
+  string build_version = 5;
 }
 
 message Endpoint {
