@@ -64,6 +64,7 @@ message Cluster {
     STRICT_DNS = 1;
     LOGICAL_DNS = 2;
     EDS = 3;
+    ORIGINAL_DST = 4;
   }
   DiscoveryType type = 2;
 
@@ -89,6 +90,7 @@ message Cluster {
     LEAST_REQUEST = 1;
     RING_HASH = 2;
     RANDOM = 3;
+    ORIGINAL_DST_LB = 4;
   }
   LbPolicy lb_policy = 6;
 
@@ -205,4 +207,17 @@ message Cluster {
     google.protobuf.UInt32Value success_rate_stdev_factor = 9;
   }
   OutlierDetection outlier_detection = 20;
+
+  // The interval for removing stale hosts from a cluster type
+  // original_dst.  Hosts are considered stale if they have not been used
+  // as upstream destinations during this interval.  New hosts are added
+  // to original destination clusters on demand as new connections are
+  // redirected to Envoy, causing the number of hosts in the cluster to
+  // grow over time.  Hosts that are not stale (they are actively used as
+  // destinations) are kept in the cluster, which allows connections to
+  // them remain open, saving the latency that would otherwise be spent
+  // on opening new connections.  If this setting is not specified, the
+  // value defaults to 5000ms. For cluster types other than original_dst
+  // this setting is ignored.
+  google.protobuf.Duration cleanup_interval = 21;
 }
