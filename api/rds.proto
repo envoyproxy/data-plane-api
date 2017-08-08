@@ -294,17 +294,20 @@ message RateLimit {
   // The key to be set in runtime to disable this rate limit configuration.
   string disable_key = 2;
 
-  message RateLimitAction {
-    enum ActionType {
-      SOURCE_CLUSTER = 0;
-      DESTINATION_CLUSTER = 1;
-      REQUEST_HEADERS = 2;
-      REMOTE_ADDRESS = 3;
-      GENERIC_KEY = 4;
-      HEADER_VALUE_MATCH = 5;
+  message Action {
+    // The following descriptor entry is appended to the descriptor:
+    // ("source_cluster", "<local service cluster>")
+    message SourceCluster {
     }
-    ActionType type = 1;
 
+    // The following descriptor entry is appended to the descriptor:
+    // ("destination_cluster", "<routed target cluster>")
+    message DestinationCluster {
+    }
+
+    // The following descriptor entry is appended when a header contains a key
+    // that matches the header_name:
+    // ("<descriptor_key>", "<header_value_queried_from_header>")
     message RequestHeaders {
       // The header name to be queried from the request headers. The header’s
       // value is used to populate the value of the descriptor entry for the
@@ -314,6 +317,21 @@ message RateLimit {
       string descriptor_key = 2;
     }
 
+    // The following descriptor entry is appended to the descriptor and is
+    // populated using the trusted address from x-forwarded-for:
+    // ("remote_address", "<trusted address from x-forwarded-for>")
+    message RemoteAddress {
+    }
+
+    // The following descriptor entry is appended to the descriptor:
+    // ("generic_key", "<descriptor_value>")
+    message GenericKey {
+      // The value to use in the descriptor entry.
+      string descriptor_value = 1;
+    }
+
+    // The following descriptor entry is appended to the descriptor:
+    // (“header_match”, “<descriptor_value>”)
     message HeaderValueMatch {
       // The value to use in the descriptor entry.
       string descriptor_value = 1;
@@ -330,10 +348,13 @@ message RateLimit {
       repeated HeaderMatcher headers = 3;
     }
 
-    oneof action_details {
-      RequestHeaders request_headers = 2;
-      string generic_key = 3;
-      HeaderValueMatch header_value_match = 4;
+    oneof action_specifier {
+      SourceCluster source_cluster = 1;
+      DestinationCluster destination_cluster = 2;
+      RequestHeaders request_headers = 3;
+      RemoteAddress remote_address = 4;
+      GenericKey generic_key = 5;
+      HeaderValueMatch header_value_match = 6;
     }
   }
   // A list of actions that are to be applied for this rate limit configuration.
@@ -341,7 +362,7 @@ message RateLimit {
   // is composed by appending descriptor entries in that sequence. If an action
   // cannot append a descriptor entry, no descriptor is generated for the
   // configuration. See composing actions for additional documentation.
-  repeated RateLimitAction actions = 3;
+  repeated Action actions = 3;
 }
 
 message HeaderMatcher {
