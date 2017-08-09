@@ -25,12 +25,15 @@ message Locality {
 
 // Identifies a specific Envoy instance. Remote server may have per Envoy configuration.
 message Node {
+  // An opaque node identifier for the Envoy node. This must be set.
   string id = 1;
-  google.protobuf.Struct metadata = 2;
-  Locality locality = 3;
+  // The cluster that the Envoy node belongs to. This must be set.
+  string cluster = 2;
+  google.protobuf.Struct metadata = 3;
+  Locality locality = 4;
   // This is motivated by informing a management server during canary which
   // version of Envoy is being tested in a heterogeneous fleet.
-  string build_version = 4;
+  string build_version = 5;
 }
 
 message Endpoint {
@@ -79,6 +82,19 @@ enum RoutingPriority {
   HIGH = 1;
 }
 
+// HTTP request method
+enum RequestMethod {
+  METHOD_UNSPECIFIED = 0;
+  GET = 1;
+  HEAD = 2;
+  POST = 3;
+  PUT = 4;
+  DELETE = 5;
+  CONNECT = 6;
+  OPTIONS = 7;
+  TRACE = 8;
+}
+
 // Header name/value pair.
 message HeaderValue {
   // Header name.
@@ -116,7 +132,10 @@ message DiscoveryRequest {
   Node node = 2;
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are
-  // returned.
+  // returned. LDS/CDS expect empty resource_names, since this is global
+  // discovery for the Envoy instance. The LDS and CDS responses will then imply
+  // a number of resources that need to be fetched via EDS/RDS, which will be
+  // explicitly enumerated in resource_names.
   repeated string resource_names = 3;
   // Type of the resource that is being requested, e.g.
   // "type.googleapis.com/envoy.api.v2.ClusterLoadAssignment". This is implicit
