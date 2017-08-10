@@ -12,19 +12,13 @@ import "google/protobuf/wrappers.proto";
 
 message Rds {
   // Configuration source specifier for RDS.
-  ConfigSource rds_config = 1;
+  ConfigSource config_source = 1;
 
   // The name of the route configuration. This name will be passed to the RDS
   // API. This allows an Envoy configuration with multiple HTTP listeners (and
   // associated HTTP connection manager filters) to use different route
   // configurations.
-  string router_config_name = 2;
-
-  // The delay, in milliseconds, between fetches to the RDS API. Envoy will add
-  // an additional random jitter to the delay that is between zero and
-  // refresh_delay_ms milliseconds. Thus the longest possible refresh delay is 2
-  // * refresh_delay_ms. Default value is 30000ms (30 seconds).
-  google.protobuf.Duration refresh_delay = 3;
+  string route_config_name = 2;
 }
 
 // Filters on HTTP response/status code.
