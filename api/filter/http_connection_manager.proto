@@ -21,8 +21,8 @@ message Rds {
   string route_config_name = 2;
 }
 
-// Filters on HTTP response/status code.
-message StatusCodeFilter {
+// Filter on some integer comparison.
+message ComparisonFilter {
   // Comparison operator.
   enum Op {
     EQ = 0;
@@ -34,17 +34,14 @@ message StatusCodeFilter {
   RuntimeUInt32 value = 2;
 }
 
-// Filters on total request duration.
-message DurationFilter {
-  // Comparison operator.
-  enum Op {
-    EQ = 0;
-    GE = 1;
-  }
-  Op op = 1;
+// Filters on HTTP response/status code.
+message StatusCodeFilter {
+  ComparisonFilter comparison = 1;
+}
 
-  // Value to compare against.
-  RuntimeUInt32 value = 2;
+// Filters on total request duration in milliseconds.
+message DurationFilter {
+  ComparisonFilter comparison = 1;
 }
 
 // Filters for requests that are not health check requests. A health check
@@ -84,13 +81,13 @@ message OrFilter {
 
 message AccessLogFilter {
   oneof filter_specifier {
-    StatusCodeFilter status_code = 1;
-    DurationFilter duration = 2;
-    NotHealthCheckFilter not_health_check = 3;
-    TraceableFilter traceable = 4;
-    RuntimeFilter runtime = 5;
-    AndFilter and = 6;
-    OrFilter or = 7;
+    StatusCodeFilter status_code_filter = 1;
+    DurationFilter duration_filter = 2;
+    NotHealthCheckFilter not_health_check_filter = 3;
+    TraceableFilter traceable_filter = 4;
+    RuntimeFilter runtime_filter = 5;
+    AndFilter and_filter = 6;
+    OrFilter or_filter = 7;
   }
 }
 
@@ -161,6 +158,11 @@ message HttpFilter {
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
   google.protobuf.Struct config = 2;
+
+  message DeprecatedV1 {
+    string type = 1;
+  };
+  DeprecatedV1 deprecated_v1 = 3;
 }
 
 message HttpConnectionManager {
@@ -218,11 +220,8 @@ message HttpConnectionManager {
   }
   Tracing tracing = 7;
 
-  // TODO(htuch): GrpcProtocolOptions?
-  oneof http_codec_options {
-    Http1ProtocolOptions http_protocol_options = 8;
-    Http2ProtocolOptions http2_protocol_options = 9;
-  }
+  Http1ProtocolOptions http_protocol_options = 8;
+  Http2ProtocolOptions http2_protocol_options = 9;
 
   // An optional override that the connection manager will write to the server
   // header in responses. If not set, the default is envoy.
@@ -248,7 +247,7 @@ message HttpConnectionManager {
   google.protobuf.Duration drain_timeout = 12;
 
   // Configuration for HTTP access logs emitted by the connection manager.
-  AccessLog access_log = 13;
+  repeated AccessLog access_log = 13;
 
   // If set to true, the connection manager will use the real remote address of
   // the client connection when determining internal versus external origin and
@@ -265,4 +264,34 @@ message HttpConnectionManager {
   // expensive so in high throughput scenarios where this feature is not desired
   // it can be disabled.
   google.protobuf.BoolValue generate_request_id = 15;
+
+  // How to handle the x-forwarded-client-cert (XFCC) HTTP header.
+  enum ForwardClientCertDetails {
+    // Do not send the XFCC header to the next hop. This is the default value.
+    SANITIZE = 0;
+    // When the client connection is mTLS (Mutual TLS), forward the XFCC header
+    // in the request.
+    FORWARD_ONLY = 1;
+    // When the client connection is mTLS, append the client certificate
+    // information to the request’s XFCC header and forward it.
+    APPEND_FORWARD = 2;
+    // When the client connection is mTLS, reset the XFCC header with the client
+    // certificate information and send it to the next hop.
+    SANITIZE_SET = 3;
+    // Always forward the XFCC header in the request, regardless of whether the
+    // client connection is mTLS.
+    ALWAYS_FORWARD_ONLY = 4;
+  };
+  ForwardClientCertDetails forward_client_cert_details = 16;
+
+  // This field is valid only when forward_client_cert is append_forward or
+  // sanitize_set and the client connection is mTLS. It specifies the fields in
+  // the client certificate to be forwarded. Note that in the
+  // x-forwarded-client-cert header, Hash is always set, and By is always set
+  // when the client certificate presents the SAN value.
+  message SetCurrentClientCertDetails {
+    google.protobuf.BoolValue subject = 1;
+    google.protobuf.BoolValue san = 2;
+  };
+  SetCurrentClientCertDetails set_current_client_cert_details = 17;
 }

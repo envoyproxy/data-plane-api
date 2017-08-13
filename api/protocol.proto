@@ -8,6 +8,7 @@ message TcpProtocolOptions {
 }
 
 message Http1ProtocolOptions {
+  google.protobuf.BoolValue allow_absolute_url = 1;
 }
 
 message Http2ProtocolOptions {
