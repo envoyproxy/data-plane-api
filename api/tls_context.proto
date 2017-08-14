@@ -110,4 +110,9 @@ message DownstreamTlsContext {
 
   // If specified, Envoy will reject connections without a valid and matching SNI.
   google.protobuf.BoolValue require_sni = 3;
+
+  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
+  // key is used to encrypt new tickets that are created.  All keys are candidates
+  // for decrypting received tickets.
+  repeated DataSource tls_session_ticket_key = 4;
 }
