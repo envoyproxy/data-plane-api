@@ -479,4 +479,7 @@ message RouteConfiguration {
   // may which to override the default behavior in certain cases (for example
   // when using CDS with a static route table).
   google.protobuf.BoolValue validate_clusters = 7;
+
+  // The current revision of the route configuration.
+  string revision = 8;
 }
