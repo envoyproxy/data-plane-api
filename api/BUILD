@@ -60,8 +60,8 @@ api_proto_library(
         ":address",
         ":base",
         ":health_check",
-        ":tls_context",
         ":protocol",
+        ":tls_context",
     ],
 )
 
