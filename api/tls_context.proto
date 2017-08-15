@@ -105,4 +105,8 @@ message DownstreamTlsContext {
   // Multiple TLS certificates can be associated with the same context, e.g. to
   // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
   repeated TlsCertificate tls_certificates = 2;
+
+  // If specified, Envoy will reject connections without a valid client
+  // certificate.
+  google.protobuf.BoolValue require_client_certificate = 3;
 }

@@ -161,7 +161,7 @@ message HttpFilter {
 
   message DeprecatedV1 {
     string type = 1;
-  };
+  }
   DeprecatedV1 deprecated_v1 = 3;
 }
 
