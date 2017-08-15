@@ -39,6 +39,11 @@ message Filter {
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
   google.protobuf.Struct config = 2;
+
+  message DeprecatedV1 {
+    string type = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 3;
 }
 
 // Specifies the match criteria for selecting a specific filter chain for a
@@ -71,6 +76,10 @@ message FilterChainMatch {
   // is contained in at least one of the specified ports. If the parameter is
   // not specified, the source port is ignored.
   repeated google.protobuf.UInt32Value source_ports = 7;
+
+  // Optional destination port to consider when use_original_dst is set on the
+  // listener in determining a filter chain match.
+  google.protobuf.UInt32Value destination_port = 8;
 }
 
 // Grouping of FilterChainMatch criteria, DownstreamTlsContext, the actual filter chain
@@ -82,7 +91,7 @@ message FilterChain {
   // connections established with the listener. Order matters as the filters are
   // processed sequentially as connection events happen.  Note: If the filter
   // list is empty, the connection will close by default.
-  repeated Filter filter_chain = 3;
+  repeated Filter filters = 3;
 
   // Whether the listener should expect a PROXY protocol V1 header on new
   // connections. If this option is enabled, the listener will assume that that
@@ -131,4 +140,17 @@ message Listener {
   // UUID for internal use. The name is used for dynamic listener update and removal
   // via the LDS APIs.
   string name = 6;
+
+  message DeprecatedV1 {
+    // Whether the listener should bind to the port. A listener that doesn’t
+    // bind can only receive connections redirected from other listeners that
+    // set use_original_dst parameter to true. Default is true.
+    //
+    // [V2-API-DIFF] This is deprecated in v2, all Listeners will bind to their
+    // port. An additional filter chain must be created for every original
+    // destination port this listener may redirect to in v2, with the original
+    // port specified in the FilterChainMatch destination_port field.
+    google.protobuf.BoolValue bind_to_port = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 7;
 }
