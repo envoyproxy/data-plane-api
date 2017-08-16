@@ -106,8 +106,13 @@ message FilterChain {
 }
 
 message Listener {
+  // The unique name of the listener. If no name is provided, Envoy will generate a
+  // UUID for internal use. The name is used for dynamic listener update and removal
+  // via the LDS APIs.
+  string name = 1;
+
   // The address that the listener should listen on.
-  UnresolvedAddress address = 1;
+  Address address = 2;
 
   // A list of filter chains to consider for this listener. The FilterChain with
   // the most specific FilterChainMatch criteria is used on a connection. The
@@ -121,25 +126,20 @@ message Listener {
   //    a tie.
   // 3. The longest suffix match on the bound destination address is used to
   //    select the FilterChain from step 2 that is used.
-  repeated FilterChain filter_chains = 2;
+  repeated FilterChain filter_chains = 3;
 
   // If a connection is redirected using iptables, the port on which the proxy
   // receives it might be different from the original destination port. When
   // this flag is set to true, the listener uses the original destination
   // address and port during FilterChain matching. Default is false.
-  google.protobuf.BoolValue use_original_dst = 3;
+  google.protobuf.BoolValue use_original_dst = 4;
 
   // Soft limit on size of the listener’s new connection read and write buffers.
   // If unspecified, an implementation defined default is applied (1MiB).
-  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 4;
+  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
 
   // See base.Metadata description.
-  Metadata metadata = 5;
-
-  // The unique name of the listener. If no name is provided, Envoy will generate a
-  // UUID for internal use. The name is used for dynamic listener update and removal
-  // via the LDS APIs.
-  string name = 6;
+  Metadata metadata = 6;
 
   message DeprecatedV1 {
     // Whether the listener should bind to the port. A listener that doesn’t

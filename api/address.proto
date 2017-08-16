@@ -10,10 +10,14 @@ message Pipe {
   string path = 1;
 }
 
-// Unresolved addresses contain either named hosts or ports that require
-// resolution via DNS or an optional custom Resolver.
-message UnresolvedAddress {
-  message NamedAddress {
+// Addresses specify either a logical or physical address and port, which are
+// used to tell Envoy where to bind/listen, connect to upstream and find
+// management servers. They may optionally name a resolver that will be used at
+// runtime for further transformation. Resolution may also be performed in a
+// context dependent manner, e.g. when an Address is used for an upstream
+// logical DNS host.
+message Address {
+  message SocketAddress {
     enum Protocol {
       TCP = 0;
     }
@@ -25,47 +29,19 @@ message UnresolvedAddress {
     // DNS.
     string address = 2;
     oneof port_specifier {
-      google.protobuf.UInt32Value port = 3;
-      string service_name = 4;
+      uint32 port_value = 3;
+      // This is only valid if DNS SRV or if resolver_name is specified below
+      // and the named resolver is capable of named port resolution.
+      string named_port = 4;
     }
   }
-  // Support pluggable resolvers.
-  message Resolver {
-    // Name of the resolver. This must have been registered with Envoy.
-    string name = 1;
-    // TODO(htuch): Do we need further extensibility or should we collapse
-    // Resolver to a string?
-  }
-  // If not specified, the default DNS resolver is used.
-  Resolver resolver = 1;
+  // Name of the resolver. This must have been registered with Envoy. If this is
+  // empty, a context dependent default applies. If the address is expected to
+  // be a hostname, it will be DNS resolution. If the address is expected to be
+  // a concrete IP address, no resolution will occur.
+  string resolver_name = 1;
   oneof address {
-    NamedAddress named_address = 2;
+    SocketAddress named_address = 2;
     Pipe pipe = 3;
   }
-}
-
-message UnresolvedAddresses {
-  repeated UnresolvedAddress addresses = 1;
-}
-
-// A ResolvedAddress identifies a concrete socket or UDS path and is not subject
-// to further resolution via DNS or custom resolvers.
-message ResolvedAddress {
-  message SocketAddress {
-    enum Protocol {
-      TCP = 0;
-    }
-    Protocol protocol = 1;
-    // IP address as returned by inet_ntop().
-    string ip_address = 2;
-    google.protobuf.UInt32Value port = 3;
-  }
-  oneof address {
-    SocketAddress socket_address = 2;
-    Pipe pipe = 3;
-  }
-}
-
-message ResolvedAddresses {
-  repeated ResolvedAddress addresses = 1;
 }
