@@ -27,6 +27,13 @@ service ClusterDiscoveryService {
   }
 }
 
+// An extensible structure containing the address Envoy should bind to when establishing upstream
+// connections.
+message UpstreamBindConfig {
+  // The address Envoy should bind to when establishing upstream connections.
+  Address source_address = 1;
+}
+
 // Circuit breaking settings can be specified individually for each defined
 // priority.
 message CircuitBreakers {
@@ -217,4 +224,7 @@ message Cluster {
   // value defaults to 5000ms. For cluster types other than original_dst
   // this setting is ignored.
   google.protobuf.Duration cleanup_interval = 20;
+
+  // Optional configuration used to bind newly established upstream connections.
+  UpstreamBindConfig upstream_bind_config = 21;
 }
