@@ -10,13 +10,6 @@ import "api/address.proto";
 import "api/base.proto";
 import "api/cds.proto";
 
-// An extensible structure containing the address Envoy should bind to when establishing upstream
-// connections.
-message UpstreamBindConfig {
-  // The address Envoy should bind to when establishing upstream connections.
-  ResolvedAddress source_address = 1;
-}
-
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
@@ -33,7 +26,5 @@ message Bootstrap {
   // to know how to speak to the management server. These cluster definitions
   // may not use EDS (i.e. they should be static IP or DNS-based).
   repeated Cluster bootstrap_clusters = 5;
-  // Optional configuration used to bind newly established upstream connections.
-  UpstreamBindConfig upstream_bind_config = 6;
   // TODO(htuch): Add support for HDS.
 }
