@@ -37,7 +37,7 @@ message Node {
 }
 
 message Endpoint {
-  ResolvedAddress address = 1;
+  Address address = 1;
 }
 
 // Metadata provides additional inputs to filters based on matched listeners,

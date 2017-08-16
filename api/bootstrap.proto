@@ -14,7 +14,7 @@ import "api/cds.proto";
 // connections.
 message UpstreamBindConfig {
   // The address Envoy should bind to when establishing upstream connections.
-  ResolvedAddress source_address = 1;
+  Address source_address = 1;
 }
 
 message Bootstrap {
