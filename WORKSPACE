@@ -6,8 +6,8 @@ api_dependencies()
 
 git_repository(
     name = "protobuf_bzl",
-    # HEAD of master 5/8.
-    commit = "455b61c6b0f39ac269b26969877dd3c6f3e32270",
+    # v3.4.0
+    commit = "80a37e0782d2d702d52234b62dd4b9ec74fd2c95",
     remote = "https://github.com/google/protobuf.git",
 )
 
