@@ -10,38 +10,40 @@ message Pipe {
   string path = 1;
 }
 
+message SocketAddress {
+  enum Protocol {
+    TCP = 0;
+  }
+  Protocol protocol = 1;
+  // The address for this socket.  Listeners will bind to the address.  An empty
+  // address implies a bind to 0.0.0.0 or ::. It's still possible to distinguish on
+  // address via the prefix/suffix matching in FilterChainMatch after connection.
+  // For clusters, an address may be either an IP or hostname to be resolved via
+  // DNS.  If it is a hostname, resolve_name should be set.
+  string address = 2;
+  oneof port_specifier {
+    uint32 port_value = 3;
+    // This is only valid if DNS SRV or if resolver_name is specified below
+    // and the named resolver is capable of named port resolution.
+    string named_port = 4;
+  }
+  // The name of the resolver. This must have been registered with Envoy. If this is
+  // empty, a context dependent default applies. If address is a hostname this
+  // should be set.  If the address is a concrete IP address, no resolution will occur.
+  string resolver_name = 5;
+}
+
+message BindConfig {
+  // The address to bind to when creating a socket.
+  SocketAddress source_address = 1;
+}
+
 // Addresses specify either a logical or physical address and port, which are
 // used to tell Envoy where to bind/listen, connect to upstream and find
-// management servers. They may optionally name a resolver that will be used at
-// runtime for further transformation. Resolution may also be performed in a
-// context dependent manner, e.g. when an Address is used for an upstream
-// logical DNS host.
+// management servers.
 message Address {
-  message SocketAddress {
-    enum Protocol {
-      TCP = 0;
-    }
-    Protocol protocol = 1;
-    // For listeners, an empty address implies a bind to 0.0.0.0 or ::. It's
-    // still possible to distinguish on address via the prefix/suffix matching
-    // in FilterChainMatch after connection.
-    // For clusters, an address may be either an IP or hostname to be resolved via
-    // DNS.
-    string address = 2;
-    oneof port_specifier {
-      uint32 port_value = 3;
-      // This is only valid if DNS SRV or if resolver_name is specified below
-      // and the named resolver is capable of named port resolution.
-      string named_port = 4;
-    }
-  }
-  // Name of the resolver. This must have been registered with Envoy. If this is
-  // empty, a context dependent default applies. If the address is expected to
-  // be a hostname, it will be DNS resolution. If the address is expected to be
-  // a concrete IP address, no resolution will occur.
-  string resolver_name = 1;
   oneof address {
-    SocketAddress named_address = 2;
-    Pipe pipe = 3;
+    SocketAddress named_address = 1;
+    Pipe pipe = 2;
   }
 }
