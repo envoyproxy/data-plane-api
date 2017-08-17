@@ -226,5 +226,7 @@ message Cluster {
   google.protobuf.Duration cleanup_interval = 20;
 
   // Optional configuration used to bind newly established upstream connections.
-  UpstreamBindConfig upstream_bind_config = 21;
+  // This overrides any bind_config specified in the bootstrap proto.
+  // If the addres and port are empty, no bind will be performed.
+  BindConfig upstream_bind_config = 21;
 }
