@@ -43,7 +43,7 @@ message BindConfig {
 // management servers.
 message Address {
   oneof address {
-    SocketAddress named_address = 1;
+    SocketAddress socket_address = 1;
     Pipe pipe = 2;
   }
 }
