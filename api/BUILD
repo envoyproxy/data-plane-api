@@ -23,7 +23,6 @@ api_proto_library(
     name = "bootstrap",
     srcs = ["bootstrap.proto"],
     deps = [
-        ":address",
         ":base",
         ":cds",
     ],
