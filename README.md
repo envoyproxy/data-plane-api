@@ -29,9 +29,15 @@ Version 2 of the Envoy API will evolve existing APIs and introduce new APIs to:
 
 ## Status
 
-Draft work-in-progress. Input is welcome via issue filing. Small, localized PRs
-are also welcome, but any major changes or suggestions should be coordinated in
-a tracking issue with the authors.
+The LDS/CDS/EDS/RDS APIs are now frozen and will maintain backwards
+compatibility according to standard proto rules (e.g. new fields will not reuse
+tags, field types will not change, fields will not be renumbered, etc.).
+
+The remainder of the API (ADS, HDS, RLDS, filter fragments other than HTTP
+connection manager, the bootstrap proto) are draft work-in-progress. Input is
+welcome via issue filing. Small, localized PRs are also welcome, but any major
+changes or suggestions should be coordinated in a tracking issue with the
+authors.
 
 Implementation work has begun and work items are tracked at
 [here](https://github.com/lyft/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
