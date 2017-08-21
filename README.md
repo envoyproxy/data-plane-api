@@ -52,7 +52,11 @@ closed issue should also be included.
 
 * [Proto3](https://developers.google.com/protocol-buffers/docs/proto3) will be
   used to specify the canonical API. This will provide directly the gRPC API and
-  via gRPC-JSON transcoding the JSON REST API.
+  via gRPC-JSON transcoding the JSON REST API. A textual YAML input will be
+  supported for filesystem configuration files (e.g. the bootstrap file), in
+  addition to JSON, as a syntactic convenience. YAML file contents will be
+  internally converted to JSON and then follow the standard JSON-proto3
+  conversion during Envoy config ingestion.
 
 * xDS APIs should support eventual consistency. For example, if RDS references a
   cluster that has not yet been supplied by CDS, it should be silently ignored
