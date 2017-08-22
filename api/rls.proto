@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-service RateLimitDiscoveryService {
+service RateLimitService {
   // Determine whether rate limiting should take place.
   rpc ShouldRateLimit (RateLimitRequest) returns (RateLimitResponse) {}
 }
