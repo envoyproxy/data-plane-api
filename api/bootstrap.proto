@@ -9,25 +9,197 @@ package envoy.api.v2;
 import "api/address.proto";
 import "api/base.proto";
 import "api/cds.proto";
+import "api/lds.proto";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+
+message LightstepConfig {
+  // The cluster manager cluster that hosts the LightStep collectors.
+  string collector_cluster = 1;
+  // File containing the access token to the LightStep API.
+  string access_token_file = 2;
+}
+
+message ZipkinConfig {
+  // The cluster manager cluster that hosts the Zipkin collectors. Note that the
+  // Zipkin cluster must be defined under clusters in the cluster manager
+  // configuration section.
+  string collector_cluster = 1;
+  // The API endpoint of the Zipkin service where the spans will be sent. When
+  // using a standard Zipkin installation, the API endpoint is typically
+  // /api/v1/spans, which is the default value.
+  string collector_endpoint = 2;
+}
+
+message Tracing {
+  // Provides configuration for the HTTP tracer.
+  message Http {
+    oneof driver_specifier {
+      LightstepConfig lightstep_config = 1;
+      ZipkinConfig zipkin_config = 2;
+    }
+  }
+  Http http = 1;
+}
+
+message Admin {
+  // The path to write the access log for the administration server. If no
+  // access log is desired specify ‘/dev/null’.
+  string access_log_path = 1;
+  // The cpu profiler output path for the administration server. If no profile
+  // path is specified, the default is ‘/var/log/envoy/envoy.prof’.
+  string profile_path = 2;
+  // The TCP address that the administration server will listen on.
+  Address addresss = 3;
+}
+
+message ClusterManager {
+  // Name of the local cluster (i.e., the cluster that owns the Envoy running
+  // this configuration). In order to enable zone aware routing this option must
+  // be set. If local_cluster_name is defined then clusters must contain a
+  // definition of a cluster with the same name.
+  string local_cluster_name = 1;
+
+  // Optional global configuration for outlier detection.
+  message OutlierDetection {
+    string event_log_path = 1;
+  }
+  OutlierDetection outlier_detection = 2;
+
+  // Optional configuration used to bind newly established upstream connections.
+  // This may be overridden on a per-cluster basis by upstream_bind_config in the cds_config.
+  BindConfig upstream_bind_config = 3;
+}
+
+// Stats proto for built-in "envoy.statsd" sink.
+message StatsdSink {
+  oneof statsd_specifier {
+    // The UDP address of a running statsd compliant listener. If specified,
+    // statistics will be flushed to this address. 
+    Address address = 1;
+    // The name of a cluster manager cluster that is running a TCP statsd
+    // compliant listener. If specified, Envoy will connect to this cluster to
+    // flush statistics.
+    string tcp_cluster_name = 2;
+  }
+}
+
+message StatsSinks {
+  // The name of the stats sink to instantiate. The name must match a supported
+  // stats sink. "envoy.statsd" is a built-in sink suitable for emitting to
+  // statsd.
+  string name = 1;
+  // Stats sink specific configuration which depends on the sink being
+  // instantiated. See the supported sinks for further documentation.
+  google.protobuf.Struct config = 2;
+}
+
+message Watchdog {
+  // The duration after which Envoy counts a nonresponsive thread in the
+  // “server.watchdog_miss” statistic. If not specified the default is 200ms.
+  google.protobuf.Duration miss_timeout = 1;
+  // The duration after which Envoy counts a nonresponsive thread in the
+  // “server.watchdog_mega_miss” statistic. If not specified the default is
+  // 1000ms.
+  google.protobuf.Duration megamiss_timeout = 2;
+  // If a watched thread has been nonresponsive for this duration, assume a
+  // programming error and kill the entire Envoy process. Set to 0 to disable
+  // kill behavior. If not specified the default is 0 (disabled).
+  google.protobuf.Duration kill_timeout = 3;
+  // If at least two watched threads have been nonresponsive for at least this
+  // duration assume a true deadlock and kill the entire Envoy process. Set to 0
+  // to disable this behavior. If not specified the default is 0 (disabled).
+  google.protobuf.Duration multikill_timeout = 4;
+}
+
+message Runtime {
+  // The implementation assumes that the file system tree is accessed via a
+  // symbolic link. An atomic link swap is used when a new tree should be
+  // switched to. This parameter specifies the path to the symbolic link. Envoy
+  // will watch the location for changes and reload the file system tree when
+  // they happen.
+  string symlink_root = 1;
+  // Specifies the subdirectory to load within the root directory. This is
+  // useful if multiple systems share the same delivery mechanism. Envoy
+  // configuration elements can be contained in a dedicated subdirectory.
+  string subdirectory = 2;
+  // Specifies an optional subdirectory to load within the root directory. If
+  // specified and the directory exists, configuration values within this
+  // directory will override those found in the primary subdirectory. This is
+  // useful when Envoy is deployed across many different types of servers.
+  // Sometimes it is useful to have a per service cluster directory for runtime
+  // configuration. See below for exactly how the override directory is used.
+  string override_subdirectory = 3;
+}
+
+message RateLimitService {
+  // Specifies the cluster manager cluster name that hosts the rate limit
+  // service. The client will connect to this cluster when it needs to make rate
+  // limit service requests.
+  string cluster_name = 1;
+}
 
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
   Node node = 1;
-  // All Listeners are provided by a single LDS configuration source.
-  ConfigSource lds_config = 2;
-  // All post-bootstrap Cluster definitions are provided by a single CDS
-  // configuration source.
-  ConfigSource cds_config = 3;
-  // A single ADS source may be optionally specified. This must have api_type GRPC.
-  ApiConfigSource ads_config = 4;
-  // If a network based configuration source is specified for cds_config, it's
-  // necessary to have some initial cluster definitions available to allow Envoy
-  // to know how to speak to the management server. These cluster definitions
-  // may not use EDS (i.e. they should be static IP or DNS-based).
-  repeated Cluster bootstrap_clusters = 5;
-  // Optional configuration used to bind newly established upstream connections.
-  // This may be overridden on a per-cluster basis by upstream_bind_config in the cds_config.
-  BindConfig upstream_bind_config = 6;
-  // TODO(htuch): Add support for HDS.
+
+  // Statically specified resources.
+  message StaticResources {
+    repeated Listener listeners = 1;
+    // If a network based configuration source is specified for cds_config, it's
+    // necessary to have some initial cluster definitions available to allow Envoy
+    // to know how to speak to the management server. These cluster definitions
+    // may not use EDS (i.e. they should be static IP or DNS-based).
+    repeated Cluster clusters = 2;
+  }
+  StaticResources static_resources = 2;
+
+  // xDS configuration sources.
+  message DynamicResources {
+    // All Listeners are provided by a single LDS configuration source.
+    ConfigSource lds_config = 3;
+    // All post-bootstrap Cluster definitions are provided by a single CDS
+    // configuration source.
+    ConfigSource cds_config = 4;
+    // A single ADS source may be optionally specified. This must have api_type GRPC.
+    ApiConfigSource ads_config = 5;
+  }
+  DynamicResources dynamic_resources = 3;
+
+  // Configuration for the cluster manager which owns all upstream clusters
+  // within the server.
+  ClusterManager cluster_manager = 4;
+
+  // Optional file system path to search for startup flag files.
+  string flags_path = 5;
+
+  // Optional set of stats sinks.
+  repeated StatsSinks stats_sinks = 6;
+
+  // Optional duration between flushes to configured stats sinks. For
+  // performance reasons Envoy latches counters and only flushes counters and
+  // gauges at a periodic interval. If not specified the default is 5000ms (5
+  // seconds).
+  google.protobuf.Duration flush_interval = 7;
+
+  // Optional watchdog configuration.
+  Watchdog watchdog = 8;
+
+  // Configuration for an external tracing provider. If not specified, no
+  // tracing will be performed.
+  Tracing tracing = 9;
+
+  // Configuration for an external rate limit service provider. If not
+  // specified, any calls to the rate limit service will immediately return
+  // success.
+  RateLimitService rate_limit_service = 10;
+
+  // Configuration for the runtime configuration provider. If not specified, a
+  // “null” provider will be used which will result in all defaults being used.
+  Runtime runtime = 11;
+
+  // Configuration for the local administration HTTP server.
+  Admin admin = 12;
 }

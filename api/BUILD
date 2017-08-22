@@ -26,6 +26,7 @@ api_proto_library(
         ":address",
         ":base",
         ":cds",
+        ":lds",
     ],
 )
 
@@ -104,8 +105,8 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "rlds",
-    srcs = ["rlds.proto"],
+    name = "rls",
+    srcs = ["rls.proto"],
     has_services = 1,
 )
 
