@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     "envoy.api.v2.ListenerDiscoveryService.StreamListeners",
     "envoy.api.v2.RouteDiscoveryService.FetchRoutes",
     "envoy.api.v2.RouteDiscoveryService.StreamRoutes",
-    "envoy.api.v2.RateLimitDiscoveryService.ShouldRateLimit",
+    "envoy.api.v2.RateLimitService.ShouldRateLimit",
   };
 
   for (const auto& method : methods) {
