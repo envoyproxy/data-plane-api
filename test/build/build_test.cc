@@ -5,7 +5,7 @@
 #include "api/eds.pb.h"
 #include "api/hds.pb.h"
 #include "api/lds.pb.h"
-#include "api/rlds.pb.h"
+#include "api/rls.pb.h"
 #include "api/rds.pb.h"
 
 // Basic C++ build/link validation for the v2 xDS APIs.
