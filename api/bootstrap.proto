@@ -35,10 +35,13 @@ message ZipkinConfig {
 message Tracing {
   // Provides configuration for the HTTP tracer.
   message Http {
-    oneof driver_specifier {
-      LightstepConfig lightstep_config = 1;
-      ZipkinConfig zipkin_config = 2;
-    }
+    // The name of the HTTP trace driver to instantiate. The name must match a
+    // supported HTTP trace driver. "envoy.lightstep" and "envoy.zipkin" are built-in
+    // trace drivers.
+    string name = 1;
+    // Trace driver specific configuration which depends on the driver being
+    // instantiated. See the trace drivers for further documentation.
+    google.protobuf.Struct config = 2;
   }
   Http http = 1;
 }
@@ -51,7 +54,7 @@ message Admin {
   // path is specified, the default is ‘/var/log/envoy/envoy.prof’.
   string profile_path = 2;
   // The TCP address that the administration server will listen on.
-  Address addresss = 3;
+  Address address = 3;
 }
 
 message ClusterManager {
@@ -85,7 +88,7 @@ message StatsdSink {
   }
 }
 
-message StatsSinks {
+message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
   // stats sink. "envoy.statsd" is a built-in sink suitable for emitting to
   // statsd.
@@ -159,12 +162,18 @@ message Bootstrap {
   // xDS configuration sources.
   message DynamicResources {
     // All Listeners are provided by a single LDS configuration source.
-    ConfigSource lds_config = 3;
+    ConfigSource lds_config = 1;
     // All post-bootstrap Cluster definitions are provided by a single CDS
     // configuration source.
-    ConfigSource cds_config = 4;
+    ConfigSource cds_config = 2;
     // A single ADS source may be optionally specified. This must have api_type GRPC.
-    ApiConfigSource ads_config = 5;
+    ApiConfigSource ads_config = 3;
+
+    message DeprecatedV1 {
+      // This is the global SDS config when using v1 REST for CDS/EDS.
+      ConfigSource sds_config = 1;
+    }
+    DeprecatedV1 deprecated_v1 = 4;
   }
   DynamicResources dynamic_resources = 3;
 
@@ -176,13 +185,13 @@ message Bootstrap {
   string flags_path = 5;
 
   // Optional set of stats sinks.
-  repeated StatsSinks stats_sinks = 6;
+  repeated StatsSink stats_sinks = 6;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and
   // gauges at a periodic interval. If not specified the default is 5000ms (5
   // seconds).
-  google.protobuf.Duration flush_interval = 7;
+  google.protobuf.Duration stats_flush_interval = 7;
 
   // Optional watchdog configuration.
   Watchdog watchdog = 8;
