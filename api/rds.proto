@@ -101,6 +101,16 @@ message RouteMatch {
   repeated HeaderMatcher headers = 6;
 }
 
+message CorsPolicy {
+  string allow_origin = 1;
+  string allow_methods = 2;
+  string allow_headers = 3;
+  string expose_headers = 4;
+  string max_age = 5;
+  google.protobuf.BoolValue allow_credentials = 6;
+  google.protobuf.BoolValue enabled = 7;
+}
+
 message RouteAction {
   oneof cluster_specifier {
     // Indicates the upstream cluster to which the request should be routed
@@ -251,6 +261,8 @@ message RouteAction {
   // Redirects, timeouts and retries are not supported on routes where
   // websocket upgrades are allowed.
   google.protobuf.BoolValue use_websocket = 16;
+
+  CorsPolicy cors = 17;
 }
 
 message RedirectAction {
@@ -438,6 +450,8 @@ message VirtualHost {
   // handled by this virtual host. In the presence of duplicate header keys,
   // precedence rules apply.
   repeated HeaderValueOption request_headers_to_add = 7;
+
+  CorsPolicy cors = 8;
 }
 
 message RouteConfiguration {
