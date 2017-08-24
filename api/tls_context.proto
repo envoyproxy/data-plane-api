@@ -44,7 +44,7 @@ message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use
   // in verifying a presented certificate. If not specified and a certificate is
   // presented it will not be verified.
-  DataSource ca_cert = 1;
+  DataSource trusted_ca = 1;
 
   // If specified, Envoy will verify (pin) hex-encoded SHA-256 hash of
   // the presented certificate.
