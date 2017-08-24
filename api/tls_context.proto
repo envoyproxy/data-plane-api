@@ -109,4 +109,7 @@ message DownstreamTlsContext {
   // If specified, Envoy will reject connections without a valid client
   // certificate.
   google.protobuf.BoolValue require_client_certificate = 3;
+
+  // If specified, Envoy will reject connections without a valid and matching SNI.
+  google.protobuf.BoolValue require_sni = 4;
 }
