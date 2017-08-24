@@ -36,8 +36,9 @@ message TlsParameters {
 message TlsCertificate {
   DataSource certificate_chain = 1;
   DataSource private_key = 2;
-  DataSource ocsp_staple = 3;
-  repeated DataSource signed_certificate_timestamp = 4;
+  DataSource password = 3;
+  DataSource ocsp_staple = 4;
+  repeated DataSource signed_certificate_timestamp = 5;
 }
 
 message CertificateValidationContext {
