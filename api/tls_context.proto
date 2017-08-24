@@ -34,17 +34,18 @@ message TlsParameters {
 // TLS certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
 // be loaded from either.
 message TlsCertificate {
-  DataSource cert_chain = 1;
+  DataSource certificate_chain = 1;
   DataSource private_key = 2;
-  DataSource ocsp_staple = 3;
-  repeated DataSource signed_certificate_timestamp = 4;
+  DataSource password = 3;
+  DataSource ocsp_staple = 4;
+  repeated DataSource signed_certificate_timestamp = 5;
 }
 
 message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use
   // in verifying a presented certificate. If not specified and a certificate is
   // presented it will not be verified.
-  DataSource ca_cert = 1;
+  DataSource trusted_ca = 1;
 
   // If specified, Envoy will verify (pin) hex-encoded SHA-256 hash of
   // the presented certificate.
@@ -106,4 +107,7 @@ message DownstreamTlsContext {
   // If specified, Envoy will reject connections without a valid client
   // certificate.
   google.protobuf.BoolValue require_client_certificate = 2;
+
+  // If specified, Envoy will reject connections without a valid and matching SNI.
+  google.protobuf.BoolValue require_sni = 3;
 }

@@ -79,7 +79,7 @@ message ClusterManager {
 message StatsdSink {
   oneof statsd_specifier {
     // The UDP address of a running statsd compliant listener. If specified,
-    // statistics will be flushed to this address. 
+    // statistics will be flushed to this address.
     Address address = 1;
     // The name of a cluster manager cluster that is running a TCP statsd
     // compliant listener. If specified, Envoy will connect to this cluster to
@@ -136,7 +136,7 @@ message Runtime {
   string override_subdirectory = 3;
 }
 
-message RateLimitService {
+message RateLimitServiceConfig {
   // Specifies the cluster manager cluster name that hosts the rate limit
   // service. The client will connect to this cluster when it needs to make rate
   // limit service requests.
@@ -203,7 +203,7 @@ message Bootstrap {
   // Configuration for an external rate limit service provider. If not
   // specified, any calls to the rate limit service will immediately return
   // success.
-  RateLimitService rate_limit_service = 10;
+  RateLimitServiceConfig rate_limit_service = 10;
 
   // Configuration for the runtime configuration provider. If not specified, a
   // “null” provider will be used which will result in all defaults being used.
