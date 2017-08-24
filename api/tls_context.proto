@@ -34,7 +34,7 @@ message TlsParameters {
 // TLS certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
 // be loaded from either.
 message TlsCertificate {
-  DataSource cert_chain = 1;
+  DataSource certificate_chain = 1;
   DataSource private_key = 2;
   DataSource ocsp_staple = 3;
   repeated DataSource signed_certificate_timestamp = 4;
