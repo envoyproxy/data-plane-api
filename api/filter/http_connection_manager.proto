@@ -148,6 +148,14 @@ message AccessLog {
 
   // Filter which is used to determine if the access log needs to be written.
   AccessLogFilter filter = 3;
+
+  // The name of the access log implementation to instantiate. The name must match
+  // a supported access log.
+  string name = 6;
+
+  // Implementation specific configuration which depends on the access log being
+  // instantiated. See the supported access logs for further documentation.
+  google.protobuf.Struct config = 7;
 }
 
 message HttpFilter {
