@@ -72,11 +72,15 @@ message CommonTlsContext {
   // TLS protocol versions, cipher suites etc.
   TlsParameters tls_params = 1;
 
-  // Protocols to negotiate over ALPN
-  repeated string alpn_protocols = 2;
+  // Multiple TLS certificates can be associated with the same context,
+  // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
+  repeated TlsCertificate tls_certificates = 2;
 
   // How to validate peer certificates.
   CertificateValidationContext validation_context = 3;
+
+  // Protocols to negotiate over ALPN
+  repeated string alpn_protocols = 4;
 
   // These fields are deprecated and only are used during the interim v1 -> v2
   // transition period for internal purposes. They should not be used outside of
@@ -84,17 +88,14 @@ message CommonTlsContext {
   message DeprecatedV1 {
     string alt_alpn_protocols = 1;
   }
-  DeprecatedV1 deprecated_v1 = 4;
+  DeprecatedV1 deprecated_v1 = 5;
 }
 
 message UpstreamTlsContext {
   CommonTlsContext common_tls_context = 1;
 
-  // Client certificate to present to backend.
-  TlsCertificate client_certificate = 2;
-
   // SNI string to use when creating TLS backend connections.
-  string sni = 3;
+  string sni = 2;
 }
 
 // [V2-API-DIFF] This has been reworked to support alternative modes of
@@ -103,14 +104,10 @@ message UpstreamTlsContext {
 message DownstreamTlsContext {
   CommonTlsContext common_tls_context = 1;
 
-  // Multiple TLS certificates can be associated with the same context, e.g. to
-  // allow both RSA and ECDSA certificates for the same SNI [V2-API-DIFF].
-  repeated TlsCertificate tls_certificates = 2;
-
   // If specified, Envoy will reject connections without a valid client
   // certificate.
-  google.protobuf.BoolValue require_client_certificate = 3;
+  google.protobuf.BoolValue require_client_certificate = 2;
 
   // If specified, Envoy will reject connections without a valid and matching SNI.
-  google.protobuf.BoolValue require_sni = 4;
+  google.protobuf.BoolValue require_sni = 3;
 }
