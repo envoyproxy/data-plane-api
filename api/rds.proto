@@ -102,12 +102,20 @@ message RouteMatch {
 }
 
 message CorsPolicy {
+  // Specifies the origins that will be allowed to do CORS requests.
+  // Can be "*" to match any origin or a list of space separated origins.
   string allow_origin = 1;
+  // Specifies the content for the access-control-allow-methods header.
   string allow_methods = 2;
+  // Specifies the content for the access-control-allow-headers header.
   string allow_headers = 3;
+  // Specifies the content for the access-control-expose-headers header.
   string expose_headers = 4;
+  // Specifies the content for the access-control-max-age header.
   string max_age = 5;
+  // Specifies whether the resource allows credentials.
   google.protobuf.BoolValue allow_credentials = 6;
+  // Specifies if CORS is enabled.
   google.protobuf.BoolValue enabled = 7;
 }
 
@@ -262,6 +270,7 @@ message RouteAction {
   // websocket upgrades are allowed.
   google.protobuf.BoolValue use_websocket = 16;
 
+  // Indicates that the route has a CORS policy.
   CorsPolicy cors = 17;
 }
 
@@ -451,6 +460,7 @@ message VirtualHost {
   // precedence rules apply.
   repeated HeaderValueOption request_headers_to_add = 7;
 
+  // Indicates that the virtual host has a CORS policy.
   CorsPolicy cors = 8;
 }
 
