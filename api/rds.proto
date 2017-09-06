@@ -103,8 +103,7 @@ message RouteMatch {
 
 message CorsPolicy {
   // Specifies the origins that will be allowed to do CORS requests.
-  // Can be "*" to match any origin or a list of space separated origins.
-  string allow_origin = 1;
+  repeated string allow_origin = 1;
   // Specifies the content for the access-control-allow-methods header.
   string allow_methods = 2;
   // Specifies the content for the access-control-allow-headers header.
@@ -115,7 +114,7 @@ message CorsPolicy {
   string max_age = 5;
   // Specifies whether the resource allows credentials.
   google.protobuf.BoolValue allow_credentials = 6;
-  // Specifies if CORS is enabled.
+  // Specifies if CORS is enabled. Defaults to true. Only effective on route.
   google.protobuf.BoolValue enabled = 7;
 }
 
