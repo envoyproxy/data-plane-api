@@ -120,7 +120,7 @@ message FileAccessLog {
 
 // Custom configuration for an AccessLog that sends logs to an RPC endpoint.
 //
-// When logging to an RPC endpoint all of the named fields in accesslog.proto
+// When logging to an RPC endpoint, all of the named fields in accesslog.proto
 // are populated by default if the relevant data is available for the logged
 // request. Additional headers desired for logging can be specified in the
 // HeaderSelection.
