@@ -99,63 +99,54 @@ message HeaderSelection {
   repeated string response_headers = 2;
 }
 
+// Custom configuration for an AccessLog that writes log entries directly to a file.
+// Configures the built-in "envoy.file_access_log" AccessLog.
+message FileAccessLog {
+  // A path to a local file to which to write the access log entries.
+  string path = 1;
+
+  // [V2-API-DIFF] In addition to the existing format specifiers, the following
+  // additional specifiers will be available:
+  // %TLS_SNI_HOSTNAME%: SNI from handshake.
+  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
+  //     “TLSv1.2”, “TLSv1.3”.
+  // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
+  //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+  // can be accessed in the format specifier.
+  string format = 2;
+}
+
+// Custom configuration for an AccessLog that sends logs to an RPC endpoint.
+//
+// When logging to an RPC endpoint all of the named fields in accesslog.proto
+// are populated by default if the relevant data is available for the logged
+// request. Additional headers desired for logging can be specified in the
+// HeaderSelection.
+message RpcAccessLog {
+  // The name of an upstream cluster that hosts RPC endpoints for the
+  // AccessLog sink. The cluster must provide an endpoint capable of
+  // receiving the AccessLog API. The exact flavor of API spoken will
+  // depend on the statically registered log interface module specified
+  // in Envoy's startup configuration.
+  string cluster = 1;
+
+  // Extra headers to include when RPC logging.
+  HeaderSelection headers = 2;
+}
+
 message AccessLog {
-  // Destination location the access log is written to.
-  //
-  // Envoy supports logging to both RPC endpoints and local disk files.
-  // Behavior is set by choosing which of these is used:
-  oneof destination {
-    // A path to a local file
-    string path = 1;
-    // The name of an upstream cluster that hosts RPC endpoints for the
-    // AccessLog sink. The cluster must provide an endpoint capable of
-    // receiving the AccessLog API. The exact flavor of API spoken will
-    // depend on the statically registered log interface module specified
-    // in Envoy's startup configuration.
-    string cluster = 5;
-  }
-
-  // Content included in log entries.
-  //
-  // When logging to a file this is a format string which specifies what is
-  // included.
-  //
-  // When logging to an RPC endpoint all of the named fields in accesslog.proto
-  // are populated by default if the relevant data is available for the logged
-  // request. Additional headers desired for logging can be specified in the
-  // HeaderSelection.
-  oneof content {
-    // Access log format for file logging.
-    //
-    // Envoy supports custom access log formats as well as a
-    // default format.
-    //
-    // [V2-API-DIFF] In addition to the existing format specifiers, the following
-    // additional specifiers will be available:
-    // %TLS_SNI_HOSTNAME%: SNI from handshake.
-    // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
-    //     “TLSv1.2”, “TLSv1.3”.
-    // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
-    //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
-    //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
-    // TODO(htuch): Document how envoy.http_connection_manager.access_log values
-    // can be accessed in the format specifier.
-    string format = 2;
-
-    // Extra headers to include when RPC logging.
-    HeaderSelection headers = 4;
-  }
+  // The name of the access log implementation to instantiate. The name must
+  // match a statically registered access log.
+  string name = 1;
 
   // Filter which is used to determine if the access log needs to be written.
-  AccessLogFilter filter = 3;
+  AccessLogFilter filter = 2;
 
-  // The name of the access log implementation to instantiate. The name must match
-  // a supported access log.
-  string name = 6;
-
-  // Implementation specific configuration which depends on the access log being
-  // instantiated. See the supported access logs for further documentation.
-  google.protobuf.Struct config = 7;
+  // Custom configuration that depends on the access log being instantiated.
+  // See the supported AccessLogs for further documentation.
+  google.protobuf.Struct config = 3;
 }
 
 message HttpFilter {
