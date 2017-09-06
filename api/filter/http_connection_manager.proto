@@ -91,14 +91,6 @@ message AccessLogFilter {
   }
 }
 
-// Extra headers to include when doing AccessLogs via proto format.
-message HeaderSelection {
-  // Request headers to include in the AccessLog.
-  repeated string request_headers = 1;
-  // Response headers to include in the AccessLog.
-  repeated string response_headers = 2;
-}
-
 // Custom configuration for an AccessLog that writes log entries directly to a file.
 // Configures the built-in "envoy.file_access_log" AccessLog.
 message FileAccessLog {
@@ -116,24 +108,6 @@ message FileAccessLog {
   // TODO(htuch): Document how envoy.http_connection_manager.access_log values
   // can be accessed in the format specifier.
   string format = 2;
-}
-
-// Custom configuration for an AccessLog that sends logs to an RPC endpoint.
-//
-// When logging to an RPC endpoint, all of the named fields in accesslog.proto
-// are populated by default if the relevant data is available for the logged
-// request. Additional headers desired for logging can be specified in the
-// HeaderSelection.
-message RpcAccessLog {
-  // The name of an upstream cluster that hosts RPC endpoints for the
-  // AccessLog sink. The cluster must provide an endpoint capable of
-  // receiving the AccessLog API. The exact flavor of API spoken will
-  // depend on the statically registered log interface module specified
-  // in Envoy's startup configuration.
-  string cluster = 1;
-
-  // Extra headers to include when RPC logging.
-  HeaderSelection headers = 2;
 }
 
 message AccessLog {

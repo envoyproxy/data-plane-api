@@ -3,12 +3,6 @@ load("//bazel:api_build_system.bzl", "api_proto_library")
 licenses(["notice"])  # Apache 2
 
 api_proto_library(
-    name = "accesslog",
-    srcs = ["accesslog.proto"],
-    deps = [":base"],
-)
-
-api_proto_library(
     name = "address",
     srcs = ["address.proto"],
 )
