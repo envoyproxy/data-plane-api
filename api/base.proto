@@ -160,6 +160,10 @@ message DiscoveryResponse {
   // * --dry-run-canary. When set, a canary response will never be applied, only
   //   validated via a dry run.
   bool canary = 3;
+  // Type URL for resources. This must be consistent with the type_url in the
+  // Any messages for resources if resources is non-empty. This effectively
+  // identifies the xDS API when muxing over ADS.
+  string type_url = 4;
 }
 
 message ApiConfigSource {
