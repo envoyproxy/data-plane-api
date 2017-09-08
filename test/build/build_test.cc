@@ -1,12 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "api/cds.pb.h"
-#include "api/eds.pb.h"
-#include "api/hds.pb.h"
-#include "api/lds.pb.h"
-#include "api/rls.pb.h"
-#include "api/rds.pb.h"
+#include "google/protobuf/descriptor.h"
 
 // Basic C++ build/link validation for the v2 xDS APIs.
 int main(int argc, char *argv[]) {
