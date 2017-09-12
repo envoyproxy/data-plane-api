@@ -217,6 +217,50 @@ message HttpConnectionManager {
     // used to populate the tag value. The tag is created if the specified
     // header name is present in the request’s headers.
     repeated string request_headers_for_tags = 2;
+
+    // Criteria for identifying a request to be decorated
+    message DecoratorMatch {
+      // A path specifier must be present.
+      oneof path_specifier {
+        // If specified, this is a prefix rule meaning that the prefix must
+        // match the beginning of the :path header.
+        string prefix = 1;
+
+        // If specified, this is an exact path rule meaning that the path must
+        // exactly match the :path header once the query string is removed.
+        string path = 2;
+
+        // If specified, this is a regular expression match on the :path header
+        // once the query string is removed.
+        string regex = 3;
+      }
+      // Indicates that prefix/path matching should be case insensitive. The default
+      // is true.
+      google.protobuf.BoolValue case_sensitive = 4;
+
+      // The HTTP method to match. If not specified, then method won't be considered
+      // as part of the matching.
+      enum HttpMethod {
+        UNDEFINED = 0;
+        OPTIONS = 1;
+        GET = 2;
+        HEAD = 3;
+        POST = 4;
+        PUT = 5;
+        DELETE = 6;
+        TRACE = 7;
+        CONNECT = 8;
+      }
+      HttpMethod method = 5;
+    }
+
+    message Decorator {
+      DecoratorMatch match = 1;
+
+      // The tracing operation (or span name) to be used for the matched criteria.
+      string operation = 2;
+    }
+    repeated Decorator decorators = 3;
   }
   Tracing tracing = 7;
 
