@@ -263,7 +263,7 @@ message RedirectAction {
 }
 
 message Decorator {
-  // The tracing operation (or span name) to be used for the matched route.
+  // The operation (or span name) to be used for the matched route.
   string operation = 1;
 }
 
@@ -282,7 +282,7 @@ message Route {
   // See base.Metadata description.
   Metadata metadata = 4;
 
-  // Decorator for matched route
+  // Decorator for matched route.
   Decorator decorator = 5;
 }
 
