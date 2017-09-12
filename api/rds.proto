@@ -283,6 +283,11 @@ message RedirectAction {
   string path_redirect = 2;
 }
 
+message Decorator {
+  // The operation (or span name) to be used for the matched route.
+  string operation = 1;
+}
+
 // The match/action distinction in Route is surfaced explicitly in the v2 API
 // [V2-API-DIFF].
 message Route {
@@ -297,6 +302,9 @@ message Route {
 
   // See base.Metadata description.
   Metadata metadata = 4;
+
+  // Decorator for matched route.
+  Decorator decorator = 5;
 }
 
 // A virtual cluster is a way of specifying a regex matching rule against
