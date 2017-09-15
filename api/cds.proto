@@ -11,6 +11,7 @@ import "api/tls_context.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 // Return list of all clusters this proxy will load balance to.
@@ -230,4 +231,44 @@ message Cluster {
   // This overrides any bind_config specified in the bootstrap proto.
   // If the addres and port are empty, no bind will be performed.
   BindConfig upstream_bind_config = 21;
+
+  // Optionally divide the endpoints in this cluster into subsets defined by
+  // endpoint metadata and selected by route and weighted cluster metadata.
+  message LbSubsetConfig {
+    // The behavior used when no endpoint subset matches the selected route's
+    // metadata. The options are no_fallback, any_endpoint, or default_subset.
+    // The value defaults to no_fallback. If no_fallback is selected, a result
+    // equivalent to no healthy hosts is reported. If any_endpoint is selected,
+    // any cluster endpoint may be returned (subject to policy, health checks,
+    // etc). If default_subset is selected, load balancing is performed over the
+    // endpoints matching the values in default_subset.
+    enum LbSubsetFallbackPolicy {
+      NO_FALLBACK = 0;
+      ANY_ENDPOINT = 1;
+      DEFAULT_SUBSET = 2;
+    }
+    LbSubsetFallbackPolicy fallback_policy = 1;
+
+    // Specifies the default subset of endpoints used during fallback if
+    // fallback_policy is default_subset. Each field in default_subset is
+    // compared to the matching LbEndpoint.Metadata under the "envoy.lb"
+    // namespace. It is valid for no hosts to match, in which case the behavior
+    // is the same as a fallback_policy of no_fallback.
+    google.protobuf.Struct default_subset = 2;
+
+    // Specifications for subsets. For each entry, LbEndpoint.Metadata's
+    // "envoy.lb" namespace is traversed and a subset is created for each unique
+    // combination of key and value. For example:
+    // { "subset_keys": [
+    //     { "keys": [ "version" ] },
+    //     { "keys": [ "stage", "hardware_type" ] }
+    // ]}
+    // Subsets may overlap. In the case of overlapping subsets, the first
+    // matching subset is selected.
+    message LbSubsetKeys {
+      repeated string keys = 1;
+    }
+    repeated LbSubsetKeys subset_keys = 3;
+  }
+  LbSubsetConfig lb_subset_config = 22;
 }
