@@ -99,6 +99,38 @@ message StatsSink {
   google.protobuf.Struct config = 2;
 }
 
+// Designates a tag to strip from the tag extracted name and provide as a named
+// tag value for all statistics. This will only occur if a any part of the name
+// matches the regex provided with one or more capture groups.
+message TagSpecifier {
+  // Attaches an identifier to the tag values to identify the tag being in the
+  // sink. Envoy has a set of default names and regexes to extract dynamic
+  // portions of existing stats, which can be found in
+  // source/common/config/well_known_names.h in the Envoy repository. If a
+  // tag_name is provided in the config with an empty regex, Envoy will attempt
+  // to find that name in its set of defaults and use the accompanying regex.
+  string tag_name = 1;
+
+  // The first capture group identifies the portion of the name to remove. The
+  // second capture group (which will normally be nested inside the first)
+  // will designate the value of the tag for the statistic. If no second 
+  // capture group is provided, the first will also be used to set the value of
+  // the tag. All other capture groups will be ignored.
+  //
+  // For example:
+  //
+  // stat name: "cluster.foo_cluster.upstream_rq_timeout"
+  //
+  // tag name: "envoy.cluster_name" (one of many default stat regexes provided
+  // in Envoy)
+  //
+  // regex: "^cluster\.((.+?)\.)"
+  //
+  // Notice the regex will remove "foo_cluster.", but the tag value will be
+  // "foo_cluster".
+  string regex = 2;
+}
+
 message Watchdog {
   // The duration after which Envoy counts a nonresponsive thread in the
   // “server.watchdog_miss” statistic. If not specified the default is 200ms.
@@ -187,6 +219,11 @@ message Bootstrap {
 
   // Optional set of stats sinks.
   repeated StatsSink stats_sinks = 6;
+
+  // Each stat name is iteratively processed through these tag specifiers.
+  // When a tag is matched, the capture group is removed from the name so later
+  // TagSpecifiers cannot match that same substring.
+  repeated TagSpecifier stats_tags = 13;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and
