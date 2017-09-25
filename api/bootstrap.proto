@@ -109,6 +109,8 @@ message TagSpecifier {
   // source/common/config/well_known_names.h in the Envoy repository. If a
   // tag_name is provided in the config with an empty regex, Envoy will attempt
   // to find that name in its set of defaults and use the accompanying regex.
+  // Note: if any default tags are specified twice, the config will be
+  // considered invalid.
   string tag_name = 1;
 
   // The first capture group identifies the portion of the name to remove. The
@@ -129,6 +131,20 @@ message TagSpecifier {
   // Notice the regex will remove "foo_cluster.", but the tag value will be
   // "foo_cluster".
   string regex = 2;
+}
+
+message StatsConfig {
+  // Each stat name is iteratively processed through these tag specifiers.
+  // When a tag is matched, the capture group is removed from the name so later
+  // TagSpecifiers cannot match that same substring.
+  repeated TagSpecifier stats_tags = 1;
+
+  // Use all default tag regexes specified in Envoy. These can be combined with
+  // custom tags specified in stats_tags. They will be processed before the
+  // custom tags. Note: if any default tags are specified twice, the config will
+  // be considered invalid. See source/common/config/well_known_names.h for a
+  // a list of the default tags in Envoy.
+  bool use_all_default_tags = 2;
 }
 
 message Watchdog {
@@ -220,10 +236,8 @@ message Bootstrap {
   // Optional set of stats sinks.
   repeated StatsSink stats_sinks = 6;
 
-  // Each stat name is iteratively processed through these tag specifiers.
-  // When a tag is matched, the capture group is removed from the name so later
-  // TagSpecifiers cannot match that same substring.
-  repeated TagSpecifier stats_tags = 13;
+  // Configuration for internal processing of stats.
+  StatsConfig stats_config = 13;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and
