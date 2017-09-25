@@ -3,14 +3,14 @@
 ## Goals
 
 This repository contains the draft v2 JSON REST and gRPC
-[Envoy](https://github.com/lyft/envoy/) APIs. Envoy today has a number of JSON
+[Envoy](https://github.com/envoyproxy/envoy/) APIs. Envoy today has a number of JSON
 REST APIs through which it may discover and have updated its runtime
 configuration from some management server. These are:
 
-* [Cluster Discovery Service (CDS)](https://lyft.github.io/envoy/docs/configuration/cluster_manager/cds.html)
-* [Rate Limit Service (RLS)](https://lyft.github.io/envoy/docs/configuration/overview/rate_limit.html)
-* [Route Discovery Service (RDS)](https://lyft.github.io/envoy/docs/configuration/http_conn_man/rds.html)
-* [Service Discovery Service (SDS)](https://lyft.github.io/envoy/docs/configuration/cluster_manager/sds_api.html)
+* [Cluster Discovery Service (CDS)](https://envoyproxy.github.io/envoy/configuration/cluster_manager/cds.html)
+* [Rate Limit Service (RLS)](https://envoyproxy.github.io/envoy/configuration/overview/rate_limit.html)
+* [Route Discovery Service (RDS)](https://envoyproxy.github.io/envoy/configuration/http_conn_man/rds.html)
+* [Service Discovery Service (SDS)](https://envoyproxy.github.io/envoy/configuration/cluster_manager/sds_api.html)
 
 Version 2 of the Envoy API will evolve existing APIs and introduce new APIs to:
 
@@ -40,12 +40,12 @@ changes or suggestions should be coordinated in a tracking issue with the
 authors.
 
 Implementation work has begun and work items are tracked at
-[here](https://github.com/lyft/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
+[here](https://github.com/envoyproxy/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
 
 New features that correspond to the v2 API are initially tracked in this
 repository. When they are agreed upon and the related PRs are merged, they
 should be closed out and a corresponding issue created in
-https://github.com/lyft/envoy/ and tagged with `v2 API`. A reference to the
+https://github.com/envoyproxy/envoy/ and tagged with `v2 API`. A reference to the
 closed issue should also be included.
 
 ## Principles
@@ -101,7 +101,7 @@ closed issue should also be included.
 Unless otherwise stated, the APIs with the same names as v1 APIs have a similar role.
 
 * [Cluster Discovery Service (CDS)](api/cds.proto).
-* [Endpoint Discovery Service (EDS)](api/eds.proto). This has the same role as SDS in the [v1 API](https://lyft.github.io/envoy/docs/configuration/cluster_manager/sds_api.html),
+* [Endpoint Discovery Service (EDS)](api/eds.proto). This has the same role as SDS in the [v1 API](https://envoyproxy.github.io/envoy/configuration/cluster_manager/sds_api.html),
   the new name better describes what the API does in practice. Advanced global load balancing capable of utilizing N-dimensional upstream metrics is now supported.
 * [Health Discovery Service (HDS)](api/hds.proto). This new API supports efficient endpoint health discovery by the management server via the Envoy instances it manages. Individual Envoy instances
   will typically receive HDS instructions to health check a subset of all
@@ -115,7 +115,7 @@ In addition to the above APIs, an aggregation API will be provided to allow for
 fine grained control over the sequencing of API updates across discovery
 services:
 
-* [Aggregated Discovery Service (ADS)](api/ads.proto). While fundamentally Envoy
+* [Aggregated Discovery Service (ADS)](api/discovery.proto). While fundamentally Envoy
   employs an eventual consistency model, ADS provides an opportunity to sequence
   API update pushes and ensure affinity of a single management server for an
   Envoy node for API updates. ADS allows one or more APIs to be delivered on a
@@ -141,7 +141,7 @@ services:
 
 ## Terminology
 
-Some relevant [existing terminology](https://lyft.github.io/envoy/docs/intro/arch_overview/terminology.html) is
+Some relevant [existing terminology](https://envoyproxy.github.io/envoy/intro/arch_overview/terminology.html) is
 repeated below and some new v2 terms introduced.
 
 * Cluster: A cluster is a group of logically similar endpoints that Envoy
