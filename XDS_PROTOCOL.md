@@ -1,0 +1,214 @@
+# xDS REST and gRPC protocol
+
+Envoy discovers its various dynamic xDS resources via the filesystem or by querying
+one or more management servers. Resources are requested via _subscriptions_, by
+either specifying a filesystem path to watch, initiating gRPC streams or
+REST-JSON polling. The latter two methods involve sending requests with a
+[`DiscoveryRequest`](api/discovery.proto#L24) proto payload. Resources are
+delivered in a [`DiscoveryResponse`](api/discovery.proto#L53) proto payload in
+all methods. We discuss each type of subscription below.
+
+## Filesystem subscriptions
+
+The simplest approach to delivering dynamic configuration is to place it at a
+well known path specified in the [`ConfigSource`](api/base.proto#L145). Envoy
+will use `inotify` (`kqueue` on Mac OS X) to monitor the file for changes and
+parse the `DiscoveryResponse` proto in the file on update. Binary protobufs,
+JSON, YAML and proto text are supported formats for the `DiscoveryResponse`.
+
+There is no mechanism available for filesystem subscriptions to ACK/NACK updates
+beyond stats counters and logs. The last valid configuration for an xDS API will
+continue to apply if an configuration update rejection occurs.
+
+## Streaming gRPC subscriptions
+
+### Singleton resource type discovery
+
+A gRPC [`ApiConfigSource`](api/base.proto#L120) can be specified independently
+for each xDS API, pointing at an upstream cluster corresponding to a management
+server. This will initiate an independent bidirectional gRPC stream for each xDS
+resource type, potentially to distinct management servers. API delivery is
+eventually consistent. See [ADS](#aggregated-discovery-service) below for
+situations in which explicit control of sequencing is required.
+
+#### Type URLs
+
+Each xDS API is concerned with resources of a given type. There is a 1:1
+correspondence between xDS API and a resource type. That is:
+
+* [LDS: `envoy.api.v2.Listener`](api/lds.proto)
+* [RDS: `envoy.api.v2.RouteConfiguration`](api/rds.proto)
+* [CDS: `envoy.api.v2.Cluster`](api/cds.proto)
+* [EDS: `envoy.api.v2.ClusterLoadAssignment`](api/eds.proto)
+
+The concept of [_type
+URLs_](https://developers.google.com/protocol-buffers/docs/proto3#any) appears
+below, and takes the form `type.googleapis.com/<resource type>`, e.g.
+`type.googleapis.com/envoy.api.v2.Cluster` for CDS. In various requests from
+Envoy and responses by the management server, the resource type URL is stated.
+
+#### ACK/NACK and versioning
+
+Each stream begins with a `DiscoveryRequest` from Envoy, specifying the list of
+resources to subscribe to, the type URL corresponding to the subscribed
+resources, the node identifier and an empty `version_info`. An example EDS request
+might be:
+
+```yaml
+version_info:
+node: { id: envoy }
+resource_names:
+- foo
+- bar
+type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+response_nonce:
+```
+
+The management server may reply either immediately or when the requested
+resources are available with a `DiscoveryResponse`, e.g.:
+
+```yaml
+version_info: X
+resources:
+- foo ClusterLoadAssignment proto encoding
+- bar ClusterLoadAssignment proto encoding
+type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+nonce: A
+```
+
+After processing the `DiscoveryResponse`, Envoy will send a new request on the
+stream, specifying the last version successfully applied and the nonce provided
+by the management server. If the update was successfully applied, the
+`version_info` will be __X__, as indicated in the sequence diagram:
+
+![Version update after ACK](diagrams/simple-ack.svg)
+
+In this sequence diagram, and below, the following format is used to abbreviate
+messages:
+* `DiscoveryRequest`: (V=`version_info`,R=`resource_names`,N=`response_nonce`,T=`type_url`)
+* `DiscoveryResponse`: (V=`version_info`,R=`resources`,N=`nonce`,T=`type_url`)
+
+The version provides Envoy and the management server a shared notion of the
+currently applied configuration, as well as a mechanism to ACK/NACK
+configuration updates. If Envoy had instead rejected configuration update __X__,
+it would reply with its previous version, which in this case was the empty
+initial version:
+
+![No version update after NACK](diagrams/simple-nack.svg)
+
+Later, an API update may succeed at a new version __Y__:
+
+![ACK after NACK](diagrams/later-ack.svg)
+
+Each stream has its own notion of versioning, there is no shared versioning
+across resource types. When ADS is not used, even each resource of a given
+resource type may have a
+distinct version, since the Envoy API allows distinct EDS/RDS resources to point
+at different `ConfigSource`s.
+
+#### Resource hints
+
+The `resource_names` specified in the `DiscoveryRequest` are a hint. Some
+resource types, e.g. `Cluster`s and `Listener`s will specify an empty
+`resource_names` list, since Envoy is interested in learning about all the
+`Cluster`s (CDS) and `Listener`s (LDS) that the management server(s) know about
+corresponding to its node identification. Other resource types, e.g.
+`RouteConfiguration`s (RDS) and `ClusterLoadAssignment`s (EDS), follow from
+earlier CDS/LDS updates and Envoy is able to explicitly enumerate these
+resources.
+
+The management server does not need to supply every requested resource and may
+also supply additional, unrequested resources, `resource_names` is only a hint.
+Envoy will silently ignore any superfluous resources. When a requested resource is
+missing in an update, Envoy will retain the last known value for this resource.
+The management server may be able to infer all the required EDS/RDS resources
+from the `node` identification in the `DiscoveryRequest`, in which case this
+hint may be discarded.
+
+For EDS/RDS, Envoy may either generate a distinct stream for each resource of a
+given type (e.g. if each `ConfigSource` has its own distinct upstream cluster
+for a management server), or may combine together multiple resource requests for
+a given resource type when they are destined for the same management server.
+This is left to implementation specifics, management servers should be capable
+of handling one or more `resource_names` for a given resource type in each
+request. Both sequence diagrams below are valid for fetching two EDS resources
+`{foo, bar}`:
+
+![Multiple EDS requests on the same stream](diagrams/eds-same-stream.svg)
+![Multiple EDS requests on distinct streams](diagrams/eds-distinct-stream.svg)
+
+#### Resource updates
+
+As discussed above, Envoy may update the list of `resource_names` it presents to
+the management server in each `DiscoveryRequest` that ACK/NACKs a specific
+`DiscoveryResponse`. In addition, Envoy may later issue additional
+`DiscoveryRequest`s at a given `version_info` to update the management server
+with new resource hints. For example, if Envoy is at EDS version __X__ and knows
+only about cluster `foo`, but then receives a CDS update and learns about `bar`
+in addition, it may issue an additional `DiscoveryRequest` for __X__ with
+`{foo,bar}` as `resource_names`.
+
+![CDS response leads to EDS resource hint update](diagrams/cds-eds-resources.svg)
+
+There is a race condition that may arise here; if after a resource hint update
+is issued by Envoy at __X__, but before the management server processes the
+update it replies with a new version __Y__, the resource hint update may be
+interpreted as a rejection of __Y__ by presenting an __X__ `version_info`. To
+avoid this, the management server provides a `nonce` that Envoy uses to indicate
+the specific `DiscoveryResponse` each `DiscoveryRequest` corresponds to:
+
+![EDS update race motivates nonces](diagrams/update-race.svg)
+
+The management server should not send a `DiscoveryResponse` for any
+`DiscoveryRequest` that has a stale nonce. A nonce becomes stale following a
+newer nonce being presented to Envoy in a `DiscoveryResponse`. A management
+server does not need to send an update until it determines a new version is
+available. Earlier requests at a version then also become stale. It may process
+multiple`DiscoveryRequests` at a version until a new version is ready.
+
+![Requests become stale](diagrams/stale-requests.svg)
+
+#### Eventual consistency considerations
+
+Since Envoy's xDS APIs are eventually consistent, traffic may drop briefly
+during updates. For example, if only cluster __X__ is known via CDS/EDS,
+a `RouteConfiguration` references cluster __X__
+and is then adjusted to cluster __Y__ just before the CDS/EDS update
+providing __Y__, traffic will be blackholed until __Y__ is known about by the
+Envoy instance.
+
+For some applications, a temporary drop of traffic is acceptable, retries at the
+client or by other Envoy sidecars will hide this drop. For other scenarios where
+drop can't be tolerated, traffic drop could have been avoided by providing a
+CDS/EDS update with both __X__ and __Y__, then the RDS update repointing from
+__X__ to __Y__ and then a CDS/EDS update dropping __X__.
+
+In general, to avoid traffic drop:
+* Sequencing should be make before break.
+* LDS and CDS updates should arrive before the respective RDS and EDS updates.
+* CDS/EDS resources corresponding to routes in LDS/RDS should be available at
+  update.
+
+### Aggregated Discovery Services (ADS)
+
+It's challenging to provide the above guarantees on sequencing to avoid traffic
+drop when management servers are distributed. ADS allow a single management
+server, via a single gRPC stream, to deliver all API updates. This provides the
+ability to carefully sequence updates to avoid traffic drop. With ADS, a single
+stream is used with multiple independent `DiscoveryRequest`/`DiscoveryResponse`
+sequences multiplexed via the type URL. For any given type URL, the above
+sequencing of `DiscoveryRequest` and `DiscoveryResponse messages applies. An
+example update sequence might look like:
+
+![EDS/CDS multiplexed on an ADS stream](diagrams/ads.svg)
+
+## REST-JSON polling subscriptions
+
+Synchronous (long) polling via REST endpoints is also available for the xDS
+singleton APIs. The above sequencing of messages is similar, except no
+persistent stream is maintained to the management server. It is expected that
+there is only a single outstanding request at any point in time, and as a result
+the response nonce is optional in REST-JSON. The [JSON canonical transform of
+proto3](https://developers.google.com/protocol-buffers/docs/proto3#json) is used
+to encode `DiscoveryRequest` and `DiscoveryResponse` messages.  ADS is not
+available for REST-JSON polling.

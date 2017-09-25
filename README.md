@@ -139,6 +139,8 @@ services:
   the management server would deliver the CDS, EDS and then RDS updates on a
   single stream.
 
+A protocol description for the xDS APIs is provided [here](XDS_PROTOCOL.md).
+
 ## Terminology
 
 Some relevant [existing terminology](https://lyft.github.io/envoy/docs/intro/arch_overview/terminology.html) is
