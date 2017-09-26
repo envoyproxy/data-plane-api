@@ -136,9 +136,9 @@ message TagSpecifier {
   // An example with two regexes:
   //
   // First tag name: "envoy.http_user_agent"
-  // First regex: "^http(?=\\.).*?\\.user_agent\\.((.+?)\\.)\\w+?$"
+  // First regex: "^http(?=\.).*?\.user_agent\.((.+?)\.)\w+?$"
   // Second tag name: "envoy.http_conn_manager_prefix"
-  // Second regex: "^http\\.((.*?)\\.)"
+  // Second regex: "^http\.((.*?)\.)"
   // Stat name: "http.connection_manager_1.user_agent.ios.downstream_cx_total"
   //
   // The first regex will remove "ios." leaving the tag extracted name:
