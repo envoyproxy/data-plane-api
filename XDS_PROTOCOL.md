@@ -197,10 +197,12 @@ server, via a single gRPC stream, to deliver all API updates. This provides the
 ability to carefully sequence updates to avoid traffic drop. With ADS, a single
 stream is used with multiple independent `DiscoveryRequest`/`DiscoveryResponse`
 sequences multiplexed via the type URL. For any given type URL, the above
-sequencing of `DiscoveryRequest` and `DiscoveryResponse messages applies. An
+sequencing of `DiscoveryRequest` and `DiscoveryResponse` messages applies. An
 example update sequence might look like:
 
 ![EDS/CDS multiplexed on an ADS stream](diagrams/ads.svg)
+
+A single ADS stream is available per Envoy instance.
 
 ## REST-JSON polling subscriptions
 
