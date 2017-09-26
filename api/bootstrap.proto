@@ -14,6 +14,7 @@ import "api/lds.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
 
 message LightstepConfig {
   // The cluster manager cluster that hosts the LightStep collectors.
