@@ -100,7 +100,7 @@ message StatsSink {
 }
 
 // Designates a tag to strip from the tag extracted name and provide as a named
-// tag value for all statistics. This will only occur if a any part of the name
+// tag value for all statistics. This will only occur if any part of the name
 // matches the regex provided with one or more capture groups.
 message TagSpecifier {
   // Attaches an identifier to the tag values to identify the tag being in the
@@ -128,23 +128,44 @@ message TagSpecifier {
   //
   // regex: "^cluster\.((.+?)\.)"
   //
-  // Notice the regex will remove "foo_cluster.", but the tag value will be
-  // "foo_cluster".
+  // Notice the regex will remove "foo_cluster." making the tag extracted name
+  // "cluster.upstream_rq_timeout" and the tag value for "envoy.cluster_name"
+  // "foo_cluster" (note: no '.' character because of the second capture group).
+  //
+  // An example with two regexes:
+  //
+  // First tag name: "envoy.http_user_agent"
+  // First regex: "^http(?=\\.).*?\\.user_agent\\.((.+?)\\.)\\w+?$"
+  // Second tag name: "envoy.http_conn_manager_prefix"
+  // Second regex: "^http\\.((.*?)\\.)"
+  // Stat name: "http.connection_manager_1.user_agent.ios.downstream_cx_total"
+  //
+  // The first regex will remove "ios." leaving the tag extracted name:
+  // "http.connection_manager_1.user_agent.downstream_cx_total".
+  // The tag "envoy.http_user_agent" will be added with tag value "ios".
+  //
+  // The second regex will remove "connection_manager_1." from the tag extracted
+  // name produced by the first regex
+  // ("http.connection_manager_1.user_agent.downstream_cx_total"), leaving
+  // "http.user_agent.downstream_cx_total" as the tag extracted name.  The tag
+  // "envoy.http_conn_manager_prefix" will be added with the tag value
+  // "connection_manager_1".
   string regex = 2;
 }
 
 message StatsConfig {
   // Each stat name is iteratively processed through these tag specifiers.
-  // When a tag is matched, the capture group is removed from the name so later
-  // TagSpecifiers cannot match that same substring.
+  // When a tag is matched, the first capture group is removed from the name so
+  // later TagSpecifiers cannot match that same portion of the match.
   repeated TagSpecifier stats_tags = 1;
 
   // Use all default tag regexes specified in Envoy. These can be combined with
   // custom tags specified in stats_tags. They will be processed before the
   // custom tags. Note: if any default tags are specified twice, the config will
   // be considered invalid. See source/common/config/well_known_names.h for a
-  // a list of the default tags in Envoy.
-  bool use_all_default_tags = 2;
+  // a list of the default tags in Envoy. If not provided, the value is assumed
+  // to be true.
+  google.protobuf.BoolValue use_all_default_tags = 2;
 }
 
 message Watchdog {
