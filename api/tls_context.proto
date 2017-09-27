@@ -41,6 +41,16 @@ message TlsCertificate {
   repeated DataSource signed_certificate_timestamp = 5;
 }
 
+message TlsSessionTicketKeys {
+  // Optional identifier for this set of keys
+  string name = 1;
+
+  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
+  // key is used to encrypt new tickets that are created.  All keys are candidates
+  // for decrypting received tickets.
+  repeated DataSource keys = 2;
+}
+
 message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use
   // in verifying a presented certificate. If not specified and a certificate is
@@ -111,8 +121,5 @@ message DownstreamTlsContext {
   // If specified, Envoy will reject connections without a valid and matching SNI.
   google.protobuf.BoolValue require_sni = 3;
 
-  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
-  // key is used to encrypt new tickets that are created.  All keys are candidates
-  // for decrypting received tickets.
-  repeated DataSource tls_session_ticket_key = 4;
+  TlsSessionTicketKeys tls_session_ticket_keys = 4;
 }
