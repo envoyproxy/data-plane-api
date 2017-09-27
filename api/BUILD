@@ -19,7 +19,6 @@ api_proto_library(
     deps = [
         ":address",
         ":base",
-        ":discovery",
         ":cds",
         ":lds",
     ],

@@ -7,7 +7,6 @@ api_proto_library(
     srcs = ["http_connection_manager.proto"],
     deps = [
         "//api:base",
-        "//api:discovery",
         "//api:protocol",
         "//api:rds",
     ],

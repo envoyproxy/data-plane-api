@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "google/protobuf/wrappers.proto";
-
 // [V2-API-DIFF] Addresses now have .proto structure.
 
 message Pipe {
