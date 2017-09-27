@@ -21,6 +21,7 @@ api_proto_library(
         ":base",
         ":discovery",
         ":cds",
+        ":kds",
         ":lds",
     ],
 )
@@ -34,6 +35,7 @@ api_proto_library(
 api_proto_library(
     name = "tls_context",
     srcs = ["tls_context.proto"],
+    deps = [":base"],
 )
 
 api_proto_library(
@@ -76,6 +78,16 @@ api_proto_library(
     deps = [
         ":base",
         ":health_check",
+    ],
+)
+
+api_proto_library(
+    name = "kds",
+    srcs = ["kds.proto"],
+    has_services = 1,
+    deps = [
+        ":discovery",
+        ":tls_context",
     ],
 )
 

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
+import "api/base.proto";
+
 import "google/protobuf/wrappers.proto";
 
 message DataSource {
@@ -39,6 +41,13 @@ message TlsCertificate {
   DataSource password = 3;
   DataSource ocsp_staple = 4;
   repeated DataSource signed_certificate_timestamp = 5;
+
+  // Optional name (e.g. FQDN, UUID, SPKI) by which the certificate can be referred to.
+  // When both: name and kds_config are specified, certificate can be fetched and/or reloaded
+  // via KDS. When name is specified, but kds_config is empty, the certificate will be loaded
+  // from static resources [V2-API-DIFF].
+  string name = 6;
+  ConfigSource kds_config = 7;
 }
 
 message CertificateValidationContext {

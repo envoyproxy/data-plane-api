@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "api/discovery.proto";
+import "api/tls_context.proto";
+
+import "google/api/annotations.proto";
+
+service KeyDiscoveryService{
+  rpc StreamSecrets(stream DiscoveryRequest)
+      returns (stream DiscoveryResponse) {
+  }
+
+  rpc FetchSecrets(DiscoveryRequest)
+      returns (DiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:secrets"
+      body: "*"
+    };
+  }
+}
+
+message Secret {
+  TlsCertificate tls_certificate = 1;
+}
