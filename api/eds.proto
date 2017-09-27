@@ -140,8 +140,9 @@ message UpstreamLocalityStats {
   // The total number of unfinished requests
   uint64 total_requests_in_progress = 3;
   // The total number of requests that failed due to a network or protocol
-  // error. This includes for HTTP 5xx error codes (and for gRPC, all non-OK
-  // failures).
+  // error. For HTTP these are responses with 5xx status codes and for gRPC the
+  // grpc-status values {ResourceExhausted, Aborted, Internal,
+  // Unavailable}.
   uint64 total_error_requests = 4;
   // The total number of dropped requests. This covers requests
   // deliberately dropped by the drop_overload policy and circuit breaking.
