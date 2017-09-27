@@ -300,7 +300,9 @@ message Route {
     RedirectAction redirect = 3;
   }
 
-  // See base.Metadata description.
+  // See base.Metadata description for message structure. Metadata can
+  // be used to provide the Router filter additional configuration for
+  // the Route. The filter name should be specified as "envoy.router".
   Metadata metadata = 4;
 
   // Decorator for matched route.
