@@ -65,10 +65,33 @@ message HealthCheck {
   }
   message RedisHealthCheck {
   }
+  message ShellCommandHealthCheck {
+    // Specifies the command name and arguments to execute for the
+    // health check.  An exit code of zero means success, any other
+    // exit code, or exiting by signal, is a failure. '{' and '}' are
+    // considered special characters, but the literal can be inserted
+    // with '{{' and '}}', respectively. The following will be
+    // substituted in these strings:
+    //
+    //  {address}
+    //     "1.2.3.4:80" for IPv4, "[1234:5678::9]:443" for IPv6
+    //
+    //  {ip}
+    //    "1.2.3.4" for IPv4, "1234:5678::9" for IPv6
+    //
+    //  {port}
+    //    The port number
+    //
+    //  {hostname}
+    //    The hostname, if specified, or the value of {ip} if the hostname
+    //    is not specified.
+    repeated string command = 1;
+  }
   oneof health_checker {
     HttpHealthCheck http_health_check = 8;
     TcpHealthCheck tcp_health_check = 9;
     RedisHealthCheck redis_health_check = 10;
+    ShellCommandHealthCheck shell_command_health_check = 11;
   }
 }
 
