@@ -145,7 +145,7 @@ message UpstreamLocalityStats {
   // The total number of requests that failed due to errors at the endpoint.
   // For HTTP these are responses with 5xx status codes and for gRPC the
   // grpc-status values {DeadlineExceeded, Unimplemented, Internal,
-  // Unavailable}.
+  // Unavailable, Unknown, DataLoss}.
   uint64 total_error_requests = 4;
   // The total number of dropped requests. This covers requests
   // deliberately dropped by the drop_overload policy and circuit breaking.
