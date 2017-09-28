@@ -4,17 +4,20 @@ Envoy discovers its various dynamic xDS resources via the filesystem or by query
 one or more management servers. Resources are requested via _subscriptions_, by
 either specifying a filesystem path to watch, initiating gRPC streams or
 REST-JSON polling. The latter two methods involve sending requests with a
-[`DiscoveryRequest`](api/discovery.proto#L24) proto payload. Resources are
-delivered in a [`DiscoveryResponse`](api/discovery.proto#L53) proto payload in
-all methods. We discuss each type of subscription below.
+[`DiscoveryRequest`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L24)
+proto payload. Resources are delivered in a
+[`DiscoveryResponse`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L53)
+proto payload in all methods. We discuss each type of subscription below.
 
 ## Filesystem subscriptions
 
 The simplest approach to delivering dynamic configuration is to place it at a
-well known path specified in the [`ConfigSource`](api/base.proto#L145). Envoy
-will use `inotify` (`kqueue` on Mac OS X) to monitor the file for changes and
-parse the `DiscoveryResponse` proto in the file on update. Binary protobufs,
-JSON, YAML and proto text are supported formats for the `DiscoveryResponse`.
+well known path specified in the
+[`ConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L145).
+Envoy will use `inotify` (`kqueue` on Mac OS X) to monitor the file for changes
+and parse the `DiscoveryResponse` proto in the file on update. Binary
+protobufs, JSON, YAML and proto text are supported formats for the
+`DiscoveryResponse`.
 
 There is no mechanism available for filesystem subscriptions to ACK/NACK updates
 beyond stats counters and logs. The last valid configuration for an xDS API will
@@ -24,12 +27,14 @@ continue to apply if an configuration update rejection occurs.
 
 ### Singleton resource type discovery
 
-A gRPC [`ApiConfigSource`](api/base.proto#L120) can be specified independently
-for each xDS API, pointing at an upstream cluster corresponding to a management
-server. This will initiate an independent bidirectional gRPC stream for each xDS
-resource type, potentially to distinct management servers. API delivery is
-eventually consistent. See [ADS](#aggregated-discovery-service) below for
-situations in which explicit control of sequencing is required.
+A gRPC
+[`ApiConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L120)
+can be specified independently for each xDS API, pointing at an upstream
+cluster corresponding to a management server. This will initiate an independent
+bidirectional gRPC stream for each xDS resource type, potentially to distinct
+management servers. API delivery is eventually consistent. See
+[ADS](#aggregated-discovery-service) below for situations in which explicit
+control of sequencing is required.
 
 #### Type URLs
 
@@ -203,6 +208,33 @@ example update sequence might look like:
 ![EDS/CDS multiplexed on an ADS stream](diagrams/ads.svg)
 
 A single ADS stream is available per Envoy instance.
+
+An example minimal `bootstrap.yaml` fragment for ADS configuration is:
+
+```yaml
+node:
+  id: <node identifier>
+dynamic_resources:
+  cds_config: {ads: {}}
+  lds_config: {ads: {}}
+  ads_config:
+    api_type: GRPC
+    cluster_name: [ads_cluster]
+static_resources:
+  clusters:
+  - name: ads_cluster
+    connect_timeout: { seconds: 5 }
+    type: STATIC
+    hosts:
+    - socket_address:
+        address: <ADS management server IP address>
+        port_value: <ADS management server port>
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+admin:
+  ...
+
+```
 
 ## REST-JSON polling subscriptions
 
