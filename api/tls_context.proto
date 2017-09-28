@@ -48,6 +48,9 @@ message TlsSessionTicketKeys {
   // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
   // key is used to encrypt new tickets that are created.  All keys are candidates
   // for decrypting received tickets.
+  //
+  // Each key must be exactly 80 bytes long, containing cryptographically-secure random
+  // data.  For example, the output of "openssl rand 80".
   repeated DataSource keys = 2;
 }
 
