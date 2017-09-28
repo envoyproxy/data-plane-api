@@ -11,7 +11,7 @@ import "api/base.proto";
 import "api/discovery.proto";
 import "api/cds.proto";
 import "api/lds.proto";
-import "api/kds.proto";
+import "api/sds.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";

@@ -33,7 +33,7 @@ The LDS/CDS/EDS/RDS APIs are now frozen and will maintain backwards
 compatibility according to standard proto rules (e.g. new fields will not reuse
 tags, field types will not change, fields will not be renumbered, etc.).
 
-The remainder of the API (ADS, HDS, RLS, filter fragments other than HTTP
+The remainder of the API (ADS, HDS, RLS, SDS, filter fragments other than HTTP
 connection manager, the bootstrap proto) are draft work-in-progress. Input is
 welcome via issue filing. Small, localized PRs are also welcome, but any major
 changes or suggestions should be coordinated in a tracking issue with the
@@ -74,7 +74,7 @@ closed issue should also be included.
   this repository.
 
 * REST-JSON API equivalents will be provided for the basic singleton xDS
-  subscription services CDS/EDS/LDS/EDS. Advanced APIs such as HDS, ADS and
+  subscription services CDS/EDS/LDS/RDS/SDS. Advanced APIs such as HDS, ADS and
   EDS multi-dimensional LB will be gRPC only. This avoids having to map
   complicated bidirectional stream semantics onto REST.
 
@@ -110,6 +110,7 @@ Unless otherwise stated, the APIs with the same names as v1 APIs have a similar 
 * [Listener Discovery Service (LDS)](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
 * [Rate Limit Service (RLS)](api/rls.proto)
 * [Route Discovery Service (RDS)](api/rds.proto).
+* [Secret Discovery Service (SDS)](api/sds.proto).
 
 In addition to the above APIs, an aggregation API will be provided to allow for
 fine grained control over the sequencing of API updates across discovery
@@ -166,6 +167,6 @@ repeated below and some new v2 terms introduced.
 
 * Upstream: An upstream host receives connections and requests from Envoy and returns responses.
 
-* xDS: CDS/EDS/HDS/LDS/RLS/RDS APIs.
+* xDS: CDS/EDS/HDS/LDS/RLS/RDS/SDS APIs.
 
 * Zone: Availability Zone (AZ) in AWS, Zone in GCP.

@@ -42,8 +42,8 @@ message TlsCertificate {
   DataSource ocsp_staple = 4;
   repeated DataSource signed_certificate_timestamp = 5;
 
-  // KDS configuration which allows to fetch and/or reload this TLS certificates.
-  KdsSecretConfig kds_secret_config = 6;
+  // SDS configuration which allows to fetch and/or reload this TLS certificates.
+  SdsSecretConfig sds_secret_config = 6;
 }
 
 message CertificateValidationContext {

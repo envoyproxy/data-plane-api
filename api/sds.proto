@@ -7,7 +7,7 @@ import "api/tls_context.proto";
 
 import "google/api/annotations.proto";
 
-service KeyDiscoveryService{
+service SecretDiscoveryService{
   rpc StreamSecrets(stream DiscoveryRequest)
       returns (stream DiscoveryResponse) {
   }

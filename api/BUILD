@@ -21,8 +21,8 @@ api_proto_library(
         ":base",
         ":discovery",
         ":cds",
-        ":kds",
         ":lds",
+        ":sds",
     ],
 )
 
@@ -82,16 +82,6 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "kds",
-    srcs = ["kds.proto"],
-    has_services = 1,
-    deps = [
-        ":discovery",
-        ":tls_context",
-    ],
-)
-
-api_proto_library(
     name = "lds",
     srcs = ["lds.proto"],
     has_services = 1,
@@ -121,5 +111,15 @@ api_proto_library(
     deps = [
         ":base",
         ":discovery",
+    ],
+)
+
+api_proto_library(
+    name = "sds",
+    srcs = ["sds.proto"],
+    has_services = 1,
+    deps = [
+        ":discovery",
+        ":tls_context",
     ],
 )
