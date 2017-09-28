@@ -11,6 +11,7 @@ import "api/tls_context.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 // Return list of all clusters this proxy will load balance to.
@@ -102,7 +103,7 @@ message Cluster {
   }
   LbPolicy lb_policy = 6;
 
-  // If the service discovery type is static, strict_dns or logical_dns, then
+  // If the service discovery type is STATIC, STRICT_DNS or LOGICAL_DNS, then
   // hosts is required.
   repeated Address hosts = 7;
 
@@ -138,20 +139,20 @@ message Cluster {
   }
 
   // If the dns refresh rate is specified and the cluster type is either
-  // strict_dns, or logical_dns, this value is used as the cluster’s dns refresh
+  // STRICT_DNS, or LOGICAL_DNS, this value is used as the cluster’s dns refresh
   // rate. If this setting is not specified, the value defaults to 5000. For
-  // cluster types other than strict_dns and logical_dns this setting is
+  // cluster types other than STRICT_DNS and LOGICAL_DNS this setting is
   // ignored.
   google.protobuf.Duration dns_refresh_rate = 16;
 
-  // The DNS IP address resolution policy. The options are v4_only, v6_only, and
-  // auto. If this setting is not specified, the value defaults to v4_only. When
-  // v4_only is selected, the DNS resolver will only perform a lookup for
-  // addresses in the IPv4 family. If v6_only is selected, the DNS resolver will
-  // only perform a lookup for addresses in the IPv6 family. If auto is
+  // The DNS IP address resolution policy. The options are V4_ONLY, V6_ONLY, and
+  // AUTO. If this setting is not specified, the value defaults to V4_ONLY. When
+  // V4_ONLY is selected, the DNS resolver will only perform a lookup for
+  // addresses in the IPv4 family. If V6_ONLY is selected, the DNS resolver will
+  // only perform a lookup for addresses in the IPv6 family. If AUTO is
   // specified, the DNS resolver will first perform a lookup for addresses in
   // the IPv6 family and fallback to a lookup for addresses in the IPv4 family.
-  // For cluster types other than strict_dns and logical_dns, this setting is
+  // For cluster types other than STRICT_DNS and LOGICAL_DNS, this setting is
   // ignored.
   enum DnsLookupFamily {
     AUTO = 0;
@@ -160,11 +161,11 @@ message Cluster {
   }
   DnsLookupFamily dns_lookup_family = 17;
 
-  // If DNS resolvers are specified and the cluster type is either strict_dns,
-  // or logical_dns, this value is used to specify the cluster’s dns resolvers.
+  // If DNS resolvers are specified and the cluster type is either STRICT_DNS,
+  // or LOGICAL_DNS, this value is used to specify the cluster’s dns resolvers.
   // If this setting is not specified, the value defaults to the default
   // resolver, which uses /etc/resolv.conf for configuration. For cluster types
-  // other than strict_dns and logical_dns this setting is ignored.
+  // other than STRICT_DNS and LOGICAL_DNS this setting is ignored.
   repeated Address dns_resolvers = 18;
 
   // If specified, outlier detection will be enabled for this upstream cluster.
@@ -214,7 +215,7 @@ message Cluster {
   OutlierDetection outlier_detection = 19;
 
   // The interval for removing stale hosts from a cluster type
-  // original_dst.  Hosts are considered stale if they have not been used
+  // ORIGINAL_DST.  Hosts are considered stale if they have not been used
   // as upstream destinations during this interval.  New hosts are added
   // to original destination clusters on demand as new connections are
   // redirected to Envoy, causing the number of hosts in the cluster to
@@ -222,7 +223,7 @@ message Cluster {
   // destinations) are kept in the cluster, which allows connections to
   // them remain open, saving the latency that would otherwise be spent
   // on opening new connections.  If this setting is not specified, the
-  // value defaults to 5000ms. For cluster types other than original_dst
+  // value defaults to 5000ms. For cluster types other than ORIGINAL_DST
   // this setting is ignored.
   google.protobuf.Duration cleanup_interval = 20;
 
@@ -230,4 +231,47 @@ message Cluster {
   // This overrides any bind_config specified in the bootstrap proto.
   // If the addres and port are empty, no bind will be performed.
   BindConfig upstream_bind_config = 21;
+
+  // Optionally divide the endpoints in this cluster into subsets defined by
+  // endpoint metadata and selected by route and weighted cluster metadata.
+  message LbSubsetConfig {
+    // The behavior used when no endpoint subset matches the selected route's
+    // metadata. The options are NO_FALLBACK, ANY_ENDPOINT, or DEFAULT_SUBSET.
+    // The value defaults to NO_FALLBACK. If NO_FALLBACK is selected, a result
+    // equivalent to no healthy hosts is reported. If ANY_ENDPOINT is selected,
+    // any cluster endpoint may be returned (subject to policy, health checks,
+    // etc). If DEFAULT_SUBSET is selected, load balancing is performed over the
+    // endpoints matching the values from the default_subset field.
+    enum LbSubsetFallbackPolicy {
+      NO_FALLBACK = 0;
+      ANY_ENDPOINT = 1;
+      DEFAULT_SUBSET = 2;
+    }
+    LbSubsetFallbackPolicy fallback_policy = 1;
+
+    // Specifies the default subset of endpoints used during fallback if
+    // fallback_policy is DEFAULT_SUBSET. Each field in default_subset is
+    // compared to the matching LbEndpoint.Metadata under the "envoy.lb"
+    // namespace. It is valid for no hosts to match, in which case the behavior
+    // is the same as a fallback_policy of NO_FALLBACK.
+    google.protobuf.Struct default_subset = 2;
+
+    // Specifications for subsets. For each entry, LbEndpoint.Metadata's
+    // "envoy.lb" namespace is traversed and a subset is created for each unique
+    // combination of key and value. For example:
+    // { "subset_keys": [
+    //     { "keys": [ "version" ] },
+    //     { "keys": [ "stage", "hardware_type" ] }
+    // ]}
+    // A subset is matched when the metadata from the selected route and
+    // weighted cluster contains the keys and values from the subset's
+    // metadata. Extra keys in the route metadata are ignored when comparing the
+    // subset's metadata. Subsets may overlap. In the case of overlapping
+    // subsets, the first matching subset is selected.
+    message LbSubsetKeys {
+      repeated string keys = 1;
+    }
+    repeated LbSubsetKeys subset_keys = 3;
+  }
+  LbSubsetConfig lb_subset_config = 22;
 }
