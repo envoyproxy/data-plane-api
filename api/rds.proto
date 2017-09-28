@@ -300,7 +300,12 @@ message Route {
     RedirectAction redirect = 3;
   }
 
-  // See base.Metadata description.
+  // See base.Metadata description for message structure. The Metadata field
+  // can be used to provide the Router filter additional information
+  // about the Route. It can be used for configuration, stats, and logging.
+  // The metadata should go under the filter namespace that will need it.
+  // For instance, of the metadata is intended for the Router filter,
+  // the filter name should be specified as "envoy.lb".
   Metadata metadata = 4;
 
   // Decorator for matched route.
