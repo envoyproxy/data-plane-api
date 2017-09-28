@@ -135,13 +135,17 @@ message UpstreamLocalityStats {
   // total_requests field below, but it may be inferred from:
   //   total_requests = total_successful_requests + total_requests_in_progress +
   //       total_error_requests + total_dropped_requests
-  // The total number of successfully completed requests.
+  // The total number of requests successfully completed by the endpoints in the
+  // locality. These include non-5xx responses for HTTP, where errors
+  // originate at the client and the endpoint responded successfuly. For gRPC,
+  // the grpc-status values are those not covered by total_error_requests below.
   uint64 total_successful_requests = 2;
   // The total number of unfinished requests
   uint64 total_requests_in_progress = 3;
-  // The total number of requests that failed due to a network or protocol
-  // error. This  includes for HTTP all non-200 error codes (and for gRPC, all
-  // non-OK failures).
+  // The total number of requests that failed due to errors at the endpoint.
+  // For HTTP these are responses with 5xx status codes and for gRPC the
+  // grpc-status values {DeadlineExceeded, Unimplemented, Internal,
+  // Unavailable, Unknown, DataLoss}.
   uint64 total_error_requests = 4;
   // The total number of dropped requests. This covers requests
   // deliberately dropped by the drop_overload policy and circuit breaking.
