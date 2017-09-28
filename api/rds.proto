@@ -303,7 +303,9 @@ message Route {
   // See base.Metadata description for message structure. The Metadata field
   // can be used to provide the Router filter additional information
   // about the Route. It can be used for configuration, stats, and logging.
-  // The filter name should be specified as "envoy.router".
+  // The data should go under the filter namespace that will need to access
+  // the Route metadata. For instance, for the Router filter The filter name
+  // should be specified as "envoy.lb".
   Metadata metadata = 4;
 
   // Decorator for matched route.
