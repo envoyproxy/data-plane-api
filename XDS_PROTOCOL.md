@@ -173,6 +173,9 @@ multiple`DiscoveryRequests` at a version until a new version is ready.
 
 ![Requests become stale](diagrams/stale-requests.svg)
 
+An implication of the above resource update sequencing is that Envoy does not
+expect a `DiscoveryResponse` for every `DiscoveryRequest` it issues.
+
 #### Eventual consistency considerations
 
 Since Envoy's xDS APIs are eventually consistent, traffic may drop briefly
