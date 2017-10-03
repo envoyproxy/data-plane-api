@@ -41,9 +41,6 @@ message TlsCertificate {
   DataSource password = 3;
   DataSource ocsp_staple = 4;
   repeated DataSource signed_certificate_timestamp = 5;
-
-  // SDS configuration which allows to fetch and/or reload this TLS certificates.
-  SdsSecretConfig sds_secret_config = 6;
 }
 
 message CertificateValidationContext {
@@ -79,7 +76,9 @@ message CommonTlsContext {
 
   // Multiple TLS certificates can be associated with the same context,
   // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
+  // TLS certificates can be either configured locally or fetched from SDS.
   repeated TlsCertificate tls_certificates = 2;
+  repeated SdsSecretConfig sds_secret_configs = 6;
 
   // How to validate peer certificates.
   CertificateValidationContext validation_context = 3;
