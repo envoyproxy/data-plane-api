@@ -10,6 +10,7 @@ import "api/address.proto";
 import "api/base.proto";
 import "api/cds.proto";
 import "api/lds.proto";
+import "api/sds.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -230,6 +231,7 @@ message Bootstrap {
     // to know how to speak to the management server. These cluster definitions
     // may not use EDS (i.e. they should be static IP or DNS-based).
     repeated Cluster clusters = 2;
+    repeated Secret secrets = 3;
   }
   StaticResources static_resources = 2;
 
