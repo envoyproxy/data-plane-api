@@ -60,16 +60,13 @@ message TlsCertificate {
 }
 
 message TlsSessionTicketKeys {
-  // Optional identifier for this set of keys
-  string name = 1;
-
   // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
   // key is used to encrypt new tickets that are created.  All keys are candidates
   // for decrypting received tickets.
   //
   // Each key must be exactly 80 bytes long, containing cryptographically-secure random
   // data.  For example, the output of "openssl rand 80".
-  repeated DataSource keys = 2;
+  repeated DataSource keys = 1;
 }
 
 message CertificateValidationContext {
@@ -160,5 +157,6 @@ message Secret {
   string name = 1;
   oneof type {
     TlsCertificate tls_certificate = 2;
+    TlsSessionTicketKeys session_ticket_keys = 3;
   }
 }
