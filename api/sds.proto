@@ -141,6 +141,7 @@ message SdsSecretConfig {
 }
 
 message Secret {
+  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
   string name = 1;
   oneof type {
     TlsCertificate tls_certificate = 2;
