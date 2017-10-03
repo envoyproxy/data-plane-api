@@ -137,14 +137,6 @@ message ApiConfigSource {
 message AggregatedConfigSource {
 }
 
-message SdsSecretConfig {
-  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
-  // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
-  // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
-  string secret_name = 1;
-  ConfigSource sds_config = 2;
-}
-
 // Configuration for listeners, clusters, routes, endpoints etc. may either be
 // sourced from the filesystem or from an API source. Filesystem configs are
 // watched with inotify for updates.

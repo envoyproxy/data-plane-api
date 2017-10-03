@@ -7,7 +7,7 @@ import "api/base.proto";
 import "api/discovery.proto";
 import "api/health_check.proto";
 import "api/protocol.proto";
-import "api/tls_context.proto";
+import "api/sds.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";

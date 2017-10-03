@@ -33,12 +33,6 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "tls_context",
-    srcs = ["tls_context.proto"],
-    deps = [":base"],
-)
-
-api_proto_library(
     name = "cds",
     srcs = ["cds.proto"],
     has_services = 1,
@@ -48,7 +42,7 @@ api_proto_library(
         ":discovery",
         ":health_check",
         ":protocol",
-        ":tls_context",
+        ":sds",
     ],
 )
 
@@ -89,7 +83,7 @@ api_proto_library(
         ":address",
         ":base",
         ":discovery",
-        ":tls_context",
+        ":sds",
     ],
 )
 
@@ -119,7 +113,7 @@ api_proto_library(
     srcs = ["sds.proto"],
     has_services = 1,
     deps = [
+        ":base",
         ":discovery",
-        ":tls_context",
     ],
 )
