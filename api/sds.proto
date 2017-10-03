@@ -2,7 +2,25 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
+import "api/base.proto";
+import "api/discovery.proto";
+
+import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
+
+service SecretDiscoveryService{
+  rpc StreamSecrets(stream DiscoveryRequest)
+      returns (stream DiscoveryResponse) {
+  }
+
+  rpc FetchSecrets(DiscoveryRequest)
+      returns (DiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:secrets"
+      body: "*"
+    };
+  }
+}
 
 message DataSource {
   oneof specifier {
@@ -87,7 +105,9 @@ message CommonTlsContext {
 
   // Multiple TLS certificates can be associated with the same context,
   // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
+  // TLS certificates can be either configured locally or fetched from SDS.
   repeated TlsCertificate tls_certificates = 2;
+  repeated SdsSecretConfig sds_secret_configs = 6;
 
   // How to validate peer certificates.
   CertificateValidationContext validation_context = 3;
@@ -125,4 +145,20 @@ message DownstreamTlsContext {
   google.protobuf.BoolValue require_sni = 3;
 
   TlsSessionTicketKeys tls_session_ticket_keys = 4;
+}
+
+message SdsSecretConfig {
+  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
+  // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
+  // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
+  string name = 1;
+  ConfigSource sds_config = 2;
+}
+
+message Secret {
+  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
+  string name = 1;
+  oneof type {
+    TlsCertificate tls_certificate = 2;
+  }
 }
