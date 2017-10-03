@@ -22,5 +22,8 @@ service SecretDiscoveryService{
 }
 
 message Secret {
-  TlsCertificate tls_certificate = 1;
+  string name = 1;
+  oneof type {
+    TlsCertificate tls_certificate = 2;
+  }
 }
