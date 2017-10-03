@@ -141,7 +141,10 @@ message DownstreamTlsContext {
   // If specified, Envoy will reject connections without a valid and matching SNI.
   google.protobuf.BoolValue require_sni = 3;
 
-  TlsSessionTicketKeys tls_session_ticket_keys = 4;
+  oneof session_ticket_keys {
+    TlsSessionTicketKeys keys = 4;
+    SdsSecretConfig config = 5;
+  }
 }
 
 message SdsSecretConfig {
