@@ -59,6 +59,16 @@ message TlsCertificate {
   repeated DataSource signed_certificate_timestamp = 5;
 }
 
+message TlsSessionTicketKeys {
+  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
+  // key is used to encrypt new tickets that are created.  All keys are candidates
+  // for decrypting received tickets.
+  //
+  // Each key must be exactly 80 bytes long, containing cryptographically-secure random
+  // data.  For example, the output of "openssl rand 80".
+  repeated DataSource keys = 1;
+}
+
 message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use
   // in verifying a presented certificate. If not specified and a certificate is
@@ -130,6 +140,11 @@ message DownstreamTlsContext {
 
   // If specified, Envoy will reject connections without a valid and matching SNI.
   google.protobuf.BoolValue require_sni = 3;
+
+  oneof session_ticket_keys {
+    TlsSessionTicketKeys keys = 4;
+    SdsSecretConfig config = 5;
+  }
 }
 
 message SdsSecretConfig {
@@ -145,5 +160,6 @@ message Secret {
   string name = 1;
   oneof type {
     TlsCertificate tls_certificate = 2;
+    TlsSessionTicketKeys session_ticket_keys = 3;
   }
 }
