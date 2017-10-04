@@ -33,6 +33,8 @@ message Node {
   // This is motivated by informing a management server during canary which
   // version of Envoy is being tested in a heterogeneous fleet.
   string build_version = 5;
+  // The optional version of the service.
+  string version = 6;
 }
 
 message Endpoint {
