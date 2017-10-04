@@ -143,7 +143,7 @@ message DownstreamTlsContext {
 
   oneof session_ticket_keys_type {
     TlsSessionTicketKeys session_ticket_keys = 4;
-    SdsSecretConfig session_ticket_keys_config = 5;
+    SdsSecretConfig session_ticket_sds_secret_config = 5;
   }
 }
 
