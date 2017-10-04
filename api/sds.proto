@@ -104,7 +104,7 @@ message CommonTlsContext {
   // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
   // TLS certificates can be either configured locally or fetched from SDS.
   repeated TlsCertificate tls_certificates = 2;
-  repeated SdsSecretConfig sds_secret_configs = 6;
+  repeated SdsSecretConfig tls_certificate_sds_secret_configs = 6;
 
   // How to validate peer certificates.
   CertificateValidationContext validation_context = 3;
@@ -141,9 +141,9 @@ message DownstreamTlsContext {
   // If specified, Envoy will reject connections without a valid and matching SNI.
   google.protobuf.BoolValue require_sni = 3;
 
-  oneof session_ticket_keys {
-    TlsSessionTicketKeys keys = 4;
-    SdsSecretConfig config = 5;
+  oneof session_ticket_keys_type {
+    TlsSessionTicketKeys session_ticket_keys = 4;
+    SdsSecretConfig session_ticket_keys_sds_secret_config = 5;
   }
 }
 
