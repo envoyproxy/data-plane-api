@@ -132,9 +132,9 @@ message UpstreamLocalityStats {
   // The total number of requests sent by this Envoy since the last report. A
   // single HTTP or gRPC request or stream is counted as one request. A TCP
   // connection is also treated as one request. There is no explicit
-  // total_requests field below, but it may be inferred from:
+  // total_requests field below for a locality, but it may be inferred from:
   //   total_requests = total_successful_requests + total_requests_in_progress +
-  //       total_error_requests + total_dropped_requests
+  //       total_error_requests
   // The total number of requests successfully completed by the endpoints in the
   // locality. These include non-5xx responses for HTTP, where errors
   // originate at the client and the endpoint responded successfuly. For gRPC,
@@ -147,12 +147,9 @@ message UpstreamLocalityStats {
   // grpc-status values {DeadlineExceeded, Unimplemented, Internal,
   // Unavailable, Unknown, DataLoss}.
   uint64 total_error_requests = 4;
-  // The total number of dropped requests. This covers requests
-  // deliberately dropped by the drop_overload policy and circuit breaking.
-  uint64 total_dropped_requests = 5;
 
   // Stats for multi-dimensional load balancing.
-  repeated EndpointLoadMetricStats load_metric_stats = 6;
+  repeated EndpointLoadMetricStats load_metric_stats = 5;
 }
 
 // Per cluster stats
@@ -160,6 +157,17 @@ message ClusterStats {
   string cluster_name = 1;
   // Need at least one.
   repeated UpstreamLocalityStats upstream_locality_stats = 2;
+
+  // Cluster-level stats such as total_successful_requests may be computed by
+  // summing upstream_locality_stats. In addition, below there are additional
+  // cluster-wide stats. The following total_requests equality holds at the
+  // cluster-level:
+  //   total_requests = sum_locality(total_successful_requests) +
+  //       sum_locality(total_requests_in_progress) +
+  //       sum_locality(total_error_requests) + total_dropped_requests
+  // The total number of dropped requests. This covers requests
+  // deliberately dropped by the drop_overload policy and circuit breaking.
+  uint64 total_dropped_requests = 3;
 }
 
 message LoadStatsRequest {
