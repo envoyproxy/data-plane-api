@@ -41,7 +41,7 @@ api_proto_library(
         ":discovery",
         ":health_check",
         ":protocol",
-        ":sds",
+        ":transport_security",
     ],
 )
 
@@ -82,7 +82,7 @@ api_proto_library(
         ":address",
         ":base",
         ":discovery",
-        ":sds",
+        ":transport_security",
     ],
 )
 
@@ -114,5 +114,12 @@ api_proto_library(
     deps = [
         ":base",
         ":discovery",
+        ":transport_security",
     ],
+)
+
+api_proto_library(
+    name = "transport_security",
+    srcs = ["transport_security.proto"],
+    deps = [":base"],
 )

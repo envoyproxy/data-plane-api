@@ -9,7 +9,7 @@ package envoy.api.v2;
 import "api/address.proto";
 import "api/base.proto";
 import "api/discovery.proto";
-import "api/sds.proto";
+import "api/transport_security.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
@@ -87,7 +87,14 @@ message FilterChainMatch {
 // and related parameters.
 message FilterChain {
   FilterChainMatch filter_chain_match = 1;
-  DownstreamTlsContext tls_context = 2;
+
+  oneof transport_security {
+    DownstreamTlsContext tls_context = 2;
+
+    // The generic configuration for transport security for the filter chain.
+    TransportSecurityContext transport_security_context = 6;
+  }
+
   // A list of individual network filters that make up the filter chain for
   // connections established with the listener. Order matters as the filters are
   // processed sequentially as connection events happen.  Note: If the filter

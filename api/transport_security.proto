@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "api/base.proto";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/wrappers.proto";
+
+message DataSource {
+  oneof specifier {
+    string filename = 1;
+    bytes inline = 2;
+  }
+}
+
+message TlsParameters {
+  enum TlsProtocol {
+    TLS_AUTO = 0;
+    TLSv1_0 = 1;
+    TLSv1_1 = 2;
+    TLSv1_2 = 3;
+    TLSv1_3 = 4;
+  }
+  // Allowed TLS protocols.
+  TlsProtocol tls_minimum_protocol_version = 1;
+  TlsProtocol tls_maximum_protocol_version = 2;
+
+  // If specified, the TLS listener will only support the specified cipher list.
+  repeated string cipher_suites = 3;
+
+  // If specified, the TLS connection will only support the specified ECDH
+  // curves. If not specified, the default curves (X25519, P-256) will be used.
+  repeated string ecdh_curves = 4;
+}
+
+// TLS certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
+// be loaded from either.
+message TlsCertificate {
+  DataSource certificate_chain = 1;
+  DataSource private_key = 2;
+  DataSource password = 3;
+  DataSource ocsp_staple = 4;
+  repeated DataSource signed_certificate_timestamp = 5;
+}
+
+message TlsSessionTicketKeys {
+  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
+  // key is used to encrypt new tickets that are created.  All keys are candidates
+  // for decrypting received tickets.
+  //
+  // Each key must be exactly 80 bytes long, containing cryptographically-secure random
+  // data.  For example, the output of "openssl rand 80".
+  repeated DataSource keys = 1;
+}
+
+message CertificateValidationContext {
+  // TLS certificate data containing certificate authority certificates to use
+  // in verifying a presented certificate. If not specified and a certificate is
+  // presented it will not be verified.
+  DataSource trusted_ca = 1;
+
+  // If specified, Envoy will verify (pin) hex-encoded SHA-256 hash of
+  // the presented certificate.
+  repeated string verify_certificate_hash = 2;
+
+  // If specified, Envoy will verify (pin) base64-encoded SHA-256 hash of
+  // the Subject Public Key Information (SPKI) of the presented certificate.
+  // This is the same format as used in HTTP Public Key Pinning.
+  repeated string verify_spki_sha256 = 3;
+
+  // An optional list of subject alt names. If specified, Envoy will verify that
+  // the certificate’s subject alt name matches one of the specified values.
+  repeated string verify_subject_alt_name = 4;
+
+  // Must present a signed time-stamped OCSP response.
+  google.protobuf.BoolValue require_ocsp_staple = 5;
+
+  // Must present signed certificate time-stamp.
+  google.protobuf.BoolValue require_signed_certificate_timestamp = 6;
+}
+
+// TLS context shared by both client and server TLS contexts.
+message CommonTlsContext {
+  // TLS protocol versions, cipher suites etc.
+  TlsParameters tls_params = 1;
+
+  // Multiple TLS certificates can be associated with the same context,
+  // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
+  // TLS certificates can be either configured locally or fetched from SDS.
+  repeated TlsCertificate tls_certificates = 2;
+  repeated SdsSecretConfig tls_certificate_sds_secret_configs = 6;
+
+  // How to validate peer certificates.
+  CertificateValidationContext validation_context = 3;
+
+  // Protocols to negotiate over ALPN
+  repeated string alpn_protocols = 4;
+
+  // These fields are deprecated and only are used during the interim v1 -> v2
+  // transition period for internal purposes. They should not be used outside of
+  // the Envoy binary.
+  message DeprecatedV1 {
+    string alt_alpn_protocols = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 5;
+}
+
+message UpstreamTlsContext {
+  CommonTlsContext common_tls_context = 1;
+
+  // SNI string to use when creating TLS backend connections.
+  string sni = 2;
+}
+
+// [V2-API-DIFF] This has been reworked to support alternative modes of
+// certificate/key delivery, for consistency with the upstream TLS context and
+// to segregate the client/server aspects of the TLS context.
+message DownstreamTlsContext {
+  CommonTlsContext common_tls_context = 1;
+
+  // If specified, Envoy will reject connections without a valid client
+  // certificate.
+  google.protobuf.BoolValue require_client_certificate = 2;
+
+  // If specified, Envoy will reject connections without a valid and matching SNI.
+  google.protobuf.BoolValue require_sni = 3;
+
+  oneof session_ticket_keys_type {
+    TlsSessionTicketKeys session_ticket_keys = 4;
+    SdsSecretConfig session_ticket_keys_sds_secret_config = 5;
+  }
+}
+
+message SdsSecretConfig {
+  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
+  // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
+  // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
+  string name = 1;
+  ConfigSource sds_config = 2;
+}
+
+message TransportSecurityContext {
+  // The name of the transport security to instantiate. The name must match a supported
+  // transport security implementation.
+  string name = 1;
+
+  // Implementation specific configuration which depends on the implementation being instantiated.
+  // See the supported transport security implementations for further documentation.
+  google.protobuf.Any config = 2;
+}
