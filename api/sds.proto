@@ -7,7 +7,6 @@ import "api/discovery.proto";
 import "api/transport_security.proto";
 
 import "google/api/annotations.proto";
-import "google/protobuf/wrappers.proto";
 
 service SecretDiscoveryService{
   rpc StreamSecrets(stream DiscoveryRequest)

@@ -89,6 +89,8 @@ message FilterChain {
   FilterChainMatch filter_chain_match = 1;
 
   oneof transport_security {
+    // The TLS configuration for connections to the filter chain.
+    // If no TLS configuration is specified, TLS will not be used for new connections.
     DownstreamTlsContext tls_context = 2;
 
     // The generic configuration for transport security for the filter chain.

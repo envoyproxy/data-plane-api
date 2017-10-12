@@ -132,14 +132,6 @@ message DownstreamTlsContext {
   }
 }
 
-message SdsSecretConfig {
-  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
-  // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
-  // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
-  string name = 1;
-  ConfigSource sds_config = 2;
-}
-
 message TransportSecurityContext {
   // The name of the transport security to instantiate. The name must match a supported
   // transport security implementation.
@@ -148,4 +140,12 @@ message TransportSecurityContext {
   // Implementation specific configuration which depends on the implementation being instantiated.
   // See the supported transport security implementations for further documentation.
   google.protobuf.Any config = 2;
+}
+
+message SdsSecretConfig {
+  // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
+  // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
+  // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
+  string name = 1;
+  ConfigSource sds_config = 2;
 }
