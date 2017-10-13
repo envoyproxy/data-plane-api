@@ -39,6 +39,11 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "tcp_fault",
+    srcs = ["tcp_fault.proto"],
+)
+
+api_proto_library(
     name = "redis_proxy",
     srcs = ["redis_proxy.proto"],
     deps = [
