@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter;
 
-import "http_fault.proto";
+import "fault.proto";
 import "google/protobuf/duration.proto";
 
 message RedisProxy {
@@ -15,9 +15,6 @@ message RedisProxy {
 
   // Network settings for the connection pool to the upstream cluster.
   ConnPoolSettings settings = 3;
-
-  // Inject a fixed delay before proxying a Redis operation. NOT IMPLEMENTED
-  Delay delay = 4;
 
   // Redis connection pool settings
   message ConnPoolSettings {

@@ -8,30 +8,49 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
-// Delay specification is used to inject latency into the rpc operations.
-message Delay {
-  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.
-  string type = 1;
+// Delay specification is used to inject latency into the rpc/TCP proxy operations.
+message FaultDelay {
+  enum FaultDelayType {
+    // Fixed delay (step function).
+    FIXED = 0;
+    // Exponential delay.
+    EXPONENTIAL = 1;
+  }
 
-  // An integer between 0-100 indicating the percentage of operations
+  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.
+  FaultDelayType type = 1;
+
+  // An integer between 0-100 indicating the percentage of operations/connection requests
   // on which the delay will be injected.
   google.protobuf.UInt32Value percent = 2;
 
-  oneof http_delay_type {
+  oneof fault_delay_type {
     // Add a fixed delay before forwarding the operation upstream. Format: 1h/1m/1s/1ms. MUST be >=1ms.
-    google.protobuf.Duration fixed_delay = 2;
-    // (-- Add a delay (based on an exponential function) before forwarding
-    // the operation. Mean delay needed to derive the exponential delay
-    // values. NOT IMPLEMENTED --)
-    google.protobuf.Duration exponential_delay = 3 ;
+    // For HTTP/Mongo/Redis, the specified delay will be injected before a new request/operation. For TCP
+    // connections, the proxying of the connection upstream will be delayed for the specified period.
+    google.protobuf.Duration fixed_delay = 3;
   }
-  // (-- Specify delay duration as part of Http request. NOT IMPLEMENTED --)
-  string override_header_name = 4 ;
+}
+
+// Abort specification is used to prematurely abort a request/TCP connection
+// with a pre-specified error code.
+message FaultAbort {
+  // An integer between 0-100 indicating the percentage of requests/operations/connections
+  // that will be aborted with the error code provided.
+  google.protobuf.UInt32Value percent = 1;
+
+  // Applicable only for HTTP connections.
+  oneof error_type {
+    // HTTP status code to use to abort the HTTP request.
+    int32 http_status = 2;
+    // gRPC status code to use to abort the gRPC request.
+    int32 grpc_status = 3;
+  }
 }
 
 // HTTPFault can be used to specify one or more faults to inject
-// while forwarding http requests to the upstream cluster.
-// Faults include aborting the Http request from downstream service,
+// while forwarding HTTP requests to the upstream cluster.
+// Faults include aborting the HTTP request from downstream service,
 // and/or delaying proxying of HTTP requests. Fault filter is executed
 // before proxying a request. Hence timeouts, retries, circuit breakers will
 // not be activated on an upstream cluster due to errors injected by the
@@ -39,12 +58,15 @@ message Delay {
 //
 // *Note:* Delay and abort faults are independent of one another, even if
 // both are specified simultaneously.
+
+// * Note:* The fault injection filter must be inserted before any
+// other filter, including the router filter.
 message HTTPFault {
   // Delay requests before forwarding, emulating various failures such as
   // network issues, overloaded upstream service, etc.
   Delay delay = 1;
 
-  // Abort Http request attempts and return error codes back to downstream
+  // Abort HTTP request attempts and return error codes back to downstream
   // service, giving the impression that the upstream service is faulty.
   Abort abort = 2;
 
@@ -70,24 +92,23 @@ message HTTPFault {
   // nodes. Downstream node name is taken from the HTTP
   // x-envoy-downstream-service-node header and compared against
   // downstream_nodes list.
-  repeated string downstream_nodes =5;
+  repeated string downstream_nodes = 5;
+}
 
-  // Abort specification is used to prematurely abort a request with a
-  // pre-specified error code.
-  message Abort {
-    // An integer between 0-100 indicating the percentage of requests
-    // that will be aborted with the error code provided.
-    google.protobuf.UInt32Value percent = 1;
+// Faults can be injected into the connections from downstream by the
+// Envoy, for testing the failure recovery capabilities of downstream
+// services.  Faults include aborting the connection from downstream
+// service, and delaying proxying of connection to the destination.
+message TCPFault {
+  // Delay proxying of the TCP connection for a specified period.
+  Delay delay = 1;
 
-    oneof error_type {
-      // gRPC status code to use to abort a gRPC request. NOT IMPLEMENTED
-      string grpc_status = 2 ;
-      // HTTP2 error code used to abort a Http2 request. NOT IMPLEMENTED
-      string http2_error = 3 ;
-      // HTTP status code to use to abort the Http request.
-      int32 http_status = 4;
-    }
-    // (-- Specify abort code as part of Http request.--)
-    string override_header_name = 5 ;
-  }
+  // Abort a specified percentage of downstream TCP connections without
+  // establishing an upstream connection. The connection will be abruptly reset.
+  Abort abort = 2;
+
+  // Specifies the name of the upstream cluster that the
+  // filter should match on. Fault injection will be restricted to connections
+  // bound to the specific upstream cluster.
+  string upstream_cluster = 3;
 }
