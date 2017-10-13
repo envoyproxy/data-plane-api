@@ -15,6 +15,9 @@ api_proto_library(
 api_proto_library(
     name = "mongo_proxy",
     srcs = ["mongo_proxy.proto"],
+    deps = [
+    ":http_fault",
+    ],
 )
 
 api_proto_library(
@@ -25,4 +28,20 @@ api_proto_library(
 api_proto_library(
     name = "tcp_proxy",
     srcs = ["tcp_proxy.proto"],
+)
+
+api_proto_library(
+    name = "http_fault",
+    srcs = ["http_fault.proto"],
+    deps = [
+        "//api:rds",
+    ],
+)
+
+api_proto_library(
+    name = "redis_proxy",
+    srcs = ["redis_proxy.proto"],
+    deps = [
+        ":http_fault",
+    ],
 )

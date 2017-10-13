@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+import "api/rds.proto";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+
+// Delay specification is used to inject latency into the rpc operations.
+message Delay {
+  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.
+  string type = 1;
+
+  // An integer between 0-100 indicating the percentage of operations
+  // on which the delay will be injected.
+  google.protobuf.UInt32Value percent = 2;
+
+  oneof http_delay_type {
+    // Add a fixed delay before forwarding the operation upstream. Format: 1h/1m/1s/1ms. MUST be >=1ms.
+    google.protobuf.Duration fixed_delay = 2;
+    // (-- Add a delay (based on an exponential function) before forwarding
+    // the operation. Mean delay needed to derive the exponential delay
+    // values. NOT IMPLEMENTED --)
+    google.protobuf.Duration exponential_delay = 3 ;
+  }
+  // (-- Specify delay duration as part of Http request. NOT IMPLEMENTED --)
+  string override_header_name = 4 ;
+}
+
+// HTTPFault can be used to specify one or more faults to inject
+// while forwarding http requests to the upstream cluster.
+// Faults include aborting the Http request from downstream service,
+// and/or delaying proxying of HTTP requests. Fault filter is executed
+// before proxying a request. Hence timeouts, retries, circuit breakers will
+// not be activated on an upstream cluster due to errors injected by the
+// fault filter.
+//
+// *Note:* Delay and abort faults are independent of one another, even if
+// both are specified simultaneously.
+message HTTPFault {
+  // Delay requests before forwarding, emulating various failures such as
+  // network issues, overloaded upstream service, etc.
+  Delay delay = 1;
+
+  // Abort Http request attempts and return error codes back to downstream
+  // service, giving the impression that the upstream service is faulty.
+  Abort abort = 2;
+
+  // Specifies the name of the upstream cluster that the
+  // filter should match on. Fault injection will be restricted to requests
+  // bound to the specific upstream cluster.
+  string upstream_cluster = 3;
+
+  // Specifies a set of headers that the filter should match on. The fault
+  // injection filter can be applied selectively to requests that match a
+  // set of headers specified in the fault filter config. The chances of
+  // actual fault injection further depend on the values of abort_percent
+  // and fixed_delay_percent parameters.The filter will check the request’s
+  // headers against all the specified headers in the filter config. A
+  // match will happen if all the headers in the config are present in the
+  // request with the same values (or based on presence if the value field
+  // is not in the config). TODO: allow runtime configuration on per entry
+  // basis for headers match.
+  repeated HeaderMatcher headers = 4;
+
+  // Faults are injected for the specified list of downstream hosts. If
+  // this setting is not set, faults are injected for all downstream
+  // nodes. Downstream node name is taken from the HTTP
+  // x-envoy-downstream-service-node header and compared against
+  // downstream_nodes list.
+  repeated string downstream_nodes =5;
+
+  // Abort specification is used to prematurely abort a request with a
+  // pre-specified error code.
+  message Abort {
+    // An integer between 0-100 indicating the percentage of requests
+    // that will be aborted with the error code provided.
+    google.protobuf.UInt32Value percent = 1;
+
+    oneof error_type {
+      // gRPC status code to use to abort a gRPC request. NOT IMPLEMENTED
+      string grpc_status = 2 ;
+      // HTTP2 error code used to abort a Http2 request. NOT IMPLEMENTED
+      string http2_error = 3 ;
+      // HTTP status code to use to abort the Http request.
+      int32 http_status = 4;
+    }
+    // (-- Specify abort code as part of Http request.--)
+    string override_header_name = 5 ;
+  }
+}

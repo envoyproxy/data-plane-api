@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2.filter;
 
+import "http_fault.proto";
+
 message MongoProxy {
   // The human readable prefix to use when emitting statistics for the
   // MongoDB proxy filter. See the statistics documentation for more information.
@@ -11,4 +13,10 @@ message MongoProxy {
   // path is specified no access logs will be written. Note that access log is
   // also gated by runtime.
   string access_log = 2;
+
+  // Inject a fixed delay before proxying a Mongo operation. Delays are
+  // applied to the following MongoDB operations: Query, Insert, GetMore,
+  // and KillCursors. Once an active delay is in progress, all incoming
+  // data up until the timer event fires will be a part of the delay.
+  Delay delay = 3;
 }
