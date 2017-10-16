@@ -18,7 +18,7 @@ message SocketAddress {
   // address implies a bind to 0.0.0.0 or ::. It's still possible to distinguish on
   // address via the prefix/suffix matching in FilterChainMatch after connection.
   // For clusters, an address may be either an IP or hostname to be resolved via
-  // DNS.  If it is a hostname, resolve_name should be set.
+  // DNS.  If it is a hostname, resolver_name should be set.
   string address = 2;
   oneof port_specifier {
     uint32 port_value = 3;
