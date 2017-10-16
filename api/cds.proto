@@ -82,7 +82,7 @@ message Cluster {
     ConfigSource eds_config = 1;
     // Optional alternative to cluster name to present to EDS. This does not
     // have the same restrictions as cluster name, i.e. it may be arbritary
-    // length and contain ':'.
+    // length.
     string service_name = 2;
   }
   EdsClusterConfig eds_cluster_config = 3;
