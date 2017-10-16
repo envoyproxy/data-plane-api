@@ -25,9 +25,12 @@ message FaultDelay {
   google.protobuf.UInt32Value percent = 2;
 
   oneof fault_delay_type {
-    // Add a fixed delay before forwarding the operation upstream. Format: 1h/1m/1s/1ms. MUST be >=1ms.
-    // For HTTP/Mongo/Redis, the specified delay will be injected before a new request/operation. For TCP
-    // connections, the proxying of the connection upstream will be delayed for the specified period.
+    // Add a fixed delay before forwarding the operation upstream. See
+    // https://developers.google.com/protocol-buffers/docs/proto3#json for
+    // the JSON/YAML Duration mapping. For HTTP/Mongo/Redis, the specified
+    // delay will be injected before a new request/operation. For TCP
+    // connections, the proxying of the connection upstream will be delayed
+    // for the specified period.
     google.protobuf.Duration fixed_delay = 3;
   }
 }
@@ -48,29 +51,39 @@ message FaultAbort {
   }
 }
 
-// HTTPFault can be used to specify one or more faults to inject
-// while forwarding HTTP requests to the upstream cluster.
-// Faults include aborting the HTTP request from downstream service,
-// and/or delaying proxying of HTTP requests. Fault filter is executed
-// before proxying a request. Hence timeouts, retries, circuit breakers will
-// not be activated on an upstream cluster due to errors injected by the
-// fault filter.
+// The fault injection filter can be used to test the resiliency of
+// microservices to different forms of failures. The filter can be used to
+// inject delays and abort requests with user-specified error codes,
+// thereby providing the ability to stage different failure scenarios such
+// as service failures, service overloads, high network latency, network
+// partitions, etc. Faults injection can be limited to a specific set of
+// requests based on the (destination) upstream cluster of a request and/or
+// a set of pre-defined request headers.
 //
-// *Note:* Delay and abort faults are independent of one another, even if
-// both are specified simultaneously.
-
+// The scope of failures is restricted to those that are observable by an
+// application communicating over the network. CPU and disk failures on the
+// local host cannot be emulated.
+//
+// Currently, the fault injection filter has the following limitations:
+//
+// * Abort codes are restricted to HTTP status codes only
+// * Delays are restricted to fixed duration.
+//
+// Future versions will include support for restricting faults to specific
+// routes, and delay durations based on distributions.
+//
 // * Note:* The fault injection filter must be inserted before any
 // other filter, including the router filter.
 message HTTPFault {
-  // Delay requests before forwarding, emulating various failures such as
-  // network issues, overloaded upstream service, etc.
+  // If specified, the filter will inject delays based on the values in the
+  // object. At least abort or delay must be specified.
   Delay delay = 1;
 
-  // Abort HTTP request attempts and return error codes back to downstream
-  // service, giving the impression that the upstream service is faulty.
+  // If specified, the filter will abort requests based on the values in
+  // the object. At least abort or delay must be specified.
   Abort abort = 2;
 
-  // Specifies the name of the upstream cluster that the
+  // Specifies the name of the (destination) upstream cluster that the
   // filter should match on. Fault injection will be restricted to requests
   // bound to the specific upstream cluster.
   string upstream_cluster = 3;
@@ -82,7 +95,7 @@ message HTTPFault {
   // and fixed_delay_percent parameters.The filter will check the request’s
   // headers against all the specified headers in the filter config. A
   // match will happen if all the headers in the config are present in the
-  // request with the same values (or based on presence if the value field
+  // request with the same values (or based on presence if the `value` field
   // is not in the config). TODO: allow runtime configuration on per entry
   // basis for headers match.
   repeated HeaderMatcher headers = 4;
