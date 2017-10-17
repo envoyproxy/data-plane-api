@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+message AuthAction {
+  // Should we do white-list or black-list style access control.
+  enum ActionType {
+    // Request matches all rules are allowed, otherwise denied.
+    ALLOW = 0;
+    // Request matches all rules or missing required auth fields are denied,
+    // otherwise allowed.
+    DENY = 1;
+  }
+
+  ActionType action_type = 1;
+
+  // Logic AND that requires all rules match.
+  message AndRule {
+    repeated Rule rules = 1;
+  }
+
+  // Logic OR that requires at least one rule matches.
+  message OrRule {
+    repeated Rule rules = 1;
+  }
+
+  // Check peer identity using X.509 certificate.
+  message X509Rule {
+    // SHA256 hash of peer certificate.
+    string sha256_hash = 1;
+    // Subject of peer certificate.
+    string subject = 2;
+    // Subject alt name of peer certificate.
+    string subject_alt_name = 3;
+  }
+
+  // Element type of AndRule/OrRule, it chooses among different type of rule.
+  message Rule {
+    oneof rule_specifier {
+      AndRule and_rule = 1;
+      OrRule or_rule = 2;
+      X509Rule x509_rule = 3;
+    }
+  }
+
+  // List of rules
+  repeated Rule rule = 2;
+}

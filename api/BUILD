@@ -8,6 +8,11 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "auth",
+    srcs = ["auth.proto"],
+)
+
+api_proto_library(
     name = "base",
     srcs = ["base.proto"],
     deps = [":address"],
@@ -102,6 +107,7 @@ api_proto_library(
     srcs = ["rds.proto"],
     has_services = 1,
     deps = [
+        ":auth",
         ":base",
         ":discovery",
     ],
