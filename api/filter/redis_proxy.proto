@@ -26,6 +26,6 @@ message RedisProxy {
     // exception to this behavior is when a connection to a backend is not
     // yet established. In that case, the connect timeout on the cluster
     // will govern the timeout until the connection is ready.
-    google.protobuf.Duration op_timeout = 3;
+    google.protobuf.Duration op_timeout = 1;
   }
 }

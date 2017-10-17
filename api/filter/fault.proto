@@ -35,7 +35,7 @@ message FaultDelay {
   }
 }
 
-// Abort specification is used to prematurely abort a request/TCP connection
+// Abort specification is used to prematurely abort a rpc operation/TCP connection
 // with a pre-specified error code.
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
@@ -45,9 +45,7 @@ message FaultAbort {
   // Applicable only for HTTP connections.
   oneof error_type {
     // HTTP status code to use to abort the HTTP request.
-    int32 http_status = 2;
-    // gRPC status code to use to abort the gRPC request.
-    int32 grpc_status = 3;
+    uint32 http_status = 2;
   }
 }
 
@@ -77,11 +75,11 @@ message FaultAbort {
 message HTTPFault {
   // If specified, the filter will inject delays based on the values in the
   // object. At least abort or delay must be specified.
-  Delay delay = 1;
+  FaultDelay delay = 1;
 
   // If specified, the filter will abort requests based on the values in
   // the object. At least abort or delay must be specified.
-  Abort abort = 2;
+  FaultAbort abort = 2;
 
   // Specifies the name of the (destination) upstream cluster that the
   // filter should match on. Fault injection will be restricted to requests
@@ -91,8 +89,8 @@ message HTTPFault {
   // Specifies a set of headers that the filter should match on. The fault
   // injection filter can be applied selectively to requests that match a
   // set of headers specified in the fault filter config. The chances of
-  // actual fault injection further depend on the values of abort_percent
-  // and fixed_delay_percent parameters.The filter will check the request’s
+  // actual fault injection further depend on the values of FaultAbort.percent
+  // and FaultDelay.percent parameters. The filter will check the request’s
   // headers against all the specified headers in the filter config. A
   // match will happen if all the headers in the config are present in the
   // request with the same values (or based on presence if the `value` field
@@ -114,11 +112,11 @@ message HTTPFault {
 // service, and delaying proxying of connection to the destination.
 message TCPFault {
   // Delay proxying of the TCP connection for a specified period.
-  Delay delay = 1;
+  FaultDelay delay = 1;
 
   // Abort a specified percentage of downstream TCP connections without
   // establishing an upstream connection. The connection will be abruptly reset.
-  Abort abort = 2;
+  FaultAbort abort = 2;
 
   // Specifies the name of the upstream cluster that the
   // filter should match on. Fault injection will be restricted to connections
