@@ -276,7 +276,9 @@ message Cluster {
   message RingHashLbConfig {
     // Minimum hash ring size, i.e. total virtual nodes. A larger size
     // will provide better request distribution since each host in the
-    // cluster will have more virtual nodes. Defaults to 1024.
+    // cluster will have more virtual nodes. Defaults to 1024. In the case
+    // that total number of hosts is greater than the minimum, each host will
+    // be allocated a single virtual node.
     google.protobuf.UInt64Value minimum_ring_size = 1;
 
     message DeprecatedV1 {
