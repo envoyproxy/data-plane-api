@@ -1,4 +1,4 @@
-load("@protobuf_bzl//:protobuf.bzl", "cc_proto_library", "py_proto_library")
+load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 
 def _CcSuffix(d):
     return d + "_cc"
@@ -8,34 +8,41 @@ def _PySuffix(d):
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
-def api_cc_proto_library(name, srcs = [], deps = [], has_services = 0):
-    cc_proto_library(
-        name = name,
+# TOOD(htuch): Convert this to native py_proto_library once
+# https://github.com/bazelbuild/bazel/issues/3935 and/or
+# https://github.com/bazelbuild/bazel/issues/2626 are resolved.
+def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
+    py_proto_library(
+        name = _PySuffix(name),
         srcs = srcs,
-        default_runtime = "//external:protobuf",
-        protoc = "//external:protoc",
-        deps = [_CcSuffix(d) for d in deps] + [
-            "@googleapis//:http_api_protos",
-            "@protobuf_bzl//:cc_wkt_protos",
-        ],
+        default_runtime = "@com_google_protobuf//:protobuf_python",
+        protoc = "@com_google_protobuf//:protoc",
+        deps = [_PySuffix(d) for d in deps] + ["@googleapis//:http_api_protos_py"],
         visibility = ["//visibility:public"],
     )
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
-def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
-    py_proto_library(
+def api_proto_library(name, srcs = [], deps = [], has_services = 0):
+    native.proto_library(
         name = name,
         srcs = srcs,
-        default_runtime = "//external:protobuf_python",
-        protoc = "//external:protoc",
-        deps = [_PySuffix(d) for d in deps] + ["@googleapis//:http_api_protos_py"],
+        deps = deps + [
+            "@com_google_protobuf//:any_proto",
+            "@com_google_protobuf//:descriptor_proto",
+            "@com_google_protobuf//:duration_proto",
+            "@com_google_protobuf//:struct_proto",
+            "@com_google_protobuf//:wrappers_proto",
+            "@googleapis//:http_api_protos_lib",
+        ],
         visibility = ["//visibility:public"],
     )
-
-def api_proto_library(name, srcs = [], deps = [], has_services = 0):
-    api_cc_proto_library(_CcSuffix(name), srcs, deps, has_services)
-    api_py_proto_library(_PySuffix(name), srcs, deps, has_services)
+    native.cc_proto_library(
+        name = _CcSuffix(name),
+        deps = [name],
+        visibility = ["//visibility:public"],
+    )
+    api_py_proto_library(name, srcs, deps, has_services)
 
 def api_cc_test(name, srcs, proto_deps):
     native.cc_test(
