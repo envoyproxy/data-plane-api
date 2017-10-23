@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+//The router filter implements HTTP forwarding. It will be used in almost
+//all HTTP proxy scenarios that Envoy is deployed for. The filter’s main
+//job is to follow the instructions specified in the configured route
+//table. In addition to forwarding and redirection, the filter also handles
+//retry, statistics, etc.
+message Router {
+  // Whether the router generates dynamic cluster statistics. Defaults to
+  // true. Can be disabled in high performance scenarios.
+  bool dynamic_stats = 1;
+}

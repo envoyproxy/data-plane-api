@@ -40,3 +40,28 @@ api_proto_library(
     name = "redis_proxy",
     srcs = ["redis_proxy.proto"],
 )
+
+api_proto_library(
+    name = "router",
+    srcs = ["router.proto"],
+)
+
+api_proto_library(
+    name = "buffer",
+    srcs = ["buffer.proto"],
+)
+
+api_proto_library(
+    name = "transcoder",
+    srcs = ["transcoder.proto"],
+)
+
+api_proto_library(
+    name = "ip_tagging",
+    srcs = ["ip_tagging.proto"],
+)
+
+api_proto_library(
+    name = "client_ssl_auth",
+    srcs = ["client_ssl_auth.proto"],
+)

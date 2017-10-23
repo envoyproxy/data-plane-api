@@ -8,7 +8,8 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
-// Delay specification is used to inject latency into the rpc/TCP proxy operations.
+// Delay specification is used to inject latency into the
+// HTTP/gRPC/Mongo/Redis operation or delay proxying of TCP connections.
 message FaultDelay {
   enum FaultDelayType {
     // Fixed delay (step function).
@@ -35,7 +36,7 @@ message FaultDelay {
   }
 }
 
-// Abort specification is used to prematurely abort a rpc operation/TCP connection
+// Abort specification is used to prematurely abort a HTTP/gRPC/Mongo/Redis operation/TCP connection
 // with a pre-specified error code.
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
