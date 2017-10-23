@@ -7,7 +7,7 @@ import "api/base.proto";
 import "api/discovery.proto";
 import "api/health_check.proto";
 import "api/protocol.proto";
-import "api/sds.proto";
+import "api/transport_security.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
@@ -121,9 +121,14 @@ message Cluster {
   // Optional circuit breaking settings for the cluster.
   CircuitBreakers circuit_breakers = 10;
 
-  // The TLS configuration for connections to the upstream cluster. If no TLS
-  // configuration is specified, TLS will not be used for new connections.
-  UpstreamTlsContext tls_context = 11;
+  oneof transport_security {
+    // The TLS configuration for connections to the upstream cluster. If no TLS
+    // configuration is specified, TLS will not be used for new connections.
+    UpstreamTlsContext tls_context = 11;
+
+    // The generic configuration for transport security to the upstream cluster.
+    TransportSecurityContext transport_security_context = 23;
+  }
 
   oneof protocol_options {
     TcpProtocolOptions tcp_protocol_options = 12;
