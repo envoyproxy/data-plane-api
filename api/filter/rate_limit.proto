@@ -2,6 +2,19 @@ syntax = "proto3";
 
 package envoy.api.v2.filter;
 
+import "google/protobuf/duration.proto";
+
+// TODO(htuch): This should be the shared canonical RateLimitDescriptor
+// when we import the rate limit protos
+// (https://github.com/lyft/envoy-api/issues/26).
+message RateLimitDescriptor {
+  message Entry {
+    string key = 1;
+    string value = 2;
+  }
+  repeated Entry entries = 1;
+}
+
 message RateLimit {
   // The human readable prefix to use when emitting statistics for the
   // rate limit filter. See the statistics documentation for more information.
@@ -10,16 +23,46 @@ message RateLimit {
   // The rate limit domain to use in the rate limit service request.
   string domain = 2;
 
-  // The rate limit descriptor list to use in the rate limit service request.
-  // TODO(htuch): This should be the shared canonical RateLimitDescriptor when
-  // we import the rate limit protos
-  // (https://github.com/lyft/envoy-api/issues/26).
-  message RateLimitDescriptor {
-    message Entry {
-      string key = 1;
-      string value = 2;
-    }
-    repeated Entry entries = 1;
-  }
+  // The rate limit descriptor list to use in the rate limit service
+  // request.
   repeated RateLimitDescriptor rate_limit_descriptors = 3;
+}
+
+// HTTP Rate limit filter configuration. The HTTP rate limit filter will
+// call the rate limit service when the request’s route or virtual host has
+// one or more rate limit configurations that match the filter stage
+// setting. The route can optionally include the virtual host rate limit
+// configurations. More than one configuration can apply to a request. Each
+// configuration results in a descriptor being sent to the rate limit
+// service. If the rate limit service is called, and the response for any
+// of the descriptors is over limit, a 429 response is returned.
+message HTTPRateLimit {
+  // The rate limit domain to use when calling the rate limit service.
+  string domain = 1;
+  // Specifies the rate limit configurations to be applied with the same
+  // stage number. If not set, the default stage number is 0. NOTE: The
+  // filter supports a range of 0 - 10 inclusively for stage numbers.
+  uint32 stage = 2;
+  // The type of requests the filter should apply to. The supported types
+  // are internal, external or both. A request is considered internal if
+  // x-envoy-internal is set to true. If x-envoy-internal is not set or
+  // false, a request is considered external. The filter defaults to both,
+  // and it will apply to all request types.
+  string request_type = 3;
+  // The timeout in milliseconds for the rate limit service RPC. If not
+  // set, this defaults to 20ms.
+  google.protobuf.Duration timeout = 4;
+}
+
+// TCP Rate limit filter configuration
+message TCPRateLimit {
+  // The prefix to use when emitting statistics.
+  string stat_prefix = 1;
+  // The rate limit domain to use in the rate limit service request.
+  string domain = 2;
+  // The rate limit descriptor list to use in the rate limit service request.
+  repeated RateLimitDescriptor descriptors = 3;
+  // The timeout in milliseconds for the rate limit service RPC. If not
+  // set, this defaults to 20ms.
+  google.protobuf.Duration timeout = 4;
 }

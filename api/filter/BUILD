@@ -65,3 +65,8 @@ api_proto_library(
     name = "client_ssl_auth",
     srcs = ["client_ssl_auth.proto"],
 )
+
+api_proto_library(
+    name = "health_check",
+    srcs = ["health_check.proto"],
+)
