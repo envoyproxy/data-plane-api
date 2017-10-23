@@ -32,7 +32,8 @@ export BAZEL="bazel"
 BAZEL_OPTIONS="--package_path %workspace%:/source"
 export BAZEL_QUERY_OPTIONS="${BAZEL_OPTIONS}"
 export BAZEL_BUILD_OPTIONS="--strategy=Genrule=standalone --spawn_strategy=standalone \
-  --verbose_failures ${BAZEL_OPTIONS} --jobs=${NUM_CPUS}"
+  --verbose_failures ${BAZEL_OPTIONS} --jobs=${NUM_CPUS} \
+  --action_env=HOME --action_env=PYTHONUSERBASE"
 export BAZEL_TEST_OPTIONS="${BAZEL_BUILD_OPTIONS} --cache_test_results=no --test_output=all --test_env=HOME --test_env=PYTHONUSERBASE"
 [[ "${BAZEL_EXPUNGE}" == "1" ]] && "${BAZEL}" clean --expunge
 

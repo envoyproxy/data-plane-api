@@ -116,3 +116,15 @@ api_proto_library(
         ":discovery",
     ],
 )
+
+# TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
+# bazel build //api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
+proto_library(
+    name = "api",
+    deps = [
+        ":cds",
+        ":eds",
+        ":rds",
+        ":lds",
+    ],
+)
