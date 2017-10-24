@@ -11,9 +11,9 @@ import "google/protobuf/wrappers.proto";
 // requests and high network latency.
 message Buffer {
   // The maximum request size that the filter will before the connection
-  // manager will stop buffering and return a 413 response.
+  // manager will stop buffering and return a 413 response. REQUIRED.
   google.protobuf.UInt32Value max_request_bytes = 1;
   // The maximum amount of time that the filter will wait for a complete
-  // request before returning a 408 response.
+  // request before returning a 408 response. REQUIRED.
   google.protobuf.Duration max_request_time = 2;
 }
