@@ -16,7 +16,17 @@ def _proto_path(proto):
     if path.startswith("/"): path = path[1:]
     return path
 
+# Bazel aspect (https://docs.bazel.build/versions/master/skylark/aspects.html)
+# that can be invoked from the CLI to produce docs via //tools/protodoc for
+# proto_library targets. Example use:
+#
+#   bazel build //api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect \
+#       --output_groups=rst
+#
+# The aspect builds the transitive docs, so any .proto in the dependency graph
+# get docs created.
 def _proto_doc_aspect_impl(target, ctx):
+    # Compute RST files from the current proto_library node's dependencies.
     transitive_outputs = depset()
     for dep in ctx.rule.attr.deps:
         transitive_outputs = transitive_outputs | dep.output_groups["rst"]
@@ -25,9 +35,16 @@ def _proto_doc_aspect_impl(target, ctx):
     # but just glues together other libs, we just need to follow the graph.
     if not proto_sources:
         return [OutputGroupInfo(rst=transitive_outputs)]
-    outputs = [ctx.actions.declare_file(ctx.label.name + "/" + _proto_path(f) + ".rst") for f in proto_sources]
+    # The outputs live in the ctx.label's package root. We add some additional
+    # path information to match with protoc's notion of path relative locations.
+    outputs = [ctx.actions.declare_file(ctx.label.name + "/" + _proto_path(f) +
+                                        ".rst") for f in proto_sources]
+    # Create the protoc command-line args.
     ctx_path = ctx.label.package + "/" + ctx.label.name
     output_path = outputs[0].root.path + "/" + outputs[0].owner.workspace_root + "/" + ctx_path
+    # proto_library will be generating the descriptor sets for all the .proto deps of the
+    # current node, we can feed them into protoc instead of setting up elaborate -I path
+    # expressions.
     descriptor_set_in = ":".join([s.path for s in target.proto.transitive_descriptor_sets])
     args = ["--descriptor_set_in", descriptor_set_in]
     args += ["--plugin=protoc-gen-protodoc=" + ctx.executable._protodoc.path, "--protodoc_out=" + output_path]
