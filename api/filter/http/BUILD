@@ -30,6 +30,9 @@ api_proto_library(
 api_proto_library(
     name = "ip_tagging",
     srcs = ["ip_tagging.proto"],
+    deps = [
+        "//api:address",
+    ],
 )
 
 api_proto_library(
