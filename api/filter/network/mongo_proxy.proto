@@ -18,5 +18,5 @@ message MongoProxy {
   // applied to the following MongoDB operations: Query, Insert, GetMore,
   // and KillCursors. Once an active delay is in progress, all incoming
   // data up until the timer event fires will be a part of the delay.
-  FaultDelay delay = 3;
+  envoy.api.v2.filter.http.FaultDelay delay = 3;
 }
