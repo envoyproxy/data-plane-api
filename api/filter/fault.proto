@@ -14,8 +14,6 @@ message FaultDelay {
   enum FaultDelayType {
     // Fixed delay (step function).
     FIXED = 0;
-    // Exponential delay.
-    EXPONENTIAL = 1;
   }
 
   // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.

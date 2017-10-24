@@ -1,17 +1,23 @@
 syntax = "proto3";
 
-package envoy.api.v2.filter;
+package envoy.api.v2.filter.http;
 
 // This is an HTTP filter which enables Envoy to tag requests with extra
 // information such as location, cloud source, and any extra data. This is
 // useful to prevent against DDoS.
 message IPTagging {
+  enum RequestType {
+    INTERNAL = 0;
+    EXTERNAL = 1;
+    BOTH = 2;
+  }
+
   // The type of requests the filter should apply to. The supported types
   // are internal, external or both. A request is considered internal if
   // x-envoy-internal is set to true. If x-envoy-internal is not set or
   // false, a request is considered external. The filter defaults to both,
   // and it will apply to all request types.
-  string request_type = 1;
+  RequestType request_type = 1;
 
   repeated IPTag ip_tags = 2;
 

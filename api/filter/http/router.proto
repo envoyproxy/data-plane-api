@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.filter;
+package envoy.api.v2.filter.http;
 
 //The router filter implements HTTP forwarding. It will be used in almost
 //all HTTP proxy scenarios that Envoy is deployed for. The filter’s main
