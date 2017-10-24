@@ -7,9 +7,9 @@ package envoy.api.v2.filter.http;
 // useful to prevent against DDoS.
 message IPTagging {
   enum RequestType {
-    INTERNAL = 0;
-    EXTERNAL = 1;
-    BOTH = 2;
+    BOTH = 0;
+    INTERNAL = 1;
+    EXTERNAL = 2;
   }
 
   // The type of requests the filter should apply to. The supported types

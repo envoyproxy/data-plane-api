@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
+import "google/protobuf/wrappers.proto";
+
 //The router filter implements HTTP forwarding. It will be used in almost
 //all HTTP proxy scenarios that Envoy is deployed for. The filter’s main
 //job is to follow the instructions specified in the configured route
@@ -10,5 +12,5 @@ package envoy.api.v2.filter.http;
 message Router {
   // Whether the router generates dynamic cluster statistics. Defaults to
   // true. Can be disabled in high performance scenarios.
-  bool dynamic_stats = 1;
+  google.protobuf.BoolValue dynamic_stats = 1;
 }

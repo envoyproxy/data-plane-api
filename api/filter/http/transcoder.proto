@@ -6,7 +6,7 @@ package envoy.api.v2.filter.http;
 // to Envoy over HTTP and get proxied to a gRPC service. The HTTP mapping
 // for the gRPC service has to be defined by custom options, defined in
 // https://cloud.google.com/service-management/reference/rpc/google.api#http
-message gRPCJsonTranscoder {
+message GrpcJsonTranscoder {
   // The filter config for the filter requires the descriptor file as well
   // as a list of the gRPC services to be transcoded.
 

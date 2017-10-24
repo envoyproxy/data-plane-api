@@ -28,7 +28,7 @@ message RateLimit {
   repeated RateLimitDescriptor rate_limit_descriptors = 3;
 }
 
-// HTTP Rate limit filter configuration. The HTTP rate limit filter will
+// HTTP rate limit filter configuration. The HTTP rate limit filter will
 // call the rate limit service when the request’s route or virtual host has
 // one or more rate limit configurations that match the filter stage
 // setting. The route can optionally include the virtual host rate limit
@@ -54,7 +54,7 @@ message HTTPRateLimit {
   google.protobuf.Duration timeout = 4;
 }
 
-// TCP Rate limit filter configuration
+// TCP rate limit filter configuration
 message TCPRateLimit {
   // The prefix to use when emitting statistics.
   string stat_prefix = 1;
