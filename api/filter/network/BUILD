@@ -23,7 +23,11 @@ api_proto_library(
 api_proto_library(
     name = "client_ssl_auth",
     srcs = ["client_ssl_auth.proto"],
-    deps = [
-        "//api:address",
-    ],
+    deps = ["//api:address"],
+)
+
+api_proto_library(
+    name = "rate_limit",
+    srcs = ["rate_limit.proto"],
+    deps = ["//api:rls"],
 )

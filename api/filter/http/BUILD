@@ -28,11 +28,14 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "rate_limit",
+    srcs = ["rate_limit.proto"],
+)
+
+api_proto_library(
     name = "ip_tagging",
     srcs = ["ip_tagging.proto"],
-    deps = [
-        "//api:address",
-    ],
+    deps = ["//api:address"],
 )
 
 api_proto_library(
