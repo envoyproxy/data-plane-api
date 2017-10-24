@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.filter;
+package envoy.api.v2.filter.http;
 
 import "api/rds.proto";
 
@@ -27,7 +27,7 @@ message FaultDelay {
     // the JSON/YAML Duration mapping. For HTTP/Mongo/Redis, the specified
     // delay will be injected before a new request/operation. For TCP
     // connections, the proxying of the connection upstream will be delayed
-    // for the specified period.
+    // for the specified period. REQUIRED.
     google.protobuf.Duration fixed_delay = 3;
   }
 }
@@ -101,22 +101,4 @@ message HTTPFault {
   // x-envoy-downstream-service-node header and compared against
   // downstream_nodes list.
   repeated string downstream_nodes = 5;
-}
-
-// Faults can be injected into the connections from downstream by the
-// Envoy, for testing the failure recovery capabilities of downstream
-// services.  Faults include aborting the connection from downstream
-// service, and delaying proxying of connection to the destination.
-message TCPFault {
-  // Delay proxying of the TCP connection for a specified period.
-  FaultDelay delay = 1;
-
-  // Abort a specified percentage of downstream TCP connections without
-  // establishing an upstream connection. The connection will be abruptly reset.
-  FaultAbort abort = 2;
-
-  // Specifies the name of the upstream cluster that the
-  // filter should match on. Fault injection will be restricted to connections
-  // bound to the specific upstream cluster.
-  string upstream_cluster = 3;
 }

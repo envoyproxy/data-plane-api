@@ -42,3 +42,11 @@ api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
 )
+
+api_proto_library(
+    name = "fault",
+    srcs = ["fault.proto"],
+    deps = [
+        "//api:rds",
+    ],
+)

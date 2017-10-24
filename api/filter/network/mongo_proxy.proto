@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
-import "api/filter/fault.proto";
+import "api/filter/http/fault.proto";
 
 message MongoProxy {
   // The human readable prefix to use when emitting statistics for the

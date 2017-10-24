@@ -6,7 +6,7 @@ api_proto_library(
     name = "mongo_proxy",
     srcs = ["mongo_proxy.proto"],
     deps = [
-        "//api/filter:fault",
+        "//api/filter/http:fault",
     ],
 )
 
