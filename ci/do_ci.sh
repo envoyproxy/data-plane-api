@@ -15,13 +15,8 @@ if [[ "$1" == "bazel.test" ]]; then
   exit 0
 elif [[ "$1" == "bazel.docs" ]]; then
   echo "generating docs..."
-  # TODO(htuch): There is a snafu with unsandboxed Bazel, where it will generate
-  # the .proto for leaf dependencies multiple times in the same location,
-  # causing file permission errors (Bazel outputs are read-only). Need figure
-  # out how to handle this properly before we can build //api completely, only
-  # doing address.proto.rst for now.
   bazel --batch build ${BAZEL_BUILD_OPTIONS} --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  \
-    --output_groups=rst //api:address
+    --output_groups=rst //api
 else
   echo "Invalid do_ci.sh target. The only valid target is bazel.build."
   exit 1

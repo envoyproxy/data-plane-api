@@ -24,9 +24,10 @@ def _proto_doc_aspect_impl(target, ctx):
     # If this proto_library doesn't actually name any sources, e.g. //api:api,
     # but just glues together other libs, we just need to follow the graph.
     if not proto_sources:
-        return struct(output_groups = {"rst" : transitive_outputs})
-    outputs = [ctx.actions.declare_file(f.basename + ".rst", sibling=f) for f in proto_sources]
-    output_path = outputs[0].root.path + "/" + outputs[0].owner.workspace_root
+        return [OutputGroupInfo(rst=transitive_outputs)]
+    outputs = [ctx.actions.declare_file(ctx.label.name + "/" + _proto_path(f) + ".rst") for f in proto_sources]
+    ctx_path = ctx.label.package + "/" + ctx.label.name
+    output_path = outputs[0].root.path + "/" + outputs[0].owner.workspace_root + "/" + ctx_path
     descriptor_set_in = ":".join([s.path for s in target.proto.transitive_descriptor_sets])
     args = ["--descriptor_set_in", descriptor_set_in]
     args += ["--plugin=protoc-gen-protodoc=" + ctx.executable._protodoc.path, "--protodoc_out=" + output_path]
@@ -40,8 +41,7 @@ def _proto_doc_aspect_impl(target, ctx):
                mnemonic="ProtoDoc",
                use_default_shell_env=True)
     transitive_outputs = depset(outputs) | transitive_outputs
-    # Old school struct, rather than a provider() list, see https://github.com/bazelbuild/bazel/issues/2127.
-    return struct(output_groups = {"rst" : transitive_outputs})
+    return [OutputGroupInfo(rst=transitive_outputs)]
 
 proto_doc_aspect = aspect(implementation = _proto_doc_aspect_impl,
     attr_aspects = ["deps"],
