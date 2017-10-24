@@ -23,10 +23,6 @@ message GrpcJsonTranscoder {
 
   // Control options for response json. These options are passed directly
   // to JsonPrintOptions.
-  PrintOptions print_options = 3;
-
-  // Control options for response json. These options are passed directly
-  // to JsonPrintOptions.
   message PrintOptions {
     // Whether to add spaces, line breaks and indentation to make the JSON
     // output easy to read. Default to false.
@@ -49,4 +45,8 @@ message GrpcJsonTranscoder {
     // names. Default to false.
     bool preserve_proto_field_names = 4;
   };
+
+  // Control options for response json. These options are passed directly
+  // to JsonPrintOptions.
+  PrintOptions print_options = 3;
 }
