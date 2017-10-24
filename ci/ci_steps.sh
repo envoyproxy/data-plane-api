@@ -7,7 +7,7 @@ set -e
 ENVOY_BUILD_SHA=114e24c6fd05fc026492e9d2ca5608694e5ea59d
 
 # Lint travis file.
-#travis lint .travis.yml --skip-completion-check
+travis lint .travis.yml --skip-completion-check
 
 # Where the Envoy build takes place.
 export ENVOY_API_BUILD_DIR=/tmp/envoy-api-docker-build
