@@ -3,8 +3,9 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_grpc_library")
 
 licenses(["notice"])  # Apache 2
 
+# Go proto library dislikes proto libraries with no sources and only deps
 proto_library(
-    name = "api",
+    name = "go_protos",
     srcs = [
         "accesslog.proto",
         "address.proto",
@@ -36,7 +37,7 @@ proto_library(
 go_grpc_library(
     name = "go_default_library",
     importpath = "api",
-    proto = ":api",
+    proto = ":go_protos",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_golang_protobuf//ptypes/any:go_default_library",
@@ -170,7 +171,7 @@ proto_library(
     deps = [
         ":cds",
         ":eds",
-        ":rds",
         ":lds",
+        ":rds",
     ],
 )
