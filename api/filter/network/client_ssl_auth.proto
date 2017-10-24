@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
+import "api/address.proto";
 import "google/protobuf/duration.proto";
 
 // Envoy provides a network filter that performs TLS client authentication
@@ -25,5 +26,5 @@ message ClientSSLAuth {
   // An optional list of IP address and subnet masks that should be white
   // listed for access by the filter. If no list is provided, there is no
   // IP white list.
-  repeated string ip_white_list = 4;
+  repeated CidrRange ip_white_list = 4;
 }

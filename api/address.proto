@@ -46,3 +46,10 @@ message Address {
     Pipe pipe = 2;
   }
 }
+
+// CidrRange specifies an IP Address and a prefix length to construct
+// the subnet mask.
+message CidrRange {
+  string address_prefix = 1;
+  google.protobuf.UInt32Value prefix_len = 2;
+}

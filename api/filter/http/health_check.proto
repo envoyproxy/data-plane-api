@@ -3,6 +3,7 @@ syntax = "proto3";
 package envoy.api.v2.filter.http;
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
 
 // Note that the filter will automatically fail health checks and set the
 // x-envoy-immediate-health-check-fail header if the /healthcheck/fail
@@ -10,7 +11,7 @@ import "google/protobuf/duration.proto";
 // reverses this behavior).
 message HealthCheck {
   // Specifies whether the filter operates in pass through mode or not.
-  bool pass_through_mode = 1;
+  google.protobuf.BoolValue pass_through_mode = 1;
   // Specifies the incoming HTTP endpoint that should be considered the
   // health check endpoint. For example /healthcheck.
   string endpoint = 2;
