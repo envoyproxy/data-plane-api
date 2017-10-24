@@ -5,8 +5,6 @@ package envoy.api.v2.filter;
 import "api/rds.proto";
 
 import "google/protobuf/duration.proto";
-import "google/protobuf/struct.proto";
-import "google/protobuf/wrappers.proto";
 
 // Delay specification is used to inject latency into the
 // HTTP/gRPC/Mongo/Redis operation or delay proxying of TCP connections.
@@ -21,7 +19,7 @@ message FaultDelay {
 
   // An integer between 0-100 indicating the percentage of operations/connection requests
   // on which the delay will be injected.
-  google.protobuf.UInt32Value percent = 2;
+  uint32 percent = 2;
 
   oneof fault_delay_type {
     // Add a fixed delay before forwarding the operation upstream. See
@@ -39,7 +37,7 @@ message FaultDelay {
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
   // that will be aborted with the error code provided.
-  google.protobuf.UInt32Value percent = 1;
+  uint32 percent = 1;
 
   // Applicable only for HTTP connections.
   oneof error_type {
