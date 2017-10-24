@@ -12,10 +12,7 @@ message RedisProxy {
   // Indicates the upstream cluster to which the operation should be routed to.
   string cluster = 2;
 
-  // Network settings for the connection pool to the upstream cluster.
-  ConnPoolSettings settings = 3;
-
-  // Redis connection pool settings
+  // Redis connection pool settings.
   message ConnPoolSettings {
     // Per-operation timeout. See
     // https://developers.google.com/protocol-buffers/docs/proto3#json for
@@ -28,4 +25,7 @@ message RedisProxy {
     // will govern the timeout until the connection is ready. REQUIRED.
     google.protobuf.Duration op_timeout = 1;
   }
+
+  // Network settings for the connection pool to the upstream cluster.
+  ConnPoolSettings settings = 3;
 }
