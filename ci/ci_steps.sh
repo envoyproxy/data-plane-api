@@ -14,4 +14,4 @@ export ENVOY_API_BUILD_DIR=/tmp/envoy-api-docker-build
 
 # Do a build matrix with different types of builds docs, coverage, bazel.release, etc.
 docker run -t -i -v "$ENVOY_API_BUILD_DIR":/build -v $TRAVIS_BUILD_DIR:/source \
-  lyft/envoy-build:$ENVOY_BUILD_SHA /bin/bash -c "cd /source && ci/do_ci.sh bazel.test"
+  lyft/envoy-build:$ENVOY_BUILD_SHA /bin/bash -c "cd /source && ci/do_ci.sh $TEST_TYPE"
