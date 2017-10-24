@@ -4,7 +4,7 @@
 set -e
 
 # We reuse the https://github.com/lyft/envoy/ CI image here to get Bazel.
-ENVOY_BUILD_SHA=44d539cb572d04c81b62425373440c54934cf267
+ENVOY_BUILD_SHA=114e24c6fd05fc026492e9d2ca5608694e5ea59d
 
 # Lint travis file.
 travis lint .travis.yml --skip-completion-check
