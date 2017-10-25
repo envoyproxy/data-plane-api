@@ -93,6 +93,9 @@ message CertificateValidationContext {
 
   // Must present signed certificate time-stamp.
   google.protobuf.BoolValue require_signed_certificate_timestamp = 6;
+
+  // If specified, Envoy will verify certificates against this CRL.
+  DataSource crl = 7;
 }
 
 // TLS context shared by both client and server TLS contexts.
