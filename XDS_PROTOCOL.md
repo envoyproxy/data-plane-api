@@ -197,9 +197,10 @@ In general, to avoid traffic drop, sequencing of updates should follow a
 * EDS updates (if any) must arrive after CDS updates for the respective clusters.
 * LDS updates must arrive after corresponding CDS/EDS updates.
 * RDS updates related to the newly added listeners must arrive in the end.
+* Stale CDS clusters (ones no longer being referenced) can then be removed.
 
 xDS updates can be pushed independently if no new clusters/routes/listeners
-are added.
+are added or or if it's acceptable to temporarily drop traffic during updates.
 
 ### Aggregated Discovery Services (ADS)
 
