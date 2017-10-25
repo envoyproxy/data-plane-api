@@ -1,9 +1,10 @@
+GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
+
 def api_dependencies():
-    native.new_git_repository(
+    native.new_http_archive(
         name = "googleapis",
-        # Head of master at 5/14.
-        commit = "5c6df0cd18c6a429eab739fb711c27f6e1393366",
-        remote = "https://github.com/googleapis/googleapis.git",
+        strip_prefix = "googleapis-" + GOOGLEAPIS_SHA,
+        url = "https://github.com/googleapis/googleapis/archive/" + GOOGLEAPIS_SHA + ".tar.gz",
         build_file_content = """
 load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 
