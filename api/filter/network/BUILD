@@ -5,7 +5,7 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "mongo_proxy",
     srcs = ["mongo_proxy.proto"],
-    deps = ["//api/filter/http:fault"],
+    deps = ["//api/filter:fault"],
 )
 
 api_proto_library(
