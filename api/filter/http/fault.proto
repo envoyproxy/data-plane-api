@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.http;
+
+import "api/rds.proto";
+import "api/filter/fault.proto";
+
+// Abort specification is used to prematurely abort a HTTP/gRPC/Mongo/Redis
+// operation/TCP connection with a pre-specified error code.
+message FaultAbort {
+  // An integer between 0-100 indicating the percentage of requests/operations/connections
+  // that will be aborted with the error code provided.
+  uint32 percent = 1;
+
+  // Applicable only for HTTP connections.
+  oneof error_type {
+    // HTTP status code to use to abort the HTTP request.
+    uint32 http_status = 2;
+  }
+}
+
+// The fault injection filter can be used to test the resiliency of
+// microservices to different forms of failures. The filter can be used to
+// inject delays and abort requests with user-specified error codes,
+// thereby providing the ability to stage different failure scenarios such
+// as service failures, service overloads, high network latency, network
+// partitions, etc. Faults injection can be limited to a specific set of
+// requests based on the (destination) upstream cluster of a request and/or
+// a set of pre-defined request headers.
+//
+// The scope of failures is restricted to those that are observable by an
+// application communicating over the network. CPU and disk failures on the
+// local host cannot be emulated.
+//
+// Currently, the fault injection filter has the following limitations:
+//
+// * Abort codes are restricted to HTTP status codes only
+// * Delays are restricted to fixed duration.
+//
+// Future versions will include support for restricting faults to specific
+// routes, and delay durations based on distributions.
+//
+// * Note:* The fault injection filter must be inserted before any
+// other filter, including the router filter.
+message HTTPFault {
+  // If specified, the filter will inject delays based on the values in the
+  // object. At least abort or delay must be specified.
+  FaultDelay delay = 1;
+
+  // If specified, the filter will abort requests based on the values in
+  // the object. At least abort or delay must be specified.
+  FaultAbort abort = 2;
+
+  // Specifies the name of the (destination) upstream cluster that the
+  // filter should match on. Fault injection will be restricted to requests
+  // bound to the specific upstream cluster.
+  string upstream_cluster = 3;
+
+  // Specifies a set of headers that the filter should match on. The fault
+  // injection filter can be applied selectively to requests that match a
+  // set of headers specified in the fault filter config. The chances of
+  // actual fault injection further depend on the values of FaultAbort.percent
+  // and FaultDelay.percent parameters. The filter will check the request’s
+  // headers against all the specified headers in the filter config. A
+  // match will happen if all the headers in the config are present in the
+  // request with the same values (or based on presence if the `value` field
+  // is not in the config). TODO: allow runtime configuration on per entry
+  // basis for headers match.
+  repeated HeaderMatcher headers = 4;
+
+  // Faults are injected for the specified list of downstream hosts. If
+  // this setting is not set, faults are injected for all downstream
+  // nodes. Downstream node name is taken from the HTTP
+  // x-envoy-downstream-service-node header and compared against
+  // downstream_nodes list.
+  repeated string downstream_nodes = 5;
+}

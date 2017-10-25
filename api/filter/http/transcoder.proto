@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.http;
+
+// This is a filter which allows a RESTful JSON API client to send requests
+// to Envoy over HTTP and get proxied to a gRPC service. The HTTP mapping
+// for the gRPC service has to be defined by custom options, defined in
+// https://cloud.google.com/service-management/reference/rpc/google.api#http
+message GrpcJsonTranscoder {
+  // The filter config for the filter requires the descriptor file as well
+  // as a list of the gRPC services to be transcoded.
+
+  // Supplies the binary protobuf descriptor set for the gRPC services. The
+  // descriptor set has to include all of the types that are used in the
+  // services. Make sure to use the --include_import option for protoc.
+  string proto_descriptor = 1;
+  // A list of strings that supplies the service names that the transcoder
+  // will translate. If the service name doesn’t exist in proto_descriptor,
+  // Envoy will fail at startup. The proto_descriptor may contain more
+  // services than the service names specified here, but they won’t be
+  // translated.
+  repeated string services = 2;
+
+  // Control options for response json. These options are passed directly
+  // to JsonPrintOptions.
+  message PrintOptions {
+    // Whether to add spaces, line breaks and indentation to make the JSON
+    // output easy to read. Default to false.
+    bool add_whitespace = 1;
+
+    // Whether to always print primitive fields. By default primitive
+    // fields with default values will be omitted in JSON output. For
+    // example, an int32 field set to 0 will be omitted. Set this flag to
+    // true will override the default behavior and print primitive fields
+    // regardless of their values. Default to false.
+    bool always_print_primitive_fields = 2;
+
+    // Whether to always print enums as ints. By default they are rendered
+    // as strings. Default to false.
+    bool always_print_enums_as_ints = 3;
+
+    // Whether to preserve proto field names. By default protobuf will
+    // generate JSON field names use json_name option, or lower camel case,
+    // in that order. Set this flag will preserve original field
+    // names. Default to false.
+    bool preserve_proto_field_names = 4;
+  };
+
+  // Control options for response json. These options are passed directly
+  // to JsonPrintOptions.
+  PrintOptions print_options = 3;
+}
