@@ -9,11 +9,12 @@ NUM_CPUS=`grep -c ^processor /proc/cpuinfo`
 export ENVOY_SRCDIR=/source
 
 export BUILD_DIR=/build
-if [[ ! -d "${BUILD_DIR}" ]]
-then
-  echo "${BUILD_DIR} mount missing - did you forget -v <something>:${BUILD_DIR}?"
-  exit 1
-fi
+mkdir -p ${BUILD_DIR}
+# if [[ ! -d "${BUILD_DIR}" ]]
+# then
+#   echo "${BUILD_DIR} mount missing - did you forget -v <something>:${BUILD_DIR}?"
+#   exit 1
+# fi
 
 # Create a fake home. Python site libs tries to do getpwuid(3) if we don't and
 # the CI Docker image gets confused as it has no passwd entry when running
