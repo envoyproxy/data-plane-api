@@ -36,3 +36,13 @@ new_http_archive(
     url = "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz#md5=34eed507548117b2ab523ab14b2f8b55",
 )
 
+git_repository(
+    name = "io_bazel_rules_go",
+    remote = "https://github.com/bazelbuild/rules_go.git",
+    commit = "4374be38e9a75ff5957c3922adb155d32086fe14",
+)
+load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+go_rules_dependencies()
+go_register_toolchains()
+load("@io_bazel_rules_go//proto:def.bzl", "proto_register_toolchains")
+proto_register_toolchains()

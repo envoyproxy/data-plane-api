@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package envoy.api.v2.filter.network;
+option go_package = "network";
 
 import "google/protobuf/duration.proto";
 
