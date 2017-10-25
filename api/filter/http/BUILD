@@ -7,6 +7,7 @@ licenses(["notice"])  # Apache 2
 proto_library(
     name = "go_protos",
     srcs = [
+        "accesslog.proto",
         "buffer.proto",
         "fault.proto",
         "health_check.proto",
@@ -51,10 +52,17 @@ api_proto_library(
     name = "http_connection_manager",
     srcs = ["http_connection_manager.proto"],
     deps = [
+        ":accesslog",
         "//api:base",
         "//api:protocol",
         "//api:rds",
     ],
+)
+
+api_proto_library(
+    name = "accesslog",
+    srcs = ["accesslog.proto"],
+    deps = ["//api:base"],
 )
 
 api_proto_library(
