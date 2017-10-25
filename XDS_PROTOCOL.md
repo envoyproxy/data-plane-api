@@ -201,7 +201,7 @@ In general, to avoid traffic drop, sequencing of updates should follow a
   referenced) can then be removed.
 
 xDS updates can be pushed independently if no new clusters/routes/listeners
-are added or or if it's acceptable to temporarily drop traffic during updates.
+are added or if it's acceptable to temporarily drop traffic during updates.
 
 ### Aggregated Discovery Services (ADS)
 
