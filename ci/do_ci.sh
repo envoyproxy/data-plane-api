@@ -15,8 +15,7 @@ if [[ "$1" == "bazel.test" ]]; then
   exit 0
 elif [[ "$1" == "bazel.docs" ]]; then
   echo "generating docs..."
-  bazel --batch build ${BAZEL_BUILD_OPTIONS} --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  \
-    --output_groups=rst //api
+  ./docs/build.sh
 else
   echo "Invalid do_ci.sh target. The only valid target is bazel.build."
   exit 1
