@@ -60,14 +60,15 @@ api_proto_library(
 )
 
 api_proto_library(
-    name = "accesslog",
-    srcs = ["accesslog.proto"],
-    deps = ["//api:base"],
+    name = "router",
+    srcs = ["router.proto"],
+    deps = [":accesslog"],
 )
 
 api_proto_library(
-    name = "router",
-    srcs = ["router.proto"],
+    name = "accesslog",
+    srcs = ["accesslog.proto"],
+    deps = ["//api:base"],
 )
 
 api_proto_library(

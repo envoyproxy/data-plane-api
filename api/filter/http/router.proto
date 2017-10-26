@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
+import "api/filter/http/accesslog.proto";
+
 import "google/protobuf/wrappers.proto";
 
 // The router filter implements HTTP forwarding. It will be used in almost
@@ -18,4 +20,9 @@ message Router {
   // outbound calls and have child spans rooted at the same ingress
   // parent. Defaults to false.
   bool start_child_span = 2;
+  // Configuration for HTTP upstream logs emitted by the router. Upstream logs
+  // are configured in the same way as access logs, but each log entry represents
+  // an upstream request. Presuming retries are configured, multiple upstream
+  // requests may be made for each downstream (inbound) request.
+  repeated AccessLog upstream_log = 3;
 }
