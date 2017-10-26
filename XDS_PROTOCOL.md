@@ -201,7 +201,13 @@ In general, to avoid traffic drop, sequencing of updates should follow a
   referenced) can then be removed.
 
 xDS updates can be pushed independently if no new clusters/routes/listeners
-are added or if it's acceptable to temporarily drop traffic during updates.
+are added or if it's acceptable to temporarily drop traffic during
+updates. Note that in case of LDS updates, the listeners will be warmed
+before they receive traffic, i.e. the dependent routes are fetched through
+RDS if configured. On the other hand, clusters are not warmed when
+adding/removing/updating clusters. Similarly, routes are not warmed --
+i.e., the management plane must ensure that clusters referenced by a route
+are in place, before pushing the updates for a rotue.
 
 ### Aggregated Discovery Services (ADS)
 
