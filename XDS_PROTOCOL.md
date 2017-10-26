@@ -191,11 +191,23 @@ drop can't be tolerated, traffic drop could have been avoided by providing a
 CDS/EDS update with both __X__ and __Y__, then the RDS update repointing from
 __X__ to __Y__ and then a CDS/EDS update dropping __X__.
 
-In general, to avoid traffic drop:
-* Sequencing should be make before break.
-* LDS and CDS updates should arrive before the respective RDS and EDS updates.
-* CDS/EDS resources corresponding to routes in LDS/RDS should be available at
-  update.
+In general, to avoid traffic drop, sequencing of updates should follow a
+`make before break` model, wherein
+* CDS updates (if any) must always be pushed first.
+* EDS updates (if any) must arrive after CDS updates for the respective clusters.
+* LDS updates must arrive after corresponding CDS/EDS updates.
+* RDS updates related to the newly added listeners must arrive in the end.
+* Stale CDS clusters and related EDS endpoints (ones no longer being
+  referenced) can then be removed.
+
+xDS updates can be pushed independently if no new clusters/routes/listeners
+are added or if it's acceptable to temporarily drop traffic during
+updates. Note that in case of LDS updates, the listeners will be warmed
+before they receive traffic, i.e. the dependent routes are fetched through
+RDS if configured. On the other hand, clusters are not warmed when
+adding/removing/updating clusters. Similarly, routes are not warmed --
+i.e., the management plane must ensure that clusters referenced by a route
+are in place, before pushing the updates for a rotue.
 
 ### Aggregated Discovery Services (ADS)
 
