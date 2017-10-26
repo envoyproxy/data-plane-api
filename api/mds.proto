@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "google/api/annotations.proto";
+
+// While it is not a "true" discovery service, just named it as MetricsDiscoveryService to align with xDS paradigm.
+service MetricsDiscoveryService {
+  rpc FetchProxyMetrics (MetricsRequest) returns (MetricsResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:metrics"
+      body: "*"
+    };
+  }
+}
+
+message MetricsDiscoveryRequest {
+
+}
+
+message MetricsDiscoveryResponse {
+
+  message ProxyStatistic {
+    string stat_name = 1;
+    uint32 stat_value = 2;
+  }
+  repeated ProxyStatistic proxy_stats = 1;
+}
+
+
+ 
