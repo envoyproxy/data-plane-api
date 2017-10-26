@@ -6,7 +6,7 @@ option go_package = "http";
 import "api/base.proto";
 import "api/protocol.proto";
 import "api/rds.proto";
-import "api/filter/http/accesslog.proto";
+import "api/filter/accesslog.proto";
        
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";

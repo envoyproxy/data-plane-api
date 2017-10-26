@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.filter.http;
+package envoy.api.v2.filter;
 
 import "api/base.proto";
 

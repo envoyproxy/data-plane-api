@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
-import "api/filter/http/accesslog.proto";
+import "api/filter/accesslog.proto";
 
 import "google/protobuf/wrappers.proto";
 
