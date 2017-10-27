@@ -2,6 +2,7 @@ Envoy v2 API documentation
 ==========================
 
 .. toctree::
+  :glob:
   :maxdepth: 2
 
-  api/address/api/address.proto
+  **
