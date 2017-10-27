@@ -19,5 +19,5 @@ message Router {
   // are configured in the same way as access logs, but each log entry represents
   // an upstream request. Presuming retries are configured, multiple upstream
   // requests may be made for each downstream (inbound) request.
-  repeated AccessLog upstream_log = 3;
+  repeated AccessLog upstream_log = 2;
 }
