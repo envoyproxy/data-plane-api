@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
     "envoy.api.v2.ClusterDiscoveryService.StreamClusters",
     "envoy.api.v2.EndpointDiscoveryService.FetchEndpoints",
     "envoy.api.v2.EndpointDiscoveryService.StreamEndpoints",
+    "envoy.api.v2.EnvoyAccessLogService.StreamAccessLogs",
     "envoy.api.v2.HealthDiscoveryService.FetchHealthCheck",
     "envoy.api.v2.HealthDiscoveryService.StreamHealthCheck",
     "envoy.api.v2.ListenerDiscoveryService.FetchListeners",

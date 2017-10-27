@@ -164,6 +164,16 @@ api_proto_library(
     ],
 )
 
+api_proto_library(
+    name = "accesslog",
+    srcs = ["accesslog.proto"],
+    has_services = 1,
+    deps = [
+        ":base",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
 # bazel build //api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(

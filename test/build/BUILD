@@ -6,6 +6,7 @@ api_cc_test(
     name = "build_test",
     srcs = ["build_test.cc"],
     proto_deps = [
+        "//api:accesslog",
         "//api:cds",
         "//api:discovery",
         "//api:eds",
