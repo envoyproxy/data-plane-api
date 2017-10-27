@@ -35,6 +35,18 @@ def _proto_doc_aspect_impl(target, ctx):
     # but just glues together other libs, we just need to follow the graph.
     if not proto_sources:
         return [OutputGroupInfo(rst=transitive_outputs)]
+    # Figure out the set of import paths. Ideally we would use descriptor sets
+    # built by proto_library, which avoid having to do nasty path mangling, but
+    # these don't include source_code_info, which we need for comment
+    # extractions. See https://github.com/bazelbuild/bazel/issues/3971.
+    import_paths = []
+    for f in target.proto.transitive_sources:
+      if f.root.path:
+        import_path = f.root.path + "/" + f.owner.workspace_root
+      else:
+        import_path = f.owner.workspace_root
+      if import_path:
+        import_paths += [import_path]
     # The outputs live in the ctx.label's package root. We add some additional
     # path information to match with protoc's notion of path relative locations.
     outputs = [ctx.actions.declare_file(ctx.label.name + "/" + _proto_path(f) +
@@ -42,18 +54,13 @@ def _proto_doc_aspect_impl(target, ctx):
     # Create the protoc command-line args.
     ctx_path = ctx.label.package + "/" + ctx.label.name
     output_path = outputs[0].root.path + "/" + outputs[0].owner.workspace_root + "/" + ctx_path
-    # proto_library will be generating the descriptor sets for all the .proto deps of the
-    # current node, we can feed them into protoc instead of setting up elaborate -I path
-    # expressions.
-    descriptor_set_in = ":".join([s.path for s in target.proto.transitive_descriptor_sets])
-    args = ["--descriptor_set_in", descriptor_set_in]
+    args = ["-I./" + ctx.label.workspace_root]
+    args += ["-I" + import_path for import_path in import_paths]
     args += ["--plugin=protoc-gen-protodoc=" + ctx.executable._protodoc.path, "--protodoc_out=" + output_path]
     args += [_proto_path(src) for src in target.proto.direct_sources]
     ctx.action(executable=ctx.executable._protoc,
                arguments=args,
-               inputs=[ctx.executable._protodoc] +
-                   target.proto.transitive_descriptor_sets.to_list() +
-                   proto_sources,
+               inputs=[ctx.executable._protodoc] + target.proto.transitive_sources.to_list(),
                outputs=outputs,
                mnemonic="ProtoDoc",
                use_default_shell_env=True)
