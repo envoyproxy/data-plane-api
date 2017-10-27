@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+import "api/base.proto";
+
+import "google/protobuf/struct.proto";
+
+// Filter on some integer comparison.
+message ComparisonFilter {
+  // Comparison operator.
+  enum Op {
+    EQ = 0;
+    GE = 1;
+  }
+  Op op = 1;
+
+  // Value to compare against.
+  RuntimeUInt32 value = 2;
+}
+
+// Filters on HTTP response/status code.
+message StatusCodeFilter {
+  ComparisonFilter comparison = 1;
+}
+
+// Filters on total request duration in milliseconds.
+message DurationFilter {
+  ComparisonFilter comparison = 1;
+}
+
+// Filters for requests that are not health check requests. A health check
+// request is marked by the health check filter.
+message NotHealthCheckFilter {
+}
+
+// Filters for requests that are traceable. See the tracing overview for more
+// information on how a request becomes traceable.
+message TraceableFilter {
+}
+
+// Filters for random sampling of requests. Sampling pivots on the header
+// x-request-id being present. If x-request-id is present, the filter will
+// consistently sample across multiple hosts based on the runtime key value and
+// the value extracted from x-request-id. If it is missing, the filter will
+// randomly sample based on the runtime key value.
+message RuntimeFilter {
+  // Runtime key to get the percentage of requests to be sampled. This runtime
+  // control is specified in the range 0-100 and defaults to 0.
+  string runtime_key = 1;
+}
+
+// Performs a logical “and” operation on the result of each filter in filters.
+// Filters are evaluated sequentially and if one of them returns false, the
+// filter returns false immediately.
+message AndFilter {
+  repeated AccessLogFilter filters = 1;
+}
+
+// Performs a logical “or” operation on the result of each individual filter.
+// Filters are evaluated sequentially and if one of them returns true, the
+// filter returns true immediately.
+message OrFilter {
+  repeated AccessLogFilter filters = 2;
+}
+
+message AccessLogFilter {
+  oneof filter_specifier {
+    StatusCodeFilter status_code_filter = 1;
+    DurationFilter duration_filter = 2;
+    NotHealthCheckFilter not_health_check_filter = 3;
+    TraceableFilter traceable_filter = 4;
+    RuntimeFilter runtime_filter = 5;
+    AndFilter and_filter = 6;
+    OrFilter or_filter = 7;
+  }
+}
+
+// Custom configuration for an AccessLog that writes log entries directly to a file.
+// Configures the built-in "envoy.file_access_log" AccessLog.
+message FileAccessLog {
+  // A path to a local file to which to write the access log entries.
+  string path = 1;
+
+  // [V2-API-DIFF] In addition to the existing format specifiers, the following
+  // additional specifiers will be available:
+  // %TLS_SNI_HOSTNAME%: SNI from handshake.
+  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
+  //     “TLSv1.2”, “TLSv1.3”.
+  // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
+  //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+  // can be accessed in the format specifier.
+  string format = 2;
+}
+
+message AccessLog {
+  // The name of the access log implementation to instantiate. The name must
+  // match a statically registered access log.
+  string name = 1;
+
+  // Filter which is used to determine if the access log needs to be written.
+  AccessLogFilter filter = 2;
+
+  // Custom configuration that depends on the access log being instantiated.
+  // See the supported AccessLogs for further documentation.
+  google.protobuf.Struct config = 3;
+}
+

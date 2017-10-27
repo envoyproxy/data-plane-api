@@ -54,12 +54,14 @@ api_proto_library(
         "//api:base",
         "//api:protocol",
         "//api:rds",
+        "//api/filter:accesslog",
     ],
 )
 
 api_proto_library(
     name = "router",
     srcs = ["router.proto"],
+    deps = ["//api/filter:accesslog"],
 )
 
 api_proto_library(
