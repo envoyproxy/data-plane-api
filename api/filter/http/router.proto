@@ -15,6 +15,11 @@ message Router {
   // Whether the router generates dynamic cluster statistics. Defaults to
   // true. Can be disabled in high performance scenarios.
   google.protobuf.BoolValue dynamic_stats = 1;
+  // Whether to start a child span for egress routed calls. This can be
+  // useful in scenarios where other filters (auth, ratelimit, etc.) make
+  // outbound calls and have child spans rooted at the same ingress
+  // parent. Defaults to false.
+  bool start_child_span = 2;
   // Configuration for HTTP upstream logs emitted by the router. Upstream logs
   // are configured in the same way as access logs, but each log entry represents
   // an upstream request. Presuming retries are configured, multiple upstream
