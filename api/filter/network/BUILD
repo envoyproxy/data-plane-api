@@ -53,6 +53,7 @@ api_proto_library(
 api_proto_library(
     name = "tcp_proxy",
     srcs = ["tcp_proxy.proto"],
+    deps = ["//api/filter:accesslog"],
 )
 
 api_proto_library(
