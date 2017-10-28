@@ -28,6 +28,7 @@ bazel --batch build -s ${BAZEL_BUILD_OPTIONS} //api --aspects \
 # TODO(htuch): Factor this out of this script.
 PROTO_RST="
   /api/address/api/address.proto.rst
+  /api/base/api/base.proto.rst
 "
 
 # Only copy in the protos we care about and know how to deal with in protodoc.
