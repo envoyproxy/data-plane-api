@@ -3,6 +3,8 @@ syntax = "proto3";
 package envoy.api.v2.filter.network;
 option go_package = "network";
 
+import "api/filter/accesslog.proto";
+
 import "google/protobuf/duration.proto";
 
 // [V2-API-DIFF] The route match now takes place in the FilterChainMatch table.
@@ -23,4 +25,7 @@ message TcpProxy {
   // timeout based on the last byte sent on the downstream/upstream connection.
   google.protobuf.Duration downstream_idle_timeout = 3;
   google.protobuf.Duration upstream_idle_timeout = 4;
+
+  // Configuration for access logs.
+  repeated AccessLog access_log = 5;
 }
