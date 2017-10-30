@@ -292,9 +292,9 @@ message RedirectAction {
 
   enum HTTPResponseCode {
     // Moved Permanently HTTP Status Code - 301.
-    MOVED_PERMANENTLY = 301;
+    MOVED_PERMANENTLY = 0;
     // Found HTTP Status Code - 302.
-    FOUND = 302;
+    FOUND = 1;
   }
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
