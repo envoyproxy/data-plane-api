@@ -356,9 +356,8 @@ def FormatEnumValueAsDefinitionListItem(type_context, enum_value):
   default_comment = '*(DEFAULT)* ' if enum_value.number == 0 else ''
   comment = default_comment + UNICODE_INVISIBLE_SEPARATOR + type_context.LeadingCommentPathLookup(
   )
-  return anchor + '%s (%d)' % (enum_value.name,
-                               enum_value.number) + '\n' + MapLines(
-                                   functools.partial(Indent, 2), comment)
+  return anchor + enum_value.name + '\n' + MapLines(
+      functools.partial(Indent, 2), comment)
 
 
 def FormatEnumAsDefinitionList(type_context, enum):
