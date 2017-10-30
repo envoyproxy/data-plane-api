@@ -260,16 +260,20 @@ message FileAccessLog {
 
 // Configuration for the built-in "envoy.grpc_access_log" access log type.
 message AccessLogServiceConfig {
-  // The friendly name of the access log to be returned in StreamAccessLogsMessage.Prefix. This
+  // The friendly name of the access log to be returned in StreamAccessLogsMessage.Identifier. This
   // allows the access log server to differentiate between different access logs coming from the
   // same Envoy.
   string log_name = 1;
+
+  // The name of the upstream cluster that hosts the access log service. The cluster must be
+  // configured in the cluster manager.
+  string cluster_name = 2;
 }
 
 // Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
 // access logs without ever expecting a response.
 message StreamAccessLogsMessage {
-  message Prefix {
+  message Identifier {
     // The node sending the access log messages over the stream.
     Node node = 1;
 
@@ -277,9 +281,9 @@ message StreamAccessLogsMessage {
     string log_name = 2;
   }
 
-  // Prefix data that will only be sent in the first message on the stream. This is effectively
+  // Identifier data that will only be sent in the first message on the stream. This is effectively
   // structured metadata and is a performance optimization.
-  Prefix prefix = 1;
+  Identifier identifier = 1;
 
   // A list of access logs.
   repeated AccessLogEntry logs = 2;
