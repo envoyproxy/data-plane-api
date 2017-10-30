@@ -285,12 +285,19 @@ message RouteAction {
 }
 
 message RedirectAction {
-  // A 302 redirect response will be sent which swaps the host portion of the
-  // URL with this value.
+  // The host portion of the URL will be swapped with this value.
   string host_redirect = 1;
-  // A 302 redirect response will be sent which swaps the path portion of the
-  // URL with this value.
+  // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
+
+  // The HTTP status code to use in the redirect response.
+  enum HTTPResponseCode {
+    // Moved Permanently HTTP Status Code - 301. This is the default HTTP Status
+    // code sent in redirect responses.
+    MOVED_PERMANENTLY = 0;
+    // Found HTTP Status Code - 302.
+    FOUND = 1;
+  }
 }
 
 message Decorator {
