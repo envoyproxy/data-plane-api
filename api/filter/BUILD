@@ -38,5 +38,9 @@ api_proto_library(
 api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
-    deps = ["//api:base"],
+    has_services = 1,
+    deps = [
+      "//api:accesslog",
+      "//api:base",
+    ],
 )

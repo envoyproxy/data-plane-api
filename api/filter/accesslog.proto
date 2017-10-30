@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter;
 
+import "api/accesslog.proto";
 import "api/base.proto";
 
 import "google/protobuf/struct.proto";
@@ -95,16 +96,63 @@ message FileAccessLog {
   string format = 2;
 }
 
+// Configuration for the built-in "envoy.grpc_access_log" access log type.
+message AccessLogServiceConfig {
+  // The friendly name of the access log to be returned in StreamAccessLogsMessage.Prefix. This
+  // allows the access log server to differentiate between different access logs coming from the
+  // same Envoy.
+  string log_name = 1;
+}
+
+// Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
+// access logs without ever expecting a response.
+message StreamAccessLogsMessage {
+  message Prefix {
+    // The node sending the access log messages over the stream.
+    Node node = 1;
+
+    // The friendly name of the log configured in AccessLogServiceConfig.
+    string log_name = 2;
+  }
+
+  // Prefix data that will only be sent in the first message on the stream. This is effectively
+  // structured metadata and is a performance optimization.
+  Prefix prefix = 1;
+
+  // A list of access logs.
+  repeated envoy.api.v2.AccessLog logs = 2;
+}
+
+// Empty response for the StreamAccessLogs API. Will never be sent. See below.
+message StreamAccessLogsResponse {}
+
+// Service for streaming access logs from Envoy to an access log server.
+service AccessLogService {
+  // Envoy will connect and send StreamAccessLogsMessage messages forever. It does not expect any
+  // response to be sent as nothing would be done in the case of failure. The server should
+  // disconnect if it expects Envoy to reconnect. In the future we may decide to add a different
+  // API for "critical" access logs in which Envoy will buffer access logs for some period of time
+  // until it gets an ACK so it could then retry. This API is designed for high throughput with the
+  // expectation that it might be lossy.
+  rpc StreamAccessLogs(stream StreamAccessLogsMessage)
+      returns (StreamAccessLogsResponse) {
+  }
+}
+
 message AccessLog {
   // The name of the access log implementation to instantiate. The name must
-  // match a statically registered access log.
+  // match a statically registered access log. Current built-in loggers include:
+  // 1) "envoy.file_access_log"
+  // 2) "envoy.grpc_access_log"
   string name = 1;
 
   // Filter which is used to determine if the access log needs to be written.
   AccessLogFilter filter = 2;
 
-  // Custom configuration that depends on the access log being instantiated.
-  // See the supported AccessLogs for further documentation.
+  // Custom configuration that depends on the access log being instantiated. built-in configurations
+  // include:
+  // 1) "envoy.file_access_log": FileAccessLog
+  // 2) "envoy.grpc_access_log": AccessLogServiceConfig
   google.protobuf.Struct config = 3;
 }
 

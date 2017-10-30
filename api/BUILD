@@ -167,10 +167,8 @@ api_proto_library(
 api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
-    has_services = 1,
     deps = [
         ":base",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
