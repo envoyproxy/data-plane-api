@@ -64,6 +64,8 @@ message CircuitBreakers {
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // Any : in the cluster name will be converted to _ when emitting statistics.
+  // TODO(htuch): cross-link to
+  // https://www.envoyproxy.io/envoy/operations/cli#cmdoption-max-obj-name-len.
   string name = 1;
 
   // The service discovery type to use for resolving the cluster.
