@@ -10,6 +10,8 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
+// protodoc-title: Common configuration elements
+
 // Identifies location of where either Envoy runs or where upstream hosts run.
 message Locality {
   // Region this zone belongs to.

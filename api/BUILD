@@ -7,7 +7,6 @@ licenses(["notice"])  # Apache 2
 proto_library(
     name = "go_protos",
     srcs = [
-        "accesslog.proto",
         "address.proto",
         "base.proto",
         "bootstrap.proto",
