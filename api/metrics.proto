@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "google/api/annotations.proto";
+import "io/prometheus/client/metrics.proto";
+
+//Service to fetch metrics from Proxy. This uses Promotheus data model to represent metrics returned.
+service MetricsService {
+  rpc FetchProxyMetrics (MetricsRequest) returns (MetricsResponse) {
+    option (google.api.http) = {
+      post: "/v2/metrics"
+      body: "*"
+    };
+  }
+}
+
+message MetricsRequest {
+
+}
+
+message MetricsResponse {
+  repeated MetricFamily proxy_metrics = 1;
+}
