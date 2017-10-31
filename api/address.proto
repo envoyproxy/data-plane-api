@@ -4,6 +4,7 @@ package envoy.api.v2;
 
 import "google/protobuf/wrappers.proto";
 
+// protodoc-title: Network related configuration elements
 // [V2-API-DIFF] Addresses now have .proto structure.
 
 message Pipe {

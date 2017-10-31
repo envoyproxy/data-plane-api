@@ -7,6 +7,7 @@ from collections import defaultdict
 import copy
 import functools
 import sys
+import re
 
 from google.protobuf.compiler import plugin_pb2
 
@@ -133,6 +134,12 @@ def FormatHeader(style, text):
   """
   return '%s\n%s\n\n' % (text, style * len(text))
 
+
+def FormatHeaderFromFile(style, file_level_comment, alt):
+  m = re.search('protodoc-title:\s([^\n]+)\n', file_level_comment)
+  if m is not None:
+    return FormatHeader(style, str(m.group(1))), re.sub('protodoc-title\:[^\n]+\n\n', '', file_level_comment)
+  return FormatHeader(style, alt), file_level_comment
 
 def FormatFieldTypeAsJson(type_context, field):
   """Format FieldDescriptorProto.Type as a pseudo-JSON string.
@@ -402,10 +409,10 @@ def FormatProtoAsBlockComment(proto):
 
 def GenerateRst(proto_file):
   """Generate a RST representation from a FileDescriptor proto."""
-  header = FormatHeader('=', proto_file.name)
   source_code_info = SourceCodeInfo(proto_file.source_code_info)
   # Find the earliest detached comment, attribute it to file level.
   comment = source_code_info.file_level_comment
+  header, comment = FormatHeaderFromFile('=', comment, proto_file.name)
   msgs = '\n'.join(
       FormatMessage(TypeContext(source_code_info, [4, index], msg.name), msg)
       for index, msg in enumerate(proto_file.message_type))
