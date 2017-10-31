@@ -20,5 +20,5 @@ message MetricsRequest {
 }
 
 message MetricsResponse {
-  repeated MetricFamily proxy_metrics = 1;
+  repeated io.prometheus.client.MetricFamily proxy_metrics = 1;
 }
