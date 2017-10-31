@@ -51,8 +51,6 @@ py_proto_library(
         strip_prefix = "client_model-" + PROMETHEUS_SHA,
         url = "https://github.com/prometheus/client_model/archive/" + PROMETHEUS_SHA + ".tar.gz",
         build_file_content = """
-        
-load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 
 filegroup(
     name = "client_model_protos_src",
@@ -73,19 +71,5 @@ cc_proto_library(
     deps = [":client_model_protos_lib"],
     visibility = ["//visibility:public"],
 )
-
-py_proto_library(
-    name = "client_model_protos_lib_py",
-    srcs = [
-        "metrics.proto",
-    ],
-    include = ".",
-    default_runtime = "@com_google_protobuf//:protobuf_python",
-    protoc = "@com_google_protobuf//:protoc",
-    visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf//:protobuf_python"],
-)
-
-
         """,
     )
