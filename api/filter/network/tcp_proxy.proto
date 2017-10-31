@@ -7,7 +7,6 @@ import "api/filter/accesslog.proto";
 import "api/address.proto";
 
 import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
 
 // [V2-API-DIFF] The route match now takes place in the FilterChainMatch table.
 message TcpProxy {
