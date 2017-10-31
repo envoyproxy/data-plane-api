@@ -16,7 +16,6 @@ proto_library(
         "hds.proto",
         "health_check.proto",
         "lds.proto",
-        "metrics_service.proto",
         "protocol.proto",
         "rds.proto",
         "rls.proto",
@@ -31,7 +30,6 @@ proto_library(
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
         "@googleapis//:http_api_protos_lib",
-        "@promotheus_metrics_model//:client_model_protos_lib",
     ],
 )
 
