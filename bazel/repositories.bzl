@@ -75,7 +75,7 @@ cc_proto_library(
 )
 
 py_proto_library(
-    name = "client_model_protos_py",
+    name = "client_model_protos_lib_py",
     srcs = [
         "metrics.proto",
     ],
