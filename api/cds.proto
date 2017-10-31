@@ -299,6 +299,6 @@ message Cluster {
     RingHashLbConfig ring_hash_lb_config = 23;
   }
 
-  // See base.LowLevelSocket description.
-  LowLevelSocket low_level_socket = 24;
+  // See base.TransportSocket description.
+  TransportSocket transport_socket = 24;
 }
