@@ -151,15 +151,15 @@ message ConfigSource {
   }
 }
 
-// Configuration for low level socket in listeners and clusters. If the configuration is empty,
-// the default low level socket configuration will be choosed based on the platform and
-// existence of tls_context.
+// Configuration for low-level socket in listeners and clusters. If the configuration is empty,
+// a default low-level socket implementation and configuration will be chosen based on the
+// platform and existence of tls_context.
 message LowLevelSocket {
-  // The name of low level socket to instantiate. The name must match a supported low level socket
-  // implementation.
+  // The name of the low-level socket to instantiate. The name must match a supported low-level
+  // socket implementation.
   string name = 1;
 
   // Implementation specific configuration which depends on the implementation being instantiated.
-  // See the supported low level socket implementations for further documentation.
+  // See the supported low-level socket implementations for further documentation.
   google.protobuf.Any config = 2;
 }
