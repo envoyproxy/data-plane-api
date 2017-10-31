@@ -138,7 +138,8 @@ def FormatHeader(style, text):
 def FormatHeaderFromFile(style, file_level_comment, alt):
   m = re.search('protodoc-title:\s([^\n]+)\n', file_level_comment)
   if m is not None:
-    return FormatHeader(style, str(m.group(1))), re.sub('protodoc-title\:[^\n]+\n\n', '', file_level_comment)
+    # remove title hint and any new lines that follow
+    return FormatHeader(style, str(m.group(1))), re.sub('protodoc-title\:[^\n]+\n\n?', '', file_level_comment)
   return FormatHeader(style, alt), file_level_comment
 
 def FormatFieldTypeAsJson(type_context, field):
