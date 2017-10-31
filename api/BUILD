@@ -16,6 +16,7 @@ proto_library(
         "hds.proto",
         "health_check.proto",
         "lds.proto",
+        "metrics.proto",
         "protocol.proto",
         "rds.proto",
         "rls.proto",
