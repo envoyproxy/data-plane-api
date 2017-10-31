@@ -32,6 +32,7 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0):
             "@com_google_protobuf//:descriptor_proto",
             "@com_google_protobuf//:duration_proto",
             "@com_google_protobuf//:struct_proto",
+            "@com_google_protobuf//:timestamp_proto",
             "@com_google_protobuf//:wrappers_proto",
             "@googleapis//:http_api_protos_lib",
         ],

@@ -15,6 +15,8 @@ proto_library(
         "//api:go_protos",
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+        "@com_google_protobuf//:wrappers_proto",
     ],
 )
 
@@ -27,6 +29,8 @@ go_proto_library(
         "//api:go_default_library",
         "@com_github_golang_protobuf//ptypes/duration:go_default_library",
         "@com_github_golang_protobuf//ptypes/struct:go_default_library",
+        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
+        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
     ],
 )
 
@@ -38,5 +42,6 @@ api_proto_library(
 api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
+    has_services = 1,
     deps = ["//api:base"],
 )
