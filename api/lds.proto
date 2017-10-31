@@ -100,6 +100,9 @@ message FilterChain {
 
   // See base.Metadata description.
   Metadata metadata = 5;
+
+  // See base.LowLevelSocket description.
+  LowLevelSocket low_level_socket = 6;
 }
 
 message Listener {

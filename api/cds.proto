@@ -273,7 +273,7 @@ message Cluster {
     repeated LbSubsetSelector subset_selectors = 3;
   }
   LbSubsetConfig lb_subset_config = 22;
-  
+
   message RingHashLbConfig {
     // Minimum hash ring size, i.e. total virtual nodes. A larger size
     // will provide better request distribution since each host in the
@@ -298,4 +298,7 @@ message Cluster {
   oneof lb_config {
     RingHashLbConfig ring_hash_lb_config = 23;
   }
+
+  // See base.LowLevelSocket description.
+  LowLevelSocket low_level_socket = 24;
 }
