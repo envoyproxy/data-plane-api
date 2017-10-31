@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "google/api/annotations.proto";
-import "io/prometheus/client/metrics.proto";
+import "metrics.proto";
 
 //Service to fetch metrics from Proxy. This uses Promotheus data model to represent metrics returned.
 service MetricsService {

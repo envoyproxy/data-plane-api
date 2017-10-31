@@ -44,3 +44,31 @@ py_proto_library(
 )
         """,
     )
+
+    native.new_http_archive(
+        name = "promotheus_metrics_model",
+        strip_prefix = "client_model-" + PROMETHEUS_SHA,
+        url = "https://github.com/prometheus/client_model/archive/" + PROMETHEUS_SHA + ".tar.gz",
+        build_file_content = """
+
+filegroup(
+    name = "client_model_protos_src",
+    srcs = [
+        "metrics.proto",
+    ],
+    visibility = ["//visibility:public"],
+ )
+
+proto_library(
+    name = "client_model_protos_lib",
+    srcs = [":client_model_protos_src"],
+    visibility = ["//visibility:public"],
+)
+
+cc_proto_library(
+    name = "client_model_protos",
+    deps = [":client_model_protos_lib"],
+    visibility = ["//visibility:public"],
+)
+        """,
+    )
