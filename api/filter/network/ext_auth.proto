@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.network;
+
+// Authorization filter that calls out to an external service over the gRPC Authorization API 
+// defined in api/auth.proto.  The ExtAuth network filter includes source & destination Address
+// objects as well as TLS information (if the connection uses TLS).  A failed Check causes the 
+// filter to close the connection.
+message ExtAuth {
+	// Name of the cluster that implements the Authorization API.
+	string cluster = 1;
+}
