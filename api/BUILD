@@ -47,6 +47,7 @@ go_grpc_library(
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
         "@org_golang_google_genproto//googleapis/api/annotations:go_default_library",
+        "@promotheus_metrics_model//:client_model_protos_lib",
     ],
 )
 
