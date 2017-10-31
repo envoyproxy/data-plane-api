@@ -23,7 +23,7 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
-def api_proto_library(name, srcs = [], deps = [], has_services = 0):
+def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py = 1):
     native.proto_library(
         name = name,
         srcs = srcs,
@@ -43,8 +43,8 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0):
         deps = [name],
         visibility = ["//visibility:public"],
     )
-    # skipping py proto for now
-    # api_py_proto_library(name, srcs, deps, has_services)
+    if (require_py == 1):
+      api_py_proto_library(name, srcs, deps, has_services)
 
 def api_cc_test(name, srcs, proto_deps):
     native.cc_test(

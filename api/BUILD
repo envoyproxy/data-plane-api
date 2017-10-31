@@ -140,6 +140,7 @@ api_proto_library(
         ":base",
         "@promotheus_metrics_model//:client_model_protos_lib",
     ],
+    require_py = 0,
 )
 
 api_proto_library(
