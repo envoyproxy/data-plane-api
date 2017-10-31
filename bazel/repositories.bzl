@@ -71,5 +71,19 @@ cc_proto_library(
     deps = [":client_model_protos_lib"],
     visibility = ["//visibility:public"],
 )
+
+py_proto_library(
+    name = "client_model_protos_lib_py",
+    srcs = [
+        "metrics.proto",
+    ],
+    include = ".",
+    default_runtime = "@com_google_protobuf//:protobuf_python",
+    protoc = "@com_google_protobuf//:protoc",
+    visibility = ["//visibility:public"],
+    deps = ["@com_google_protobuf//:protobuf_python"],
+)
+
+
         """,
     )
