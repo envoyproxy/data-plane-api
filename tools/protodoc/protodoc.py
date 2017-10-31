@@ -7,6 +7,7 @@ from collections import defaultdict
 import copy
 import functools
 import sys
+import re
 
 from google.protobuf.compiler import plugin_pb2
 
@@ -19,6 +20,8 @@ WKT_NAMESPACE_PREFIX = '.google.protobuf.'
 # http://www.fileformat.info/info/unicode/char/2063/index.htm
 UNICODE_INVISIBLE_SEPARATOR = u'\u2063'
 
+# Page/section titles with special prefixes in the proto comments
+DOC_TITLE_REGEX = 'protodoc-title:\s([^\n]+)\n\n?'
 
 class ProtodocError(Exception):
   """Base error class for the protodoc module."""
@@ -133,6 +136,23 @@ def FormatHeader(style, text):
   """
   return '%s\n%s\n\n' % (text, style * len(text))
 
+
+def FormatHeaderFromFile(style, file_level_comment, alt):  
+  """Format RST header based on special file level title
+
+  Args:
+    style: underline style, e.g. '=', '-'.
+    file_level_comment: detached comment at top of file.
+    alt: If the file_level_comment does not contain a user 
+         specified title, use the alt text as page title.
+  Returns:
+    RST formatted header, and file level comment without page title strings.
+  """
+  m = re.search(DOC_TITLE_REGEX, file_level_comment)
+  if m:
+    # remove title hint and any new lines that follow
+    return FormatHeader(style, m.group(1)), re.sub(DOC_TITLE_REGEX, '', file_level_comment)
+  return FormatHeader(style, alt), file_level_comment
 
 def FormatFieldTypeAsJson(type_context, field):
   """Format FieldDescriptorProto.Type as a pseudo-JSON string.
@@ -402,10 +422,11 @@ def FormatProtoAsBlockComment(proto):
 
 def GenerateRst(proto_file):
   """Generate a RST representation from a FileDescriptor proto."""
-  header = FormatHeader('=', proto_file.name)
   source_code_info = SourceCodeInfo(proto_file.source_code_info)
   # Find the earliest detached comment, attribute it to file level.
-  comment = source_code_info.file_level_comment
+  # Also extract file level titles if any.
+  header, comment = FormatHeaderFromFile('=', source_code_info.file_level_comment,
+                                         proto_file.name)
   msgs = '\n'.join(
       FormatMessage(TypeContext(source_code_info, [4, index], msg.name), msg)
       for index, msg in enumerate(proto_file.message_type))
