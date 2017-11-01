@@ -285,12 +285,24 @@ message RouteAction {
 }
 
 message RedirectAction {
-  // A 302 redirect response will be sent which swaps the host portion of the
-  // URL with this value.
+  // The host portion of the URL will be swapped with this value.
   string host_redirect = 1;
-  // A 302 redirect response will be sent which swaps the path portion of the
-  // URL with this value.
+  // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
+
+  enum RedirectResponseCode {
+    // Moved Permanently HTTP Status Code - 301.
+    MOVED_PERMANENTLY = 0;
+    // Found HTTP Status Code - 302.
+    FOUND = 1;
+    // See Other HTTP Status Code - 303.
+    SEE_OTHER = 2;
+    // Not Modified HTTP Status Code - 304.
+    NOT_MODIFIED = 3;
+  }
+  // The HTTP status code to use in the redirect response. The default response
+  // code is MOVED_PERMANENTLY (301).
+  RedirectResponseCode response_code = 3;
 }
 
 message Decorator {
@@ -461,9 +473,9 @@ message VirtualHost {
     // No TLS requirement for the virtual host.
     NONE = 0;
     // External requests must use TLS. If a request is external and it is not
-    // using TLS, a 302 redirect will be sent telling the client to use HTTPS.
+    // using TLS, a 301 redirect will be sent telling the client to use HTTPS.
     EXTERNAL_ONLY = 1;
-    // All requests must use TLS. If a request is not using TLS, a 302 redirect
+    // All requests must use TLS. If a request is not using TLS, a 301 redirect
     // will be sent telling the client to use HTTPS.
     ALL = 2;
   }
