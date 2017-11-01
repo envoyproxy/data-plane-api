@@ -108,6 +108,7 @@ Unless otherwise stated, the APIs with the same names as v1 APIs have a similar 
   endpoints. The health check subset may not be a subset of the Envoy instance's
   EDS endpoints.
 * [Listener Discovery Service (LDS)](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
+* [Metric Service (MS)](api/metrics_service.proto). This new API allows Envoy to push (stream) metrics forever for servers to consume.
 * [Rate Limit Service (RLS)](api/rls.proto)
 * [Route Discovery Service (RDS)](api/rds.proto).
 * [Secret Discovery Service (SDS)](api/sds.proto).

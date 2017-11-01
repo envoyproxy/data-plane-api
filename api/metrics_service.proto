@@ -1,12 +1,15 @@
 syntax = "proto3";
 
 package envoy.api.v2;
+import "api/base.proto";
 
 import "google/api/annotations.proto";
 import "metrics.proto";
 
-// Service for streaming metrics to connected end point.
+// Service for streaming metrics to server that consumes the metrics data. It uses Prometheus metric data model as a standard to represent metrics information.
 service MetricsService {
+  // Envoy will connect and send StreamMetricsMessage messages forever. It does not expect any
+  // response to be sent as nothing would be done in the case of failure. 
   rpc StreamMetrics(stream StreamMetricsMessage) returns (StreamMetricsResponse) {
   }
 }
@@ -14,5 +17,7 @@ service MetricsService {
 message StreamMetricsResponse {}
 
 message StreamMetricsMessage {
-  repeated io.prometheus.client.MetricFamily envoy_metrics = 1;
+  // The node sending the metric messages over the stream.
+  Node node = 1;
+  repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
 }
