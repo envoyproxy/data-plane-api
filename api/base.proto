@@ -151,3 +151,16 @@ message ConfigSource {
     AggregatedConfigSource ads = 3;
   }
 }
+
+// Configuration for transport socket in listeners and clusters. If the configuration is empty,
+// a default transport socket implementation and configuration will be chosen based on the
+// platform and existence of tls_context.
+message TransportSocket {
+  // The name of the transport socket to instantiate. The name must match a supported transport
+  // socket implementation.
+  string name = 1;
+
+  // Implementation specific configuration which depends on the implementation being instantiated.
+  // See the supported transport socket implementations for further documentation.
+  google.protobuf.Struct config = 2;
+}
