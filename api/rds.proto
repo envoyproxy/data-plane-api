@@ -290,15 +290,19 @@ message RedirectAction {
   // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
 
-  enum HTTPResponseCode {
+  enum RedirectResponseCode {
     // Moved Permanently HTTP Status Code - 301.
     MOVED_PERMANENTLY = 0;
     // Found HTTP Status Code - 302.
     FOUND = 1;
+    // See Other HTTP Status Code - 303.
+    SEE_OTHER = 2;
+    // Not Modified HTTP Status Code - 304.
+    NOT_MODIFIED = 3;
   }
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
-  HTTPResponseCode response_code = 3;
+  RedirectResponseCode response_code = 3;
 }
 
 message Decorator {
