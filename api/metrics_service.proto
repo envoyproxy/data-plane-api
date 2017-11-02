@@ -6,7 +6,8 @@ import "api/base.proto";
 import "google/api/annotations.proto";
 import "metrics.proto";
 
-// Service for streaming metrics to server that consumes the metrics data. It uses Prometheus metric data model as a standard to represent metrics information.
+// Service for streaming metrics to server that consumes the metrics data. It uses Prometheus metric
+// data model as a standard to represent metrics information.
 service MetricsService {
   // Envoy will connect and send StreamMetricsMessage messages forever. It does not expect any
   // response to be sent as nothing would be done in the case of failure. 
@@ -17,7 +18,22 @@ service MetricsService {
 message StreamMetricsResponse {}
 
 message StreamMetricsMessage {
-  // The node sending the metric messages over the stream.
-  Node node = 1;
+  message Identifier {
+    // The node sending the access log messages over the stream.
+    Node node = 1;
+  }
+
+  // Identifier data that will only be sent in the first message on the stream. This is effectively
+  // structured metadata and is a performance optimization.
+  Identifier identifier = 1;
+
+  // A list of metric entries
   repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
+}
+
+// Configuration of default metrics service implementation.
+message MetricsServiceConfig {
+  // The name of the upstream cluster that hosts the metrics service. The cluster must be
+  // configured in the cluster manager.
+  string cluster_name = 1;
 }
