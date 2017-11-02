@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
+import "api/sds.proto";
+
 message AuthAction {
   // Should we do white-list or black-list style access control.
   enum ActionType {
@@ -26,12 +28,8 @@ message AuthAction {
 
   // Check peer identity using X.509 certificate.
   message X509Rule {
-    // SHA256 hash of peer certificate.
-    string sha256_hash = 1;
-    // Subject of peer certificate.
-    string subject = 2;
-    // Subject alt name of peer certificate.
-    string subject_alt_name = 3;
+    // How to validate peer certificates.
+    CertificateValidationContext validation_context = 3;
   }
 
   // Element type of AndRule/OrRule, it chooses among different type of rule.
