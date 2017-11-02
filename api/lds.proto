@@ -56,10 +56,6 @@ message FilterChainMatch {
 
   // If non-empty, an IP address and prefix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
-  message CidrRange {
-    string address_prefix = 1;
-    google.protobuf.UInt32Value prefix_len = 2;
-  }
   repeated CidrRange prefix_ranges = 3;
 
   // If non-empty, an IP address and suffix length to match addresses when the
@@ -104,6 +100,9 @@ message FilterChain {
 
   // See base.Metadata description.
   Metadata metadata = 5;
+
+  // See base.TransportSocket description.
+  TransportSocket transport_socket = 6;
 }
 
 message Listener {

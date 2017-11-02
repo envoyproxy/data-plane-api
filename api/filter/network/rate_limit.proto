@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.network;
+
+import "api/rls.proto";
+import "google/protobuf/duration.proto";
+
+// TCP rate limit filter configuration
+message RateLimit {
+  // The prefix to use when emitting statistics.
+  string stat_prefix = 1;
+  // The rate limit domain to use in the rate limit service request.
+  string domain = 2;
+  // The rate limit descriptor list to use in the rate limit service request.
+  repeated RateLimitDescriptor descriptors = 3;
+  // The timeout in milliseconds for the rate limit service RPC. If not
+  // set, this defaults to 20ms.
+  google.protobuf.Duration timeout = 4;
+}

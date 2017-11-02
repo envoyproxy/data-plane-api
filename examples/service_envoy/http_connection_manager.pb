@@ -10,7 +10,7 @@ route_config {
       match {
         prefix: "/service"
       }
-      forward {
+      route {
         cluster: "local_service"
         timeout {
           seconds: 0
@@ -21,6 +21,5 @@ route_config {
 }
 
 http_filters {
-  type: DECODER
   name: "router"
 }

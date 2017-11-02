@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.network;
+option go_package = "network";
+
+import "api/filter/accesslog.proto";
+import "api/address.proto";
+
+import "google/protobuf/duration.proto";
+
+// [V2-API-DIFF] The route match now takes place in the FilterChainMatch table.
+message TcpProxy {
+  // The human readable prefix to use when emitting statistics for the
+  // TCP proxy filter. See the statistics documentation for more information.
+  string stat_prefix = 1;
+
+  // The upstream cluster to connect to.
+  // TODO(htuch): look into shared WeightedCluster support with RDS.
+  string cluster = 2;
+
+  // [V2-API-DIFF] The idle timeout for connections managed by the TCP proxy
+  // filter. The idle timeout is defined as the period in which there is no
+  // active traffic. If not set, there is no idle timeout. When the idle timeout
+  // is reached the connection will be closed. The distinction between
+  // downstream_idle_timeout/upstream_idle_timeout provides a means to set
+  // timeout based on the last byte sent on the downstream/upstream connection.
+  google.protobuf.Duration downstream_idle_timeout = 3;
+  google.protobuf.Duration upstream_idle_timeout = 4;
+
+  // Configuration for access logs.
+  repeated AccessLog access_log = 5;
+
+  message DeprecatedV1 {
+    // [V2-API-DIFF] This is deprecated in v2. Routes will be matched using
+    // the FilterChainMatch in Listeners.
+    //
+    // A TCP proxy route consists of a set of optional L4 criteria and the
+    // name of a cluster. If a downstream connection matches all the
+    // specified criteria, the cluster in the route is used for the
+    // corresponding upstream connection. Routes are tried in the order
+    // specified until a match is found. If no match is found, the connection
+    // is closed. A route with no criteria is valid and always produces a
+    // match.
+    message TCPRoute {
+      // The cluster to connect to when a the downstream network connection
+      // matches the specified criteria.
+      string cluster = 1;
+
+      // An optional list of IP address subnets in the form
+      // “ip_address/xx”. The criteria is satisfied if the destination IP
+      // address of the downstream connection is contained in at least one of
+      // the specified subnets. If the parameter is not specified or the list
+      // is empty, the destination IP address is ignored. The destination IP
+      // address of the downstream connection might be different from the
+      // addresses on which the proxy is listening if the connection has been
+      // redirected.
+      repeated CidrRange destination_ip_list = 2;
+
+      // An optional string containing a comma-separated list of port numbers
+      // or ranges. The criteria is satisfied if the destination port of the
+      // downstream connection is contained in at least one of the specified
+      // ranges. If the parameter is not specified, the destination port is
+      // ignored. The destination port address of the downstream connection
+      // might be different from the port on which the proxy is listening if
+      // the connection has been redirected.
+      string destination_ports = 3;
+
+      // An optional list of IP address subnets in the form
+      // “ip_address/xx”. The criteria is satisfied if the source IP address
+      // of the downstream connection is contained in at least one of the
+      // specified subnets. If the parameter is not specified or the list is
+      // empty, the source IP address is ignored.
+      repeated CidrRange source_ip_list = 4;
+
+      // An optional string containing a comma-separated list of port numbers
+      // or ranges. The criteria is satisfied if the source port of the
+      // downstream connection is contained in at least one of the specified
+      // ranges. If the parameter is not specified, the source port is
+      // ignored.
+      string source_ports = 5;
+    }
+
+    // The route table for the filter. All filter instances must have a route
+    // table, even if it is empty.
+    repeated TCPRoute routes = 1;
+  }
+  DeprecatedV1 deprecated_v1 = 6;
+}

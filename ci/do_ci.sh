@@ -10,9 +10,12 @@ echo "building using ${NUM_CPUS} CPUs"
 
 if [[ "$1" == "bazel.test" ]]; then
   echo "bazel building and testing..."
-  bazel --batch build ${BAZEL_BUILD_OPTIONS} //...
-  bazel --batch test ${BAZEL_TEST_OPTIONS} //...
+  bazel --batch build ${BAZEL_BUILD_OPTIONS} //api/...
+  bazel --batch test ${BAZEL_TEST_OPTIONS} //test/... //tools/...
   exit 0
+elif [[ "$1" == "bazel.docs" ]]; then
+  echo "generating docs..."
+  ./docs/build.sh
 else
   echo "Invalid do_ci.sh target. The only valid target is bazel.build."
   exit 1

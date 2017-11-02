@@ -1,12 +1,15 @@
 syntax = "proto3";
 
 package envoy.api.v2;
+option go_package = "api";
 
 import "api/address.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
+
+// protodoc-title: Common configuration elements
 
 // Identifies location of where either Envoy runs or where upstream hosts run.
 message Locality {
@@ -53,7 +56,8 @@ message Endpoint {
 // Endpoints have a Metadata object associated and routes contain a Metadata
 // object to match against. There are some well defined metadata used today for
 // this purpose:
-// - {"envoy.lb": {"canary": <bool> }}. This indicates the canary status of an
+//
+// * {"envoy.lb": {"canary": <bool> }}. This indicates the canary status of an
 //   endpoint and is also used during header processing
 //   (x-envoy-upstream-canary) and for stats purposes.
 message Metadata {
@@ -146,4 +150,17 @@ message ConfigSource {
     ApiConfigSource api_config_source = 2;
     AggregatedConfigSource ads = 3;
   }
+}
+
+// Configuration for transport socket in listeners and clusters. If the configuration is empty,
+// a default transport socket implementation and configuration will be chosen based on the
+// platform and existence of tls_context.
+message TransportSocket {
+  // The name of the transport socket to instantiate. The name must match a supported transport
+  // socket implementation.
+  string name = 1;
+
+  // Implementation specific configuration which depends on the implementation being instantiated.
+  // See the supported transport socket implementations for further documentation.
+  google.protobuf.Struct config = 2;
 }

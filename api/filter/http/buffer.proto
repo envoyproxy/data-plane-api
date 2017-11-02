@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.http;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+
+// The buffer filter is used to stop filter iteration and wait for a fully
+// buffered complete request. This is useful in different situations
+// including protecting some applications from having to deal with partial
+// requests and high network latency.
+message Buffer {
+  // The maximum request size that the filter will before the connection
+  // manager will stop buffering and return a 413 response. REQUIRED.
+  google.protobuf.UInt32Value max_request_bytes = 1;
+  // The maximum amount of time that the filter will wait for a complete
+  // request before returning a 408 response. REQUIRED.
+  google.protobuf.Duration max_request_time = 2;
+}

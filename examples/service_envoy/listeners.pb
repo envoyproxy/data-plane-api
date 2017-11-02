@@ -1,16 +1,11 @@
-listeners {
-  address {
-    named_address {
-      protocol: TCP
-      port {
-        value: 80
-      }
-    }
+address {
+  socket_address {
+    protocol: TCP
+    port_value: 80
   }
-  filter_chains {
-    filter_chain {
-      type: READ
-      name: "http_connection_manager"
-    }
+}
+filter_chains {
+  filters {
+    name: "http_connection_manager"
   }
 }

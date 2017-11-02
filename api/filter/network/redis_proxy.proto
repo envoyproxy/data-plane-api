@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.network;
+
+import "google/protobuf/duration.proto";
+
+message RedisProxy {
+  // The human readable prefix to use when emitting statistics for the
+  // Redis proxy filter. See the statistics documentation for more information.
+  string stat_prefix = 1;
+
+  // Indicates the upstream cluster to which the operation should be routed to.
+  string cluster = 2;
+
+  // Redis connection pool settings.
+  message ConnPoolSettings {
+    // Per-operation timeout. See
+    // https://developers.google.com/protocol-buffers/docs/proto3#json for
+    // the JSON/YAML Duration mapping. The timer starts when the first
+    // command of a pipeline is written to the backend connection. Each
+    // response received from Redis resets the timer since it signifies
+    // that the next command is being processed by the backend. The only
+    // exception to this behavior is when a connection to a backend is not
+    // yet established. In that case, the connect timeout on the cluster
+    // will govern the timeout until the connection is ready. REQUIRED.
+    google.protobuf.Duration op_timeout = 1;
+  }
+
+  // Network settings for the connection pool to the upstream cluster.
+  ConnPoolSettings settings = 3;
+}

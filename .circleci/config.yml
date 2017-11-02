@@ -1,0 +1,25 @@
+version: 2
+jobs:
+   test:
+     docker:
+       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+     resource_class: xlarge
+     working_directory: /source
+     steps:
+       - checkout
+       - run: ci/do_ci.sh bazel.test
+   docs:
+     docker:
+       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+     resource_class: xlarge
+     working_directory: /source
+     steps:
+       - checkout
+       - run: ci/do_ci.sh bazel.docs
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - test
+      - docs

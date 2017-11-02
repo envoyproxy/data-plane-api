@@ -1,0 +1,324 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter;
+
+import "api/base.proto";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+message AccessLogEntry {
+  // The HTTP request method (RFC 7231/2616)
+  RequestMethod request_method = 1;
+
+  // The time that Envoy started servicing this request
+  google.protobuf.Timestamp start_time = 2;
+
+  // Incoming protocol variation spoken
+  enum Protocol {
+    PROTOCOL_UNSPECIFIED = 0;
+    HTTP10 = 1;
+    HTTP11 = 2;
+    HTTP2 = 3;
+  }
+  Protocol protocol_variant = 3;
+
+  // This enum defines the various things that may have occurred while
+  // processing a request.
+  enum ResponseFlag {
+    // Local server healthcheck failed.
+    FAILED_LOCAL_HEALTHCHECK = 0;
+    // No healthy upstream.
+    NO_HEALTHY_UPSTREAM = 1;
+    // Request timeout on upstream.
+    UPSTREAM_REQUEST_TIMEOUT = 2;
+    // Local codec level reset was sent on the stream.
+    LOCAL_RESET = 3;
+    // Remote codec level reset was received on the stream.
+    UPSTREAM_REMOTE_RESET = 4;
+    // Local reset by a connection pool due to an initial connection failure.
+    UPSTREAM_CONNECTION_FAILURE = 5;
+    // If the stream was locally reset due to connection termination.
+    UPSTREAM_CONNECTION_TERMINATION = 6;
+    // The stream was reset because of a resource overflow.
+    UPSTREAM_OVERFLOW = 7;
+    // No route found for a given request.
+    NO_ROUTE_FOUND = 8;
+    // Request was delayed before proxying.
+    DELAY_INJECTED = 9;
+    // Abort with error code was injected.
+    FAULT_INJECTED = 10;
+    // Request was ratelimited locally by rate limit filter.
+    RATE_LIMITED = 11;
+  }
+  // Status flags about the response.
+  repeated ResponseFlag response_flags = 4;
+
+  // The upstream host URL (Envoy connects to).
+  //
+  // For example, tcp://ip:port for TCP connections.
+  //
+  // IPv6 addresses should be stored in canonical (compressed) format using
+  // [address]:port notation.
+  string upstream_host = 5;
+
+  // The Upstream Cluster that the upstream host belongs to.
+  string upstream_cluster = 6;
+
+  // This field is the IP and port on which the request from the user was
+  // received, stored in ipv4:port or [ipv6]:port format.
+  string destination_host = 7;
+
+  // Size of the HTTP request body in bytes
+  google.protobuf.UInt64Value request_body_bytes = 8;
+
+  // Size of the HTTP response body in bytes
+  google.protobuf.UInt64Value response_body_bytes = 9;
+
+  // Size of the HTTP request headers in bytes
+  google.protobuf.UInt64Value request_headers_bytes = 10;
+
+  // Size of the HTTP response headers in bytes
+  google.protobuf.UInt64Value response_headers_bytes = 11;
+
+  // Whether the request arrived via a secure (TLS) protocol
+  google.protobuf.BoolValue secure = 12;
+
+  // Whether the request is a HealthCheck request
+  google.protobuf.BoolValue health_check = 13;
+
+  // The HTTP response code
+  google.protobuf.UInt32Value response_code = 14;
+
+  // User agent as sent by client HTTP
+  string user_agent = 15;
+
+  // Path
+  //
+  // This is the Path portion from the incoming request URI
+  string path = 17;
+
+  // Referer header as sent by client HTTP
+  // (Referer is spelled to match the HTTP spec, not English).
+  string referer = 18;
+
+  // X-Forwarded-For request header
+  string forwarded_for = 19;
+
+  // X-Request-Id request header
+  //
+  // This header is used by Envoy to uniquely identify a request.
+  // It will be generated for all external requests and internal requests that
+  // do not already have a request ID.  So this field can be guaranteed to exist
+  // and be unique for request tracing purposes.
+  string request_id = 20;
+
+  // HTTP2 :authority header value or HTTP1.1 Host header value
+  string authority = 21;
+
+  // Duration (milliseconds)
+  //
+  // The total duration it took to service this request from the StartTime until
+  // the response was written to the user.
+  google.protobuf.Duration response_duration = 22;
+
+  // Upstream Service Time Duration
+  //
+  // From the X-Envoy-Upstream-Service-Time response header. This is the amount it took
+  // the upstream server to service the request.
+  google.protobuf.Duration upstream_service_duration = 23;
+
+
+  // Original Path from the X-Envoy-Original-Path header.
+  string original_path = 24;
+
+  // All metadata encountered during request processing, including endpoint
+  // selection.
+  //
+  // This can be used to associate IDs attached to the various configurations
+  // used to process this request with the access log entry.  For example, a
+  // route created from a higher level forwarding rule with some ID can place
+  // that ID in this field and cross reference later. It can also be used to
+  // determine if a canary endpoint was used or not.
+  google.protobuf.Struct metadata = 25;
+
+  // Headers configured for logging but not covered by a specific field.
+  repeated HeaderValue request_headers = 26;
+  repeated HeaderValue response_headers = 27;
+
+  // SNI hostname from handshake.
+  string tls_sni_hostname = 28;
+
+  // TLS Version or VERSION_UNSPECIFIED if TLS was not used
+  enum TLSVersion {
+    VERSION_UNSPECIFIED = 0;
+    TLSv1 = 1;
+    TLSv1_1 = 2;
+    TLSv1_2 = 3;
+    TLSv1_3 = 4;
+  }
+  TLSVersion tls_version = 29;
+
+  // TLS Cipher suite negotiated during TLS handshake.
+  // The value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  // eg, "009C" for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  //
+  // Here is is expressed as an integer.
+  google.protobuf.UInt32Value tls_cipher_suite = 30;
+}
+
+// Filter on some integer comparison.
+message ComparisonFilter {
+  // Comparison operator.
+  enum Op {
+    EQ = 0;
+    GE = 1;
+  }
+  Op op = 1;
+
+  // Value to compare against.
+  RuntimeUInt32 value = 2;
+}
+
+// Filters on HTTP response/status code.
+message StatusCodeFilter {
+  ComparisonFilter comparison = 1;
+}
+
+// Filters on total request duration in milliseconds.
+message DurationFilter {
+  ComparisonFilter comparison = 1;
+}
+
+// Filters for requests that are not health check requests. A health check
+// request is marked by the health check filter.
+message NotHealthCheckFilter {
+}
+
+// Filters for requests that are traceable. See the tracing overview for more
+// information on how a request becomes traceable.
+message TraceableFilter {
+}
+
+// Filters for random sampling of requests. Sampling pivots on the header
+// x-request-id being present. If x-request-id is present, the filter will
+// consistently sample across multiple hosts based on the runtime key value and
+// the value extracted from x-request-id. If it is missing, the filter will
+// randomly sample based on the runtime key value.
+message RuntimeFilter {
+  // Runtime key to get the percentage of requests to be sampled. This runtime
+  // control is specified in the range 0-100 and defaults to 0.
+  string runtime_key = 1;
+}
+
+// Performs a logical “and” operation on the result of each filter in filters.
+// Filters are evaluated sequentially and if one of them returns false, the
+// filter returns false immediately.
+message AndFilter {
+  repeated AccessLogFilter filters = 1;
+}
+
+// Performs a logical “or” operation on the result of each individual filter.
+// Filters are evaluated sequentially and if one of them returns true, the
+// filter returns true immediately.
+message OrFilter {
+  repeated AccessLogFilter filters = 2;
+}
+
+message AccessLogFilter {
+  oneof filter_specifier {
+    StatusCodeFilter status_code_filter = 1;
+    DurationFilter duration_filter = 2;
+    NotHealthCheckFilter not_health_check_filter = 3;
+    TraceableFilter traceable_filter = 4;
+    RuntimeFilter runtime_filter = 5;
+    AndFilter and_filter = 6;
+    OrFilter or_filter = 7;
+  }
+}
+
+// Custom configuration for an AccessLog that writes log entries directly to a file.
+// Configures the built-in "envoy.file_access_log" AccessLog.
+message FileAccessLog {
+  // A path to a local file to which to write the access log entries.
+  string path = 1;
+
+  // [V2-API-DIFF] In addition to the existing format specifiers, the following
+  // additional specifiers will be available:
+  // %TLS_SNI_HOSTNAME%: SNI from handshake.
+  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
+  //     “TLSv1.2”, “TLSv1.3”.
+  // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
+  //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // TODO(htuch): Document how envoy.http_connection_manager.access_log values
+  // can be accessed in the format specifier.
+  string format = 2;
+}
+
+// Configuration for the built-in "envoy.grpc_access_log" access log type.
+message AccessLogServiceConfig {
+  // The friendly name of the access log to be returned in StreamAccessLogsMessage.Identifier. This
+  // allows the access log server to differentiate between different access logs coming from the
+  // same Envoy.
+  string log_name = 1;
+
+  // The name of the upstream cluster that hosts the access log service. The cluster must be
+  // configured in the cluster manager.
+  string cluster_name = 2;
+}
+
+// Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
+// access logs without ever expecting a response.
+message StreamAccessLogsMessage {
+  message Identifier {
+    // The node sending the access log messages over the stream.
+    Node node = 1;
+
+    // The friendly name of the log configured in AccessLogServiceConfig.
+    string log_name = 2;
+  }
+
+  // Identifier data that will only be sent in the first message on the stream. This is effectively
+  // structured metadata and is a performance optimization.
+  Identifier identifier = 1;
+
+  // A list of access logs.
+  repeated AccessLogEntry logs = 2;
+}
+
+// Empty response for the StreamAccessLogs API. Will never be sent. See below.
+message StreamAccessLogsResponse {}
+
+// Service for streaming access logs from Envoy to an access log server.
+service AccessLogService {
+  // Envoy will connect and send StreamAccessLogsMessage messages forever. It does not expect any
+  // response to be sent as nothing would be done in the case of failure. The server should
+  // disconnect if it expects Envoy to reconnect. In the future we may decide to add a different
+  // API for "critical" access logs in which Envoy will buffer access logs for some period of time
+  // until it gets an ACK so it could then retry. This API is designed for high throughput with the
+  // expectation that it might be lossy.
+  rpc StreamAccessLogs(stream StreamAccessLogsMessage)
+      returns (StreamAccessLogsResponse) {
+  }
+}
+
+message AccessLog {
+  // The name of the access log implementation to instantiate. The name must
+  // match a statically registered access log. Current built-in loggers include:
+  // 1) "envoy.file_access_log"
+  // 2) "envoy.grpc_access_log"
+  string name = 1;
+
+  // Filter which is used to determine if the access log needs to be written.
+  AccessLogFilter filter = 2;
+
+  // Custom configuration that depends on the access log being instantiated. built-in configurations
+  // include:
+  // 1) "envoy.file_access_log": FileAccessLog
+  // 2) "envoy.grpc_access_log": AccessLogServiceConfig
+  google.protobuf.Struct config = 3;
+}
+

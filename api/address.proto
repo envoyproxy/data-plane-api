@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
+import "google/protobuf/wrappers.proto";
+
+// protodoc-title: Network related configuration elements
 // [V2-API-DIFF] Addresses now have .proto structure.
 
 message Pipe {
@@ -45,4 +48,11 @@ message Address {
     SocketAddress socket_address = 1;
     Pipe pipe = 2;
   }
+}
+
+// CidrRange specifies an IP Address and a prefix length to construct
+// the subnet mask.
+message CidrRange {
+  string address_prefix = 1;
+  google.protobuf.UInt32Value prefix_len = 2;
 }

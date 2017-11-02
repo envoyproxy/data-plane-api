@@ -17,7 +17,7 @@ from google.protobuf import struct_pb2
 from google.protobuf import text_format
 
 from api import lds_pb2
-from api.filter import http_connection_manager_pb2
+from api.filter.http import http_connection_manager_pb2
 
 
 # Convert an arbitrary proto object to its Struct proto representation.
@@ -41,29 +41,27 @@ def ParseProto(path, filter_name):
   return filter_config
 
 
-if __name__ == '__main__':
-  if len(sys.argv) < 4:
-    print(
-        'Usage: %s <path to listeners.pb> <output listeners.pb> <output '
-        'listeners.json> <filter config fragment paths>') % sys.argv[0]
-    sys.exit(1)
+def GenerateListeners(listeners_pb_path, output_pb_path, output_json_path,
+                      fragments):
+  listener = lds_pb2.Listener()
+  with open(listeners_pb_path, 'r') as f:
+    text_format.Merge(f.read(), listener)
 
-  listeners_path = sys.argv[1]
-  output_pb_path = sys.argv[2]
-  output_json_path = sys.argv[3]
-  fragments = iter(sys.argv[4:])
-
-  listener_discover_response = lds_pb2.ListenerDiscoveryResponse()
-  with open(listeners_path, 'r') as f:
-    text_format.Merge(f.read(), listener_discover_response)
-
-  for listener in listener_discover_response.listeners:
-    for filter_chain in listener.filter_chains:
-      for f in filter_chain.filter_chain:
-        f.config.CopyFrom(ProtoToStruct(ParseProto(fragments.next(), f.name)))
+  for filter_chain in listener.filter_chains:
+    for f in filter_chain.filters:
+      f.config.CopyFrom(ProtoToStruct(ParseProto(fragments.next(), f.name)))
 
   with open(output_pb_path, 'w') as f:
     f.write(str(listener))
 
   with open(output_json_path, 'w') as f:
     f.write(json_format.MessageToJson(listener))
+
+
+if __name__ == '__main__':
+  if len(sys.argv) < 4:
+    print('Usage: %s <path to listeners.pb> <output listeners.pb> <output '
+          'listeners.json> <filter config fragment paths>') % sys.argv[0]
+    sys.exit(1)
+
+  GenerateListeners(sys.argv[1], sys.argv[2], sys.argv[3], iter(sys.argv[4:]))
