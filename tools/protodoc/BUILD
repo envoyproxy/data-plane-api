@@ -1,3 +1,5 @@
+licenses(["notice"])  # Apache 2
+
 py_binary(
     name = "protodoc",
     srcs = ["protodoc.py"],

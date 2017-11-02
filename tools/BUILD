@@ -1,3 +1,5 @@
+licenses(["notice"])  # Apache 2
+
 py_binary(
     name = "generate_listeners",
     srcs = ["generate_listeners.py"],
