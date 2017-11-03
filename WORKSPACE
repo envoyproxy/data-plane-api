@@ -42,6 +42,8 @@ git_repository(
     commit = "4374be38e9a75ff5957c3922adb155d32086fe14",
 )
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+load("@com_lyft_protoc_gen_validate//bazel:go_proto_library.bzl", "go_proto_repositories")
+go_proto_repositories(shared=0)
 go_rules_dependencies()
 go_register_toolchains()
 load("@io_bazel_rules_go//proto:def.bzl", "proto_register_toolchains")
