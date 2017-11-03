@@ -417,6 +417,11 @@ message Cluster {
   // For instance, if the metadata is intended for the Router filter, the filter
   // name should be specified as *envoy.router*.
   Metadata metadata = 25;
+
+  // Cluster can operate both HTTP1.1 and HTTP2 connections and the protocol
+  // is chosen based on the downstream protocol, if any.  In case there is no
+  // downstream connection, this option will be ignored.
+  bool auto_http2 = 26;
 }
 
 // An extensible structure containing the address Envoy should bind to when
