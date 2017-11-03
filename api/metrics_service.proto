@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package envoy.api.v2;
+
 import "api/base.proto";
 
 import "google/api/annotations.proto";
@@ -23,15 +24,15 @@ message StreamMetricsMessage {
     Node node = 1;
   }
 
-  // Identifier data that will only be sent in the first message on the stream. This is effectively
-  // structured metadata and is a performance optimization.
+  // Identifier data effectively is a structured metadata. 
+  // As a performance optimization this will only be sent in the first message on the stream.
   Identifier identifier = 1;
 
   // A list of metric entries
   repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
 }
 
-// Configuration of default metrics service implementation.
+// Configuration structure.
 message MetricsServiceConfig {
   // The name of the upstream cluster that hosts the metrics service. The cluster must be
   // configured in the cluster manager.
