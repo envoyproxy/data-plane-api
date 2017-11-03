@@ -133,6 +133,17 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "metrics",
+    srcs = ["metrics_service.proto"],
+    has_services = 1,
+    deps = [
+        ":base",
+        "@promotheus_metrics_model//:client_model_protos_lib",
+    ],
+    require_py = 0,
+)
+
+api_proto_library(
     name = "protocol",
     srcs = ["protocol.proto"],
 )

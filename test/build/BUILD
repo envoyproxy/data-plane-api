@@ -12,6 +12,7 @@ api_cc_test(
         "//api:eds",
         "//api:hds",
         "//api:lds",
+        "//api:metrics",
         "//api:rds",
         "//api:rls",
     ],
