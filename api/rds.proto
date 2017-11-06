@@ -297,8 +297,10 @@ message RedirectAction {
     FOUND = 1;
     // See Other HTTP Status Code - 303.
     SEE_OTHER = 2;
-    // Not Modified HTTP Status Code - 304.
-    NOT_MODIFIED = 3;
+    // Temporary Redirect HTTP Status Code - 307.
+    TEMPORARY_REDIRECT = 3;
+    // Permanent Redirect HTTP Status Code - 308.
+    PERMANENT_REDIRECT = 4;
   }
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
