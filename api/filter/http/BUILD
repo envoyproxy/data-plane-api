@@ -12,6 +12,7 @@ proto_library(
         "health_check.proto",
         "http_connection_manager.proto",
         "ip_tagging.proto",
+        "lua.proto",
         "rate_limit.proto",
         "router.proto",
         "transcoder.proto",
@@ -62,6 +63,11 @@ api_proto_library(
     name = "router",
     srcs = ["router.proto"],
     deps = ["//api/filter:accesslog"],
+)
+
+api_proto_library(
+    name = "lua",
+    srcs = ["lua.proto"],
 )
 
 api_proto_library(

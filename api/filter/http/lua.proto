@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package envoy.api.v2.filter.http;
+
+// The Lua filter allows for generic scripting in an HTTP filter context.
+// TODO(mattklein123): Link to filter docs.
+message Lua {
+  // The Lua code to execute.
+  string inline_code = 1;
+}
