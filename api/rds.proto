@@ -300,7 +300,7 @@ message RedirectAction {
     // Temporary Redirect HTTP Status Code - 307.
     TEMPORARY_REDIRECT = 3;
     // Permanent Redirect HTTP Status Code - 308.
-    PERMANENT_REDIRECT = 4.
+    PERMANENT_REDIRECT = 4;
   }
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
