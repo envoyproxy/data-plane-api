@@ -8,6 +8,7 @@ proto_library(
     name = "go_protos",
     srcs = [
         "address.proto",
+        "auth.proto",
         "base.proto",
         "bootstrap.proto",
         "cds.proto",
@@ -51,6 +52,12 @@ go_grpc_library(
 api_proto_library(
     name = "address",
     srcs = ["address.proto"],
+)
+
+api_proto_library(
+    name = "auth",
+    srcs = ["auth.proto"],
+    deps = [":sds"],
 )
 
 api_proto_library(
@@ -159,6 +166,7 @@ api_proto_library(
     srcs = ["rds.proto"],
     has_services = 1,
     deps = [
+        ":auth",
         ":base",
         ":discovery",
     ],
