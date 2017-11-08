@@ -153,4 +153,17 @@ message Listener {
     google.protobuf.BoolValue bind_to_port = 1;
   }
   DeprecatedV1 deprecated_v1 = 7;
+
+  enum DrainType {
+    // Drain in response to calling /healthcheck/fail admin endpoint (along with the health check
+    // filter), listener removal/modification, and hot restart.
+    DEFAULT = 0;
+    // Drain in response to listener removal/modification and hot restart. This setting does not
+    // include /healthcheck/fail. This setting may be desirable if Envoy is hosting both ingress
+    // and egress listeners.
+    MODIFY_ONLY = 1;
+  }
+
+  // The type of draining to perform at a listener-wide level.
+  DrainType drain_type = 8;
 }
