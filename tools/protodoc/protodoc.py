@@ -10,6 +10,7 @@ import sys
 import re
 
 from google.protobuf.compiler import plugin_pb2
+from validate import validate_pb2
 
 # Namespace prefix for Envoy APIs.
 ENVOY_API_NAMESPACE_PREFIX = '.envoy.api.v2.'
@@ -22,6 +23,7 @@ UNICODE_INVISIBLE_SEPARATOR = u'\u2063'
 
 # Page/section titles with special prefixes in the proto comments
 DOC_TITLE_REGEX = 'protodoc-title:\s([^\n]+)\n\n?'
+
 
 class ProtodocError(Exception):
   """Base error class for the protodoc module."""
@@ -137,7 +139,7 @@ def FormatHeader(style, text):
   return '%s\n%s\n\n' % (text, style * len(text))
 
 
-def FormatHeaderFromFile(style, file_level_comment, alt):  
+def FormatHeaderFromFile(style, file_level_comment, alt):
   """Format RST header based on special file level title
 
   Args:
@@ -151,8 +153,10 @@ def FormatHeaderFromFile(style, file_level_comment, alt):
   m = re.search(DOC_TITLE_REGEX, file_level_comment)
   if m:
     # remove title hint and any new lines that follow
-    return FormatHeader(style, m.group(1)), re.sub(DOC_TITLE_REGEX, '', file_level_comment)
+    return FormatHeader(style, m.group(1)), re.sub(DOC_TITLE_REGEX, '',
+                                                   file_level_comment)
   return FormatHeader(style, alt), file_level_comment
+
 
 def FormatFieldTypeAsJson(type_context, field):
   """Format FieldDescriptorProto.Type as a pseudo-JSON string.
@@ -242,8 +246,14 @@ def FormatFieldType(type_context, field):
       field.TYPE_DOUBLE: 'double',
       field.TYPE_FLOAT: 'float',
       field.TYPE_INT32: 'int32',
+      field.TYPE_SFIXED32: 'int32',
+      field.TYPE_SINT32: 'int32',
+      field.TYPE_FIXED32: 'uint32',
       field.TYPE_UINT32: 'uint32',
       field.TYPE_INT64: 'int64',
+      field.TYPE_SFIXED64: 'int64',
+      field.TYPE_SINT64: 'int64',
+      field.TYPE_FIXED64: 'uint64',
       field.TYPE_UINT64: 'uint64',
       field.TYPE_BOOL: 'bool',
       field.TYPE_STRING: 'string',
@@ -301,8 +311,15 @@ def FormatFieldAsDefinitionListItem(type_context, field):
   else:
     oneof_comment = ''
   anchor = FormatAnchor(FieldCrossRefLabel(type_context.name))
-  comment = '(%s) ' % FormatFieldType(
-      type_context, field) + type_context.LeadingCommentPathLookup()
+  annotations = []
+  if field.options.HasExtension(validate_pb2.rules):
+    rule = field.options.Extensions[validate_pb2.rules]
+    if rule.HasField('message'):
+      if rule.message.required:
+        annotations.append('*REQUIRED*')
+  comment = '(%s) ' % ', '.join(
+      [FormatFieldType(type_context, field)] + annotations
+  ) + type_context.LeadingCommentPathLookup()
   return anchor + field.name + '\n' + MapLines(
       functools.partial(Indent, 2), comment + oneof_comment)
 
@@ -345,7 +362,8 @@ def FormatMessage(type_context, msg):
           map(
               functools.partial(FormatFieldType, type_context),
               nested_msg.field))
-      for nested_msg in msg.nested_type if nested_msg.options.map_entry
+      for nested_msg in msg.nested_type
+      if nested_msg.options.map_entry
   }
   nested_msgs = '\n'.join(
       FormatMessage(
@@ -425,16 +443,16 @@ def GenerateRst(proto_file):
   source_code_info = SourceCodeInfo(proto_file.source_code_info)
   # Find the earliest detached comment, attribute it to file level.
   # Also extract file level titles if any.
-  header, comment = FormatHeaderFromFile('=', source_code_info.file_level_comment,
-                                         proto_file.name)
+  header, comment = FormatHeaderFromFile(
+      '=', source_code_info.file_level_comment, proto_file.name)
   msgs = '\n'.join(
       FormatMessage(TypeContext(source_code_info, [4, index], msg.name), msg)
       for index, msg in enumerate(proto_file.message_type))
   enums = '\n'.join(
       FormatEnum(TypeContext(source_code_info, [5, index], enum.name), enum)
       for index, enum in enumerate(proto_file.enum_type))
-  #debug_proto = FormatProtoAsBlockComment(proto_file.source_code_info)
-  return header + comment + msgs + enums  #+ debug_proto
+  debug_proto = FormatProtoAsBlockComment(proto_file)
+  return header + comment + msgs + enums #+ debug_proto
 
 
 if __name__ == '__main__':

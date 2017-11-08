@@ -17,6 +17,6 @@ elif [[ "$1" == "bazel.docs" ]]; then
   echo "generating docs..."
   ./docs/build.sh
 else
-  echo "Invalid do_ci.sh target. The only valid target is bazel.build."
+  echo "Invalid do_ci.sh target. The only valid targets are bazel.{docs,test}."
   exit 1
 fi

@@ -1,7 +1,16 @@
 GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
 PROMETHEUS_SHA = "6f3806018612930941127f2a7c6c453ba2c527d2" # Nov 02, 2017
 
+PGV_GIT_SHA = "f3332cbd75bb28f711377dfb84761ef0d52eca0f"
+PGV_TAR_SHA = "039ffa842eb62495b6aca305a4eb3d6dc3ac1dd056e228fba5e720161ddfb9c1"
+
 def api_dependencies():
+    native.http_archive(
+        name = "com_lyft_protoc_gen_validate",
+        strip_prefix = "protoc-gen-validate-" + PGV_GIT_SHA,
+        sha256 = PGV_TAR_SHA,
+        url = "https://github.com/lyft/protoc-gen-validate/archive/" + PGV_GIT_SHA + ".tar.gz",
+    )
     native.new_http_archive(
         name = "googleapis",
         strip_prefix = "googleapis-" + GOOGLEAPIS_SHA,
