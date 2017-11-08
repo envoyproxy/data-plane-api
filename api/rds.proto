@@ -198,8 +198,17 @@ message RouteAction {
   RoutingPriority priority = 11;
 
   // Specifies a set of headers that will be added to requests matching this
-  // route.
+  // route. In the presence of duplicate header keys, precedence rules apply.
   repeated HeaderValueOption request_headers_to_add = 12;
+
+  // Specifies a set of headers that will be added to responses to requests
+  // matching this route. In the presence of duplicate header keys, precedence
+  // rules apply.
+  repeated HeaderValueOption response_headers_to_add = 18;
+
+  // Specifies a list of HTTP headers that should be removed from each response
+  // to requests matching this route.
+  repeated string response_headers_to_remove = 19;
 
   // Specifies a set of rate limit configurations that could be applied to the
   // route.
@@ -501,6 +510,15 @@ message VirtualHost {
   // handled by this virtual host. In the presence of duplicate header keys,
   // precedence rules apply.
   repeated HeaderValueOption request_headers_to_add = 7;
+
+  // Specifies a list of HTTP headers that should be added to each response
+  // handled by this virtual host. In the presence of duplicate header keys,
+  // precedence rules apply.
+  repeated HeaderValueOption response_headers_to_add = 10;
+
+  // Specifies a list of HTTP headers that should be removed from each response
+  // handle by this virtual host.
+  repeated string response_headers_to_remove = 11;
 
   // Indicates that the virtual host has a CORS policy.
   CorsPolicy cors = 8;
