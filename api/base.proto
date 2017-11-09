@@ -116,7 +116,7 @@ message HeaderValueOption {
   // of -. [V2-API-DIFF].
   HeaderValue header = 1;
 
-  // Should the value be appended? If false (default), the value overrides
+  // Should the value be appended? If true (default), the value is appended to
   // existing values [V2-API-DIFF].
   google.protobuf.BoolValue append = 2;
 }
