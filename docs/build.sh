@@ -12,7 +12,7 @@ mkdir -p "${DOCS_OUTPUT_DIR}"
 
 rm -rf "${GENERATED_RST_DIR}"
 mkdir -p "${GENERATED_RST_DIR}"
-cp -f "${SCRIPT_DIR}"/{conf.py,index.rst} "${GENERATED_RST_DIR}"
+rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
 
 if [ ! -d "${BUILD_DIR}"/venv ]; then
   virtualenv "${BUILD_DIR}"/venv --no-site-packages
