@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 
 SCRIPT_DIR=$(dirname "$0")
 BUILD_DIR=build_docs
