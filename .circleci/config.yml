@@ -16,6 +16,8 @@ jobs:
      steps:
        - checkout
        - run: ci/do_ci.sh bazel.docs
+       - add_ssh_keys
+       - run: docs/publish.sh
 
 workflows:
   version: 2
