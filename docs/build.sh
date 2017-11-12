@@ -38,4 +38,9 @@ do
   cp -f bazel-bin/"${p}" "${GENERATED_RST_DIR}/$p"
 done
 
+BUILD_SHA=$(git rev-parse HEAD)
+[[ -z "${ENVOY_DOCS_VERSION_STRING}" ]] && ENVOY_DOCS_VERSION_STRING=data-plane-api-"${BUILD_SHA:0:6}"
+[[ -z "${ENVOY_DOCS_RELEASE_LEVEL}" ]] && ENVOY_DOCS_RELEASE_LEVEL=pre-release
+
+export ENVOY_DOCS_VERSION_STRING ENVOY_DOCS_RELEASE_LEVEL
 sphinx-build -W -b html "${GENERATED_RST_DIR}" "${DOCS_OUTPUT_DIR}"
