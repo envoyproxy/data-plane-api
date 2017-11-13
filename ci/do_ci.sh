@@ -4,6 +4,11 @@
 
 set -e
 
+# xlarge resource_class.
+# See note: https://circleci.com/docs/2.0/configuration-reference/#resource_class for why we
+# hard code this (basically due to how docker works).
+export NUM_CPUS=8
+
 . "$(dirname "$0")"/build_setup.sh
 
 echo "building using ${NUM_CPUS} CPUs"

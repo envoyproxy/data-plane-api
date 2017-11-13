@@ -4,7 +4,7 @@ set -e
 
 DOCS_DIR=generated/docs
 CHECKOUT_DIR=../envoy-docs
-PUBLISH_DIR="$CHECKOUT_DIR"/envoy
+PUBLISH_DIR="$CHECKOUT_DIR"/envoy-docs/latest
 BUILD_SHA=`git rev-parse HEAD`
 
 if [ -z "$CIRCLE_PULL_REQUEST" ] && [ "$CIRCLE_BRANCH" == "master" ]
@@ -24,7 +24,7 @@ then
   echo 'add'
   git add .
   echo 'commit'
-  git commit -m "docs @$BUILD_SHA"
+  git commit -m "docs data-plane-api@$BUILD_SHA"
   echo 'push'
   git push origin master
 else

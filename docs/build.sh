@@ -21,7 +21,7 @@ fi
 
 source "${BUILD_DIR}"/venv/bin/activate
 
-bazel --batch build -s ${BAZEL_BUILD_OPTIONS} //api --aspects \
+bazel --batch build ${BAZEL_BUILD_OPTIONS} //api --aspects \
   tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst
 
 # These are the protos we want to put in docs, this list will grow.
