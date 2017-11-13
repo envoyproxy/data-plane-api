@@ -9,24 +9,53 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-message AccessLogEntry {
-  // The HTTP request method (RFC 7231/2616)
-  RequestMethod request_method = 1;
+// Envoy access logs describe incoming interaction with Envoy over a fixed
+// period of time, and typically cover a single request/response exchange.
+// Except where explicitly declared otherwise, all fields describe
+// *downstream* interaction between Envoy and a connected client.
+// Fields describing *upstream* interaction are prefixed with the string
+// `upstream_`.
+message AccessLogBaseEntry {
+  // This field indicates the rate at which this log entry was sampled.
+  // Valid range is (0.0, 1.0].
+  double sample_rate = 1;
+
+  // This field is the IP and port on which the request from the user was
+  // received, stored in ipv4:port or [ipv6]:port format.
+  string destination_host = 2;
+
+  // Whether the request arrived via a secure (TLS) protocol
+  google.protobuf.BoolValue secure = 3;
+
+  // Properties of the TLS connection, if used
+  TLSProperties tls_properties = 4;
 
   // The time that Envoy started servicing this request
-  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Timestamp start_time = 7;
 
-  // Incoming protocol variation spoken
-  enum Protocol {
-    PROTOCOL_UNSPECIFIED = 0;
-    HTTP10 = 1;
-    HTTP11 = 2;
-    HTTP2 = 3;
-  }
-  Protocol protocol_variant = 3;
+  // Duration (milliseconds)
+  //
+  // The total duration it took to service this request from the StartTime until
+  // the response was written to the user.
+  google.protobuf.Duration duration = 8;
 
-  // This enum defines the various things that may have occurred while
-  // processing a request.
+  // The upstream host URL (Envoy connects to).
+  //
+  // For example, tcp://ip:port for TCP connections.
+  //
+  // IPv6 addresses should be stored in canonical (compressed) format using
+  // [address]:port notation.
+  string upstream_host = 9;
+
+  // The Upstream Cluster that the upstream host belongs to.
+  string upstream_cluster = 10;
+
+  // Upstream Service Time Duration
+  //
+  // The is the amount of time it took the upstream server to service the request.
+  google.protobuf.Duration upstream_service_duration = 11;
+
+  // Flags indicating occurences during request/response processing.
   enum ResponseFlag {
     // Local server healthcheck failed.
     FAILED_LOCAL_HEALTHCHECK = 0;
@@ -53,86 +82,7 @@ message AccessLogEntry {
     // Request was ratelimited locally by rate limit filter.
     RATE_LIMITED = 11;
   }
-  // Status flags about the response.
-  repeated ResponseFlag response_flags = 4;
-
-  // The upstream host URL (Envoy connects to).
-  //
-  // For example, tcp://ip:port for TCP connections.
-  //
-  // IPv6 addresses should be stored in canonical (compressed) format using
-  // [address]:port notation.
-  string upstream_host = 5;
-
-  // The Upstream Cluster that the upstream host belongs to.
-  string upstream_cluster = 6;
-
-  // This field is the IP and port on which the request from the user was
-  // received, stored in ipv4:port or [ipv6]:port format.
-  string destination_host = 7;
-
-  // Size of the HTTP request body in bytes
-  google.protobuf.UInt64Value request_body_bytes = 8;
-
-  // Size of the HTTP response body in bytes
-  google.protobuf.UInt64Value response_body_bytes = 9;
-
-  // Size of the HTTP request headers in bytes
-  google.protobuf.UInt64Value request_headers_bytes = 10;
-
-  // Size of the HTTP response headers in bytes
-  google.protobuf.UInt64Value response_headers_bytes = 11;
-
-  // Whether the request arrived via a secure (TLS) protocol
-  google.protobuf.BoolValue secure = 12;
-
-  // Whether the request is a HealthCheck request
-  google.protobuf.BoolValue health_check = 13;
-
-  // The HTTP response code
-  google.protobuf.UInt32Value response_code = 14;
-
-  // User agent as sent by client HTTP
-  string user_agent = 15;
-
-  // Path
-  //
-  // This is the Path portion from the incoming request URI
-  string path = 17;
-
-  // Referer header as sent by client HTTP
-  // (Referer is spelled to match the HTTP spec, not English).
-  string referer = 18;
-
-  // X-Forwarded-For request header
-  string forwarded_for = 19;
-
-  // X-Request-Id request header
-  //
-  // This header is used by Envoy to uniquely identify a request.
-  // It will be generated for all external requests and internal requests that
-  // do not already have a request ID.  So this field can be guaranteed to exist
-  // and be unique for request tracing purposes.
-  string request_id = 20;
-
-  // HTTP2 :authority header value or HTTP1.1 Host header value
-  string authority = 21;
-
-  // Duration (milliseconds)
-  //
-  // The total duration it took to service this request from the StartTime until
-  // the response was written to the user.
-  google.protobuf.Duration response_duration = 22;
-
-  // Upstream Service Time Duration
-  //
-  // From the X-Envoy-Upstream-Service-Time response header. This is the amount it took
-  // the upstream server to service the request.
-  google.protobuf.Duration upstream_service_duration = 23;
-
-
-  // Original Path from the X-Envoy-Original-Path header.
-  string original_path = 24;
+  repeated ResponseFlag response_flags = 12;
 
   // All metadata encountered during request processing, including endpoint
   // selection.
@@ -142,16 +92,11 @@ message AccessLogEntry {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  google.protobuf.Struct metadata = 25;
+  google.protobuf.Struct metadata = 13;
+}
 
-  // Headers configured for logging but not covered by a specific field.
-  repeated HeaderValue request_headers = 26;
-  repeated HeaderValue response_headers = 27;
-
-  // SNI hostname from handshake.
-  string tls_sni_hostname = 28;
-
-  // TLS Version or VERSION_UNSPECIFIED if TLS was not used
+message TLSProperties {
+  // TLS Version
   enum TLSVersion {
     VERSION_UNSPECIFIED = 0;
     TLSv1 = 1;
@@ -159,14 +104,110 @@ message AccessLogEntry {
     TLSv1_2 = 3;
     TLSv1_3 = 4;
   }
-  TLSVersion tls_version = 29;
+  TLSVersion tls_version = 1;
 
   // TLS Cipher suite negotiated during TLS handshake.
   // The value is four hex digits defined by the IANA TLS Cipher Suite Registry,
   // eg, "009C" for TLS_RSA_WITH_AES_128_GCM_SHA256.
   //
-  // Here is is expressed as an integer.
-  google.protobuf.UInt32Value tls_cipher_suite = 30;
+  // Here it is expressed as an integer.
+  google.protobuf.UInt32Value tls_cipher_suite = 2;
+
+  // SNI hostname from handshake.
+  string tls_sni_hostname = 3;
+}
+
+message TCPAccessLogEntry {
+  // Common properties shared by all Envoy access logs.
+  AccessLogBaseEntry base_entry = 1;
+}
+
+message HTTPRequestProperties {
+  // The request method (RFC 7231/2616)
+  RequestMethod request_method = 1;
+
+  // The scheme portion of the incoming request URI
+  string scheme = 2;
+
+  // HTTP2 :authority header value or HTTP1.1 Host header value
+  string authority = 3;
+
+  // The port of the incoming request URI
+  // (Unused currently, as port is composed onto authority)
+  google.protobuf.UInt32Value port = 4;
+
+  // The path portion from the incoming request URI
+  string path = 5;
+
+  // HTTP request headers
+  // ====================
+
+  // User agent as sent by client HTTP
+  string user_agent = 6;
+
+  // Referer header as sent by client HTTP
+  // (Referer is spelled to match the HTTP spec, not English).
+  string referer = 7;
+
+  // X-Forwarded-For request header
+  string forwarded_for = 8;
+
+  // X-Request-Id request header
+  //
+  // This header is used by Envoy to uniquely identify a request.
+  // It will be generated for all external requests and internal requests that
+  // do not already have a request ID.  So this field can be guaranteed to exist
+  // and be unique for request tracing purposes.
+  string request_id = 9;
+
+  // Original Path from the X-Envoy-Original-Path header.
+  string original_path = 10;
+
+  // HTTP request metdata
+  // ====================
+
+  // Size of the HTTP request headers in bytes
+  google.protobuf.UInt64Value request_headers_bytes = 11;
+
+  // Size of the HTTP request body in bytes
+  google.protobuf.UInt64Value request_body_bytes = 12;
+
+  // Headers configured to be logged, but not covered by a specific field.
+  repeated HeaderValue request_headers = 13;
+}
+
+message HTTPResponseProperties {
+  // The HTTP response code returned.
+  google.protobuf.UInt32Value response_code = 1;
+
+  // Size of the HTTP response headers in bytes
+  google.protobuf.UInt64Value response_headers_bytes = 2;
+
+  // Size of the HTTP response body in bytes
+  google.protobuf.UInt64Value response_body_bytes = 3;
+
+  // Headers configured to be logged, but not covered by a specific field.
+  repeated HeaderValue response_headers = 4;
+}
+
+message HTTPAccessLogEntry {
+  // Common properties shared by all Envoy access logs.
+  AccessLogBaseEntry base_entry = 1;
+
+  // HTTP version
+  enum HTTPVersion {
+    PROTOCOL_UNSPECIFIED = 0;
+    HTTP10 = 1;
+    HTTP11 = 2;
+    HTTP2 = 3;
+  }
+  HTTPVersion protocol_version = 2;
+
+  // Description of the incoming HTTP request.
+  HTTPRequestProperties request = 3;
+
+  // Description of the outgoing HTTP response.
+  HTTPResponseProperties response = 4;
 }
 
 // Filter on some integer comparison.
@@ -284,8 +325,9 @@ message StreamAccessLogsMessage {
   // structured metadata and is a performance optimization.
   Identifier identifier = 1;
 
-  // A list of access logs.
-  repeated AccessLogEntry logs = 2;
+  // A list of access logs. Only a SINGLE type should be sent per access log stream.
+  repeated HTTPAccessLogEntry http_logs = 2;
+  repeated TCPAccessLogEntry tcp_logs = 3;
 }
 
 // Empty response for the StreamAccessLogs API. Will never be sent. See below.
