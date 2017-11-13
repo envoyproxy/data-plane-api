@@ -193,5 +193,6 @@ proto_library(
         ":eds",
         ":lds",
         ":rds",
+        "//api/filter/network:mongo_proxy",
     ],
 )
