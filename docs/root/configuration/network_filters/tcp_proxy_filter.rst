@@ -11,8 +11,8 @@ TCP proxy :ref:`architecture overview <arch_overview_tcp_proxy>`.
     "name": "tcp_proxy",
     "config": {
       "stat_prefix": "...",
-      "route_config": "{...}"
-      "access_log": "[]"
+      "route_config": "{...}",
+      "access_log": []
     }
   }
 
