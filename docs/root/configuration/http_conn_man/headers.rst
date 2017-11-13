@@ -104,7 +104,7 @@ This is a convenience to avoid having to parse and understand XFF.
 x-forwarded-client-cert
 -----------------------
 
-*x-forwarded-clinet-cert* (XFCC) is a proxy header which indicates certificate information of part
+*x-forwarded-client-cert* (XFCC) is a proxy header which indicates certificate information of part
 or all of the clients or proxies that a request has flowed through, on its way from the client to the
 server. A proxy may choose to sanitize/append/forward the XFCC header before proxying the request.
 
