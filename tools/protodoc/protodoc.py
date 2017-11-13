@@ -21,12 +21,63 @@ WKT_NAMESPACE_PREFIX = '.google.protobuf.'
 # http://www.fileformat.info/info/unicode/char/2063/index.htm
 UNICODE_INVISIBLE_SEPARATOR = u'\u2063'
 
+# Key-value annotation regex.
+ANNOTATION_REGEX = re.compile('\[#([\w-]+?):(.*?)\]\s?')
+
 # Page/section titles with special prefixes in the proto comments
-DOC_TITLE_REGEX = 'protodoc-title:\s([^\n]+)\n\n?'
+DOC_TITLE_ANNOTATION = 'protodoc-title'
+
+# Not implemented yet annotation on leading comments, leading to insertion of
+# warning on field.
+NOT_IMPLEMENTED_WARN_ANNOTATION = 'not-implemented-warn'
+
+# Not implemented yet annotation on leading comments, leading to hiding of
+# field.
+NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
+
+# Where v2 differs from v1..
+V2_API_DIFF_ANNOTATION = 'v2-api-diff'
+
+VALID_ANNOTATIONS = set([
+    DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
+    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION
+])
 
 
 class ProtodocError(Exception):
   """Base error class for the protodoc module."""
+
+
+def FormatCommentWithAnnotations(s, annotations):
+  if NOT_IMPLEMENTED_WARN_ANNOTATION in annotations:
+    s += '\n.. WARNING::\n  ' + 'Not implemented yet\n'
+  if V2_API_DIFF_ANNOTATION in annotations:
+    s += '\n.. NOTE::\n  v2 API difference: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
+  return s
+
+
+def ExtractAnnotations(s):
+  """Extract annotations from a given comment string.
+
+  Args:
+    s: string that may contains annotations.
+  Returns:
+    Pair of string with with annotations stripped and annotation map.
+  """
+  annotations = {}
+  stripped_lines = []
+  for line in s.split('\n'):
+    groups = re.findall(ANNOTATION_REGEX, line)
+    stripped_line = re.sub(ANNOTATION_REGEX, '', line)
+    if stripped_line.strip() or not groups:
+      stripped_lines.append(stripped_line)
+    for group in groups:
+      annotation = group[0]
+      if annotation not in VALID_ANNOTATIONS:
+        raise ProtodocError('Unknown annotation: %s' % annotation)
+      annotations[group[0]] = group[1].lstrip()
+  return FormatCommentWithAnnotations('\n'.join(stripped_lines),
+                                      annotations), annotations
 
 
 class SourceCodeInfo(object):
@@ -55,12 +106,15 @@ class SourceCodeInfo(object):
       path: a list of path indexes as per
         https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
     Returns:
-      Attached leading comment if it exists, otherwise empty space.
+      Pair of attached leading comment and Annotation objects, where there is a
+      leading comment
+      otherwise ('', []).
     """
     for location in self._proto.location:
       if location.path == path:
-        return StripLeadingSpace(location.leading_comments) + '\n'
-    return ''
+        return ExtractAnnotations(
+            StripLeadingSpace(location.leading_comments) + '\n')
+    return '', []
 
 
 class TypeContext(object):
@@ -145,17 +199,16 @@ def FormatHeaderFromFile(style, file_level_comment, alt):
   Args:
     style: underline style, e.g. '=', '-'.
     file_level_comment: detached comment at top of file.
-    alt: If the file_level_comment does not contain a user 
+    alt: If the file_level_comment does not contain a user
          specified title, use the alt text as page title.
   Returns:
     RST formatted header, and file level comment without page title strings.
   """
-  m = re.search(DOC_TITLE_REGEX, file_level_comment)
-  if m:
-    # remove title hint and any new lines that follow
-    return FormatHeader(style, m.group(1)), re.sub(DOC_TITLE_REGEX, '',
-                                                   file_level_comment)
-  return FormatHeader(style, alt), file_level_comment
+  stripped_comment, annotations = ExtractAnnotations(file_level_comment)
+  if DOC_TITLE_ANNOTATION in annotations:
+    return FormatHeader(style,
+                        annotations[DOC_TITLE_ANNOTATION]), stripped_comment
+  return FormatHeader(style, alt), stripped_comment
 
 
 def FormatFieldTypeAsJson(type_context, field):
@@ -317,9 +370,11 @@ def FormatFieldAsDefinitionListItem(type_context, field):
     if rule.HasField('message'):
       if rule.message.required:
         annotations.append('*REQUIRED*')
+  leading_comment, comment_annotations = type_context.LeadingCommentPathLookup()
+  if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+    return ''
   comment = '(%s) ' % ', '.join(
-      [FormatFieldType(type_context, field)] + annotations
-  ) + type_context.LeadingCommentPathLookup()
+      [FormatFieldType(type_context, field)] + annotations) + leading_comment
   return anchor + field.name + '\n' + MapLines(
       functools.partial(Indent, 2), comment + oneof_comment)
 
@@ -375,8 +430,10 @@ def FormatMessage(type_context, msg):
       for index, nested_enum in enumerate(msg.enum_type))
   anchor = FormatAnchor(MessageCrossRefLabel(type_context.name))
   header = FormatHeader('-', type_context.name)
-  comment = type_context.LeadingCommentPathLookup()
-  return anchor + header + comment + FormatMessageAsJson(
+  leading_comment, annotations = type_context.LeadingCommentPathLookup()
+  if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
+    return ''
+  return anchor + header + leading_comment + FormatMessageAsJson(
       type_context, msg) + FormatMessageAsDefinitionList(
           type_context, msg) + nested_msgs + '\n' + nested_enums
 
@@ -392,8 +449,10 @@ def FormatEnumValueAsDefinitionListItem(type_context, enum_value):
   """
   anchor = FormatAnchor(EnumValueCrossRefLabel(type_context.name))
   default_comment = '*(DEFAULT)* ' if enum_value.number == 0 else ''
-  comment = default_comment + UNICODE_INVISIBLE_SEPARATOR + type_context.LeadingCommentPathLookup(
-  )
+  leading_comment, annotations = type_context.LeadingCommentPathLookup()
+  if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
+    return ''
+  comment = default_comment + UNICODE_INVISIBLE_SEPARATOR + leading_comment
   return anchor + enum_value.name + '\n' + MapLines(
       functools.partial(Indent, 2), comment)
 
@@ -424,8 +483,10 @@ def FormatEnum(type_context, enum):
   """
   anchor = FormatAnchor(EnumCrossRefLabel(type_context.name))
   header = FormatHeader('-', 'Enum %s' % type_context.name)
-  comment = type_context.LeadingCommentPathLookup()
-  return anchor + header + comment + FormatEnumAsDefinitionList(
+  leading_comment, annotations = type_context.LeadingCommentPathLookup()
+  if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
+    return ''
+  return anchor + header + leading_comment + FormatEnumAsDefinitionList(
       type_context, enum)
 
 
@@ -452,7 +513,7 @@ def GenerateRst(proto_file):
       FormatEnum(TypeContext(source_code_info, [5, index], enum.name), enum)
       for index, enum in enumerate(proto_file.enum_type))
   debug_proto = FormatProtoAsBlockComment(proto_file)
-  return header + comment + msgs + enums #+ debug_proto
+  return header + comment + msgs + enums  #+ debug_proto
 
 
 if __name__ == '__main__':
