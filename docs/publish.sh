@@ -4,7 +4,7 @@ set -e
 
 DOCS_DIR=generated/docs
 CHECKOUT_DIR=../envoy-docs
-PUBLISH_DIR="$CHECKOUT_DIR"/envoy-docs/latest
+PUBLISH_DIR="$CHECKOUT_DIR"/docs/envoy/latest
 BUILD_SHA=`git rev-parse HEAD`
 
 if [ -z "$CIRCLE_PULL_REQUEST" ] && [ "$CIRCLE_BRANCH" == "master" ]
