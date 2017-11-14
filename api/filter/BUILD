@@ -17,6 +17,7 @@ proto_library(
         "@com_google_protobuf//:struct_proto",
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
+        "@com_lyft_protoc_gen_validate//validate:validate_proto",
     ],
 )
 
