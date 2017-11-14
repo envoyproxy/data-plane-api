@@ -124,6 +124,12 @@ The following command operators are supported:
 %UPSTREAM_CLUSTER%
   Upstream cluster to which the upstream host belongs to.
 
+%UPSTREAM_LOCAL_ADDRESS%
+  Local address of the upstream connection.
+
+%DOWNSTREAM_ADDRESS%
+  Remote address of the downstream connection.
+
 %REQ(X?Y):Z%
   HTTP
     An HTTP request header where X is the main HTTP header, Y is the alternative one, and Z is an
