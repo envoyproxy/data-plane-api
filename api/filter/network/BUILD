@@ -23,6 +23,7 @@ proto_library(
         "@com_google_protobuf//:struct_proto",
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
+        "@com_lyft_protoc_gen_validate//validate:validate_proto",
         "@googleapis//:http_api_protos_lib",
     ],
 )
@@ -40,6 +41,7 @@ go_proto_library(
         "@com_github_golang_protobuf//ptypes/struct:go_default_library",
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+        "@com_lyft_protoc_gen_validate//validate:go_default_library",
         "@org_golang_google_genproto//googleapis/api/annotations:go_default_library",
     ],
 )

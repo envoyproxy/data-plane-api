@@ -12,7 +12,6 @@ mkdir -p "${DOCS_OUTPUT_DIR}"
 
 rm -rf "${GENERATED_RST_DIR}"
 mkdir -p "${GENERATED_RST_DIR}"
-rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
 
 if [ ! -d "${BUILD_DIR}"/venv ]; then
   virtualenv "${BUILD_DIR}"/venv --no-site-packages
@@ -29,14 +28,22 @@ bazel --batch build ${BAZEL_BUILD_OPTIONS} //api --aspects \
 PROTO_RST="
   /api/address/api/address.proto.rst
   /api/base/api/base.proto.rst
+  /api/filter/fault/api/filter/fault.proto.rst
+  /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
 "
+
+# Dump all the generated RST so they can be added to PROTO_RST easily.
+find -L bazel-bin -name "*.proto.rst"
 
 # Only copy in the protos we care about and know how to deal with in protodoc.
 for p in $PROTO_RST
 do
-  mkdir -p "$(dirname "${GENERATED_RST_DIR}/$p")"
-  cp -f bazel-bin/"${p}" "${GENERATED_RST_DIR}/$p"
+  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/api.*/api/##' <<< "$p")"
+  mkdir -p "$(dirname "${DEST}")"
+  cp -f bazel-bin/"${p}" "${DEST}"
 done
+
+rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
 
 BUILD_SHA=$(git rev-parse HEAD)
 [[ -z "${ENVOY_DOCS_VERSION_STRING}" ]] && ENVOY_DOCS_VERSION_STRING=data-plane-api-"${BUILD_SHA:0:6}"

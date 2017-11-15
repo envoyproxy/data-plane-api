@@ -1,5 +1,5 @@
-Envoy v2 API reference
-======================
+Network filters
+===============
 
 .. CAUTION::
   This documentation subtree is a work-in-progress and does not yet contain
@@ -9,4 +9,4 @@ Envoy v2 API reference
   :glob:
   :maxdepth: 2
 
-  **
+  *

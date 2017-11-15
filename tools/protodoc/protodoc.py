@@ -506,12 +506,15 @@ def GenerateRst(proto_file):
   # Also extract file level titles if any.
   header, comment = FormatHeaderFromFile(
       '=', source_code_info.file_level_comment, proto_file.name)
+  package_prefix = NormalizeFQN('.' + proto_file.package + '.')
   msgs = '\n'.join(
-      FormatMessage(TypeContext(source_code_info, [4, index], msg.name), msg)
-      for index, msg in enumerate(proto_file.message_type))
+      FormatMessage(
+          TypeContext(source_code_info, [4, index], package_prefix + msg.name),
+          msg) for index, msg in enumerate(proto_file.message_type))
   enums = '\n'.join(
-      FormatEnum(TypeContext(source_code_info, [5, index], enum.name), enum)
-      for index, enum in enumerate(proto_file.enum_type))
+      FormatEnum(
+          TypeContext(source_code_info, [5, index], package_prefix + enum.name),
+          enum) for index, enum in enumerate(proto_file.enum_type))
   debug_proto = FormatProtoAsBlockComment(proto_file)
   return header + comment + msgs + enums  #+ debug_proto
 
