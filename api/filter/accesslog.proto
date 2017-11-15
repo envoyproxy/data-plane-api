@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter;
 
+import "api/address.proto";
 import "api/base.proto";
 
 import "google/protobuf/duration.proto";
@@ -10,50 +11,48 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 // Envoy access logs describe incoming interaction with Envoy over a fixed
-// period of time, and typically cover a single request/response exchange.
+// period of time, and typically cover a single request/response exchange,
+// (e.g. HTTP), stream (e.g. over HTTP/gRPC), or proxied connection (e.g. TCP).
 // Except where explicitly declared otherwise, all fields describe
 // *downstream* interaction between Envoy and a connected client.
-// Fields describing *upstream* interaction are prefixed with the string
-// `upstream_`.
-message AccessLogBaseEntry {
+// Fields describing *upstream* interaction will explicitly include `upstream`
+// in their name.
+message AccessLogCommon {
   // This field indicates the rate at which this log entry was sampled.
   // Valid range is (0.0, 1.0].
   double sample_rate = 1;
 
   // This field is the IP and port on which the request from the user was
-  // received, stored in ipv4:port or [ipv6]:port format.
-  string destination_host = 2;
-
-  // Whether the request arrived via a secure (TLS) protocol
-  google.protobuf.BoolValue secure = 3;
+  // received.
+  SocketAddress destination_host = 2;
 
   // Properties of the TLS connection, if used
-  TLSProperties tls_properties = 4;
+  TLSProperties tls_properties = 3;
 
   // The time that Envoy started servicing this request
-  google.protobuf.Timestamp start_time = 7;
+  google.protobuf.Timestamp start_time = 4;
 
-  // Duration (milliseconds)
-  //
-  // The total duration it took to service this request from the StartTime until
-  // the response was written to the user.
-  google.protobuf.Duration duration = 8;
+  // Interval between the first downstream byte received and the last
+  // downstream byte received (i.e. time it takes to receive a request).
+  google.protobuf.Duration time_to_last_byte = 5;
 
-  // The upstream host URL (Envoy connects to).
-  //
-  // For example, tcp://ip:port for TCP connections.
-  //
-  // IPv6 addresses should be stored in canonical (compressed) format using
-  // [address]:port notation.
-  string upstream_host = 9;
+  // Interval between the first downstream byte received and the first upstream
+  // byte received (i.e. time it takes to start receiving a response).
+  google.protobuf.Duration time_to_first_upstream_byte = 6;
 
-  // The Upstream Cluster that the upstream host belongs to.
-  string upstream_cluster = 10;
+  // Interval between the first downstream byte received and the last upstream
+  // byte received (i.e. time it takes to receive a complete response).
+  google.protobuf.Duration time_to_last_upstream_byte = 7;
 
-  // Upstream Service Time Duration
-  //
-  // The is the amount of time it took the upstream server to service the request.
-  google.protobuf.Duration upstream_service_duration = 11;
+  // The (primary) upstream host that handles this exchange.
+  SocketAddress upstream_host = 8;
+
+  // The upstream cluster the upstream_host belongs to.
+  string upstream_cluster = 9;
+
+  // The amount of time it took the upstream server to service the request,
+  // as reported by the upstream host.
+  google.protobuf.Duration upstream_service_duration = 10;
 
   // Flags indicating occurences during request/response processing.
   enum ResponseFlag {
@@ -82,7 +81,7 @@ message AccessLogBaseEntry {
     // Request was ratelimited locally by rate limit filter.
     RATE_LIMITED = 11;
   }
-  repeated ResponseFlag response_flags = 12;
+  repeated ResponseFlag response_flags = 11;
 
   // All metadata encountered during request processing, including endpoint
   // selection.
@@ -92,7 +91,7 @@ message AccessLogBaseEntry {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  google.protobuf.Struct metadata = 13;
+  google.protobuf.Struct metadata = 12;
 }
 
 message TLSProperties {
@@ -119,7 +118,7 @@ message TLSProperties {
 
 message TCPAccessLogEntry {
   // Common properties shared by all Envoy access logs.
-  AccessLogBaseEntry base_entry = 1;
+  AccessLogCommon common_properties = 1;
 }
 
 message HTTPRequestProperties {
@@ -138,9 +137,6 @@ message HTTPRequestProperties {
 
   // The path portion from the incoming request URI
   string path = 5;
-
-  // HTTP request headers
-  // ====================
 
   // User agent as sent by client HTTP
   string user_agent = 6;
@@ -162,9 +158,6 @@ message HTTPRequestProperties {
 
   // Original Path from the X-Envoy-Original-Path header.
   string original_path = 10;
-
-  // HTTP request metdata
-  // ====================
 
   // Size of the HTTP request headers in bytes
   google.protobuf.UInt64Value request_headers_bytes = 11;
@@ -192,7 +185,7 @@ message HTTPResponseProperties {
 
 message HTTPAccessLogEntry {
   // Common properties shared by all Envoy access logs.
-  AccessLogBaseEntry base_entry = 1;
+  AccessLogCommon common_properties = 1;
 
   // HTTP version
   enum HTTPVersion {
@@ -325,9 +318,22 @@ message StreamAccessLogsMessage {
   // structured metadata and is a performance optimization.
   Identifier identifier = 1;
 
-  // A list of access logs. Only a SINGLE type should be sent per access log stream.
-  repeated HTTPAccessLogEntry http_logs = 2;
-  repeated TCPAccessLogEntry tcp_logs = 3;
+  // Wrapper for batches of HTTP access log entries.
+  message HTTPAccessLogEntries {
+    repeated HTTPAccessLogEntry log_entry = 1;
+  }
+
+  // Wrapper for batches of TCP access log entries.
+  message TCPAccessLogEntries {
+    repeated TCPAccessLogEntry log_entry = 1;
+  }
+
+  // Batches of log entries of a single type. Generally speaking, a given stream should only
+  // ever incude one type of log entry.
+  oneof log_entries {
+    HTTPAccessLogEntries http_logs = 2;
+    TCPAccessLogEntries tcp_logs = 3;
+  }
 }
 
 // Empty response for the StreamAccessLogs API. Will never be sent. See below.
