@@ -5,4 +5,4 @@ Envoy v1 API reference
   :glob:
   :maxdepth: 2
 
-  **
+  network_filters/network_filters

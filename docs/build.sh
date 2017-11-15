@@ -38,11 +38,10 @@ find -L bazel-bin -name "*.proto.rst"
 # Only copy in the protos we care about and know how to deal with in protodoc.
 for p in $PROTO_RST
 do
-  mkdir -p "$(dirname "${GENERATED_RST_DIR}/$p")"
-  cp -f bazel-bin/"${p}" "${GENERATED_RST_DIR}/$p"
+  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/api.*/api/##' <<< "$p")"
+  mkdir -p "$(dirname "${DEST}")"
+  cp -f bazel-bin/"${p}" "${DEST}"
 done
-
-mv "${GENERATED_RST_DIR}"/api "${GENERATED_RST_DIR}"/api-v2
 
 rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
 
