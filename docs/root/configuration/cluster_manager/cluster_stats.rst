@@ -99,10 +99,17 @@ statistics will be rooted at *cluster.<name>.outlier_detection.* and contain the
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
-  ejections_total, Counter, Number of ejections due to any outlier type
+  ejections_enforced_total, Counter, Number of enforced ejections due to any outlier type
   ejections_active, Gauge, Number of currently ejected hosts
   ejections_overflow, Counter, Number of ejections aborted due to the max ejection %
-  ejections_consecutive_5xx, Counter, Number of consecutive 5xx ejections
+  ejections_enforced_consecutive_5xx, Counter, Number of enforced consecutive 5xx ejections
+  ejections_detected_consecutive_5xx, Counter, Number of detected consecutive 5xx ejections (even if unenforced)
+  ejections_enforced_success_rate, Counter, Number of enforced success rate outlier ejections
+  ejections_detected_success_rate, Counter, Number of detected success rate outlier ejections (even if unenforced)
+  ejections_enforced_consecutive_gateway_failure, Counter, Number of enforced consecutive gateway failure ejections
+  ejections_detected_consecutive_gateway_failure, Counter, Number of detected consecutive gateway failure ejections (even if unenforced)
+  ejections_total, Counter, Deprecated. Number of ejections due to any outlier type (even if unenforced)
+  ejections_consecutive_5xx, Counter, Deprecated. Number of consecutive 5xx ejections (even if unenforced)
 
 .. _config_cluster_manager_cluster_stats_dynamic_http:
 

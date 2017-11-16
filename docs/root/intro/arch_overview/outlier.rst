@@ -48,6 +48,16 @@ one on the upstream's behalf (reset, connection failure, etc.). The number of co
 required for ejection is controlled by the :ref:`outlier_detection.consecutive_5xx
 <config_cluster_manager_cluster_outlier_detection_consecutive_5xx>` value.
 
+Consecutive Gateway Failure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If an upstream host returns some number of consecutive "gateway errors" (502, 503 or 504 status
+code), it will be ejected. Note that this includes events that would cause the HTTP router to
+return one of these status codes on the upstream's behalf (reset, connection failure, etc.). The
+number of consecutive gateway failures required for ejection is controlled by
+the :ref:`outlier_detection.consecutive_gateway_failure
+<config_cluster_manager_cluster_outlier_detection_consecutive_gateway_failure>` value.
+
 Success Rate
 ^^^^^^^^^^^^
 
@@ -103,7 +113,7 @@ action
 
 type
   If ``action`` is ``eject``, specifies the type of ejection that took place. Currently type can
-  be either ``5xx`` or ``SuccessRate``.
+  be one of ``5xx``, ``GatewayFailure`` or ``SuccessRate``.
 
 num_ejections
   If ``action`` is ``eject``, specifies the number of times the host has been ejected
