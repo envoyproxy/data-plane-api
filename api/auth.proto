@@ -48,76 +48,71 @@ message AuthAction {
 }
 
 service Authorization {
-	rpc Check(CheckRequest) returns (CheckResponse);
+  rpc Check(CheckRequest) returns (CheckResponse);
 }
 
 message CheckRequest {
+  // Address of the downstream source of the request.
+  Address source = 1;
 
-	// Address of the downstream source of the request.
-	Address source = 1;
+  // Address of the upstream destination of the request.
+  Address destination = 2; 
 
-	// Address of the upstream destination of the request.
-	Address destination = 2; 
+  // If the request is an HTTP request, the parameters
+  // of the HTTP request.
+  HTTPRequest http = 3;
 
-	// If the request is an HTTP request, the parameters
-	// of the HTTP request.
-	HTTPRequest http = 3;
-
-	// If the request came over a secure TLS connection, information about the connection and 
-	// downstream client.
-	TLSConnection tls = 4;
+  // If the request came over a secure TLS connection, information about the connection and 
+  // downstream client.
+  TLSConnection tls = 4;
 }
 
 message HTTPRequest {
+  // HTTP Version of the request, e.g. "1.1"
+  string version = 1;
 
-	// HTTP Version of the request, e.g. "1.1"
-	string version = 1;
+  // Method, e.g. "GET"
+  string method = 2;
 
-	// Method, e.g. "GET"
-	string method = 2;
+  // The value of the Host: header
+  string host = 3;
 
-	// The value of the Host: header
-	string host = 3;
+  // The request URI path.
+  string path = 4;
 
-	// The request URI path.
-	string path = 4;
-
-	// Additional HTTP headers and their values.
-	map<string, string> headers = 5;
+  // Additional HTTP headers and their values.
+  map<string, string> headers = 5;
 }
 
 message TLSConnection {
+  // True if the connection is encrypted with TLS.  False otherwise. 
+  bool tls_encrypted = 1;
 
-	// True if the connection is encrypted with TLS.  False otherwise. 
-	bool tls_encrypted = 1;
+  // If the client presented an X.509 certificate, it is contained here.
+  X509Cert client_cert = 2;
 
-	// If the client presented an X.509 certificate, it is contained here.
-	X509Cert client_cert = 2;
-
-	// The server certificate used to secure the connection.
-	X509Cert server_cert = 3;
+  // The server certificate used to secure the connection.
+  X509Cert server_cert = 3;
 }
 
 
 // An X.509 certificate, with any corresponding fields already decoded by Envoy included.
 message X509Cert {
+  // The raw certificate as a byte array.
+  bytes raw = 1;
 
-	// The raw certificate as a byte array.
-	bytes raw = 1;
+  // The decoded Subject string.
+  string subject = 2;
 
-	// The decoded Subject string.
-	string subject = 2;
+  // A SHA256-hash of the certificate.
+  string sha_256_hash = 3;
 
-	// A SHA256-hash of the certificate.
-	string sha_256_hash = 3;
-
-	// Decoded Subject Alternative Names on the certificate. 
-	repeated string subject_alt_names = 4;
+  // Decoded Subject Alternative Names on the certificate. 
+  repeated string subject_alt_names = 4;
 }
 
 
 message CheckResponse {
-
-	// Return OK to allow the request.  Any other response indicates the request should be denied.
-	google.rpc.Status status = 1;
+  // Return OK to allow the request.  Any other response indicates the request should be denied.
+  google.rpc.Status status = 1;
 }
