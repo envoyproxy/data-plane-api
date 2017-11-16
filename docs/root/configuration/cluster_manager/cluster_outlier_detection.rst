@@ -27,7 +27,9 @@ consecutive_5xx
 .. _config_cluster_manager_cluster_outlier_detection_consecutive_gateway_failure:
 
 consecutive_gateway_failure
-  *(optional, integer)* The number of consecutive "gateway errors" (502, 503 and 504 responses), including those raised by Envoy for connection errors, before a consecutive gateway failure ejection occurs. Defaults to 5.
+  *(optional, integer)* The number of consecutive "gateway errors" (502, 503 and 504 responses),
+  including those raised by Envoy for connection errors, before a consecutive gateway failure
+  ejection occurs. Defaults to 5.
 
 .. _config_cluster_manager_cluster_outlier_detection_interval_ms:
 
@@ -57,9 +59,9 @@ enforcing_consecutive_5xx
 .. _config_cluster_manager_cluster_outlier_detection_enforcing_consecutive_gateway_failure:
 
 enforcing_consecutive_gateway_failure
-  *(optional, integer)* The % chance that a host will be actually ejected when an outlier status is detected through
-  consecutive gateway failure. This setting can be used to disable ejection or to ramp it up slowly.
-  Defaults to 0 with 1% granularity.
+  *(optional, integer)* The % chance that a host will be actually ejected when an outlier status is
+  detected through consecutive gateway failure. This setting can be used to disable ejection or to
+  ramp it up slowly. Defaults to 0 with 1% granularity.
 
 .. _config_cluster_manager_cluster_outlier_detection_enforcing_success_rate:
 

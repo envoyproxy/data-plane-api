@@ -52,9 +52,9 @@ Consecutive Gateway Failure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If an upstream host returns some number of consecutive "gateway errors" (502, 503 or 504 status
-code), it will be ejected. Note that in this includes an event that would cause the HTTP router to
-return one on the upstream's behalf (reset, connection failure, etc.). The number of consecutive
-gateway failures required for ejection is controlled by
+code), it will be ejected. Note that this includes events that would cause the HTTP router to
+return one of these status codes on the upstream's behalf (reset, connection failure, etc.). The
+number of consecutive gateway failures required for ejection is controlled by
 the :ref:`outlier_detection.consecutive_gateway_failure
 <config_cluster_manager_cluster_outlier_detection_consecutive_gateway_failure>` value.
 
