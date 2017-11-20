@@ -346,6 +346,7 @@ message Route {
   // Decorator for matched route.
   Decorator decorator = 5;
 
+  // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   // [V2-API-DIFF] new in v2.
   AuthAction auth = 6;
@@ -526,6 +527,7 @@ message VirtualHost {
   // Indicates that the virtual host has a CORS policy.
   CorsPolicy cors = 8;
 
+  // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   // [V2-API-DIFF] new in v2.
   AuthAction auth = 9;

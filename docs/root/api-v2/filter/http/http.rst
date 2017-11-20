@@ -1,5 +1,5 @@
-Filters
-=======
+HTTP filters
+============
 
 .. CAUTION::
   This documentation subtree is a work-in-progress and does not yet contain
@@ -10,5 +10,3 @@ Filters
   :maxdepth: 2
 
   *
-  network/network
-  http/http

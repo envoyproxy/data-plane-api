@@ -28,8 +28,12 @@ bazel --batch build ${BAZEL_BUILD_OPTIONS} //api --aspects \
 PROTO_RST="
   /api/address/api/address.proto.rst
   /api/base/api/base.proto.rst
+  /api/filter/accesslog/api/filter/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
+  /api/filter/http/http_connection_manager/api/filter/http/http_connection_manager.proto.rst
   /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
+  /api/protocol/api/protocol.proto.rst
+  /api/rds/api/rds.proto.rst
 "
 
 # Dump all the generated RST so they can be added to PROTO_RST easily.

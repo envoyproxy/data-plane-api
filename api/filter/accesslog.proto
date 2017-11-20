@@ -248,11 +248,10 @@ message FileAccessLog {
   // [V2-API-DIFF] In addition to the existing format specifiers, the following
   // additional specifiers will be available:
   // %TLS_SNI_HOSTNAME%: SNI from handshake.
-  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”,
-  //     “TLSv1.2”, “TLSv1.3”.
+  // %TLS_VERSION%: Possible values include: “TLSv1”, “TLSv1.1”, “TLSv1.2”, “TLSv1.3”.
   // %TLS_CIPHER_SUITE%: Cipher suite negotiated during the TLS handshake. The
-  //     value is four hex digits defined by the IANA TLS Cipher Suite Registry,
-  //     e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // value is four hex digits defined by the IANA TLS Cipher Suite Registry,
+  // e.g. “009C” for TLS_RSA_WITH_AES_128_GCM_SHA256.
   // TODO(htuch): Document how envoy.http_connection_manager.access_log values
   // can be accessed in the format specifier.
   string format = 2;
