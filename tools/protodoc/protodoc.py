@@ -240,10 +240,14 @@ def FormatMessageAsJson(type_context, msg):
   Return:
     RST formatted pseudo-JSON string representation of message definition.
   """
-  lines = [
-      '"%s": %s' % (f.name, FormatFieldTypeAsJson(type_context, f))
-      for f in msg.field
-  ]
+  lines = []
+  for index, field in enumerate(msg.field):
+    field_type_context = type_context.Extend([2, index], field.name)
+    leading_comment, comment_annotations = field_type_context.LeadingCommentPathLookup()
+    if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+      continue
+    lines.append('"%s": %s' % (field.name, FormatFieldTypeAsJson(type_context, field)))
+
   return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
       4, lines)) + '\n  }\n\n'
 
