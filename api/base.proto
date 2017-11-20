@@ -21,7 +21,7 @@ message Locality {
   // `Availability Zone (AZ)
   // <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html>`_
   // on AWS, `Zone <https://cloud.google.com/compute/docs/regions-zones/>`_ on
-  // GCP.
+  // GCP, etc.
   string zone = 2;
 
   // When used for locality of upstream hosts, this field further splits zone
@@ -119,7 +119,6 @@ message HeaderValue {
 
   // Header value.
   //
-  // [#v2-api-diff: header values may contain access log format specifiers]
   // The same :ref:`format specifier <config_access_log_format>` as used for
   // :ref:`HTTP access logging <config_access_log>` applies here, however
   // unknown header values are replaced with the empty string instead of `-`.
