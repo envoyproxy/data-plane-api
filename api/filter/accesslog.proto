@@ -37,25 +37,21 @@ message AccessLogCommon {
 
   // Interval between the first downstream byte received and the last
   // downstream byte received (i.e. time it takes to receive a request).
-  google.protobuf.Duration time_to_last_byte = 5;
+  google.protobuf.Duration time_to_last_rx_byte = 5;
 
   // Interval between the first downstream byte received and the first upstream
   // byte received (i.e. time it takes to start receiving a response).
-  google.protobuf.Duration time_to_first_upstream_byte = 6;
+  google.protobuf.Duration time_to_first_upstream_rx_byte = 6;
 
   // Interval between the first downstream byte received and the last upstream
   // byte received (i.e. time it takes to receive a complete response).
-  google.protobuf.Duration time_to_last_upstream_byte = 7;
+  google.protobuf.Duration time_to_last_upstream_rx_byte = 7;
 
   // The (primary) upstream host that handles this exchange.
   SocketAddress upstream_host = 8;
 
   // The upstream cluster the upstream_host belongs to.
   string upstream_cluster = 9;
-
-  // The amount of time it took the upstream server to service the request,
-  // as reported by the upstream host.
-  google.protobuf.Duration upstream_service_duration = 10;
 
   // Flags indicating occurences during request/response processing.
   enum ResponseFlag {
@@ -84,7 +80,7 @@ message AccessLogCommon {
     // Request was ratelimited locally by rate limit filter.
     RATE_LIMITED = 11;
   }
-  repeated ResponseFlag response_flags = 11;
+  repeated ResponseFlag response_flags = 10;
 
   // All metadata encountered during request processing, including endpoint
   // selection.
@@ -94,7 +90,7 @@ message AccessLogCommon {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  Metadata metadata = 12;
+  Metadata metadata = 11;
 }
 
 message TLSProperties {
