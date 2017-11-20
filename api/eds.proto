@@ -83,6 +83,17 @@ message LbEndpoint {
   // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
   // weight in a locality.
   google.protobuf.UInt32Value load_balancing_weight = 4;
+
+  // Optional: the priority for this LbEndpoint.  If unspecified this will
+  // default to the highest priority (0).
+  //
+  // Under usual circumstances, Envoy will only select endpoints for the highest
+  // priority (0).  In the event all endpoints for a particular priority are
+  // unavailable/unhealthy, Envoy will fail over to selecting endpoints for the
+  // next highest priority group.
+  //
+  // Priorities should range from 0 (highest) to N (lowest) without skipping.
+  google.protobuf.UInt32Value priority = 5;
 }
 
 // All endpoints belonging to a Locality.
@@ -186,10 +197,6 @@ message LoadStatsRequest {
 message ClusterLoadAssignment {
   string cluster_name = 1;
   repeated LocalityLbEndpoints endpoints = 2;
-  // In the case where all endpoints for a particular zone/subzone are
-  // unavailable/unhealthy, additional endpoints are given out for use in case
-  // of catastrophic failure. They also have weights.
-  repeated LocalityLbEndpoints failover_endpoints = 3;
   message Policy {
     // Percentage of traffic (0-100) that should be dropped. This
     // action allows protection of upstream hosts should they unable to
