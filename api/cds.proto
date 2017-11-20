@@ -14,6 +14,8 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
+// [#protodoc-title: CDS]
+
 // Return list of all clusters this proxy will load balance to.
 service ClusterDiscoveryService {
   rpc StreamClusters(stream DiscoveryRequest)
@@ -268,10 +270,14 @@ message Cluster {
     // Specifications for subsets. For each entry, LbEndpoint.Metadata's
     // "envoy.lb" namespace is traversed and a subset is created for each unique
     // combination of key and value. For example:
-    // { "subset_selectors": [
-    //     { "keys": [ "version" ] },
-    //     { "keys": [ "stage", "hardware_type" ] }
-    // ]}
+    //
+    // .. code-block:: json
+    //
+    //   { "subset_selectors": [
+    //       { "keys": [ "version" ] },
+    //       { "keys": [ "stage", "hardware_type" ] }
+    //   ]}
+    //
     // A subset is matched when the metadata from the selected route and
     // weighted cluster contains the same keys and values as the subset's
     // metadata. The same host may appear in multiple subsets.

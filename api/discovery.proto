@@ -54,6 +54,7 @@ message DiscoveryResponse {
   string version_info = 1;
   repeated google.protobuf.Any resources = 2;
   // Canary is used to support two Envoy command line flags:
+  //
   // * --terminate-on-canary-transition-failure. When set, Envoy is able to
   //   terminate if it detects that configuration is stuck at canary. Consider
   //   this example sequence of updates:

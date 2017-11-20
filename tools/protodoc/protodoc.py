@@ -43,6 +43,11 @@ VALID_ANNOTATIONS = set([
     NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION
 ])
 
+# Template for data-plane-api URLs.
+# TODO(htuch): Add the ability to build a permalink by feeding a hash
+# to the tool or inferring from local tree (only really make sense in CI).
+DATA_PLANE_API_URL_FMT = 'https://github.com/envoyproxy/data-plane-api/blob/master/%s#L%d'
+
 
 class ProtodocError(Exception):
   """Base error class for the protodoc module."""
@@ -83,7 +88,8 @@ def ExtractAnnotations(s):
 class SourceCodeInfo(object):
   """Wrapper for SourceCodeInfo proto."""
 
-  def __init__(self, source_code_info):
+  def __init__(self, name, source_code_info):
+    self._name = name
     self._proto = source_code_info
 
   @property
@@ -115,6 +121,20 @@ class SourceCodeInfo(object):
         return ExtractAnnotations(
             StripLeadingSpace(location.leading_comments) + '\n')
     return '', []
+
+  def GithubUrl(self, path):
+    """Obtain data-plane-api Github URL by path from SourceCodeInfo.
+
+    Args:
+      path: a list of path indexes as per
+        https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
+    Returns:
+      A string with a corresponding data-plan-api GitHub Url.
+    """
+    for location in self._proto.location:
+      if location.path == path:
+        return DATA_PLANE_API_URL_FMT % (self._name, location.span[0])
+    return ''
 
 
 class TypeContext(object):
@@ -151,6 +171,9 @@ class TypeContext(object):
 
   def LeadingCommentPathLookup(self):
     return self.source_code_info.LeadingCommentPathLookup(self.path)
+
+  def GithubUrl(self):
+    return self.source_code_info.GithubUrl(self.path)
 
 
 def MapLines(f, s):
@@ -206,11 +229,12 @@ def FormatHeaderFromFile(style, file_level_comment, alt):
   Returns:
     RST formatted header, and file level comment without page title strings.
   """
+  anchor = FormatAnchor(FileCrossRefLabel(alt))
   stripped_comment, annotations = ExtractAnnotations(file_level_comment)
   if DOC_TITLE_ANNOTATION in annotations:
-    return FormatHeader(style,
-                        annotations[DOC_TITLE_ANNOTATION]), stripped_comment
-  return FormatHeader(style, alt), stripped_comment
+    return anchor + FormatHeader(
+        style, annotations[DOC_TITLE_ANNOTATION]), stripped_comment
+  return anchor + FormatHeader(style, alt), stripped_comment
 
 
 def FormatFieldTypeAsJson(type_context, field):
@@ -324,6 +348,11 @@ def FormatFieldType(type_context, field):
 def StripLeadingSpace(s):
   """Remove leading space in flat comment strings."""
   return MapLines(lambda s: s[1:], s)
+
+
+def FileCrossRefLabel(msg_name):
+  """File cross reference label."""
+  return 'envoy_api_file_%s' % msg_name
 
 
 def MessageCrossRefLabel(msg_name):
@@ -443,10 +472,12 @@ def FormatMessage(type_context, msg):
       for index, nested_enum in enumerate(msg.enum_type))
   anchor = FormatAnchor(MessageCrossRefLabel(type_context.name))
   header = FormatHeader('-', type_context.name)
+  proto_link = FormatExternalLink('[%s proto]' % type_context.name,
+                                  type_context.GithubUrl()) + '\n\n'
   leading_comment, annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
     return ''
-  return anchor + header + leading_comment + FormatMessageAsJson(
+  return anchor + header + proto_link + leading_comment + FormatMessageAsJson(
       type_context, msg) + FormatMessageAsDefinitionList(
           type_context, msg) + nested_msgs + '\n' + nested_enums
 
@@ -496,10 +527,12 @@ def FormatEnum(type_context, enum):
   """
   anchor = FormatAnchor(EnumCrossRefLabel(type_context.name))
   header = FormatHeader('-', 'Enum %s' % type_context.name)
+  proto_link = FormatExternalLink('[%s proto]' % type_context.name,
+                                  type_context.GithubUrl()) + '\n\n'
   leading_comment, annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
     return ''
-  return anchor + header + leading_comment + FormatEnumAsDefinitionList(
+  return anchor + header + proto_link + leading_comment + FormatEnumAsDefinitionList(
       type_context, enum)
 
 
@@ -514,7 +547,8 @@ def FormatProtoAsBlockComment(proto):
 
 def GenerateRst(proto_file):
   """Generate a RST representation from a FileDescriptor proto."""
-  source_code_info = SourceCodeInfo(proto_file.source_code_info)
+  source_code_info = SourceCodeInfo(proto_file.name,
+                                    proto_file.source_code_info)
   # Find the earliest detached comment, attribute it to file level.
   # Also extract file level titles if any.
   header, comment = FormatHeaderFromFile(

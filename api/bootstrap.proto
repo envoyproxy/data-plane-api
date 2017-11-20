@@ -1,3 +1,4 @@
+// [#protodoc-title: Bootstrap]
 // This proto is expected to be provided on disk or via the command-line to
 // Envoy. It provides sufficient information for Envoy to fetch the rest of
 // its configuration from either disk or management server(s).
