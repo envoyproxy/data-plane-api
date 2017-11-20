@@ -140,6 +140,8 @@ class TypeContext(object):
     self.map_typenames = {}
     # Map from a message's oneof index to the fields sharing a oneof.
     self.oneof_fields = {}
+    # Map from a message's oneof index to the "required" bool property.
+    self.oneof_required = {}
 
   def Extend(self, path, name):
     extended = copy.deepcopy(self)
@@ -349,27 +351,33 @@ def FormatAnchor(label):
   return '.. _%s:\n\n' % label
 
 
-def FormatFieldAsDefinitionListItem(type_context, field):
+def FormatFieldAsDefinitionListItem(outer_type_context, type_context, field):
   """Format a FieldDescriptorProto as RST definition list item.
 
   Args:
+    outer_type_context: contextual information for enclosing message.
     type_context: contextual information for message/enum/field.
     field: FieldDescriptorProto.
   Returns:
     RST formatted definition list item.
   """
   if field.HasField('oneof_index'):
-    oneof_comment = '\nOnly one of %s may be set.\n' % ', '.join(
-        type_context.oneof_fields[field.oneof_index])
+    oneof_template = '\nPrecisely one of %s must be set.\n' if type_context.oneof_required[
+        field.oneof_index] else '\nOnly one of %s may be set.\n'
+    oneof_comment = oneof_template % ', '.join(
+        FormatInternalLink(
+            f, FieldCrossRefLabel(outer_type_context.Extend([], f).name))
+        for f in type_context.oneof_fields[field.oneof_index])
   else:
     oneof_comment = ''
   anchor = FormatAnchor(FieldCrossRefLabel(type_context.name))
   annotations = []
   if field.options.HasExtension(validate_pb2.rules):
     rule = field.options.Extensions[validate_pb2.rules]
-    if rule.HasField('message'):
-      if rule.message.required:
-        annotations.append('*REQUIRED*')
+    if ((rule.HasField('message') and rule.message.required) or
+        (rule.HasField('string') and rule.string.min_len > 0) or
+        (rule.HasField('repeated') and rule.repeated.min_items > 0)):
+      annotations.append('*REQUIRED*')
   leading_comment, comment_annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
     return ''
@@ -389,12 +397,17 @@ def FormatMessageAsDefinitionList(type_context, msg):
     RST formatted definition list item.
   """
   type_context.oneof_fields = defaultdict(list)
+  type_context.oneof_required = defaultdict(bool)
   for field in msg.field:
     if field.HasField('oneof_index'):
       type_context.oneof_fields[field.oneof_index].append(field.name)
+  for index, oneof_decl in enumerate(msg.oneof_decl):
+    if oneof_decl.options.HasExtension(validate_pb2.required):
+      type_context.oneof_required[index] = oneof_decl.options.Extensions[
+          validate_pb2.required]
   return '\n'.join(
       FormatFieldAsDefinitionListItem(
-          type_context.Extend([2, index], field.name), field)
+          type_context, type_context.Extend([2, index], field.name), field)
       for index, field in enumerate(msg.field)) + '\n'
 
 
@@ -516,7 +529,7 @@ def GenerateRst(proto_file):
           TypeContext(source_code_info, [5, index], package_prefix + enum.name),
           enum) for index, enum in enumerate(proto_file.enum_type))
   debug_proto = FormatProtoAsBlockComment(proto_file)
-  return header + comment + msgs + enums  #+ debug_proto
+  return header + comment + msgs + enums  # + debug_proto
 
 
 if __name__ == '__main__':

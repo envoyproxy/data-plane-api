@@ -189,6 +189,7 @@ api_proto_library(
 proto_library(
     name = "api",
     deps = [
+        ":bootstrap",
         ":cds",
         ":eds",
         ":lds",
