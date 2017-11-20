@@ -10,6 +10,9 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
+import "validate/validate.proto";
+
+
 // Envoy access logs describe incoming interaction with Envoy over a fixed
 // period of time, and typically cover a single request/response exchange,
 // (e.g. HTTP), stream (e.g. over HTTP/gRPC), or proxied connection (e.g. TCP).
@@ -20,7 +23,7 @@ import "google/protobuf/wrappers.proto";
 message AccessLogCommon {
   // This field indicates the rate at which this log entry was sampled.
   // Valid range is (0.0, 1.0].
-  double sample_rate = 1;
+  double sample_rate = 1 [(validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0];
 
   // This field is the IP and port on which the request from the user was
   // received.
@@ -91,7 +94,7 @@ message AccessLogCommon {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  google.protobuf.Struct metadata = 12;
+  Metadata metadata = 12;
 }
 
 message TLSProperties {
@@ -166,7 +169,7 @@ message HTTPRequestProperties {
   google.protobuf.UInt64Value request_body_bytes = 12;
 
   // Headers configured to be logged, but not covered by a specific field.
-  repeated HeaderValue request_headers = 13;
+  map<string, string> request_headers = 13;
 }
 
 message HTTPResponseProperties {
@@ -180,7 +183,7 @@ message HTTPResponseProperties {
   google.protobuf.UInt64Value response_body_bytes = 3;
 
   // Headers configured to be logged, but not covered by a specific field.
-  repeated HeaderValue response_headers = 4;
+  map<string, string> response_headers = 4;
 }
 
 message HTTPAccessLogEntry {
