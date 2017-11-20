@@ -192,7 +192,10 @@ proto_library(
         ":cds",
         ":eds",
         ":lds",
+        ":protocol",
         ":rds",
+        "//api/filter:accesslog",
+        "//api/filter/http:http_connection_manager",
         "//api/filter/network:mongo_proxy",
     ],
 )
