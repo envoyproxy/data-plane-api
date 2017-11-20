@@ -84,7 +84,8 @@ message LbEndpoint {
   // weight in a locality.
   google.protobuf.UInt32Value load_balancing_weight = 4;
 
-  // Optional: the priority for this LbEndpoint
+  // Optional: the priority for this LbEndpoint.  If unspecified this will
+  // default to the highest priority (0).
   //
   // Under usual circumstances, Envoy will only select endpoints for the highest
   // priority (0).  In the event all endpoints for a particular priority are
