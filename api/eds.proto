@@ -75,13 +75,16 @@ message LbEndpoint {
   Metadata metadata = 3;
 
   // The optional load balancing weight of the upstream host, in the range 1 -
-  // 100. Envoy uses the load balancing weight in some of the built in load
+  // 128. Envoy uses the load balancing weight in some of the built in load
   // balancers. The load balancing weight for an endpoint is divided by the sum
   // of the weights of all endpoints in the endpoint's locality to produce a
   // percentage of traffic for the endpoint. This percentage is then further
   // weighted by the endpoint's locality's load balancing weight from
   // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
   // weight in a locality.
+  // The limit of 128 is somewhat arbitrary, but is applied due to performance
+  // concerns with the current implmenetation and can be removed when
+  // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 4;
 }
 
@@ -93,15 +96,20 @@ message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
-  // Optional: Per priority/region/zone/sub_zone weight - range 1-100. The load balancing
+  // Optional: Per priority/region/zone/sub_zone weight - range 1-128. The load balancing
   // weight for a locality is divided by the sum of the weights of all
-  // localities to produce the effective percentage of traffic for the locality.
+  // localities  at the same priority level to produce the effective percentage of traffic
+  // for the locality.
   //
   // Weights must be specified for either all localities in a given priority
   // level or none.
   //
   // If unspecified, each locality is presumed to have equal weight in a
   // cluster.
+  //
+  // The limit of 128 is somewhat arbitrary, but is applied due to performance
+  // concerns with the current implmenetation and can be removed when
+  // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 3;
 
   // Optional: the priority for this LocalityLbEndpoints.  If unspecified this will
