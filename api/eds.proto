@@ -83,7 +83,7 @@ message LbEndpoint {
   // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
   // weight in a locality.
   // The limit of 128 is somewhat arbitrary, but is applied due to performance
-  // concerns with the current implmenetation and can be removed when
+  // concerns with the current implementation and can be removed when
   // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 4;
 }
@@ -108,7 +108,7 @@ message LocalityLbEndpoints {
   // cluster.
   //
   // The limit of 128 is somewhat arbitrary, but is applied due to performance
-  // concerns with the current implmenetation and can be removed when
+  // concerns with the current implementation and can be removed when
   // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 3;
 
