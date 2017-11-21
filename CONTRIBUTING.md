@@ -79,6 +79,6 @@ produce the final documentation. The following are some general guidelines aroun
   string foo_field = 3;
   ```
 
-* Prefer italics for emphasis as backtick emphasis is somewhat jarring in our Sphinx theme.
+* Prefer *italics* for emphasis as `backtick` emphasis is somewhat jarring in our Sphinx theme.
 * All documentation is expected to use proper English grammar with proper punctuation. If you are
   not a fluent English speaker please let us know and we will help out.
