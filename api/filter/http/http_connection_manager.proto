@@ -32,6 +32,7 @@ message HttpFilter {
   // The name of the filter to instantiate. The name must match a supported
   // filter. The built-in filters are:
   //
+  // [#comment:TODO(mattklein123): Auto generate the following list]
   // * :ref:`envoy.buffer <config_http_filters_buffer>`
   // * :ref:`envoy.cors <config_http_filters_cors>`
   // * :ref:`envoy.fault <config_http_filters_fault_injection>`

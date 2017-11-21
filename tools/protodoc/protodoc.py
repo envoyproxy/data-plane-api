@@ -35,12 +35,16 @@ NOT_IMPLEMENTED_WARN_ANNOTATION = 'not-implemented-warn'
 # field.
 NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
 
+# Comment. Just used for adding text that will not go into the docs at all.
+COMMENT_ANNOTATION = 'comment'
+
 # Where v2 differs from v1..
 V2_API_DIFF_ANNOTATION = 'v2-api-diff'
 
 VALID_ANNOTATIONS = set([
     DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
-    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION
+    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION,
+    COMMENT_ANNOTATION
 ])
 
 
