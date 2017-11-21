@@ -35,12 +35,16 @@ NOT_IMPLEMENTED_WARN_ANNOTATION = 'not-implemented-warn'
 # field.
 NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
 
+# Comment. Just used for adding text that will not go into the docs at all.
+COMMENT_ANNOTATION = 'comment'
+
 # Where v2 differs from v1..
 V2_API_DIFF_ANNOTATION = 'v2-api-diff'
 
 VALID_ANNOTATIONS = set([
     DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
-    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION
+    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION,
+    COMMENT_ANNOTATION
 ])
 
 # Template for data-plane-api URLs.
@@ -264,10 +268,14 @@ def FormatMessageAsJson(type_context, msg):
   Return:
     RST formatted pseudo-JSON string representation of message definition.
   """
-  lines = [
-      '"%s": %s' % (f.name, FormatFieldTypeAsJson(type_context, f))
-      for f in msg.field
-  ]
+  lines = []
+  for index, field in enumerate(msg.field):
+    field_type_context = type_context.Extend([2, index], field.name)
+    leading_comment, comment_annotations = field_type_context.LeadingCommentPathLookup()
+    if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+      continue
+    lines.append('"%s": %s' % (field.name, FormatFieldTypeAsJson(type_context, field)))
+
   return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
       4, lines)) + '\n  }\n\n'
 
