@@ -83,20 +83,12 @@ message LbEndpoint {
   // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
   // weight in a locality.
   google.protobuf.UInt32Value load_balancing_weight = 4;
-
-  // Optional: the priority for this LbEndpoint.  If unspecified this will
-  // default to the highest priority (0).
-  //
-  // Under usual circumstances, Envoy will only select endpoints for the highest
-  // priority (0).  In the event all endpoints for a particular priority are
-  // unavailable/unhealthy, Envoy will fail over to selecting endpoints for the
-  // next highest priority group.
-  //
-  // Priorities should range from 0 (highest) to N (lowest) without skipping.
-  google.protobuf.UInt32Value priority = 5;
 }
 
-// All endpoints belonging to a Locality.
+// A group of endpoints belonging to a Locality.
+// One can have multiple LocalityLbEndpoints for a locality, but this is
+// generally only done if the different groups need to have different load
+// balancing weights or different priorities.
 message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
@@ -107,6 +99,17 @@ message LocalityLbEndpoints {
   // If unspecified, each locality is presumed to have equal weight in a
   // cluster.
   google.protobuf.UInt32Value load_balancing_weight = 3;
+
+  // Optional: the priority for this LocalityLbEndpoints.  If unspecified this will
+  // default to the highest priority (0).
+  //
+  // Under usual circumstances, Envoy will only select endpoints for the highest
+  // priority (0).  In the event all endpoints for a particular priority are
+  // unavailable/unhealthy, Envoy will fail over to selecting endpoints for the
+  // next highest priority group.
+  //
+  // Priorities should range from 0 (highest) to N (lowest) without skipping.
+  google.protobuf.UInt32Value priority = 5;
 }
 
 // Example load report from a single request:
