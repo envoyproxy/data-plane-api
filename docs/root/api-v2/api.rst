@@ -11,5 +11,15 @@ Envoy v2 API reference
   :glob:
   :maxdepth: 2
 
-  *
+  bootstrap.proto
+  lds.proto
+  cds.proto
+  eds.proto
+  health_check.proto
+  rds.proto
+  sds.proto
+  base.proto
+  address.proto
+  protocol.proto
+  discovery.proto
   filter/filter

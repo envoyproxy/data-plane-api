@@ -184,15 +184,19 @@ message HttpConnectionManager {
   enum ForwardClientCertDetails {
     // Do not send the XFCC header to the next hop. This is the default value.
     SANITIZE = 0;
+
     // When the client connection is mTLS (Mutual TLS), forward the XFCC header
     // in the request.
     FORWARD_ONLY = 1;
+
     // When the client connection is mTLS, append the client certificate
     // information to the request’s XFCC header and forward it.
     APPEND_FORWARD = 2;
+
     // When the client connection is mTLS, reset the XFCC header with the client
     // certificate information and send it to the next hop.
     SANITIZE_SET = 3;
+
     // Always forward the XFCC header in the request, regardless of whether the
     // client connection is mTLS.
     ALWAYS_FORWARD_ONLY = 4;

@@ -83,8 +83,8 @@ message RuntimeUInt32 {
   // Default value if runtime value is not available.
   uint32 default_value = 2;
 
-  // Runtime key to get value for comparision. This value is used if defined.
-  string runtime_key = 3;
+  // Runtime key to get value for comparison. This value is used if defined.
+  string runtime_key = 3 [(validate.rules).string.min_len = 1];
 }
 
 // Envoy supports :ref:`upstream priority routing
