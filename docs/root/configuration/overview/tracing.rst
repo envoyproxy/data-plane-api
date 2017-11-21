@@ -5,7 +5,7 @@ Tracing
 
 The :ref:`tracing <arch_overview_tracing>` configuration specifies global settings for the HTTP
 tracer used by Envoy. The configuration is defined on the :ref:`server's top level configuration
-<config_overview>`. Envoy may support other tracers in the future, but right now the HTTP tracer is
+<config_overview_v1>`. Envoy may support other tracers in the future, but right now the HTTP tracer is
 the only one supported.
 
 .. code-block:: json

@@ -43,8 +43,7 @@ V2_API_DIFF_ANNOTATION = 'v2-api-diff'
 
 VALID_ANNOTATIONS = set([
     DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
-    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION,
-    COMMENT_ANNOTATION
+    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION, COMMENT_ANNOTATION
 ])
 
 # Template for data-plane-api URLs.
@@ -148,14 +147,14 @@ class TypeContext(object):
   nested messages/enums.
   """
 
-  def __init__(self, source_code_info, path, name):
+  def __init__(self, source_code_info, name):
     # SourceCodeInfo as per
     # https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto.
     self.source_code_info = source_code_info
     # path: a list of path indexes as per
     #  https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
     #  Extended as nested objects are traversed.
-    self.path = path
+    self.path = []
     # Message/enum/field name. Extended as nested objects are traversed.
     self.name = name
     # Map from type name to the correct type annotation string, e.g. from
@@ -167,11 +166,68 @@ class TypeContext(object):
     # Map from a message's oneof index to the "required" bool property.
     self.oneof_required = {}
 
-  def Extend(self, path, name):
+  def _Extend(self, path, name):
     extended = copy.deepcopy(self)
     extended.path.extend(path)
-    extended.name = '%s.%s' % (self.name, name)
+    if not self.name:
+      extended.name = name
+    else:
+      extended.name = '%s.%s' % (self.name, name)
     return extended
+
+  def ExtendMessage(self, index, name):
+    """Extend type context with a message.
+
+    Args:
+      index: message index in file.
+      name: message name.
+    """
+    return self._Extend([4, index], name)
+
+  def ExtendNestedMessage(self, index, name):
+    """Extend type context with a nested message.
+
+    Args:
+      index: nested message index in message.
+      name: message name.
+    """
+    return self._Extend([3, index], name)
+
+  def ExtendField(self, index, name):
+    """Extend type context with a field.
+
+    Args:
+      index: field index in message.
+      name: field name.
+    """
+    return self._Extend([2, index], name)
+
+  def ExtendEnum(self, index, name):
+    """Extend type context with an enum.
+
+    Args:
+      index: enum index in file.
+      name: enum name.
+    """
+    return self._Extend([5, index], name)
+
+  def ExtendNestedEnum(self, index, name):
+    """Extend type context with a nested enum.
+
+    Args:
+      index: enum index in message.
+      name: enum name.
+    """
+    return self._Extend([4, index], name)
+
+  def ExtendEnumValue(self, index, name):
+    """Extend type context with an enum enum.
+
+    Args:
+      index: enum value index in enum.
+      name: value name.
+    """
+    return self._Extend([2, index], name)
 
   def LeadingCommentPathLookup(self):
     return self.source_code_info.LeadingCommentPathLookup(self.path)
@@ -270,11 +326,13 @@ def FormatMessageAsJson(type_context, msg):
   """
   lines = []
   for index, field in enumerate(msg.field):
-    field_type_context = type_context.Extend([2, index], field.name)
-    leading_comment, comment_annotations = field_type_context.LeadingCommentPathLookup()
+    field_type_context = type_context.ExtendField(index, field.name)
+    leading_comment, comment_annotations = field_type_context.LeadingCommentPathLookup(
+    )
     if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
       continue
-    lines.append('"%s": %s' % (field.name, FormatFieldTypeAsJson(type_context, field)))
+    lines.append('"%s": %s' % (field.name,
+                               FormatFieldTypeAsJson(type_context, field)))
 
   return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
       4, lines)) + '\n  }\n\n'
@@ -403,7 +461,7 @@ def FormatFieldAsDefinitionListItem(outer_type_context, type_context, field):
         field.oneof_index] else '\nOnly one of %s may be set.\n'
     oneof_comment = oneof_template % ', '.join(
         FormatInternalLink(
-            f, FieldCrossRefLabel(outer_type_context.Extend([], f).name))
+            f, FieldCrossRefLabel(outer_type_context.ExtendField(0, f).name))
         for f in type_context.oneof_fields[field.oneof_index])
   else:
     oneof_comment = ''
@@ -435,8 +493,12 @@ def FormatMessageAsDefinitionList(type_context, msg):
   """
   type_context.oneof_fields = defaultdict(list)
   type_context.oneof_required = defaultdict(bool)
-  for field in msg.field:
+  for index, field in enumerate(msg.field):
     if field.HasField('oneof_index'):
+      _, comment_annotations = type_context.ExtendField(
+          index, field.name).LeadingCommentPathLookup()
+      if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+        continue
       type_context.oneof_fields[field.oneof_index].append(field.name)
   for index, oneof_decl in enumerate(msg.oneof_decl):
     if oneof_decl.options.HasExtension(validate_pb2.required):
@@ -444,7 +506,7 @@ def FormatMessageAsDefinitionList(type_context, msg):
           validate_pb2.required]
   return '\n'.join(
       FormatFieldAsDefinitionListItem(
-          type_context, type_context.Extend([2, index], field.name), field)
+          type_context, type_context.ExtendField(index, field.name), field)
       for index, field in enumerate(msg.field)) + '\n'
 
 
@@ -472,11 +534,11 @@ def FormatMessage(type_context, msg):
   }
   nested_msgs = '\n'.join(
       FormatMessage(
-          type_context.Extend([3, index], nested_msg.name), nested_msg)
+          type_context.ExtendNestedMessage(index, nested_msg.name), nested_msg)
       for index, nested_msg in enumerate(msg.nested_type))
   nested_enums = '\n'.join(
       FormatEnum(
-          type_context.Extend([4, index], nested_enum.name), nested_enum)
+          type_context.ExtendNestedEnum(index, nested_enum.name), nested_enum)
       for index, nested_enum in enumerate(msg.enum_type))
   anchor = FormatAnchor(MessageCrossRefLabel(type_context.name))
   header = FormatHeader('-', type_context.name)
@@ -520,7 +582,7 @@ def FormatEnumAsDefinitionList(type_context, enum):
   """
   return '\n'.join(
       FormatEnumValueAsDefinitionListItem(
-          type_context.Extend([2, index], enum_value.name), enum_value)
+          type_context.ExtendEnumValue(index, enum_value.name), enum_value)
       for index, enum_value in enumerate(enum.value)) + '\n'
 
 
@@ -561,15 +623,14 @@ def GenerateRst(proto_file):
   # Also extract file level titles if any.
   header, comment = FormatHeaderFromFile(
       '=', source_code_info.file_level_comment, proto_file.name)
-  package_prefix = NormalizeFQN('.' + proto_file.package + '.')
+  package_prefix = NormalizeFQN('.' + proto_file.package + '.')[:-1]
+  package_type_context = TypeContext(source_code_info, package_prefix)
   msgs = '\n'.join(
-      FormatMessage(
-          TypeContext(source_code_info, [4, index], package_prefix + msg.name),
-          msg) for index, msg in enumerate(proto_file.message_type))
+      FormatMessage(package_type_context.ExtendMessage(index, msg.name), msg)
+      for index, msg in enumerate(proto_file.message_type))
   enums = '\n'.join(
-      FormatEnum(
-          TypeContext(source_code_info, [5, index], package_prefix + enum.name),
-          enum) for index, enum in enumerate(proto_file.enum_type))
+      FormatEnum(package_type_context.ExtendEnum(index, enum.name), enum)
+      for index, enum in enumerate(proto_file.enum_type))
   debug_proto = FormatProtoAsBlockComment(proto_file)
   return header + comment + msgs + enums  # + debug_proto
 

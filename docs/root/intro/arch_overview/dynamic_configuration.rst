@@ -12,7 +12,7 @@ of the options currently available.
 
 * Top level configuration :ref:`reference <config>`.
 * :ref:`Reference configurations <install_ref_configs>`.
-* Envoy :ref:`v2 API overview <envoy_api_overview>`.
+* Envoy :ref:`v2 API overview <config_overview_v2>`.
 
 Fully static
 ------------
@@ -34,7 +34,7 @@ SDS/EDS only
 
 The :ref:`service discovery service (SDS) API <config_cluster_manager_sds>` provides a more advanced
 mechanism by which Envoy can discover members of an upstream cluster. SDS has been renamed to Endpoint
-Discovery Service (EDS) in the :ref:`v2 API <envoy_api_overview>`. Layered on top of a static
+Discovery Service (EDS) in the :ref:`v2 API <config_overview_v2>`. Layered on top of a static
 configuration, SDS allows an Envoy deployment to circumvent the limitations of DNS (maximum records
 in a response, etc.) as well as consume more information used in load balancing and routing (e.g.,
 canary status, zone, etc.).

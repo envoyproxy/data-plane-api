@@ -1,13 +1,13 @@
-.. _envoy_api_overview:
+.. _config_overview_v2:
 
-Overview
-========
+Overview (v2 API)
+=================
 
 The Envoy v2 APIs are defined as `proto3
 <https://developers.google.com/protocol-buffers/docs/proto3>`_ `Protocol Buffers
 <https://developers.google.com/protocol-buffers/>`_ in the `data plane API
 repository <https://github.com/envoyproxy/data-plane-api/tree/master/api>`_. They evolve the
-existing v1 xDS APIs and concepts to support:
+existing :ref:`v1 xDS APIs and concepts <config_overview_v1>` to support:
 
 * Streaming delivery of xDS API updates via gRPC. This reduces resource requirements and can
   lower the update latency.

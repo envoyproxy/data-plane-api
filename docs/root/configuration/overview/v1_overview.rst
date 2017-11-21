@@ -1,7 +1,7 @@
-.. _config_overview:
+.. _config_overview_v1:
 
-Overview
-========
+Overview (v1 API)
+=================
 
 The Envoy configuration format is written in JSON and is validated against a JSON schema.  The
 schema can be found in :repo:`source/common/json/config_schemas.cc`. The main configuration for the
