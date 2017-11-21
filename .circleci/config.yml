@@ -18,6 +18,8 @@ jobs:
        - run: ci/do_ci.sh bazel.docs
        - add_ssh_keys
        - run: docs/publish.sh
+       - store_artifacts:
+           path: generated/docs
 
 workflows:
   version: 2
