@@ -11,10 +11,10 @@ message TcpProtocolOptions {
 }
 
 message Http1ProtocolOptions {
-  // Handle http requests with absolute urls in the requests. These requests
+  // Handle HTTP requests with absolute URLs in the requests. These requests
   // are generally sent by clients to forward/explicit proxies. This allows clients to configure
-  // envoy as their http proxy. In Unix, for example, this is typically done by setting the
-  // http_proxy environment variable.
+  // envoy as their HTTP proxy. In Unix, for example, this is typically done by setting the
+  // *http_proxy* environment variable.
   google.protobuf.BoolValue allow_absolute_url = 1;
 }
 

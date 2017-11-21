@@ -70,8 +70,10 @@ message HttpConnectionManager {
     // is preferred, otherwise protocol inference is used. In almost all cases,
     // this is the right option to choose for this setting.
     AUTO = 0;
+
     // The connection manager will assume that the client is speaking HTTP/1.1.
     HTTP1 = 1;
+
     // The connection manager will assume that the client is speaking HTTP/2
     // (Envoy does not require HTTP/2 to take place over TLS or to use ALPN.
     // Prior knowledge is allowed).
@@ -89,12 +91,10 @@ message HttpConnectionManager {
   oneof route_specifier {
     option (validate.required) = true;
 
-    // The connection manager’s route table will be dynamically loaded via the
-    // RDS API
+    // The connection manager’s route table will be dynamically loaded via the RDS API.
     Rds rds = 3;
 
-    // The route table for the connection manager is static and is specified in
-    // this property.
+    // The route table for the connection manager is static and is specified in this property.
     RouteConfiguration route_config = 4;
   }
 
@@ -103,9 +103,9 @@ message HttpConnectionManager {
   // processed sequentially as request events happen.
   repeated HttpFilter http_filters = 5;
 
-  // Whether the connection manager manipulates the *user-agent* and
-  // *x-envoy-downstream-service-cluster* headers. See the linked documentation
-  // for more information. Defaults to *false*.
+  // Whether the connection manager manipulates the :ref:`config_http_conn_man_headers_user-agent`
+  // and :ref:`config_http_conn_man_headers_downstream-service-cluster` headers. See the linked
+  // documentation for more information. Defaults to false.
   google.protobuf.BoolValue add_user_agent = 6;
 
   message Tracing {
@@ -138,7 +138,7 @@ message HttpConnectionManager {
   Http2ProtocolOptions http2_protocol_options = 9;
 
   // An optional override that the connection manager will write to the server
-  // header in responses. If not set, the default is envoy.
+  // header in responses. If not set, the default is *envoy*.
   string server_name = 10;
 
   // The idle timeout for connections managed by the connection manager. The
@@ -146,7 +146,7 @@ message HttpConnectionManager {
   // requests. If not set, there is no idle timeout. When the idle timeout is
   // reached the connection will be closed. If the connection is an HTTP/2
   // connection a drain sequence will occur prior to closing the connection. See
-  // *drain_timeout*.
+  // :ref:`drain_timeout <envoy_api_field_filter.http.HttpConnectionManager.drain_timeout>`.
   google.protobuf.Duration idle_timeout = 11;
 
   // The time that Envoy will wait between sending an HTTP/2 “shutdown
@@ -173,13 +173,14 @@ message HttpConnectionManager {
   // :ref:`config_http_conn_man_headers_x-envoy-external-address` for more information.
   google.protobuf.BoolValue use_remote_address = 14;
 
-  // Whether the connection manager will generate the *x-request-id* header if it
-  // does not exist. This defaults to true. Generating a random UUID4 is
-  // expensive so in high throughput scenarios where this feature is not desired
-  // it can be disabled.
+  // Whether the connection manager will generate the :ref:`x-request-id
+  // <config_http_conn_man_headers_x-request-id>` header if it does not exist. This defaults to true.
+  // Generating a random UUID4 is expensive so in high throughput scenarios where this feature is
+  // not desired it can be disabled.
   google.protobuf.BoolValue generate_request_id = 15;
 
-  // How to handle the *x-forwarded-client-cert* (XFCC) HTTP header.
+  // How to handle the :ref:`config_http_conn_man_headers_x-forwarded-client-cert` (XFCC) HTTP
+  // header.
   enum ForwardClientCertDetails {
     // Do not send the XFCC header to the next hop. This is the default value.
     SANITIZE = 0;
@@ -210,10 +211,11 @@ message HttpConnectionManager {
     google.protobuf.BoolValue san = 2;
   };
 
-  // This field is valid only when *forward_client_cert_details* is APPEND_FORWARD or
-  // SANITIZE_SET and the client connection is mTLS. It specifies the fields in
+  // This field is valid only when :ref:`forward_client_cert_details
+  // <envoy_api_field_filter.http.HttpConnectionManager.forward_client_cert_details>` is
+  // APPEND_FORWARD or SANITIZE_SET and the client connection is mTLS. It specifies the fields in
   // the client certificate to be forwarded. Note that in the
-  // *x-forwarded-client-cert* header, *Hash* is always set, and *By* is always set
-  // when the client certificate presents the SAN value.
+  // :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header, *Hash* is always set, and
+  // *By* is always set when the client certificate presents the SAN value.
   SetCurrentClientCertDetails set_current_client_cert_details = 17;
 }
