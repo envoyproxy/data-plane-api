@@ -93,9 +93,13 @@ message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
-  // Optional: Per region/zone/sub_zone weight - range 1-100. The load balancing
+  // Optional: Per priority/region/zone/sub_zone weight - range 1-100. The load balancing
   // weight for a locality is divided by the sum of the weights of all
   // localities to produce the effective percentage of traffic for the locality.
+  //
+  // Weights must be specified for either all localities in a given priority
+  // level or none.
+  //
   // If unspecified, each locality is presumed to have equal weight in a
   // cluster.
   google.protobuf.UInt32Value load_balancing_weight = 3;
