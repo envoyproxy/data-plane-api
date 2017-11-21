@@ -29,6 +29,14 @@ The following high level procedure is used to make Envoy changes that require AP
    // come back and doc for real!
    string foo_field = 3;
    ```
+
+   Additionally, [constraints](https://github.com/lyft/protoc-gen-validate/blob/master/README.md)
+   should be specified for new fields if applicable. E.g.,
+
+   ```
+   string endpoint = 2 [(validate.rules).message.required = true];
+   ```
+
 4. Next, the feature should be implemented in Envoy. New versions of data-plane-api are brought
    in via editing [this](https://github.com/envoyproxy/envoy/blob/master/bazel/repository_locations.bzl)
    file.
@@ -48,9 +56,15 @@ documentation. The documentation can be built locally in the root of this repo v
 docs/build.sh
 ```
 
+Or to use a hermetic docker container:
+
+```
+./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.docs'
+```
+
 This process builds RST documentation directly from the proto files, merges it with the static RST
-files, and then runs sphinx over the entire tree to produce the final documentation. The following
-are some general guidelines around documentation.
+files, and then runs [Sphinx](http://www.sphinx-doc.org/en/stable/rest.html) over the entire tree to
+produce the final documentation. The following are some general guidelines around documentation.
 
 * Cross link as much as possible. Sphinx is fantastic at this. Use it! See ample examples with the
   existing documentation as a guide.
@@ -65,5 +79,6 @@ are some general guidelines around documentation.
   string foo_field = 3;
   ```
 
+* Prefer italics for emphasis as backtick emphasis is somewhat jarring in our Sphinx theme.
 * All documentation is expected to use proper English grammar with proper punctuation. If you are
   not a fluent English speaker please let us know and we will help out.
