@@ -8,6 +8,7 @@ proto_library(
     name = "go_protos",
     srcs = [
         "client_ssl_auth.proto",
+        "ext_auth.proto",
         "mongo_proxy.proto",
         "rate_limit.proto",
         "redis_proxy.proto",
@@ -76,4 +77,9 @@ api_proto_library(
     name = "rate_limit",
     srcs = ["rate_limit.proto"],
     deps = ["//api:rls"],
+)
+
+api_proto_library(
+    name = "ext_auth",
+    srcs = ["ext_auth.proto"],
 )

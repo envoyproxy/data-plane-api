@@ -8,6 +8,7 @@ proto_library(
     name = "go_protos",
     srcs = [
         "buffer.proto",
+        "ext_auth.proto",
         "fault.proto",
         "health_check.proto",
         "http_connection_manager.proto",
@@ -105,4 +106,9 @@ api_proto_library(
         "//api:rds",
         "//api/filter:fault",
     ],
+)
+
+api_proto_library(
+    name = "ext_auth",
+    srcs = ["ext_auth.proto"],
 )

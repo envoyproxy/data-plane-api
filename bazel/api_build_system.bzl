@@ -20,6 +20,7 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
         deps = [_PySuffix(d) for d in deps] + [
             "@com_lyft_protoc_gen_validate//validate:validate_py",
             "@googleapis//:http_api_protos_py",
+            "@googleapis//:rpc_status_protos_py"
         ],
         visibility = ["//visibility:public"],
     )
@@ -38,6 +39,7 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
             "@com_google_protobuf//:timestamp_proto",
             "@com_google_protobuf//:wrappers_proto",
             "@googleapis//:http_api_protos_lib",
+            "@googleapis//:rpc_status_protos_lib",
             "@com_lyft_protoc_gen_validate//validate:validate_proto",
         ],
         visibility = ["//visibility:public"],
