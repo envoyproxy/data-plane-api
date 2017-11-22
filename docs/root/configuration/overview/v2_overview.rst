@@ -30,7 +30,7 @@ Bootstrap configuration
 To use the v2 API, it's necessary to supply a bootstrap configuration file. This
 provides static server configuration and configures Envoy to access :ref:`dynamic
 configuration if needed <arch_overview_dynamic_config>`. As with the v1
-JSON/YAML configuration, this is supplied on the command-line via the ``-c``
+JSON/YAML configuration, this is supplied on the command-line via the :option:`-c`
 flag, i.e.:
 
 .. code-block:: console
@@ -39,17 +39,14 @@ flag, i.e.:
 
 where the extension reflects the underlying v2 config representation.
 
-The :ref:`bootstrap configuration proto <envoy_api_file_api/bootstrap.proto>` describes
-the static config file format.
-
 The :ref:`Bootstrap <envoy_api_msg_Bootstrap>` message is the root of the
 configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
 message is the distinction between static and dynamic resouces.  Resources such
 as a :ref:`Listener <config_listeners>` or :ref:`Cluster
 <config_cluster_manager_cluster>` may be supplied either statically in
-``static_resources`` or have an xDS service such as :ref:`LDS
+:ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have an xDS service such as :ref:`LDS
 <config_overview_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
-``dynamic_resources``.
+:ref:`dynamic_resources <envoy_api_field_Bootstrap.dynamic_resources>`.
 
 Example
 -------
@@ -148,7 +145,7 @@ on 127.0.0.3:5678 is provided below:
       lb_policy: ROUND_ROBIN
       hosts: [{ socket_address: { address: 127.0.0.3, port_value: 5678 }}]
 
-Notice above that ``xds_cluster`` is defined to point Envoy at the management server. Even in
+Notice above that *xds_cluster* is defined to point Envoy at the management server. Even in
 an otherwise completely dynamic configurations, some static resources need to be defined to point Envoy at
 its xDS management server(s).
 
@@ -282,44 +279,95 @@ The management server could respond to EDS requests with:
               address: 127.0.0.2
               port_value: 1234
 
-Management server endpoints
----------------------------
+Management server
+-----------------
 
-A v2 xDS management server will implement the below endpoints. In both streaming gRPC and
+A v2 xDS management server will implement the below endpoints as required for
+gRPC and/or REST serving.  In both streaming gRPC and
 REST-JSON cases, a :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>` is sent and a
-:ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>` received.
+:ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>` received following the
+`xDS protocol <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_.
+
+gRPC streaming endpoints
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. http:post:: /envoy.api.v2.ClusterDiscoveryService/StreamClusters
 
-v2 CDS gRPC bidirectional stream.
-
-.. http:post:: /v2/discovery:clusters
-
-v2 CDS REST-JSON request-response.
+See `cds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_.
 
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
-v2 EDS gRPC bidirectional stream.
-
-.. http:post:: /v2/discovery:endpoints
-
-v2 EDS REST-JSON request-response.
+See `eds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_.
 
 .. http:post:: /envoy.api.v2.ListenerDiscoveryService/StreamListeners
 
-v2 LDS gRPC bidirectional stream.
-
-.. http:post:: /v2/discovery:listeners
-
-v2 LDS REST-JSON request-response.
+See `lds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_.
 
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
-v2 RDS gRPC bidirectional stream.
+See `rds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_.
+
+REST endpoints
+^^^^^^^^^^^^^^
+
+.. http:post:: /v2/discovery:clusters
+
+See `cds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_.
+
+.. http:post:: /v2/discovery:endpoints
+
+See `eds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_.
+
+.. http:post:: /v2/discovery:listeners
+
+See `lds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_.
 
 .. http:post:: /v2/discovery:routes
 
-v2 RDS REST-JSON request-response.
+See `rds.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_.
+
+Aggregated Discovery Service
+----------------------------
+
+While fundamentally Envoy employs an eventual consistency model, ADS provides an
+opportunity to sequence API update pushes and ensure affinity of a single
+management server for an Envoy node for API updates. ADS allows one or more APIs
+to be delivered on a single gRPC bidi stream by the management server, and
+within an API to have all resources aggregated onto a single stream. Without
+this, some APIs such as RDS and EDS may require the management of multiple
+streams and connections to distinct management servers.
+
+ADS will allow for hitless updates of configuration by appropriate sequencing.
+For example, suppose *foo.com* was mappped to cluster *X*. We wish to change the
+mapping in the route table to point *foo.com* at cluster *Y*. In order to do
+this, a CDS/EDS update must first be delivered containing both clusters *X* and
+*Y*.
+
+Without ADS, the CDS/EDS/RDS streams may point at distinct management servers,
+or when on the same management server at distinct gRPC streams/connections that
+require coordination. The EDS resource requests may be split across two distinct
+streams, one for *X* and one for *Y*. ADS allows these to be coalesced to a
+single stream to a single management server, avoiding the need for distributed
+synchronization to correctly sequence the update. With ADS, the management
+server would deliver the CDS, EDS and then RDS updates on a single stream.
+
+ADS is only available for gRPC streaming (not REST) and is described more fully
+in `this
+<https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#aggregated-discovery-services-ads>`_
+document.  The gRPC endpoint is:
+
+.. http:post:: /envoy.api.v2.AggregatedDiscoveryService/StreamAggregatedResources
+
+See `discovery.proto
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto#L15>`_.
 
 Status
 ------
