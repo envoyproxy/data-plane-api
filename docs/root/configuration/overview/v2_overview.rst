@@ -288,28 +288,79 @@ REST-JSON cases, a :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>` is s
 :ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>` received following the
 `xDS protocol <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_.
 
+.. _v2_grpc_streaming_endpoints:
+
 gRPC streaming endpoints
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. http:post:: /envoy.api.v2.ClusterDiscoveryService/StreamClusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    cds_config:
+      api_config_source:
+        api_type: GRPC
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`dynamic_resources
+<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    eds_config:
+      api_config_source:
+        api_type: GRPC
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`eds_cluster_config
+<envoy_api_field_Cluster.eds_cluster_config>` field of the :ref:`Cluster
+<envoy_api_msg_Cluster>` config.
 
 .. http:post:: /envoy.api.v2.ListenerDiscoveryService/StreamListeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    lds_config:
+      api_config_source:
+        api_type: GRPC
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`dynamic_resources
+<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    route_config_name: some_route_name
+    config_source:
+      api_config_source:
+        api_type: GRPC
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`rds
+<envoy_api_field_filter.http.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
+<envoy_api_msg_filter.http.HttpConnectionManager>` config.
 
 REST endpoints
 ^^^^^^^^^^^^^^
@@ -317,22 +368,71 @@ REST endpoints
 .. http:post:: /v2/discovery:clusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    cds_config:
+      api_config_source:
+        api_type: REST
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`dynamic_resources
+<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_Bootstrap>` config.
 
 .. http:post:: /v2/discovery:endpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    eds_config:
+      api_config_source:
+        api_type: REST
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`eds_cluster_config
+<envoy_api_field_Cluster.eds_cluster_config>` field of the :ref:`Cluster
+<envoy_api_msg_Cluster>` config.
 
 .. http:post:: /v2/discovery:listeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    lds_config:
+      api_config_source:
+        api_type: REST
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`dynamic_resources
+<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_Bootstrap>` config.
 
 .. http:post:: /v2/discovery:routes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    route_config_name: some_route_name
+    config_source:
+      api_config_source:
+        api_type: REST
+        cluster_name: [some_xds_cluster]
+
+is set in the :ref:`rds
+<envoy_api_field_filter.http.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
+<envoy_api_msg_filter.http.HttpConnectionManager>` config.
 
 Aggregated Discovery Service
 ----------------------------
@@ -367,7 +467,37 @@ document.  The gRPC endpoint is:
 .. http:post:: /envoy.api.v2.AggregatedDiscoveryService/StreamAggregatedResources
 
 See `discovery.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto#L15>`_.
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto#L15>`_
+for the service definition. This is used by Envoy as a client when
+
+.. code-block:: yaml
+
+    ads_config:
+      api_type: GRPC
+      cluster_name: [some_ads_cluster]
+
+is set in the :ref:`dynamic_resources
+<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_Bootstrap>` config.
+
+When this is set, any of the configuration sources :ref:`above <v2_grpc_streaming_endpoints>` can
+be set to use the ADS channel. For example, a LDS config could be changed from
+
+.. code-block:: yaml
+
+    lds_config:
+      api_config_source:
+        api_type: REST
+        cluster_name: [some_xds_cluster]
+
+to
+
+.. code-block:: yaml
+
+    lds_config: {ads: {}}
+
+with the effect that the LDS stream will be directed to *some_ads_cluster* over
+the shared ADS channel.
 
 Status
 ------
