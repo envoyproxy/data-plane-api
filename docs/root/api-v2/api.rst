@@ -1,3 +1,5 @@
+.. _envoy_api_reference:
+
 Envoy v2 API reference
 ======================
 

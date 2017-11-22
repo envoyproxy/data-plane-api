@@ -6,7 +6,7 @@ Version history
 
 * macOS is :repo:`now supported </bazel#quick-start-bazel-build-for-developers>`. (A few features
   are missing such as hot restart and original destination routing).
-* YAML is now directly supported for :ref:`config files <config_overview>`.
+* YAML is now directly supported for :ref:`config files <config_overview_v1>`.
 * Added :ref:`/routes <operations_admin_interface_routes>` admin endpoint.
 * End-to-end flow control is now supported for TCP proxy, HTTP/1, and HTTP/2. HTTP flow control
   that includes filter buffering is incomplete and will be implemented in 1.5.0.
@@ -103,7 +103,7 @@ Version history
 * The :ref:`MongoDB filter <config_network_filters_mongo_proxy>` now emits logs that are fully valid
   JSON.
 * The CPU profiler output path is now :ref:`configurable <config_admin>`.
-* A :ref:`watchdog system <config_overview>` has been added that can kill the server if a deadlock
+* A :ref:`watchdog system <config_overview_v1>` has been added that can kill the server if a deadlock
   is detected.
 * A :ref:`route table checking tool <install_tools_route_table_check_tool>` has been added that can
   be used to test route tables before use.
@@ -124,7 +124,7 @@ Version history
 
 * :ref:`Cluster discovery service (CDS) API <config_cluster_manager_cds>`.
 * :ref:`Outlier detection <arch_overview_outlier_detection>` (passive health checking).
-* Envoy configuration is now checked against a :ref:`JSON schema <config_overview>`.
+* Envoy configuration is now checked against a :ref:`JSON schema <config_overview_v1>`.
 * :ref:`Ring hash <arch_overview_load_balancing_types>` consistent load balancer, as well as HTTP
   consistent hash routing :ref:`based on a policy <config_http_conn_man_route_table_hash_policy>`.
 * Vastly :ref:`enhanced global rate limit configuration <arch_overview_rate_limit>` via the HTTP

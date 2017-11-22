@@ -12,6 +12,7 @@ of the options currently available.
 
 * Top level configuration :ref:`reference <config>`.
 * :ref:`Reference configurations <install_ref_configs>`.
+* Envoy :ref:`v2 API overview <config_overview_v2>`.
 
 Fully static
 ------------
@@ -28,19 +29,20 @@ graceful hot restarts.
 
 .. _arch_overview_dynamic_config_sds:
 
-SDS only
---------
+SDS/EDS only
+------------
 
 The :ref:`service discovery service (SDS) API <config_cluster_manager_sds>` provides a more advanced
-mechanism by which Envoy can discover members of an upstream cluster. Layered on top of a static
+mechanism by which Envoy can discover members of an upstream cluster. SDS has been renamed to Endpoint
+Discovery Service (EDS) in the :ref:`v2 API <config_overview_v2>`. Layered on top of a static
 configuration, SDS allows an Envoy deployment to circumvent the limitations of DNS (maximum records
 in a response, etc.) as well as consume more information used in load balancing and routing (e.g.,
 canary status, zone, etc.).
 
 .. _arch_overview_dynamic_config_cds:
 
-SDS and CDS
------------
+SDS/EDS and CDS
+---------------
 
 The :ref:`cluster discovery service (CDS) API <config_cluster_manager_cds>` layers on a mechanism by
 which Envoy can discover upstream clusters used during routing. Envoy will gracefully add, update,
@@ -50,28 +52,28 @@ Typically, when doing HTTP routing along with CDS (but without route discovery s
 implementors will make use of the router's ability to forward requests to a cluster specified in an
 :ref:`HTTP request header <config_http_conn_man_route_table_route_cluster_header>`.
 
-Although it is possible to use CDS without SDS by specifying fully static clusters, we recommend
-still using the SDS API for clusters specified via CDS. Internally, when a cluster definition is
+Although it is possible to use CDS without SDS/EDS by specifying fully static clusters, we recommend
+still using the SDS/EDS API for clusters specified via CDS. Internally, when a cluster definition is
 updated, the operation is graceful. However, all existing connection pools will be drained and
-reconnected. SDS does not suffer from this limitation. When hosts are added and removed via SDS,
+reconnected. SDS/EDS does not suffer from this limitation. When hosts are added and removed via SDS/EDS,
 the existing hosts in the cluster are unaffected.
 
 .. _arch_overview_dynamic_config_rds:
 
-SDS, CDS, and RDS
------------------
+SDS/EDS, CDS, and RDS
+---------------------
 
 The :ref:`route discovery service (RDS) API <config_http_conn_man_rds>` layers on a mechanism by which
 Envoy can discover the entire route configuration for an HTTP connection manager filter at runtime.
 The route configuration will be gracefully swapped in without affecting existing requests. This API,
-when used alongside SDS and CDS, allows implementors to build a complex routing topology
+when used alongside SDS/EDS and CDS, allows implementors to build a complex routing topology
 (:ref:`traffic shifting <config_http_conn_man_route_table_traffic_splitting>`, blue/green
 deployment, etc.) that will not require any Envoy restarts other than to obtain a new Envoy binary.
 
 .. _arch_overview_dynamic_config_lds:
 
-SDS, CDS, RDS, and LDS
-----------------------
+SDS/EDS, CDS, RDS, and LDS
+--------------------------
 
 The :ref:`listener discovery service (LDS) <config_overview_lds>` layers on a mechanism by which
 Envoy can discover entire listeners at runtime. This includes all filter stacks, up to and including

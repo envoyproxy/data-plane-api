@@ -1,3 +1,4 @@
+// [#protodoc-title: LDS]
 // This is heavily derived from
 // https://lyft.github.io/envoy/docs/configuration/listeners/listeners.html
 // The v2 gRPC API differences are tagged with [V2-API-DIFF].
@@ -51,7 +52,7 @@ message Filter {
 // listener [V2-API-DIFF].
 message FilterChainMatch {
   // If non-empty, the SNI domains to consider. May contain a wildcard prefix,
-  // e.g. *.example.com.
+  // e.g. ``*.example.com``.
   repeated string sni_domains = 1;
 
   // If non-empty, an IP address and prefix length to match addresses when the
@@ -117,6 +118,7 @@ message Listener {
   // A list of filter chains to consider for this listener. The FilterChain with
   // the most specific FilterChainMatch criteria is used on a connection. The
   // algorithm works as follows:
+  //
   // 1. If SNI information is presented at connection time, only the
   //    FilterChains matching the SNI are considered. Otherwise, only
   //    FilterChains with no SNI domains are considered.

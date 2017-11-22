@@ -22,4 +22,4 @@ batched and periodically flushed to improve performance. Histograms are written 
 received. Note: what were previously referred to as timers have become histograms as the only
 difference between the two representations was the units.
 
-Statistics :ref:`configuration <config_overview>`.
+Statistics :ref:`configuration <config_overview_v1>`.

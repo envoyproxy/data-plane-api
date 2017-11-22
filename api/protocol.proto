@@ -1,3 +1,5 @@
+// [#protodoc-title: Protocol options]
+
 syntax = "proto3";
 
 package envoy.api.v2;

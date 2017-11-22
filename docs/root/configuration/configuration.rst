@@ -7,7 +7,8 @@ Configuration reference
   :maxdepth: 2
   :includehidden:
 
-  overview/overview
+  overview/v1_overview
+  overview/v2_overview
   listeners/listeners
   network_filters/network_filters
   http_conn_man/http_conn_man
