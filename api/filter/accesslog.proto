@@ -16,10 +16,14 @@ import "validate/validate.proto";
 // Envoy access logs describe incoming interaction with Envoy over a fixed
 // period of time, and typically cover a single request/response exchange,
 // (e.g. HTTP), stream (e.g. over HTTP/gRPC), or proxied connection (e.g. TCP).
+// Access logs contain fields defined in protocol-specific protobuf messages.
+//
 // Except where explicitly declared otherwise, all fields describe
 // *downstream* interaction between Envoy and a connected client.
-// Fields describing *upstream* interaction will explicitly include `upstream`
+// Fields describing *upstream* interaction will explicitly include ``upstream``
 // in their name.
+
+// Defines fields that are shared by all Envoy access logs.
 message AccessLogCommon {
   // This field indicates the rate at which this log entry was sampled.
   // Valid range is (0.0, 1.0].
@@ -29,7 +33,7 @@ message AccessLogCommon {
   // received.
   SocketAddress destination_host = 2;
 
-  // Properties of the TLS connection, if used
+  // If the connection is secure, this field will contain TLS properties.
   TLSProperties tls_properties = 3;
 
   // The time that Envoy started servicing this request
@@ -50,37 +54,11 @@ message AccessLogCommon {
   // The (primary) upstream host that handles this exchange.
   SocketAddress upstream_host = 8;
 
-  // The upstream cluster the upstream_host belongs to.
+  // The upstream cluster that ``upstream_host`` belongs to.
   string upstream_cluster = 9;
 
   // Flags indicating occurences during request/response processing.
-  enum ResponseFlag {
-    // Local server healthcheck failed.
-    FAILED_LOCAL_HEALTHCHECK = 0;
-    // No healthy upstream.
-    NO_HEALTHY_UPSTREAM = 1;
-    // Request timeout on upstream.
-    UPSTREAM_REQUEST_TIMEOUT = 2;
-    // Local codec level reset was sent on the stream.
-    LOCAL_RESET = 3;
-    // Remote codec level reset was received on the stream.
-    UPSTREAM_REMOTE_RESET = 4;
-    // Local reset by a connection pool due to an initial connection failure.
-    UPSTREAM_CONNECTION_FAILURE = 5;
-    // If the stream was locally reset due to connection termination.
-    UPSTREAM_CONNECTION_TERMINATION = 6;
-    // The stream was reset because of a resource overflow.
-    UPSTREAM_OVERFLOW = 7;
-    // No route found for a given request.
-    NO_ROUTE_FOUND = 8;
-    // Request was delayed before proxying.
-    DELAY_INJECTED = 9;
-    // Abort with error code was injected.
-    FAULT_INJECTED = 10;
-    // Request was ratelimited locally by rate limit filter.
-    RATE_LIMITED = 11;
-  }
-  repeated ResponseFlag response_flags = 10;
+  ResponseFlags response_flags = 10;
 
   // All metadata encountered during request processing, including endpoint
   // selection.
@@ -93,8 +71,47 @@ message AccessLogCommon {
   Metadata metadata = 11;
 }
 
+// Flags indicating occurences during request/response processing.
+message ResponseFlags {
+  // Indicates local server healthcheck failed.
+  bool failed_local_healthcheck = 1;
+
+  // Indicates there was no healthy upstream.
+  bool no_healthy_upstream = 2;
+
+  // Indicates an there was an upstream request timeout.
+  bool upstream_request_timeout = 3;
+
+  // Indicates local codec level reset was sent on the stream.
+  bool local_reset = 4;
+
+  // Indicates remote codec level reset was received on the stream.
+  bool upstream_remote_reset = 5;
+
+  // Indicates there was a local reset by a connection pool due to an initial connection failure.
+  bool upstream_connection_failure = 6;
+
+  // Indicates the stream was reset locally due to connection termination.
+  bool upstream_connection_termination = 7;
+
+  // Indicates the stream was reset because of a resource overflow.
+  bool upstream_overflow = 8;
+
+  // Indicates no route was found for the request.
+  bool no_route_found = 9;
+
+  // Indicates that the request was delayed before proxying.
+  bool delay_injected = 10;
+
+  // Indicates that the request was aborted with an injected error code.
+  bool fault_injected = 11;
+
+  // Indicates that the request was rate-limited locally.
+  bool rate_limited = 12;
+}
+
+// Properties of a negotiated TLS connection.
 message TLSProperties {
-  // TLS Version
   enum TLSVersion {
     VERSION_UNSPECIFIED = 0;
     TLSv1 = 1;
@@ -102,11 +119,12 @@ message TLSProperties {
     TLSv1_2 = 3;
     TLSv1_3 = 4;
   }
+  // Version of TLS that was negotiated.
   TLSVersion tls_version = 1;
 
-  // TLS Cipher suite negotiated during TLS handshake.
-  // The value is four hex digits defined by the IANA TLS Cipher Suite Registry,
-  // eg, "009C" for TLS_RSA_WITH_AES_128_GCM_SHA256.
+  // TLS cipher suite negotiated during handshake. The value is a
+  // four-digit hex code defined by the IANA TLS Cipher Suite Registry
+  // (e.g. ``009C`` for ``TLS_RSA_WITH_AES_128_GCM_SHA256``).
   //
   // Here it is expressed as an integer.
   google.protobuf.UInt32Value tls_cipher_suite = 2;
@@ -121,64 +139,74 @@ message TCPAccessLogEntry {
 }
 
 message HTTPRequestProperties {
-  // The request method (RFC 7231/2616)
+  // The request method (RFC 7231/2616).
   RequestMethod request_method = 1;
 
-  // The scheme portion of the incoming request URI
+  // The scheme portion of the incoming request URI.
   string scheme = 2;
 
-  // HTTP2 :authority header value or HTTP1.1 Host header value
+  // HTTP/2 ``:authority`` or HTTP/1.1 ``Host`` header value.
   string authority = 3;
 
   // The port of the incoming request URI
-  // (Unused currently, as port is composed onto authority)
+  // (unused currently, as port is composed onto authority).
   google.protobuf.UInt32Value port = 4;
 
-  // The path portion from the incoming request URI
+  // The path portion from the incoming request URI.
   string path = 5;
 
-  // User agent as sent by client HTTP
+  // Value of the ``User-Agent`` request header.
   string user_agent = 6;
 
-  // Referer header as sent by client HTTP
-  // (Referer is spelled to match the HTTP spec, not English).
+  // Value of the ``Referer`` request header.
   string referer = 7;
 
-  // X-Forwarded-For request header
+  // Value of the ``X-Forwarded-For`` request header.
   string forwarded_for = 8;
 
-  // X-Request-Id request header
+  // Value of the ``X-Request-Id`` request header
   //
   // This header is used by Envoy to uniquely identify a request.
   // It will be generated for all external requests and internal requests that
-  // do not already have a request ID.  So this field can be guaranteed to exist
-  // and be unique for request tracing purposes.
+  // do not already have a request ID.
   string request_id = 9;
 
-  // Original Path from the X-Envoy-Original-Path header.
+  // Value of the ``X-Envoy-Original-Path`` request header.
   string original_path = 10;
 
-  // Size of the HTTP request headers in bytes
-  google.protobuf.UInt64Value request_headers_bytes = 11;
+  // Size of the HTTP request headers in bytes.
+  //
+  // This value is captured from the OSI layer 7 perspective, i.e. it does not
+  // include overhead from framing or encoding at other networking layers.
+  uint64 request_headers_bytes = 11;
 
-  // Size of the HTTP request body in bytes
-  google.protobuf.UInt64Value request_body_bytes = 12;
+  // Size of the HTTP request body in bytes.
+  //
+  // This value is captured from the OSI layer 7 perspective, i.e. it does not
+  // include overhead from framing or encoding at other networking layers.
+  uint64 request_body_bytes = 12;
 
-  // Headers configured to be logged, but not covered by a specific field.
+  // Map of additional headers that have been configured to be logged.
   map<string, string> request_headers = 13;
 }
 
 message HTTPResponseProperties {
-  // The HTTP response code returned.
+  // The HTTP response code returned by Envoy.
   google.protobuf.UInt32Value response_code = 1;
 
-  // Size of the HTTP response headers in bytes
-  google.protobuf.UInt64Value response_headers_bytes = 2;
+  // Size of the HTTP response headers in bytes.
+  //
+  // This value is captured from the OSI layer 7 perspective, i.e. it does not
+  // include overhead from framing or encoding at other networking layers.
+  uint64 response_headers_bytes = 2;
 
-  // Size of the HTTP response body in bytes
-  google.protobuf.UInt64Value response_body_bytes = 3;
+  // Size of the HTTP response body in bytes.
+  //
+  // This value is captured from the OSI layer 7 perspective, i.e. it does not
+  // include overhead from framing or encoding at other networking layers.
+  uint64 response_body_bytes = 3;
 
-  // Headers configured to be logged, but not covered by a specific field.
+  // Map of additional headers configured to be logged.
   map<string, string> response_headers = 4;
 }
 
