@@ -83,5 +83,5 @@ produce the final documentation. The following are some general guidelines aroun
 * All documentation is expected to use proper English grammar with proper punctuation. If you are
   not a fluent English speaker please let us know and we will help out.
 * Tag messages/enum/files with `[#proto-draft:]` or `[#proto-experimental:]` to
-  reflect their (API
-  status)[https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#status].
+  reflect their [API
+  status](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#status).

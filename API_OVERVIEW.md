@@ -23,7 +23,7 @@ Version 2 of the Envoy API evolves existing APIs and introduces new APIs to:
 ## Status
 
 See
-[here](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#status]
+[here](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#status)
 for the current status of the v2 APIs.
 
 See
