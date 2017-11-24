@@ -499,10 +499,35 @@ to
 with the effect that the LDS stream will be directed to *some_ads_cluster* over
 the shared ADS channel.
 
+.. _config_overview_v2_status:
+
 Status
 ------
 
-The current API status is tracked `here
-<https://github.com/envoyproxy/data-plane-api#status>`_. All features described
-in the :ref:`v2 API reference <envoy_api_reference>` are implemented unless
-otherwise noted.
+All features described in the :ref:`v2 API reference <envoy_api_reference>` are
+implemented unless otherwise noted. In the v2 API reference and the
+`v2 API repository
+<https://github.com/envoyproxy/data-plane-api/tree/master/api>`_, all protos are
+*frozen* unless they are tagged as *draft* or *experimental*. Here, *frozen*
+means that we will not break wire format compatibility.
+
+*Frozen* protos may be further extended, e.g. by adding new fields, in a
+manner that does not break `backwards compatibility
+<https://developers.google.com/protocol-buffers/docs/overview#how-do-they-work>`_.
+Fields in the above protos may be later deprecated, subject to the
+`breaking change policy
+<https://github.com/envoyproxy/envoy/blob/master//CONTRIBUTING.md#breaking-change-policy>`_,
+when their related functionality is no longer required. While frozen APIs
+have their wire format compatibility preserved, we reserve the right to change
+proto namespaces, file locations and nesting relationships, which may cause
+breaking code changes. We will aim to minimize the churn here.
+
+Protos tagged *draft*, meaning that they are near finalized, are
+likely to be at least partially implemented in Envoy but may have wire format
+breaking changes made prior to freezing.
+
+Protos tagged *experimental*, have the same caveats as draft protos
+and may have have major changes made prior to Envoy implementation and freezing.
+
+The current open v2 API issues are tracked `here
+<https://github.com/envoyproxy/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22>`_.

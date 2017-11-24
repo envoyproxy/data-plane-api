@@ -1,5 +1,7 @@
 // [#protodoc-title: SDS]
 
+// [#proto-experimental:]
+
 syntax = "proto3";
 
 package envoy.api.v2;

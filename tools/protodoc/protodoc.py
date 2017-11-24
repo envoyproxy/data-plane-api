@@ -38,12 +38,21 @@ NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
 # Comment. Just used for adding text that will not go into the docs at all.
 COMMENT_ANNOTATION = 'comment'
 
+# proto compatibility status.
+PROTO_DRAFT_ANNOTATION = 'proto-draft'
+PROTO_EXPERIMENTAL_ANNOTATION = 'proto-experimental'
+
 # Where v2 differs from v1..
 V2_API_DIFF_ANNOTATION = 'v2-api-diff'
 
 VALID_ANNOTATIONS = set([
-    DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
-    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION, COMMENT_ANNOTATION
+    DOC_TITLE_ANNOTATION,
+    NOT_IMPLEMENTED_WARN_ANNOTATION,
+    NOT_IMPLEMENTED_HIDE_ANNOTATION,
+    V2_API_DIFF_ANNOTATION,
+    COMMENT_ANNOTATION,
+    PROTO_DRAFT_ANNOTATION,
+    PROTO_EXPERIMENTAL_ANNOTATION,
 ])
 
 # Template for data-plane-api URLs.
@@ -56,23 +65,34 @@ class ProtodocError(Exception):
   """Base error class for the protodoc module."""
 
 
-def FormatCommentWithAnnotations(s, annotations):
+def FormatCommentWithAnnotations(s, annotations, type_name):
   if NOT_IMPLEMENTED_WARN_ANNOTATION in annotations:
-    s += '\n.. WARNING::\n  ' + 'Not implemented yet\n'
+    s += '\n.. WARNING::\n  Not implemented yet\n'
   if V2_API_DIFF_ANNOTATION in annotations:
     s += '\n.. NOTE::\n  v2 API difference: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
+  if type_name == 'message' or type_name == 'enum':
+    if PROTO_DRAFT_ANNOTATION in annotations:
+      s += (
+          '\n.. WARNING::\n This ' + type_name + ' type has :ref:`draft status '
+          '<config_overview_v2_status>`.\n')
+    if PROTO_EXPERIMENTAL_ANNOTATION in annotations:
+      s += ('\n.. WARNING::\n This ' + type_name +
+            ' type has :ref:`experimental status '
+            '<config_overview_v2_status>`.\n')
   return s
 
 
-def ExtractAnnotations(s):
+def ExtractAnnotations(s, inherited_annotations=None, type_name='file'):
   """Extract annotations from a given comment string.
 
   Args:
     s: string that may contains annotations.
+    inherited_annotations: annotation map from file-level inherited annotations
+      (or None) if this is a file-level comment.
   Returns:
     Pair of string with with annotations stripped and annotation map.
   """
-  annotations = {}
+  annotations = inherited_annotations or {}
   stripped_lines = []
   for line in s.split('\n'):
     groups = re.findall(ANNOTATION_REGEX, line)
@@ -84,8 +104,8 @@ def ExtractAnnotations(s):
       if annotation not in VALID_ANNOTATIONS:
         raise ProtodocError('Unknown annotation: %s' % annotation)
       annotations[group[0]] = group[1].lstrip()
-  return FormatCommentWithAnnotations('\n'.join(stripped_lines),
-                                      annotations), annotations
+  return FormatCommentWithAnnotations('\n'.join(stripped_lines), annotations,
+                                      type_name), annotations
 
 
 class SourceCodeInfo(object):
@@ -108,12 +128,13 @@ class SourceCodeInfo(object):
         earliest_detached_comment = location.span[0]
     return comment
 
-  def LeadingCommentPathLookup(self, path):
+  def LeadingCommentPathLookup(self, path, type_name):
     """Lookup leading comment by path in SourceCodeInfo.
 
     Args:
       path: a list of path indexes as per
         https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
+      type_name: name of type the comment belongs to.
     Returns:
       Pair of attached leading comment and Annotation objects, where there is a
       leading comment
@@ -121,8 +142,10 @@ class SourceCodeInfo(object):
     """
     for location in self._proto.location:
       if location.path == path:
+        _, file_annotations = ExtractAnnotations(self.file_level_comment)
         return ExtractAnnotations(
-            StripLeadingSpace(location.leading_comments) + '\n')
+            StripLeadingSpace(location.leading_comments) + '\n',
+            file_annotations, type_name)
     return '', []
 
   def GithubUrl(self, path):
@@ -165,10 +188,12 @@ class TypeContext(object):
     self.oneof_fields = {}
     # Map from a message's oneof index to the "required" bool property.
     self.oneof_required = {}
+    self.type_name = 'file'
 
-  def _Extend(self, path, name):
+  def _Extend(self, path, type_name, name):
     extended = copy.deepcopy(self)
     extended.path.extend(path)
+    extended.type_name = type_name
     if not self.name:
       extended.name = name
     else:
@@ -182,7 +207,7 @@ class TypeContext(object):
       index: message index in file.
       name: message name.
     """
-    return self._Extend([4, index], name)
+    return self._Extend([4, index], 'message', name)
 
   def ExtendNestedMessage(self, index, name):
     """Extend type context with a nested message.
@@ -191,7 +216,7 @@ class TypeContext(object):
       index: nested message index in message.
       name: message name.
     """
-    return self._Extend([3, index], name)
+    return self._Extend([3, index], 'message', name)
 
   def ExtendField(self, index, name):
     """Extend type context with a field.
@@ -200,7 +225,7 @@ class TypeContext(object):
       index: field index in message.
       name: field name.
     """
-    return self._Extend([2, index], name)
+    return self._Extend([2, index], 'field', name)
 
   def ExtendEnum(self, index, name):
     """Extend type context with an enum.
@@ -209,7 +234,7 @@ class TypeContext(object):
       index: enum index in file.
       name: enum name.
     """
-    return self._Extend([5, index], name)
+    return self._Extend([5, index], 'enum', name)
 
   def ExtendNestedEnum(self, index, name):
     """Extend type context with a nested enum.
@@ -218,7 +243,7 @@ class TypeContext(object):
       index: enum index in message.
       name: enum name.
     """
-    return self._Extend([4, index], name)
+    return self._Extend([4, index], 'enum', name)
 
   def ExtendEnumValue(self, index, name):
     """Extend type context with an enum enum.
@@ -227,10 +252,11 @@ class TypeContext(object):
       index: enum value index in enum.
       name: value name.
     """
-    return self._Extend([2, index], name)
+    return self._Extend([2, index], 'enum_value', name)
 
   def LeadingCommentPathLookup(self):
-    return self.source_code_info.LeadingCommentPathLookup(self.path)
+    return self.source_code_info.LeadingCommentPathLookup(
+        self.path, self.type_name)
 
   def GithubUrl(self):
     return self.source_code_info.GithubUrl(self.path)

@@ -22,20 +22,12 @@ Version 2 of the Envoy API evolves existing APIs and introduces new APIs to:
 
 ## Status
 
-The LDS/CDS/EDS/RDS APIs are now frozen and will maintain backwards
-compatibility according to standard proto rules (e.g. new fields will not reuse
-tags, field types will not change, fields will not be renumbered, etc.).
+See
+[here](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#status]
+for the current status of the v2 APIs.
 
-The remainder of the API (ADS, HDS, RLS, SDS, filter fragments other than HTTP
-connection manager, the bootstrap proto) are draft work-in-progress. Input is
-welcome via issue filing. Small, localized PRs are also welcome, but any major
-changes or suggestions should be coordinated in a tracking issue with the
-authors.
-
-Implementation work has begun and work items are tracked at
-[here](https://github.com/envoyproxy/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
-
-See [here](https://github.com/envoyproxy/data-plane-api/blob/master/CONTRIBUTING.md#api-changes)
+See
+[here](https://github.com/envoyproxy/data-plane-api/blob/master/CONTRIBUTING.md#api-changes)
 for the v2 API change process.
 
 ## Principles
