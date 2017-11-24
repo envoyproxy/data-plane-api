@@ -17,7 +17,7 @@ from google.protobuf import struct_pb2
 from google.protobuf import text_format
 
 from api import lds_pb2
-from api.filter.http import http_connection_manager_pb2
+from api.filter.network import http_connection_manager_pb2
 
 
 # Convert an arbitrary proto object to its Struct proto representation.
