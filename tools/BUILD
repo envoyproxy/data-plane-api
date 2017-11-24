@@ -7,7 +7,7 @@ py_binary(
     visibility = ["//visibility:public"],
     deps = [
         "//api:lds_py",
-        "//api/filter/http:http_connection_manager_py",
+        "//api/filter/network:http_connection_manager_py",
     ],
 )
 
