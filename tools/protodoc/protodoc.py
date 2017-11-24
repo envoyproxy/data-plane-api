@@ -39,8 +39,7 @@ NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
 COMMENT_ANNOTATION = 'comment'
 
 # proto compatibility status.
-PROTO_DRAFT_ANNOTATION = 'proto-draft'
-PROTO_EXPERIMENTAL_ANNOTATION = 'proto-experimental'
+PROTO_STATUS_ANNOTATION = 'proto-status'
 
 # Where v2 differs from v1..
 V2_API_DIFF_ANNOTATION = 'v2-api-diff'
@@ -51,8 +50,7 @@ VALID_ANNOTATIONS = set([
     NOT_IMPLEMENTED_HIDE_ANNOTATION,
     V2_API_DIFF_ANNOTATION,
     COMMENT_ANNOTATION,
-    PROTO_DRAFT_ANNOTATION,
-    PROTO_EXPERIMENTAL_ANNOTATION,
+    PROTO_STATUS_ANNOTATION,
 ])
 
 # Template for data-plane-api URLs.
@@ -71,14 +69,13 @@ def FormatCommentWithAnnotations(s, annotations, type_name):
   if V2_API_DIFF_ANNOTATION in annotations:
     s += '\n.. NOTE::\n  v2 API difference: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
   if type_name == 'message' or type_name == 'enum':
-    if PROTO_DRAFT_ANNOTATION in annotations:
-      s += (
-          '\n.. WARNING::\n This ' + type_name + ' type has :ref:`draft status '
-          '<config_overview_v2_status>`.\n')
-    if PROTO_EXPERIMENTAL_ANNOTATION in annotations:
-      s += ('\n.. WARNING::\n This ' + type_name +
-            ' type has :ref:`experimental status '
-            '<config_overview_v2_status>`.\n')
+    if PROTO_STATUS_ANNOTATION in annotations:
+      status = annotations[PROTO_STATUS_ANNOTATION]
+      if status not in ['frozen', 'draft', 'experimental']:
+        raise ProtodocError('Unknown proto status: %s' % status)
+      if status == 'draft' or status == 'experimental':
+        s += ('\n.. WARNING::\n This %s type has :ref:`%s '
+              '<config_overview_v2_status>`.\n' % (type_name, status))
   return s
 
 

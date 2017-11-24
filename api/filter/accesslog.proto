@@ -9,7 +9,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-// [#proto-experimental:]
+// [#proto-status: experimental]
 message AccessLogEntry {
   // The HTTP request method (RFC 7231/2616)
   RequestMethod request_method = 1;
@@ -270,7 +270,7 @@ message AccessLogServiceConfig {
   string cluster_name = 2;
 }
 
-// [#proto-experimental:]
+// [#proto-status: experimental]
 // Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
 // access logs without ever expecting a response.
 message StreamAccessLogsMessage {

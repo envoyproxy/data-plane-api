@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-// [#proto-experimental:]
+// [#proto-status: experimental]
 
 package envoy.api.v2.filter.http;
 

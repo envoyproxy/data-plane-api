@@ -1,7 +1,5 @@
 // [#protodoc-title: SDS]
 
-// [#proto-experimental:]
-
 syntax = "proto3";
 
 package envoy.api.v2;
@@ -151,6 +149,7 @@ message DownstreamTlsContext {
   }
 }
 
+// [#proto-status: experimental]
 message SdsSecretConfig {
   // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
   // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
@@ -159,6 +158,7 @@ message SdsSecretConfig {
   ConfigSource sds_config = 2;
 }
 
+// [#proto-status: experimental]
 message Secret {
   // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
   string name = 1;

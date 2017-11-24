@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-// [#proto-draft:]
+// [#proto-status: draft]
 
 package envoy.api.v2;
 
