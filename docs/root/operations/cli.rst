@@ -8,7 +8,25 @@ following are the command line options that Envoy supports.
 
 .. option:: -c <path string>, --config-path <path string>
 
-  *(required)* The path to the :ref:`JSON configuration file <config>`.
+  *(required)* The path to the v1 or v2 :ref:`JSON/YAML/proto3 configuration
+  file <config>`. This will be parsed as a :ref:`v2 bootstrap configuration file
+  <config_overview_v2_bootstrap>` and on failure, subject to
+  :option:`--v2-config-only`, will be considered as a :ref:`v1 JSON
+  configuration file <config_overview_v1>`. For v2 configuration files, valid
+  extensions are ``.json``, ``.yaml``, ``.pb`` and ``.pb_text``, which indicate
+  JSON, YAML, `binary proto3
+  <https://developers.google.com/protocol-buffers/docs/encoding>`_ and `text
+  proto3
+  <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format>`_
+  formats respectively.
+
+.. option:: --v2-config-only
+
+  *(optional)* This flag determines whether the configuration file should only
+  be parsed as a :ref:`v2 bootstrap configuration file
+  <config_overview_v2_bootstrap>`.  If false (default), when a v2 bootstrap
+  config parse fails, a second attempt to parse the config as a :ref:`v1 JSON
+  configuration file <config_overview_v1>` will be made.
 
 .. option:: --mode <string>
 

@@ -24,6 +24,8 @@ existing :ref:`v1 xDS APIs and concepts <config_overview_v1>` to support:
 See the `xDS protocol description <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_ for 
 further details on aspects of v2 message exchange between Envoy and the management server.
 
+.. _config_overview_v2_bootstrap:
+
 Bootstrap configuration
 -----------------------
 
@@ -35,9 +37,12 @@ flag, i.e.:
 
 .. code-block:: console
 
-  ./envoy -c <path to config>.{json,yaml,pb,pb_text}
+  ./envoy -c <path to config>.{json,yaml,pb,pb_text} --v2-config-only
 
-where the extension reflects the underlying v2 config representation.
+where the extension reflects the underlying v2 config representation. The
+:option:`--v2-config-only` flag is not strictly required as Envoy will attempt
+to autodetect the config file version, but this option provides an enhanced
+debug experience when configuration parsing fails.
 
 The :ref:`Bootstrap <envoy_api_msg_Bootstrap>` message is the root of the
 configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
