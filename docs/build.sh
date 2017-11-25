@@ -38,7 +38,7 @@ PROTO_RST="
   /api/sds/api/sds.proto.rst
   /api/filter/accesslog/api/filter/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
-  /api/filter/http/http_connection_manager/api/filter/http/http_connection_manager.proto.rst
+  /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst
   /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
   /api/protocol/api/protocol.proto.rst
   /api/rds/api/rds.proto.rst
