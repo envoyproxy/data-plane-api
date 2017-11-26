@@ -143,6 +143,7 @@ on 127.0.0.3:5678 is provided below:
       connect_timeout: 0.25s
       type: STATIC
       lb_policy: ROUND_ROBIN
+      http2_protocol_options: {}
       hosts: [{ socket_address: { address: 127.0.0.3, port_value: 5678 }}]
 
 Notice above that *xds_cluster* is defined to point Envoy at the management server. Even in
@@ -185,7 +186,7 @@ below:
     access_log_path: /tmp/admin_access.log
     address:
       socket_address: { address: 127.0.0.1, port_value: 9901 }
-  
+
   dynamic_resources:
     lds_config:
       api_config_source:
@@ -202,6 +203,7 @@ below:
       connect_timeout: 0.25s
       type: STATIC
       lb_policy: ROUND_ROBIN
+      http2_protocol_options: {}
       hosts: [{ socket_address: { address: 127.0.0.3, port_value: 5678 }}]
 
 The management server could respond to LDS requests with:
