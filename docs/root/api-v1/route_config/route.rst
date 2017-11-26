@@ -203,7 +203,7 @@ request_headers_to_add
       {"key": "header2", "value": "value2"}
     ]
 
-  For more information see the docuementation on :ref:`custom request headers
+  For more information see the documentation on :ref:`custom request headers
   <config_http_conn_man_headers_custom_request_headers>`.
 
 :ref:`opaque_config <config_http_conn_man_route_table_opaque_config>`

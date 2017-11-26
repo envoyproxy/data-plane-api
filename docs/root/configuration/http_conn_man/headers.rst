@@ -292,9 +292,9 @@ Envoy additionally supports adding dynamic values to the request headers. Suppor
 are:
 
 %CLIENT_IP%
-   The original client IP which is already added by envoy as a
+   The original client IP which is already added by Envoy as a
    :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
 
 %PROTOCOL%
-    The original protocol which is already added by envoy as a
+    The original protocol which is already added by Envoy as a
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.

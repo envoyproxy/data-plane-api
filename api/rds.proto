@@ -110,7 +110,7 @@ message RouteMatch {
   // gradual manner without full code/config deploys. Refer to the
   // :ref:`traffic shifting <config_http_conn_man_route_table_traffic_splitting_shift>` docs
   // for additional documentation.
-  RuntimeUInt32 runtime = 5 [(validate.rules).uint32.lte = 100];
+  RuntimeUInt32 runtime = 5;
 
   // Specifies a set of headers that the route should match on. The router will
   // check the request’s headers against all the specified headers in the route
@@ -194,10 +194,13 @@ message RouteAction {
   }
 
   // Specifies the timeout for the route. If not specified, the default is 15s.
-  // Note that this timeout includes all retries. See also
-  // :ref:`config_http_filters_router_x-envoy-upstream-rq-timeout-ms`,
-  // :ref:`config_http_filters_router_x-envoy-upstream-rq-per-try-timeout-ms`, and the
-  // :ref:`retry overview <arch_overview_http_routing_retry>`.
+  //
+  // .. note::
+  //
+  //   This timeout includes all retries. See also
+  //   :ref:`config_http_filters_router_x-envoy-upstream-rq-timeout-ms`,
+  //   :ref:`config_http_filters_router_x-envoy-upstream-rq-per-try-timeout-ms`, and the
+  //   :ref:`retry overview <arch_overview_http_routing_retry>`.
   google.protobuf.Duration timeout = 8;
 
   message RetryPolicy {
@@ -215,11 +218,13 @@ message RouteAction {
     // The same conditions documented for
     // :ref:`config_http_filters_router_x-envoy-upstream-rq-per-try-timeout-ms` apply.
     //
-    // **Note:** If left unspecified, Envoy will use the global
-    // :ref:`route timeout <envoy_api_field_RouteAction.timeout>` for the request.
-    // Consequently, when using a :ref:`5xx <config_http_filters_router_x-envoy-retry-on>` based
-    // retry policy, a request that times out will not be retried as the total timeout budget
-    // would have been exhausted.
+    // .. note::
+    //
+    //   If left unspecified, Envoy will use the global
+    //   :ref:`route timeout <envoy_api_field_RouteAction.timeout>` for the request.
+    //   Consequently, when using a :ref:`5xx <config_http_filters_router_x-envoy-retry-on>` based
+    //   retry policy, a request that times out will not be retried as the total timeout budget
+    //   would have been exhausted.
     google.protobuf.Duration per_try_timeout = 3;
   }
 
@@ -352,7 +357,7 @@ message RouteAction {
   //   proxying between the client and the upstream server. Hence, an upstream
   //   server that rejects the WebSocket upgrade request is also responsible for
   //   closing the associated connection. Until then, Envoy will continue to
-  //   sproxy data from the client to the upstream server.
+  //   proxy data from the client to the upstream server.
   //
   //   Redirects, timeouts and retries are not supported on routes where websocket upgrades are
   //   allowed.
@@ -393,10 +398,13 @@ message RedirectAction {
 
 message Decorator {
   // The operation name associated with the request matched to this route. If tracing is
-  // enabled, this information will be used as the span name reported for this request. NOTE: For
-  // ingress (inbound) requests, or egress (outbound) responses, this value may be overridden by the
-  // :ref:`x-envoy-decorator-operation <config_http_filters_router_x-envoy-decorator-operation>`
-  // header.
+  // enabled, this information will be used as the span name reported for this request.
+  //
+  // .. note::
+  //
+  //   For ingress (inbound) requests, or egress (outbound) responses, this value may be overridden
+  //   by the :ref:`x-envoy-decorator-operation
+  //   <config_http_filters_router_x-envoy-decorator-operation>` header.
   string operation = 1 [(validate.rules).string.min_len = 1];
 }
 
@@ -445,13 +453,13 @@ message Route {
 // * The regex */rides/\d+* matches the path */rides/123*
 // * The regex */rides/\d+* does not match the path */rides/123/456*
 //
-// Documentation for :ref:`virtual cluser statistics <config_http_filters_router_stats>`.
+// Documentation for :ref:`virtual cluster statistics <config_http_filters_router_stats>`.
 //
 // .. note::
 //
-//  Virtual clusters are a useful tool, but we do not recommend setting up a virtual cluster for
-//  every application endpoint. This is both not easily maintainable as well as the matching and
-//  statistics output are not free.
+//    Virtual clusters are a useful tool, but we do not recommend setting up a virtual cluster for
+//    every application endpoint. This is both not easily maintainable and as well the matching and
+//    statistics output are not free.
 message VirtualCluster {
   // Specifies a regex pattern to use for matching requests. The entire path of the request
   // must match the regex. The regex grammar used is defined `here
@@ -472,7 +480,10 @@ message RateLimit {
   // Refers to the stage set in the filter. The rate limit configuration only
   // applies to filters with the same stage number. The default stage number is
   // 0.
-  // NOTE: The filter supports a range of 0 - 10 inclusively for stage numbers.
+  //
+  // .. note::
+  //
+  //   The filter supports a range of 0 - 10 inclusively for stage numbers.
   google.protobuf.UInt32Value stage = 1;
 
   // The key to be set in runtime to disable this rate limit configuration.
@@ -599,12 +610,16 @@ message VirtualHost {
 
   // A list of domains (host/authority header) that will be matched to this
   // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
-  // “*-bar.foo.com”. Note that the wildcard will not match the empty string.
-  // e.g. “*-bar.foo.com” will match “baz-bar.foo.com” but not “-bar.foo.com”.
-  // Additionally, a special entry “*” is allowed which will match any
-  // host/authority header. Only a single virtual host in the entire route
-  // configuration can match on “*”. A domain must be unique across all virtual
-  // hosts or the config will fail to load.
+  // “*-bar.foo.com”.
+  //
+  // .. note::
+  //
+  //   The wildcard will not match the empty string.
+  //   e.g. “*-bar.foo.com” will match “baz-bar.foo.com” but not “-bar.foo.com”.
+  //   Additionally, a special entry “*” is allowed which will match any
+  //   host/authority header. Only a single virtual host in the entire route
+  //   configuration can match on “*”. A domain must be unique across all virtual
+  //   hosts or the config will fail to load.
   repeated string domains = 2 [(validate.rules).repeated.min_items = 1];
 
   // The list of routes that will be matched, in order, for incoming requests.
