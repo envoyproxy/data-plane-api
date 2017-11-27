@@ -1,10 +1,10 @@
 .. _config_http_conn_man_route_table:
 
-Route configuration
-===================
+HTTP Route configuration
+========================
 
-* Routing :ref:`architecture overview <arch_overview_http_routing>`.
-* HTTP :ref:`router filter <config_http_filters_router>`.
+* Routing :ref:`architecture overview <arch_overview_http_routing>`
+* HTTP :ref:`router filter <config_http_filters_router>`
 
 .. code-block:: json
 
@@ -76,8 +76,8 @@ request_headers_to_add
       {"key": "header2", "value": "value2"}
     ]
 
-  *Note:* In the presence of duplicate header keys,
-  :ref:`precendence rules <config_http_conn_man_route_table_route_add_req_headers>` apply.
+  For more information see the documentation on :ref:`custom request headers
+  <config_http_conn_man_headers_custom_request_headers>`.
 
 .. toctree::
   :hidden:
@@ -86,5 +86,3 @@ request_headers_to_add
   route
   vcluster
   rate_limits
-  route_matching
-  traffic_splitting

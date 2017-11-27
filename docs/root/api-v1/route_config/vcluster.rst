@@ -44,4 +44,4 @@ method
     * The regex */rides/\d+* matches the path */rides/123*
     * The regex */rides/\d+* does not match the path */rides/123/456*
 
-Documentation for :ref:`virtual cluser statistics <config_http_filters_router_stats>`.
+Documentation for :ref:`virtual cluster statistics <config_http_filters_router_stats>`.

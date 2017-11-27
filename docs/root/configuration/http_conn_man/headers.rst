@@ -274,3 +274,27 @@ The *x-b3-flags* HTTP header is used by the Zipkin tracer in Envoy.
 The encode one or more options. For example, Debug is encoded as
 ``X-B3-Flags: 1``. See more on zipkin tracing
 `here <https://github.com/openzipkin/b3-propagation>`.
+
+.. _config_http_conn_man_headers_custom_request_headers:
+
+Custom request headers
+----------------------
+
+Custom request headers can be added to a request that matches a specific route at the route,
+virtual host, and global route configuration level. See the relevant
+:ref:`v1 <config_http_conn_man_route_table>` and :ref:`v2 <envoy_api_msg_RouteConfiguration>` API
+documentation.
+
+**Note:** Headers are appended to requests in the following order: route level headers, virtual host
+level headers and finally global level headers.
+
+Envoy additionally supports adding dynamic values to the request headers. Supported dynamic values
+are:
+
+%CLIENT_IP%
+   The original client IP which is already added by Envoy as a
+   :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
+
+%PROTOCOL%
+    The original protocol which is already added by Envoy as a
+    :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.

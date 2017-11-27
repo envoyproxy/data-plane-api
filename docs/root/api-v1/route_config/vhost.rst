@@ -40,7 +40,7 @@ domains
   *(required, array)* The list of routes that will be matched, in order, for incoming requests.
   The first route that matches will be used.
 
-:ref:`cors <config_http_filters_cors>`
+:ref:`cors <config_http_conn_man_route_table_cors>`
   *(optional, object)* Specifies the virtual host's CORS policy.
 
 .. _config_http_conn_man_route_table_vhost_require_ssl:
@@ -80,5 +80,5 @@ request_headers_to_add
       {"key": "header2", "value": "value2"}
     ]
 
-  *Note:* In the presence of duplicate header keys,
-  :ref:`precendence rules <config_http_conn_man_route_table_route_add_req_headers>` apply.
+  For more information see the documentation on :ref:`custom request headers
+  <config_http_conn_man_headers_custom_request_headers>`.
