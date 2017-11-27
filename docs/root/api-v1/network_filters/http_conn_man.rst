@@ -1,4 +1,4 @@
-.. _config_http_filters_http_conn_man_v1:
+.. _config_network_filters_http_conn_man_v1:
 
 HTTP connection manager
 =======================

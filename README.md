@@ -11,6 +11,7 @@ This allows us to keep all of our documentation next to the configuration and AP
 
 # Further reading
 
-* [API overview](API_OVERVIEW.md)
-* [XDS protocol overview](XDS_PROTOCOL.md)
+* [API overview for developers](API_OVERVIEW.md)
+* [API overview for users](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#)
+* [xDS protocol overview](XDS_PROTOCOL.md)
 * [Contributing guide](CONTRIBUTING.md)

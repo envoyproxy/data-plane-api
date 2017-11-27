@@ -1,18 +1,11 @@
-# Envoy v2 JSON REST and gRPC APIs
+# Envoy v2 APIs for developers
 
 ## Goals
 
-This repository contains the draft v2 JSON REST and gRPC
-[Envoy](https://github.com/envoyproxy/envoy/) APIs. Envoy today has a number of JSON
-REST APIs through which it may discover and have updated its runtime
-configuration from some management server. These are:
+This repository contains both the implemented and draft v2 JSON REST and gRPC
+[Envoy](https://github.com/envoyproxy/envoy/) APIs.
 
-* [Cluster Discovery Service (CDS)](https://www.envoyproxy.io/docs/envoy/latest/configuration/cluster_manager/cds.html)
-* [Rate Limit Service (RLS)](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/rate_limit.html)
-* [Route Discovery Service (RDS)](https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/rds.html)
-* [Service Discovery Service (SDS)](https://www.envoyproxy.io/docs/envoy/latest/configuration/cluster_manager/sds_api.html)
-
-Version 2 of the Envoy API will evolve existing APIs and introduce new APIs to:
+Version 2 of the Envoy API evolves existing APIs and introduces new APIs to:
 
 * Allow for more advanced load balancing through load and resource utilization reporting to management servers.
 * Improve N^2 health check scalability issues by optionally offloading health checking to other Envoy instances.
@@ -29,24 +22,13 @@ Version 2 of the Envoy API will evolve existing APIs and introduce new APIs to:
 
 ## Status
 
-The LDS/CDS/EDS/RDS APIs are now frozen and will maintain backwards
-compatibility according to standard proto rules (e.g. new fields will not reuse
-tags, field types will not change, fields will not be renumbered, etc.).
+See
+[here](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#status)
+for the current status of the v2 APIs.
 
-The remainder of the API (ADS, HDS, RLS, SDS, filter fragments other than HTTP
-connection manager, the bootstrap proto) are draft work-in-progress. Input is
-welcome via issue filing. Small, localized PRs are also welcome, but any major
-changes or suggestions should be coordinated in a tracking issue with the
-authors.
-
-Implementation work has begun and work items are tracked at
-[here](https://github.com/envoyproxy/envoy/issues?q=is%3Aopen+is%3Aissue+label%3A%22v2+API%22).
-
-New features that correspond to the v2 API are initially tracked in this
-repository. When they are agreed upon and the related PRs are merged, they
-should be closed out and a corresponding issue created in
-https://github.com/envoyproxy/envoy/ and tagged with `v2 API`. A reference to the
-closed issue should also be included.
+See
+[here](https://github.com/envoyproxy/data-plane-api/blob/master/CONTRIBUTING.md#api-changes)
+for the v2 API change process.
 
 ## Principles
 
@@ -92,9 +74,8 @@ closed issue should also be included.
 
 * [Wrapped](https://github.com/google/protobuf/blob/master/src/google/protobuf/wrappers.proto)
   protobuf fields should be used for all non-string [scalar
-  types](https://developers.google.com/protocol-buffers/docs/proto3#scalar), to
-  support non-zero default values. While only some fields require wrapping, for
-  consistency we prefer to have all non-string scalar fields wrapped.
+  types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
+  where non-zero default values are needed.
 
 ## APIs
 
@@ -117,29 +98,8 @@ In addition to the above APIs, an aggregation API will be provided to allow for
 fine grained control over the sequencing of API updates across discovery
 services:
 
-* [Aggregated Discovery Service (ADS)](api/discovery.proto). While fundamentally Envoy
-  employs an eventual consistency model, ADS provides an opportunity to sequence
-  API update pushes and ensure affinity of a single management server for an
-  Envoy node for API updates. ADS allows one or more APIs to be delivered on a
-  single gRPC bidi stream by the management server, and within an API to have all
-  resources aggregated onto a single stream. Without this, some APIs such as RDS
-  and EDS may require the management of multiple streams and connections to
-  distinct management servers.
-
-  ADS will allow for hitless updates of configuration by appropriate sequencing.
-  For example, suppose *foo.com* was mappped to cluster *X*. We wish to change
-  the mapping in the route table to point *foo.com* at cluster *Y*. In order to
-  do this, a CDS/EDS update must first be delivered containing both clusters *X*
-  and *Y*.
-
-  Without ADS, the CDS/EDS/RDS streams may point at distinct management servers,
-  or when on the same management server at distinct gRPC streams/connections
-  that require coordination. The EDS resource requests may be split across two
-  distinct streams, one for *X* and one for *Y*. ADS allows these to be
-  coalesced to a single stream to a single management server, avoiding the need
-  for distributed synchronization to correctly sequence the update. With ADS,
-  the management server would deliver the CDS, EDS and then RDS updates on a
-  single stream.
+* [Aggregated Discovery Service (ADS)](api/discovery.proto). See 
+  the [ADS overview](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service).
 
 A protocol description for the xDS APIs is provided [here](XDS_PROTOCOL.md).
 

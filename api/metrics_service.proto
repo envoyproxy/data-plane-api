@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+// [#proto-status: draft]
+
 package envoy.api.v2;
 
 import "api/base.proto";

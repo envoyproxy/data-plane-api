@@ -13,6 +13,7 @@ import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 
 
+// [#proto-status: draft]
 // Envoy access logs describe incoming interaction with Envoy over a fixed
 // period of time, and typically cover a single request/response exchange,
 // (e.g. HTTP), stream (e.g. over HTTP/gRPC), or proxied connection (e.g. TCP).
@@ -71,6 +72,7 @@ message AccessLogCommon {
   Metadata metadata = 11;
 }
 
+// [#proto-status: draft]
 // Flags indicating occurences during request/response processing.
 message ResponseFlags {
   // Indicates local server healthcheck failed.
@@ -110,6 +112,7 @@ message ResponseFlags {
   bool rate_limited = 12;
 }
 
+// [#proto-status: draft]
 // Properties of a negotiated TLS connection.
 message TLSProperties {
   enum TLSVersion {
@@ -133,11 +136,13 @@ message TLSProperties {
   string tls_sni_hostname = 3;
 }
 
+// [#proto-status: draft]
 message TCPAccessLogEntry {
   // Common properties shared by all Envoy access logs.
   AccessLogCommon common_properties = 1;
 }
 
+// [#proto-status: draft]
 message HTTPRequestProperties {
   // The request method (RFC 7231/2616).
   RequestMethod request_method = 1;
@@ -190,6 +195,7 @@ message HTTPRequestProperties {
   map<string, string> request_headers = 13;
 }
 
+// [#proto-status: draft]
 message HTTPResponseProperties {
   // The HTTP response code returned by Envoy.
   google.protobuf.UInt32Value response_code = 1;
@@ -210,6 +216,7 @@ message HTTPResponseProperties {
   map<string, string> response_headers = 4;
 }
 
+// [#proto-status: draft]
 message HTTPAccessLogEntry {
   // Common properties shared by all Envoy access logs.
   AccessLogCommon common_properties = 1;
@@ -330,6 +337,7 @@ message AccessLogServiceConfig {
   string cluster_name = 2;
 }
 
+// [#proto-status: experimental]
 // Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
 // access logs without ever expecting a response.
 message StreamAccessLogsMessage {
