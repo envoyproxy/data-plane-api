@@ -94,13 +94,6 @@ upstream.weight_enabled
 
 .. _config_cluster_manager_cluster_runtime_ring_hash:
 
-Ring hash load balancing
-------------------------
-
-upstream.ring_hash.min_ring_size
-  The minimum size of the hash ring for the :ref:`ring hash load balancer
-  <arch_overview_load_balancing_types>`. The default is 1024.
-
 .. _config_cluster_manager_cluster_runtime_zone_routing:
 
 Zone aware load balancing
