@@ -5,3 +5,4 @@ HTTP filters
   :glob:
   :maxdepth: 2
 
+  *

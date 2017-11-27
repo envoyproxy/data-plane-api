@@ -6,6 +6,8 @@ import "api/base.proto";
 
 import "google/protobuf/any.proto";
 
+// [#protodoc-title: Common discovery API components]
+
 // See https://github.com/lyft/envoy-api#apis for a description of the role of
 // ADS and how it is intended to be used by a management server. ADS requests
 // have the same structure as their singleton xDS counterparts, but can

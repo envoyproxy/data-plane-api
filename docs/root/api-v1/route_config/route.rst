@@ -66,7 +66,7 @@ regex
     * The regex */b[io]t* does not match the path */bite*
     * The regex */b[io]t* does not match the path */bit/bot*
 
-:ref:`cors <config_http_filters_cors>`
+:ref:`cors <config_http_conn_man_route_table_cors>`
   *(optional, object)* Specifies the route's CORS policy.
 
 .. _config_http_conn_man_route_table_route_cluster:
@@ -192,8 +192,19 @@ priority
   happen if all the headers in the route are present in the request with the same values (or based
   on presence if the ``value`` field is not in the config).
 
-:ref:`request_headers_to_add <config_http_conn_man_route_table_route_add_req_headers>`
-  *(optional, array)* Specifies a set of headers that will be added to requests matching this route.
+request_headers_to_add
+  *(optional, array)* Specifies a list of HTTP headers that should be added to each
+  request handled by this virtual host. Headers are specified in the following form:
+
+  .. code-block:: json
+
+    [
+      {"key": "header1", "value": "value1"},
+      {"key": "header2", "value": "value2"}
+    ]
+
+  For more information see the documentation on :ref:`custom request headers
+  <config_http_conn_man_headers_custom_request_headers>`.
 
 :ref:`opaque_config <config_http_conn_man_route_table_opaque_config>`
   *(optional, array)* Specifies a set of optional route configuration values that can be accessed by filters.
@@ -226,7 +237,7 @@ Runtime
 -------
 
 A :ref:`runtime <arch_overview_runtime>` route configuration can be used to roll out route changes
-in a gradual manner without full code/config deploys. Refer to
+in a gradual manner without full code/config deploys. Refer to the
 :ref:`traffic shifting <config_http_conn_man_route_table_traffic_splitting_shift>` docs
 for additional documentation.
 
@@ -266,17 +277,17 @@ HTTP retry :ref:`architecture overview <arch_overview_http_routing_retry>`.
   }
 
 retry_on
-  *(required, string)* specifies the conditions under which retry takes place. These are the same
+  *(required, string)* Specifies the conditions under which retry takes place. These are the same
   conditions documented for :ref:`config_http_filters_router_x-envoy-retry-on` and
   :ref:`config_http_filters_router_x-envoy-retry-grpc-on`.
 
 num_retries
-  *(optional, integer)* specifies the allowed number of retries. This parameter is optional and
+  *(optional, integer)* Specifies the allowed number of retries. This parameter is optional and
   defaults to 1. These are the same conditions documented for
   :ref:`config_http_filters_router_x-envoy-max-retries`.
 
 per_try_timeout_ms
-  *(optional, integer)* specifies a non-zero timeout per retry attempt. This parameter is optional.
+  *(optional, integer)* Specifies a non-zero timeout per retry attempt. This parameter is optional.
   The same conditions documented for
   :ref:`config_http_filters_router_x-envoy-upstream-rq-per-try-timeout-ms` apply.
 
@@ -401,7 +412,7 @@ clusters
   weight
     *(required, integer)* An integer between 0-100. When a request matches the route,
     the choice of an upstream cluster is determined by its weight. The sum of
-    weights across all entries in the ``clusters`` array must add up to 100.
+    weights across all entries in the *clusters* array must add up to 100.
 
 runtime_key_prefix
   *(optional, string)* Specifies the runtime key prefix that should be used to construct the runtime
@@ -454,44 +465,6 @@ operation
   (inbound) requests, or egress (outbound) responses, this value may be overridden by the
   :ref:`x-envoy-decorator-operation <config_http_filters_router_x-envoy-decorator-operation>` header.
 
-.. _config_http_conn_man_route_table_route_add_req_headers:
-
-Adding custom request headers
------------------------------
-
-Custom request headers can be added to a request that matches a specific route. The headers are
-specified in the following form:
-
-.. code-block:: json
-
-  [
-    {"key": "header1", "value": "value1"},
-    {"key": "header2", "value": "value2"}
-  ]
-
-Envoy supports adding static and dynamic values to the request headers. Supported dynamic values are:
-
-%CLIENT_IP%
-   The original client IP which is already added by envoy as a  
-   :ref:`X-Forwarded-For <config_http_conn_man_headers_x-forwarded-for>` request header. 
-
-%PROTOCOL%
-    The original protocol which is already added by envoy as a 
-    :ref:`X-Forwarded-Proto <config_http_conn_man_headers_x-forwarded-proto>` request header. 
-
-An example for adding a dynamic value to the request headers is as follows:
-
-.. code-block:: json
-
-  [
-   {"key": "X-Client-IP", "value":"%CLIENT_IP%"}
-  ]
-
-*Note:* Headers are appended to requests in the following order:
-route-level headers, :ref:`virtual host level <config_http_conn_man_route_table_vhost_add_req_headers>`
-headers and finally global :ref:`route_config <config_http_conn_man_route_table_add_req_headers>`
-level headers.
-
 .. _config_http_conn_man_route_table_opaque_config:
 
 Opaque Config
@@ -507,3 +480,49 @@ string map.  Nested objects are not supported.
   [
     {"...": "..."}
   ]
+
+.. _config_http_conn_man_route_table_cors:
+
+Cors
+--------
+
+Settings on a route take precedence over settings on the virtual host.
+
+.. code-block:: json
+
+  {
+    "enabled": false,
+    "allow_origin": ["http://foo.example"],
+    "allow_methods": "POST, GET, OPTIONS",
+    "allow_headers": "Content-Type",
+    "allow_credentials": false,
+    "expose_headers": "X-Custom-Header",
+    "max_age": "86400"
+  }
+
+enabled
+  *(optional, boolean)* Defaults to true. Setting *enabled* to false on a route disables CORS
+  for this route only. The setting has no effect on a virtual host.
+
+allow_origin
+  *(optional, array)* The origins that will be allowed to do CORS request.
+  Wildcard "\*" will allow any origin.
+
+allow_methods
+  *(optional, string)* The content for the *access-control-allow-methods* header.
+  Comma separated list of HTTP methods.
+
+allow_headers
+  *(optional, string)* The content for the *access-control-allow-headers* header.
+  Comma separated list of HTTP headers.
+
+allow_credentials
+  *(optional, boolean)* Whether the resource allows credentials.
+
+expose_headers
+  *(optional, string)* The content for the *access-control-expose-headers* header.
+  Comma separated list of HTTP headers.
+
+max_age
+  *(optional, string)* The content for the *access-control-max-age* header.
+  Value in seconds for how long the response to the preflight request can be cached.

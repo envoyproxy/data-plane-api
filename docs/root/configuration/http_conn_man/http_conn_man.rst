@@ -11,7 +11,8 @@ HTTP connection manager
 .. toctree::
   :hidden:
 
-  route_config/route_config
+  route_matching
+  traffic_splitting
   headers
   header_sanitizing
   stats

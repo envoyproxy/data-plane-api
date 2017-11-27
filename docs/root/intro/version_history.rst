@@ -82,7 +82,7 @@ Version history
   <config_http_conn_man_route_table_route_include_vh>` to inherit the virtual host level options if
   desired.
 * HTTP routes can now add request headers on a per route and per virtual host basis via the
-  :ref:`request_headers_to_add <config_http_conn_man_route_table_route_add_req_headers>` option.
+  :ref:`request_headers_to_add <config_http_conn_man_headers_custom_request_headers>` option.
 * The :ref:`example configurations <install_ref_configs>` have been refreshed to demonstrate the
   latest features.
 * :ref:`per_try_timeout_ms <config_http_conn_man_route_table_route_retry>` can now be configured in

@@ -3,6 +3,11 @@
 Traffic Shifting/Splitting
 ===========================================
 
+.. attention::
+
+  This section is written for the v1 API but the concepts also apply to the v2 API. It will be
+  rewritten to target the v2 API in a future release.
+
 .. contents::
   :local:
 

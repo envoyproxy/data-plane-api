@@ -1,5 +1,3 @@
-// [#protodoc-title: SDS]
-
 syntax = "proto3";
 
 package envoy.api.v2;
@@ -9,6 +7,8 @@ import "api/discovery.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
+
+// [#protodoc-title: TLS configuration and Secret Discovery Service (SDS)]
 
 service SecretDiscoveryService{
   rpc StreamSecrets(stream DiscoveryRequest)

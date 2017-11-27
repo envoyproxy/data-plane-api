@@ -1,8 +1,3 @@
-// [#protodoc-title: LDS]
-// This is heavily derived from
-// https://lyft.github.io/envoy/docs/configuration/listeners/listeners.html
-// The v2 gRPC API differences are tagged with [V2-API-DIFF].
-
 syntax = "proto3";
 
 package envoy.api.v2;
@@ -15,6 +10,8 @@ import "api/sds.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
+
+// [#protodoc-title: Listeners and LDS]
 
 // The Envoy instance initiates an RPC at startup to discover a list of
 // listeners. Updates are delivered via streaming from the LDS server and

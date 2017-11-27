@@ -10,7 +10,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
-// [#protodoc-title: EDS]
+// [#protodoc-title: Endpoints and EDS]
 
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
