@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.filter;
+package envoy.api.v2.filter.accesslog;
 
 import "api/address.proto";
 import "api/base.proto";
@@ -12,7 +12,7 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
-
+// [#protodoc-title: Common access log types]
 // [#proto-status: draft]
 // Envoy access logs describe incoming interaction with Envoy over a fixed
 // period of time, and typically cover a single request/response exchange,
@@ -403,4 +403,3 @@ message AccessLog {
   // 2) "envoy.grpc_access_log": AccessLogServiceConfig
   google.protobuf.Struct config = 3;
 }
-

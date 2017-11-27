@@ -195,7 +195,7 @@ proto_library(
         ":lds",
         ":protocol",
         ":rds",
-        "//api/filter:accesslog",
+        "//api/filter/accesslog:accesslog",
         "//api/filter/network:http_connection_manager",
         "//api/filter/network:mongo_proxy",
     ],
