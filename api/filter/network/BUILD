@@ -18,6 +18,7 @@ proto_library(
     deps = [
         "//api:go_protos",
         "//api/filter:go_protos",
+        "//api/filter/accesslog:go_protos",
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:duration_proto",
@@ -37,6 +38,7 @@ go_proto_library(
     deps = [
         "//api:go_default_library",
         "//api/filter:go_default_library",
+        "//api/filter/accesslog:go_default_library",
         "@com_github_golang_protobuf//ptypes/any:go_default_library",
         "@com_github_golang_protobuf//ptypes/duration:go_default_library",
         "@com_github_golang_protobuf//ptypes/struct:go_default_library",
@@ -54,7 +56,7 @@ api_proto_library(
         "//api:base",
         "//api:protocol",
         "//api:rds",
-        "//api/filter:accesslog",
+        "//api/filter/accesslog:accesslog",
     ],
 )
 
@@ -68,7 +70,7 @@ api_proto_library(
     name = "tcp_proxy",
     srcs = ["tcp_proxy.proto"],
     deps = [
-        "//api/filter:accesslog",
+        "//api/filter/accesslog:accesslog",
         "//api:address",
     ],
 )
