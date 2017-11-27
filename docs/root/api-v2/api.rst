@@ -1,7 +1,7 @@
 .. _envoy_api_reference:
 
-Envoy v2 API reference
-======================
+v2 API reference
+================
 
 .. CAUTION::
   This documentation subtree is a work-in-progress and does not yet contain

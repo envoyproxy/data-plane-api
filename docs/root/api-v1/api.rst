@@ -1,5 +1,5 @@
-Envoy v1 API reference
-======================
+v1 API reference
+================
 
 .. toctree::
   :glob:
