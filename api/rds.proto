@@ -413,7 +413,7 @@ message Decorator {
   string operation = 1 [(validate.rules).string.min_len = 1];
 }
 
-// A route is both a specification of how to match a request as well as in indication of what to do
+// A route is both a specification of how to match a request as well as an indication of what to do
 // next (e.g., redirect, forward, rewrite, etc.).
 //
 // .. attention::
@@ -531,7 +531,7 @@ message RateLimit {
     message DestinationCluster {}
 
     // The following descriptor entry is appended when a header contains a key that matches the
-    // header_name*:
+    // *header_name*:
     //
     // .. code-block:: cpp
     //
