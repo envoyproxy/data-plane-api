@@ -357,8 +357,11 @@ def FormatMessageAsJson(type_context, msg):
     lines.append('"%s": %s' % (field.name,
                                FormatFieldTypeAsJson(type_context, field)))
 
-  return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
-      4, lines)) + '\n  }\n\n'
+  if lines:
+    return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
+        4, lines)) + '\n  }\n\n'
+  else:
+    return '.. code-block:: json\n\n  {}\n\n'
 
 
 def NormalizeFQN(fqn):
