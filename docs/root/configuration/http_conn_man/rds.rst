@@ -1,7 +1,7 @@
 .. _config_http_conn_man_rds:
 
-Route discovery service
-=======================
+v1 Route discovery service (RDS)
+================================
 
 The route discovery service (RDS) API is an optional API that Envoy will call to dynamically fetch
 :ref:`route configurations <config_http_conn_man_route_table>`. A route configuration includes both
