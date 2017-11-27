@@ -19,7 +19,7 @@ minimum_ring_size
   virtual node.
 
 use_std_hash
-  *(optional, boolean)* If set to false, use `xxHash <https://github.com/Cyan4973/xxHash>`_ for hashing hosts onto the ring. Defaults to
-  true, which uses *std::hash* instead. *std::hash* varies by platform. For this reason, setting to
-  false is recommended.  Eventually, the setting will be removed and only *xxHash* will be
-  supported.
+  *(optional, boolean)* If set to false, use `xxHash <https://github.com/Cyan4973/xxHash>`_ for
+  hashing hosts onto the ring. Defaults to true, which uses *std::hash* instead. *std::hash* varies
+  by platform. For this reason, setting to false is recommended.  Eventually, the setting will be
+  removed and only *xxHash* will be supported.
