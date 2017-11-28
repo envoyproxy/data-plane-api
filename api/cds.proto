@@ -33,15 +33,15 @@ service ClusterDiscoveryService {
   }
 }
 
-// An extensible structure containing the address Envoy should bind to when establishing upstream
-// connections.
+// An extensible structure containing the address Envoy should bind to when
+// establishing upstream connections.
 message UpstreamBindConfig {
   // The address Envoy should bind to when establishing upstream connections.
   Address source_address = 1;
 }
 
-// :ref:`Circuit breaking<arch_overview_circuit_break>` settings can be specified individually for each defined
-// priority.
+// :ref:`Circuit breaking<arch_overview_circuit_break>` settings can be
+// specified individually for each defined priority.
 message CircuitBreakers {
   message Thresholds {
     RoutingPriority priority = 1;
@@ -63,13 +63,16 @@ message CircuitBreakers {
 
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
-  // The cluster name is used when emitting :ref:`statistics <config_cluster_manager_cluster_stats>`.
+  // The cluster name is used when emitting
+  // :ref:`statistics <config_cluster_manager_cluster_stats>`.
   // Any : in the cluster name will be converted to _ when emitting statistics.
-  // By default, the maximum length of a cluster name is limited to 60 characters. This limit can be
-  // increased by setting the :option:`--max-obj-name-len` command line argument to the desired value.
+  // By default, the maximum length of a cluster name is limited to 60
+  // characters. This limit can be increased by setting the
+  // :option:`--max-obj-name-len` command line argument to the desired value.
   string name = 1 [(validate.rules).string.min_len = 1];
 
-  // The :ref:`service discovery type <arch_overview_service_discovery_types>` to use for resolving the cluster.
+  // The :ref:`service discovery type <arch_overview_service_discovery_types>`
+  // to use for resolving the cluster.
   enum DiscoveryType {
     STATIC = 0;
     STRICT_DNS = 1;
@@ -93,9 +96,10 @@ message Cluster {
   google.protobuf.Duration connect_timeout = 4 [(validate.rules).duration.gt.nanos = 0];
   // Soft limit on size of the cluster’s connections read and write buffers. If
   // unspecified, an implementation defined default is applied (1MiB).
-  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5 [(validate.rules).uint32.gt = 0];
+  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
 
-  // The :ref:`load balancer type <arch_overview_load_balancing_types>` to use when picking a host in the cluster.
+  // The :ref:`load balancer type <arch_overview_load_balancing_types>` to use
+  // when picking a host in the cluster.
   enum LbPolicy {
     ROUND_ROBIN = 0;
     LEAST_REQUEST = 1;
@@ -119,7 +123,7 @@ message Cluster {
   // is respected by both the HTTP/1.1 and HTTP/2 connection pool
   // implementations. If not specified, there is no limit. Setting this
   // parameter to 1 will effectively disable keep alive.
-  google.protobuf.UInt32Value max_requests_per_connection = 9 [(validate.rules).uint32.gt = 0];
+  google.protobuf.UInt32Value max_requests_per_connection = 9;
 
   // Optional :ref:`circuit breaking <arch_overview_circuit_break>` for the cluster.
   CircuitBreakers circuit_breakers = 10;
@@ -174,13 +178,14 @@ message Cluster {
   repeated Address dns_resolvers = 18;
 
   // If specified, outlier detection will be enabled for this upstream cluster.
-  // See the :ref:`architecture overview <arch_overview_outlier_detection>` for more information on outlier
+  // See the :ref:`architecture overview <arch_overview_outlier_detection>` for
+  // more information on outlier
   // detection. Each of the configuration values can be overridden via
   // :ref:`runtime values <config_cluster_manager_cluster_runtime_outlier_detection>`.
   message OutlierDetection {
     // The number of consecutive 5xx responses before a consecutive 5xx ejection
     // occurs. Defaults to 5.
-    google.protobuf.UInt32Value consecutive_5xx = 1 [(validate.rules).uint32.gt = 0];
+    google.protobuf.UInt32Value consecutive_5xx = 1;
     // The time interval between ejection analysis sweeps. This can result in
     // both new ejections as well as hosts being returned to service. Defaults
     // to 10000ms or 10s.
@@ -204,13 +209,13 @@ message Cluster {
     // detect success rate outliers. If the number of hosts is less than this
     // setting, outlier detection via success rate statistics is not performed
     // for any host in the cluster. Defaults to 5.
-    google.protobuf.UInt32Value success_rate_minimum_hosts = 7 [(validate.rules).uint32.gt = 0];
+    google.protobuf.UInt32Value success_rate_minimum_hosts = 7;
     // The minimum number of total requests that must be collected in one
     // interval (as defined by the interval duration above) to include this host
     // in success rate based outlier detection. If the volume is lower than this
     // setting, outlier detection via success rate statistics is not performed
     // for that host. Defaults to 100.
-    google.protobuf.UInt32Value success_rate_request_volume = 8 [(validate.rules).uint32.gt = 0];
+    google.protobuf.UInt32Value success_rate_request_volume = 8;
     // This factor is used to determine the ejection threshold for success rate
     // outlier ejection. The ejection threshold is the difference between the
     // mean success rate, and the product of this factor and the standard
@@ -218,11 +223,11 @@ message Cluster {
     // success_rate_stdev_factor). This factor is divided by a thousand to get a
     // double. That is, if the desired factor is 1.9, the runtime value should
     // be 1900. Defaults to 1900.
-    google.protobuf.UInt32Value success_rate_stdev_factor = 9 [(validate.rules).uint32.gt = 0];
+    google.protobuf.UInt32Value success_rate_stdev_factor = 9;
     // The number of consecutive gateway failures (502, 503, 504 status or
     // connection errors that are mapped to one of those status codes) before a
     // consecutive gateway failure ejection occurs. Defaults to 5.
-    google.protobuf.UInt32Value consecutive_gateway_failure = 10 [(validate.rules).uint32.gt = 0];
+    google.protobuf.UInt32Value consecutive_gateway_failure = 10;
     // The % chance that a host will be actually ejected when an outlier status
     // is detected through consecutive gateway failures. This setting can be
     // used to disable ejection or to ramp it up slowly. Defaults to 0.
@@ -299,7 +304,7 @@ message Cluster {
     // cluster will have more virtual nodes. Defaults to 1024. In the case
     // that total number of hosts is greater than the minimum, each host will
     // be allocated a single virtual node.
-    google.protobuf.UInt64Value minimum_ring_size = 1 [(validate.rules).uint64.gt = 0];
+    google.protobuf.UInt64Value minimum_ring_size = 1;
 
     message DeprecatedV1 {
       // Envoy uses xxHash by default in v2. Previously std::hash was used

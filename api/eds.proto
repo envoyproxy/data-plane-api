@@ -65,7 +65,8 @@ service EndpointDiscoveryService {
 message LbEndpoint {
   Endpoint endpoint = 1;
 
-  // [#not-implemented-hide:] Optional health status when known and supplied by EDS server.
+  // [#not-implemented-hide:] Optional health status when known and supplied by
+  // EDS server.
   HealthStatus health_status = 2;
 
   // The endpoint metadata specifies values that may be used by the load
@@ -74,8 +75,8 @@ message LbEndpoint {
   // is "canary", providing the optional canary status of the upstream host.
   // This may be matched against in a route's ForwardAction metadata_match field
   // to subset the endpoints considered in cluster load balancing.
-  // [#v2-api-diff: TODO(htuch: [V2-API-DIFF] Need to plumb this through Envoy and have
-  // everywhere that canary is used be capable of working on metadata.]
+  // [#comment: TODO(htuch): Need to plumb this through Envoy and have]
+  // [#comment: everywhere that canary is used be capable of working on metadata.]
   Metadata metadata = 3;
 
   // The optional load balancing weight of the upstream host, in the range 1 -
@@ -100,10 +101,10 @@ message LocalityLbEndpoints {
   Locality locality = 1;
   repeated LbEndpoint lb_endpoints = 2;
 
-  // Optional: Per priority/region/zone/sub_zone weight - range 1-128. The load balancing
-  // weight for a locality is divided by the sum of the weights of all
-  // localities  at the same priority level to produce the effective percentage of traffic
-  // for the locality.
+  // Optional: Per priority/region/zone/sub_zone weight - range 1-128. The load
+  // balancing weight for a locality is divided by the sum of the weights of all
+  // localities  at the same priority level to produce the effective percentage
+  // of traffic for the locality.
   //
   // Weights must be specified for either all localities in a given priority
   // level or none.
