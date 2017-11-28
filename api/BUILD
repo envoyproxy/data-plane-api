@@ -150,6 +150,7 @@ proto_library(
         "//api/filter/http:buffer",
         "//api/filter/http:lua",
         "//api/filter/http:router",
+        "//api/filter/http:transcoder",
         "//api/filter/network:tcp_proxy",
         "//api/filter/network:http_connection_manager",
         "//api/filter/network:mongo_proxy",
