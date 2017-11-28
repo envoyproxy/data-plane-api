@@ -87,9 +87,12 @@ message LbEndpoint {
   // weighted by the endpoint's locality's load balancing weight from
   // LocalityLbEndpoints. If unspecified, each host is presumed to have equal
   // weight in a locality.
-  // The limit of 128 is somewhat arbitrary, but is applied due to performance
-  // concerns with the current implementation and can be removed when
-  // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
+  //
+  // .. attention::
+  //
+  //   The limit of 128 is somewhat arbitrary, but is applied due to performance
+  //   concerns with the current implementation and can be removed when
+  //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 4 [(validate.rules).uint32 = {gte:1, lte:128}];
 }
 
@@ -115,9 +118,11 @@ message LocalityLbEndpoints {
   // If unspecified, each locality is presumed to have equal weight in a
   // cluster.
   //
-  // The limit of 128 is somewhat arbitrary, but is applied due to performance
-  // concerns with the current implementation and can be removed when
-  // https://github.com/envoyproxy/envoy/issues/1285 is fixed.
+  // .. attention::
+  //
+  //   The limit of 128 is somewhat arbitrary, but is applied due to performance
+  //   concerns with the current implementation and can be removed when
+  //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 3 [(validate.rules).uint32 = {gte:1, lte:128}];
 
   // Optional: the priority for this LocalityLbEndpoints.  If unspecified this will
@@ -132,19 +137,6 @@ message LocalityLbEndpoints {
   google.protobuf.UInt32Value priority = 5;
 }
 
-// Example load report from a single request:
-//
-// [metric name, metric value]
-// * cpu_seconds, 0.7
-// * flash_utilization, 75
-//
-// When aggregating Envoy needs to count how many request's load reports
-// included each metric type, so Envoy can account for requests that don't
-// include that metric type. e.g.:
-//
-// [name, count, sum of values]
-// * cpu_seconds, 10, 17.5
-// * flash_utilization, 5, 375
 message EndpointLoadMetricStats {
   // Name of the metric; may be empty.
   string metric_name = 1;
@@ -186,8 +178,14 @@ message UpstreamLocalityStats {
 
   // The total number of requests that failed due to errors at the endpoint.
   // For HTTP these are responses with 5xx status codes and for gRPC the
-  // grpc-status values {DeadlineExceeded, Unimplemented, Internal,
-  // Unavailable, Unknown, DataLoss}.
+  // grpc-status values:
+  //
+  //   - DeadlineExceeded
+  //   - Unimplemented
+  //   - Internal
+  //   - Unavailable
+  //   - Unknown
+  //   - DataLoss
   uint64 total_error_requests = 4;
 
   // Stats for multi-dimensional load balancing.
@@ -220,7 +218,7 @@ message ClusterStats {
 
 // A load report Envoy sends to the management server.
 message LoadStatsRequest {
-  // zone/region where this Envoy runs
+  // Node identifier for Envoy instance.
   Node node = 1;
 
   // A list of load stats to report.

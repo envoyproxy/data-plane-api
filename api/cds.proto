@@ -44,7 +44,7 @@ message UpstreamBindConfig {
 // specified individually for each defined priority.
 message CircuitBreakers {
 
-  // A Threshold defines CircuitBreaker settings for a RoutingPriority.
+  // A Thresholds defines CircuitBreaker settings for a RoutingPriority.
   message Thresholds {
     // The RoutingPriority the specified CircuitBreaker settings apply to.
     RoutingPriority priority = 1;
@@ -66,10 +66,10 @@ message CircuitBreakers {
     google.protobuf.UInt32Value max_retries = 5;
   }
 
-  //  Thresholds can be defined for each RoutingPriority. If multiple Thresholds
-  // are defined with the same RoutingPriority, the first one in the list is used.
-  // If no Threshold is defined for a given RoutingPriority, the default values
-  // are used.
+  // If multiple :ref:`Thresholds<envoy_api_msg_CircuitBreakers.Thresholds>` are defined with
+  // the same RoutingPriority, the
+  // first one in the list is used. If no Threshold is defined for a given
+  // RoutingPriority, the default values are used.
   repeated Thresholds thresholds = 1;
 }
 
