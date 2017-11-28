@@ -5,17 +5,23 @@ package envoy.api.v2.filter.http;
 import "api/rds.proto";
 import "api/filter/fault.proto";
 
+import "validate/validate.proto";
+
 // Abort specification is used to prematurely abort a HTTP/gRPC/Mongo/Redis
 // operation/TCP connection with a pre-specified error code.
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
   // that will be aborted with the error code provided.
-  uint32 percent = 1;
+  uint32 percent = 1 [(validate.rules).uint32.lte = 100];
 
   // Applicable only for HTTP connections.
   oneof error_type {
+    option (validate.required) = true;
     // HTTP status code to use to abort the HTTP request.
-    uint32 http_status = 2;
+    uint32 http_status = 2 [(validate.rules).uint32 = {
+        gte: 200,
+        lte: 600
+      }];
   }
 }
 
@@ -66,12 +72,12 @@ message HTTPFault {
   // request with the same values (or based on presence if the `value` field
   // is not in the config). TODO: allow runtime configuration on per entry
   // basis for headers match.
-  repeated HeaderMatcher headers = 4;
+  repeated HeaderMatcher headers = 4 [(validate.rules).repeated.unique = true];;
 
   // Faults are injected for the specified list of downstream hosts. If
   // this setting is not set, faults are injected for all downstream
   // nodes. Downstream node name is taken from the HTTP
   // x-envoy-downstream-service-node header and compared against
   // downstream_nodes list.
-  repeated string downstream_nodes = 5;
+  repeated string downstream_nodes = 5 [(validate.rules).repeated.unique = true];;
 }
