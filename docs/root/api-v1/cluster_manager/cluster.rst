@@ -196,6 +196,4 @@ dns_resolvers
   cluster_hc
   cluster_circuit_breakers
   cluster_ssl
-  cluster_stats
-  cluster_runtime
   cluster_outlier_detection
