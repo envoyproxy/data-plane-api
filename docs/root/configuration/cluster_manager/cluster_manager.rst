@@ -9,6 +9,7 @@ Cluster manager
   cluster_stats
   cluster_runtime
   cds
+  cluster_hc
 
 * Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`
 * :ref:`v1 API reference <config_cluster_manager_v1>`

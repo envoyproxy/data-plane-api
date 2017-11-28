@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.api.v2.filter.network;
 option go_package = "network";
 
-import "api/filter/accesslog.proto";
+import "api/filter/accesslog/accesslog.proto";
 import "api/address.proto";
 
 import "google/protobuf/duration.proto";
@@ -31,7 +31,7 @@ message TcpProxy {
   google.protobuf.Duration upstream_idle_timeout = 4;
 
   // Configuration for access logs.
-  repeated AccessLog access_log = 5;
+  repeated accesslog.AccessLog access_log = 5;
 
   message DeprecatedV1 {
     // [V2-API-DIFF] This is deprecated in v2. Routes will be matched using

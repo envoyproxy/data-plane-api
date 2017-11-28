@@ -65,7 +65,7 @@ service EndpointDiscoveryService {
 message LbEndpoint {
   Endpoint endpoint = 1;
 
-  // Optional health status when known and supplied by EDS server.
+  // [#not-implemented-hide:] Optional health status when known and supplied by EDS server.
   HealthStatus health_status = 2;
 
   // The endpoint metadata specifies values that may be used by the load
