@@ -21,7 +21,7 @@ existing :ref:`v1 xDS APIs and concepts <config_overview_v1>` to support:
   <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#eventual-consistency-considerations>`_
   when needed. The v2 APIs still maintain a baseline eventual consistency model.
 
-See the `xDS protocol description <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_ for 
+See the `xDS protocol description <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_ for
 further details on aspects of v2 message exchange between Envoy and the management server.
 
 .. _config_overview_v2_bootstrap:
@@ -49,7 +49,8 @@ configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
 message is the distinction between static and dynamic resouces.  Resources such
 as a :ref:`Listener <config_listeners>` or :ref:`Cluster
 <config_cluster_manager_cluster>` may be supplied either statically in
-:ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have an xDS service such as :ref:`LDS
+:ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have
+an xDS service such as :ref:`LDS
 <config_overview_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
 :ref:`dynamic_resources <envoy_api_field_Bootstrap.dynamic_resources>`.
 
@@ -103,7 +104,8 @@ Mostly static with dynamic EDS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A bootstrap config that continues from the above example with :ref:`dynamic endpoint
-discovery <arch_overview_dynamic_config_sds>` via an :ref:`EDS<envoy_api_file_api/eds.proto>` gRPC management server listening
+discovery <arch_overview_dynamic_config_sds>` via an
+:ref:`EDS<envoy_api_file_api/eds.proto>` gRPC management server listening
 on 127.0.0.3:5678 is provided below:
 
 .. code-block:: yaml
@@ -152,8 +154,8 @@ on 127.0.0.3:5678 is provided below:
       hosts: [{ socket_address: { address: 127.0.0.3, port_value: 5678 }}]
 
 Notice above that *xds_cluster* is defined to point Envoy at the management server. Even in
-an otherwise completely dynamic configurations, some static resources need to be defined to point Envoy at
-its xDS management server(s).
+an otherwise completely dynamic configurations, some static resources need to
+be defined to point Envoy at its xDS management server(s).
 
 In the above example, the EDS management server could then return a proto encoding of a
 :ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>`:
