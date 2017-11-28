@@ -441,6 +441,8 @@ is set in the :ref:`rds
 <envoy_api_field_filter.network.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
 <envoy_api_msg_filter.network.HttpConnectionManager>` config.
 
+.. _config_overview_v2_ads:
+
 Aggregated Discovery Service
 ----------------------------
 

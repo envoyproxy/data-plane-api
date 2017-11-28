@@ -88,7 +88,7 @@ add_user_agent
 :ref:`tracing <config_http_conn_man_tracing>`
   *(optional, object)* Presence of the object defines whether the connection manager
   emits :ref:`tracing <arch_overview_tracing>` data to the :ref:`configured tracing provider
-  <config_tracing>`.
+  <config_tracing_v1>`.
 
 .. _config_http_conn_man_http1_settings:
 

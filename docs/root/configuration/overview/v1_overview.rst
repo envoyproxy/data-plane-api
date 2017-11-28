@@ -45,7 +45,7 @@ name (which should be a string) is called *true*, it should be written in the co
   *(optional, object)* Configuration for the Listener Discovery Service (LDS). If not specified
   only static listeners are loaded.
 
-:ref:`admin <config_admin>`
+:ref:`admin <config_admin_v1>`
   *(required, object)* Configuration for the :ref:`local administration HTTP server
   <operations_admin_interface>`.
 
@@ -97,7 +97,7 @@ watchdog_multikill_timeout_ms
   milliseconds assume a true deadlock and kill the entire Envoy process. Set to 0 to disable this
   behavior. If not specified the default is 0 (disabled).
 
-:ref:`tracing <config_tracing>`
+:ref:`tracing <config_tracing_v1>`
   *(optional, object)* Configuration for an external :ref:`tracing <arch_overview_tracing>`
   provider. If not specified, no tracing will be performed.
 
@@ -106,15 +106,7 @@ watchdog_multikill_timeout_ms
   <arch_overview_rate_limit>` provider. If not specified, any calls to the rate limit service will
   immediately return success.
 
-:ref:`runtime <config_runtime>`
+:ref:`runtime <config_runtime_v1>`
   *(optional, object)* Configuration for the :ref:`runtime configuration <arch_overview_runtime>`
   provider. If not specified, a "null" provider will be used which will result in all defaults being
   used.
-
-.. toctree::
-  :hidden:
-
-  admin
-  tracing
-  rate_limit
-  runtime

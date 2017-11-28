@@ -102,7 +102,7 @@ Version history
   do not have `$maxTimeMS` set.
 * The :ref:`MongoDB filter <config_network_filters_mongo_proxy>` now emits logs that are fully valid
   JSON.
-* The CPU profiler output path is now :ref:`configurable <config_admin>`.
+* The CPU profiler output path is now :ref:`configurable <config_admin_v1>`.
 * A :ref:`watchdog system <config_overview_v1>` has been added that can kill the server if a deadlock
   is detected.
 * A :ref:`route table checking tool <install_tools_route_table_check_tool>` has been added that can

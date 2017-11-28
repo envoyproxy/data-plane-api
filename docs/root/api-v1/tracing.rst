@@ -1,4 +1,4 @@
-.. _config_tracing:
+.. _config_tracing_v1:
 
 Tracing
 =======

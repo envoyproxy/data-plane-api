@@ -1,7 +1,7 @@
 // [#protodoc-title: Bootstrap]
-// This proto is expected to be provided on disk or via the command-line to
-// Envoy. It provides sufficient information for Envoy to fetch the rest of
-// its configuration from either disk or management server(s).
+// This proto is supplied via the :option:`-c` CLI flag and acts as the root
+// of the Envoy v2 configuration. See the :ref:`v2 configuration overview
+// <config_overview_v2_bootstrap>` for more detail.
 
 syntax = "proto3";
 
@@ -17,91 +17,122 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
+import "validate/validate.proto";
+
+// Configuration for the LightStep tracer.
 message LightstepConfig {
   // The cluster manager cluster that hosts the LightStep collectors.
-  string collector_cluster = 1;
-  // File containing the access token to the LightStep API.
-  string access_token_file = 2;
+  string collector_cluster = 1 [(validate.rules).string.min_len = 1];
+
+  // File containing the access token to the `LightStep
+  // <http://lightstep.com/>`_ API.
+  string access_token_file = 2 [(validate.rules).string.min_len = 1];
 }
 
 message ZipkinConfig {
   // The cluster manager cluster that hosts the Zipkin collectors. Note that the
-  // Zipkin cluster must be defined under clusters in the cluster manager
-  // configuration section.
-  string collector_cluster = 1;
+  // Zipkin cluster must be defined in the :ref:`Bootstrap static cluster
+  // resources <envoy_api_field_Bootstrap.StaticResources.clusters>`.
+  string collector_cluster = 1 [(validate.rules).string.min_len = 1];
+
   // The API endpoint of the Zipkin service where the spans will be sent. When
   // using a standard Zipkin installation, the API endpoint is typically
   // /api/v1/spans, which is the default value.
-  string collector_endpoint = 2;
+  string collector_endpoint = 2 [(validate.rules).string.min_len = 1];
 }
 
+// The :ref:`tracing <arch_overview_tracing>` configuration specifies global
+// settings for the HTTP tracer used by Envoy. The configuration is defined by
+// the :ref:`Bootstrap <envoy_api_msg_Bootstrap>` :ref:`tracing
+// <envoy_api_field_Bootstrap.tracing>` field. Envoy may support other tracers
+// in the future, but right now the HTTP tracer is the only one supported.
 message Tracing {
-  // Provides configuration for the HTTP tracer.
   message Http {
     // The name of the HTTP trace driver to instantiate. The name must match a
-    // supported HTTP trace driver. "envoy.lightstep" and "envoy.zipkin" are built-in
-    // trace drivers.
-    string name = 1;
+    // supported HTTP trace driver. *envoy.lightstep* and *envoy.zipkin* are
+    // built-in trace drivers.
+    string name = 1 [(validate.rules).string.min_len = 1];
     // Trace driver specific configuration which depends on the driver being
-    // instantiated. See the trace drivers for further documentation.
+    // instantiated. See the :ref:`LightstepConfig
+    // <envoy_api_msg_LightstepConfig>` and :ref:`ZipkinConfig
+    // <envoy_api_msg_ZipkinConfig>` trace drivers for examples.
     google.protobuf.Struct config = 2;
   }
+  // Provides configuration for the HTTP tracer.
   Http http = 1;
 }
 
+// Administration interface :ref:`operations documentation
+// <operations_admin_interface>`.
 message Admin {
   // The path to write the access log for the administration server. If no
   // access log is desired specify ‘/dev/null’.
   string access_log_path = 1;
+
   // The cpu profiler output path for the administration server. If no profile
   // path is specified, the default is ‘/var/log/envoy/envoy.prof’.
   string profile_path = 2;
+
   // The TCP address that the administration server will listen on.
   Address address = 3;
 }
 
+// Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
 message ClusterManager {
   // Name of the local cluster (i.e., the cluster that owns the Envoy running
-  // this configuration). In order to enable zone aware routing this option must
-  // be set. If local_cluster_name is defined then clusters must contain a
-  // definition of a cluster with the same name.
+  // this configuration). In order to enable :ref:`zone aware routing
+  // <arch_overview_load_balancing_zone_aware_routing>` this option must be set.
+  // If *local_cluster_name* is defined then :ref:`clusters
+  // <config_cluster_manager_clusters>` must be defined in the :ref:`Bootstrap
+  // static cluster resources
+  // <envoy_api_field_Bootstrap.StaticResources.clusters>`.
   string local_cluster_name = 1;
 
-  // Optional global configuration for outlier detection.
   message OutlierDetection {
+    // Specifies the path to the outlier event log.
     string event_log_path = 1;
   }
+  // Optional global configuration for outlier detection.
   OutlierDetection outlier_detection = 2;
 
   // Optional configuration used to bind newly established upstream connections.
   // This may be overridden on a per-cluster basis by upstream_bind_config in the cds_config.
   BindConfig upstream_bind_config = 3;
 
-  // A management server endpoint to stream load stats to, as per
-  // StreamLoadStats in eds.proto. This must have api_type GRPC.
+  // A management server endpoint to stream load stats to via
+  // :ref:`StreamLoadStats <envoy_api_msg_LoadStatsRequest>`.  This must have
+  // :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
+  // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
   ApiConfigSource load_stats_config = 4;
 }
 
-// Stats proto for built-in "envoy.statsd" sink.
+// Stats configuration proto schema for built-in *envoy.statsd* sink.
 message StatsdSink {
   oneof statsd_specifier {
-    // The UDP address of a running statsd compliant listener. If specified,
-    // statistics will be flushed to this address.
+    option (validate.required) = true;
+
+    // The UDP address of a running `statsd <https://github.com/etsy/statsd>`_
+    // compliant listener. If specified, statistics will be flushed to this
+    // address.
     Address address = 1;
-    // The name of a cluster manager cluster that is running a TCP statsd
-    // compliant listener. If specified, Envoy will connect to this cluster to
-    // flush statistics.
+
+    // The name of a cluster that is running a TCP `statsd
+    // <https://github.com/etsy/statsd>`_ compliant listener. If specified,
+    // Envoy will connect to this cluster to flush statistics.
     string tcp_cluster_name = 2;
   }
 }
 
+// Configuration for pluggable stats sinks.
 message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
-  // stats sink. "envoy.statsd" is a built-in sink suitable for emitting to
-  // statsd.
+  // stats sink. *envoy.statsd* is a built-in sink suitable for emitting to
+  // `statsd <https://github.com/etsy/statsd>`_.
   string name = 1;
+
   // Stats sink specific configuration which depends on the sink being
-  // instantiated. See the supported sinks for further documentation.
+  // instantiated. See :ref:`StatsdSink <envoy_api_msg_StatsdSink>` for an
+  // example.
   google.protobuf.Struct config = 2;
 }
 
@@ -111,98 +142,131 @@ message StatsSink {
 message TagSpecifier {
   // Attaches an identifier to the tag values to identify the tag being in the
   // sink. Envoy has a set of default names and regexes to extract dynamic
-  // portions of existing stats, which can be found in
-  // source/common/config/well_known_names.h in the Envoy repository. If a
-  // tag_name is provided in the config with an empty regex, Envoy will attempt
-  // to find that name in its set of defaults and use the accompanying regex.
-  // Note: if any default tags are specified twice, the config will be
-  // considered invalid.
+  // portions of existing stats, which can be found in `well_known_names.h
+  // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
+  // in the Envoy repository. If a :ref:`tag_name
+  // <envoy_api_field_TagSpecifier.tag_name>` is provided in the config with an
+  // empty regex, Envoy will attempt to find that name in its set of defaults
+  // and use the accompanying regex.
+  //
+  // .. note::
+  //
+  //   If any default tags are specified twice, the config will be considered
+  //   invalid.
   string tag_name = 1;
 
   // The first capture group identifies the portion of the name to remove. The
-  // second capture group (which will normally be nested inside the first)
-  // will designate the value of the tag for the statistic. If no second 
-  // capture group is provided, the first will also be used to set the value of
-  // the tag. All other capture groups will be ignored.
+  // second capture group (which will normally be nested inside the first) will
+  // designate the value of the tag for the statistic. If no second capture
+  // group is provided, the first will also be used to set the value of the tag.
+  // All other capture groups will be ignored.
   //
-  // For example:
+  // Take for example, with a stat name ``cluster.foo_cluster.upstream_rq_timeout``
+  // and
   //
-  // stat name: "cluster.foo_cluster.upstream_rq_timeout"
+  // .. code-block:: json
   //
-  // tag name: "envoy.cluster_name" (one of many default stat regexes provided
-  // in Envoy)
+  //   {
+  //     "tag_name": "envoy.cluster_name",
+  //     "regex": "^cluster\.((.+?)\.)"
+  //   }
   //
-  // regex: "^cluster\.((.+?)\.)"
+  // Note that the regex will remove ``foo_cluster.`` making the tag extracted
+  // name ``cluster.upstream_rq_timeout`` and the tag value for
+  // ``envoy.cluster_name`` will be ``foo_cluster`` (note: there will be no
+  // ``.`` character because of the second capture group).
   //
-  // Notice the regex will remove "foo_cluster." making the tag extracted name
-  // "cluster.upstream_rq_timeout" and the tag value for "envoy.cluster_name"
-  // "foo_cluster" (note: no '.' character because of the second capture group).
+  // An example with two regexes and stat name
+  // ``http.connection_manager_1.user_agent.ios.downstream_cx_total``:
   //
-  // An example with two regexes:
+  // .. code-block:: json
   //
-  // First tag name: "envoy.http_user_agent"
-  // First regex: "^http(?=\.).*?\.user_agent\.((.+?)\.)\w+?$"
-  // Second tag name: "envoy.http_conn_manager_prefix"
-  // Second regex: "^http\.((.*?)\.)"
-  // Stat name: "http.connection_manager_1.user_agent.ios.downstream_cx_total"
+  //   [
+  //     {
+  //       "tag_name": "envoy.http_user_agent",
+  //       "regex": "^http(?=\.).*?\.user_agent\.((.+?)\.)\w+?$"
+  //     },
+  //     {
+  //       "tag_name": "envoy.http_conn_manager_prefix",
+  //       "regex": "^http\.((.*?)\.)"
+  //     }
+  //   ]
   //
-  // The first regex will remove "ios." leaving the tag extracted name:
-  // "http.connection_manager_1.user_agent.downstream_cx_total".
-  // The tag "envoy.http_user_agent" will be added with tag value "ios".
+  // The first regex will remove ``ios.``, leaving the tag extracted name
+  // ``http.connection_manager_1.user_agent.downstream_cx_total``. The tag
+  // ``envoy.http_user_agent`` will be added with tag value ``ios``.
   //
-  // The second regex will remove "connection_manager_1." from the tag extracted
-  // name produced by the first regex
-  // ("http.connection_manager_1.user_agent.downstream_cx_total"), leaving
-  // "http.user_agent.downstream_cx_total" as the tag extracted name.  The tag
-  // "envoy.http_conn_manager_prefix" will be added with the tag value
-  // "connection_manager_1".
+  // The second regex will remove ``connection_manager_1.`` from the tag
+  // extracted name produced by the first regex
+  // ``http.connection_manager_1.user_agent.downstream_cx_total``, leaving
+  // ``http.user_agent.downstream_cx_total`` as the tag extracted name. The tag
+  // ``envoy.http_conn_manager_prefix`` will be added with the tag value
+  // ``connection_manager_1``.
   string regex = 2;
 }
 
+// Statistics :ref:`architecture overview <arch_overview_statistics>`.
 message StatsConfig {
   // Each stat name is iteratively processed through these tag specifiers.
   // When a tag is matched, the first capture group is removed from the name so
-  // later TagSpecifiers cannot match that same portion of the match.
+  // later :ref:`TagSpecifiers <envoy_api_msg_TagSpecifier>` cannot match that
+  // same portion of the match.
   repeated TagSpecifier stats_tags = 1;
 
   // Use all default tag regexes specified in Envoy. These can be combined with
-  // custom tags specified in stats_tags. They will be processed before the
-  // custom tags. Note: if any default tags are specified twice, the config will
-  // be considered invalid. See source/common/config/well_known_names.h for a
-  // a list of the default tags in Envoy. If not provided, the value is assumed
-  // to be true.
+  // custom tags specified in :ref:`stats_tags
+  // <envoy_api_field_StatsConfig.stats_tags>`. They will be processed before
+  // the custom tags.
+  //
+  // .. note::
+  //
+  //   If any default tags are specified twice, the config will be considered
+  //   invalid.
+  //
+  // See `well_known_names.h
+  // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
+  // for a list of the default tags in Envoy.
+  //
+  // If not provided, the value is assumed to be true.
   google.protobuf.BoolValue use_all_default_tags = 2;
 }
 
 message Watchdog {
   // The duration after which Envoy counts a nonresponsive thread in the
-  // “server.watchdog_miss” statistic. If not specified the default is 200ms.
+  // *server.watchdog_miss* statistic. If not specified the default is 200ms.
   google.protobuf.Duration miss_timeout = 1;
+
   // The duration after which Envoy counts a nonresponsive thread in the
-  // “server.watchdog_mega_miss” statistic. If not specified the default is
+  // *server.watchdog_mega_miss* statistic. If not specified the default is
   // 1000ms.
+
   google.protobuf.Duration megamiss_timeout = 2;
   // If a watched thread has been nonresponsive for this duration, assume a
   // programming error and kill the entire Envoy process. Set to 0 to disable
   // kill behavior. If not specified the default is 0 (disabled).
+
   google.protobuf.Duration kill_timeout = 3;
   // If at least two watched threads have been nonresponsive for at least this
   // duration assume a true deadlock and kill the entire Envoy process. Set to 0
   // to disable this behavior. If not specified the default is 0 (disabled).
+
   google.protobuf.Duration multikill_timeout = 4;
 }
 
+// Runtime :ref:`configuration overview <config_runtime>`.
 message Runtime {
   // The implementation assumes that the file system tree is accessed via a
   // symbolic link. An atomic link swap is used when a new tree should be
   // switched to. This parameter specifies the path to the symbolic link. Envoy
   // will watch the location for changes and reload the file system tree when
   // they happen.
-  string symlink_root = 1;
+  string symlink_root = 1 [(validate.rules).string.min_len = 1];
+
   // Specifies the subdirectory to load within the root directory. This is
   // useful if multiple systems share the same delivery mechanism. Envoy
   // configuration elements can be contained in a dedicated subdirectory.
   string subdirectory = 2;
+
   // Specifies an optional subdirectory to load within the root directory. If
   // specified and the directory exists, configuration values within this
   // directory will override those found in the primary subdirectory. This is
@@ -212,46 +276,58 @@ message Runtime {
   string override_subdirectory = 3;
 }
 
+// Rate limit :ref:`configuration overview <config_rate_limit_service>`.
 message RateLimitServiceConfig {
   // Specifies the cluster manager cluster name that hosts the rate limit
   // service. The client will connect to this cluster when it needs to make rate
   // limit service requests.
-  string cluster_name = 1;
+  string cluster_name = 1 [(validate.rules).string.min_len = 1];
 }
 
+// Bootstrap :ref:`configuration overview <config_overview_v2_bootstrap>`.
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
-  Node node = 1;
+  Node node = 1 [(validate.rules).message.required = true];
 
-  // Statically specified resources.
   message StaticResources {
     repeated Listener listeners = 1;
-    // If a network based configuration source is specified for cds_config, it's
-    // necessary to have some initial cluster definitions available to allow Envoy
-    // to know how to speak to the management server. These cluster definitions
-    // may not use EDS (i.e. they should be static IP or DNS-based).
+    // If a network based configuration source is specified for :ref:`cds_config
+    // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary
+    // to have some initial cluster definitions available to allow Envoy to know
+    // how to speak to the management server. These cluster definitions may not
+    // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
+    // IP or DNS-based).
     repeated Cluster clusters = 2;
     repeated Secret secrets = 3;
   }
+  // Statically specified resources.
   StaticResources static_resources = 2;
 
-  // xDS configuration sources.
   message DynamicResources {
-    // All Listeners are provided by a single LDS configuration source.
+    // All :ref:`Listeners <envoy_api_msg_Listener>` are provided by a single
+    // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
     ConfigSource lds_config = 1;
-    // All post-bootstrap Cluster definitions are provided by a single CDS
+    // All post-bootstrap :ref:`Cluster <envoy_api_msg_Cluster>` definitions are
+    // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
     // configuration source.
     ConfigSource cds_config = 2;
-    // A single ADS source may be optionally specified. This must have api_type GRPC.
+    // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
+    // specified. This must have :ref:`api_type
+    // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
+    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
     ApiConfigSource ads_config = 3;
 
     message DeprecatedV1 {
-      // This is the global SDS config when using v1 REST for CDS/EDS.
+      // This is the global :ref:`SDS <arch_overview_dynamic_config_sds>` config
+      // when using v1 REST for :ref:`CDS
+      // <arch_overview_dynamic_config_cds>`/:ref:`EDS
+      // <arch_overview_dynamic_config_sds>`.
       ConfigSource sds_config = 1;
     }
     DeprecatedV1 deprecated_v1 = 4;
   }
+  // xDS configuration sources.
   DynamicResources dynamic_resources = 3;
 
   // Configuration for the cluster manager which owns all upstream clusters

@@ -53,6 +53,11 @@ VALID_ANNOTATIONS = set([
     PROTO_STATUS_ANNOTATION,
 ])
 
+# These can propagate from file scope to message/enum scope (and be overriden).
+INHERITED_ANNOTATIONS = set([
+    PROTO_STATUS_ANNOTATION,
+])
+
 # Template for data-plane-api URLs.
 # TODO(htuch): Add the ability to build a permalink by feeding a hash
 # to the tool or inferring from local tree (only really make sense in CI).
@@ -89,7 +94,11 @@ def ExtractAnnotations(s, inherited_annotations=None, type_name='file'):
   Returns:
     Pair of string with with annotations stripped and annotation map.
   """
-  annotations = inherited_annotations or {}
+  annotations = {
+      k: v
+      for k, v in (inherited_annotations or {}).items()
+      if k in INHERITED_ANNOTATIONS
+  }
   stripped_lines = []
   for line in s.split('\n'):
     groups = re.findall(ANNOTATION_REGEX, line)
