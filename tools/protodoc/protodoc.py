@@ -67,7 +67,7 @@ def FormatCommentWithAnnotations(s, annotations, type_name):
   if NOT_IMPLEMENTED_WARN_ANNOTATION in annotations:
     s += '\n.. WARNING::\n  Not implemented yet\n'
   if V2_API_DIFF_ANNOTATION in annotations:
-    s += '\n.. NOTE::\n  v2 API difference: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
+    s += '\n.. NOTE::\n  **v2 API difference**: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
   if type_name == 'message' or type_name == 'enum':
     if PROTO_STATUS_ANNOTATION in annotations:
       status = annotations[PROTO_STATUS_ANNOTATION]
