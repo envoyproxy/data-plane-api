@@ -10,6 +10,8 @@ import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
+import "validate/validate.proto";
+
 // [#protodoc-title: Endpoints and EDS]
 
 service EndpointDiscoveryService {

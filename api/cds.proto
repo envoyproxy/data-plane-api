@@ -14,7 +14,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
-import "validate/validate.proto"
+import "validate/validate.proto";
 
 // [#protodoc-title: Clusters and CDS]
 
