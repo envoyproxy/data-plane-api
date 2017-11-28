@@ -9,6 +9,18 @@ Statistics
 General
 -------
 
+The cluster manager has a statistics tree rooted at *cluster_manager.* with the following
+statistics. Any ``:`` character in the stats name is replaced with ``_``.
+
+.. csv-table::
+  :header: Name, Type, Description
+  :widths: 1, 1, 2
+
+  cluster_added, Counter, Total clusters added (either via static config or CDS)
+  cluster_modified, Counter, Total clusters modified (via CDS)
+  cluster_removed, Counter, Total clusters removed (via CDS)
+  total_clusters, Gauge, Number of currently loaded clusters
+
 Every cluster has a statistics tree rooted at *cluster.<name>.* with the following statistics:
 
 .. csv-table::

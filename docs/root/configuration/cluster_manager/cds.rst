@@ -8,7 +8,7 @@ cluster manager members. Envoy will reconcile the API response and add, modify, 
 clusters depending on what is required.
 
 Statistics
-==========
+----------
 
 CDS has a statistics tree rooted at *cluster_manager.cds.* with the following statistics:
 

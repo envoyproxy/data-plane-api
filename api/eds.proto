@@ -62,7 +62,9 @@ service EndpointDiscoveryService {
   }
 }
 
+// An Endpoint that Envoy can route traffic to.
 message LbEndpoint {
+  // Upstream host identifier
   Endpoint endpoint = 1;
 
   // [#not-implemented-hide:] Optional health status when known and supplied by
@@ -96,7 +98,10 @@ message LbEndpoint {
 // generally only done if the different groups need to have different load
 // balancing weights or different priorities.
 message LocalityLbEndpoints {
+  // Identifies location of where the upstream hosts run.
   Locality locality = 1;
+
+  // The group of endpoints belonging to the locality specified.
   repeated LbEndpoint lb_endpoints = 2;
 
   // Optional: Per priority/region/zone/sub_zone weight - range 1-128. The load
@@ -143,8 +148,10 @@ message LocalityLbEndpoints {
 message EndpointLoadMetricStats {
   // Name of the metric; may be empty.
   string metric_name = 1;
+
   // Number of calls that finished and included this metric.
   uint64 num_requests_finished_with_metric = 2;
+
   // Sum of metric values across all calls that finished with this metric for
   // load_reporting_interval.
   double total_metric_value = 3;
@@ -173,8 +180,10 @@ message UpstreamLocalityStats {
   // originate at the client and the endpoint responded successfuly. For gRPC,
   // the grpc-status values are those not covered by total_error_requests below.
   uint64 total_successful_requests = 2;
+
   // The total number of unfinished requests
   uint64 total_requests_in_progress = 3;
+
   // The total number of requests that failed due to errors at the endpoint.
   // For HTTP these are responses with 5xx status codes and for gRPC the
   // grpc-status values {DeadlineExceeded, Unimplemented, Internal,
@@ -185,9 +194,12 @@ message UpstreamLocalityStats {
   repeated EndpointLoadMetricStats load_metric_stats = 5;
 }
 
-// Per cluster stats
+// Per cluster load stats. Envoy reports these stats a management server in a
+// :ref:`LoadStatsRequest<envoy_api_msg_LoadStatsRequest>`
 message ClusterStats {
+  // The name of the cluster.
   string cluster_name = 1;
+
   // Need at least one.
   repeated UpstreamLocalityStats upstream_locality_stats = 2;
 
@@ -206,8 +218,12 @@ message ClusterStats {
   uint64 total_dropped_requests = 3;
 }
 
+// A load report Envoy sends to the management server.
 message LoadStatsRequest {
-  Node node = 1;  // zone/region where this Envoy runs
+  // zone/region where this Envoy runs
+  Node node = 1;
+
+  // A list of load stats to report.
   repeated ClusterStats cluster_stats = 2;
 }
 
@@ -220,8 +236,13 @@ message LoadStatsRequest {
 // effective weight of a host is its load_balancing_weight multiplied by the
 // load_balancing_weight of its Locality.
 message ClusterLoadAssignment {
+  // Name of the cluster.
   string cluster_name = 1;
+
+  // List of endpoints to load balance to.
   repeated LocalityLbEndpoints endpoints = 2;
+
+  // Load balancing policy settings.
   message Policy {
     // Percentage of traffic (0-100) that should be dropped. This
     // action allows protection of upstream hosts should they unable to
@@ -230,12 +251,17 @@ message ClusterLoadAssignment {
     // [V2-API-DIFF] This is known as maintenance mode in v1.
     double drop_overload = 1;
   }
+
+  // Load balancing policy settings.
   Policy policy = 4;
 }
 
+// The management server sends envoy a LoadStatsResponse with all clusters it
+// is interested in learning load stats about.
 message LoadStatsResponse {
   // Clusters to report stats for.
   repeated string clusters = 1;
-  // The default is 10 seconds.
+
+  // The interval of time to collect stats. The default is 10 seconds.
   google.protobuf.Duration load_reporting_interval = 2;
 }

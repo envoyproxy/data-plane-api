@@ -7,10 +7,9 @@ Cluster manager
   :hidden:
 
   cluster
-  sds
-  sds_api
   outlier
   cds
+  sds
 
 Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
 

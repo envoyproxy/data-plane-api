@@ -32,6 +32,8 @@ weighted least request behavior is desired (generally if request durations are v
 length). We may add a true full scan weighted least request variant in the future to cover this use
 case.
 
+.. _arch_overview_load_balancing_types_ring_hash:
+
 Ring hash
 ^^^^^^^^^
 
