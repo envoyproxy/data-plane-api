@@ -11,6 +11,7 @@ Cluster
     "connect_timeout_ms": "...",
     "per_connection_buffer_limit_bytes": "...",
     "lb_type": "...",
+    "ring_hash_lb_config": "{...}",
     "hosts": [],
     "service_name": "...",
     "health_check": "{...}",
@@ -60,6 +61,10 @@ lb_type
   <arch_overview_load_balancing_types_original_destination>` must be used with clusters of type
   :ref:`*original_dst* <arch_overview_service_discovery_types_original_destination>`, and may not be
   used with any other cluster type.
+
+:ref:`ring_hash_lb_config <config_cluster_manager_cluster_ring_hash_lb_config>`
+  *(optional, object)* Optional configuration for the ring hash load balancer, used when *lb_type*
+  is set to *ring_hash*.
 
 hosts
   *(sometimes required, array)* If the service discovery type is *static*, *strict_dns*, or
@@ -197,3 +202,4 @@ dns_resolvers
   cluster_circuit_breakers
   cluster_ssl
   cluster_outlier_detection
+  cluster_ring_hash_lb_config

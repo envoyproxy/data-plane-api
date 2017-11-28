@@ -14,7 +14,6 @@ HTTP filters
   grpc_json_transcoder_filter
   grpc_web_filter
   health_check_filter
-  ip_tagging_filter
   rate_limit_filter
   router_filter
   lua_filter
