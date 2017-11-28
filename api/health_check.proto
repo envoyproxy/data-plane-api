@@ -1,5 +1,3 @@
-// [#protodoc-title: Health check]
-
 syntax = "proto3";
 
 package envoy.api.v2;
@@ -7,83 +5,119 @@ package envoy.api.v2;
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
+import "validate/validate.proto";
+
+// [#protodoc-title: Health check]
+// * Health checking :ref:`architecture overview <arch_overview_health_checking>`.
+// * If health checking is configured for a cluster, additional statistics are emitted. They are
+//   documented :ref:`here <config_cluster_manager_cluster_stats>`.
+
 message HealthCheck {
   // The time to wait for a health check response. If the timeout is reached the
   // health check attempt will be considered a failure.
-  google.protobuf.Duration timeout = 1;
+  google.protobuf.Duration timeout = 1 [(validate.rules).duration.required = true];
+
   // The interval between health checks.
-  google.protobuf.Duration interval = 2;
+  google.protobuf.Duration interval = 2 [(validate.rules).duration.required = true];
+
   // An optional jitter amount in millseconds. If specified, during every
   // internal Envoy will add 0 to interval_jitter to the wait time.
   google.protobuf.Duration interval_jitter = 3;
 
   // The number of unhealthy health checks required before a host is marked
-  // unhealthy. Note that for http health checking if a host responds with 503
+  // unhealthy. Note that for *http* health checking if a host responds with 503
   // this threshold is ignored and the host is considered unhealthy immediately.
   google.protobuf.UInt32Value unhealthy_threshold = 4;
+
   // The number of healthy health checks required before a host is marked
   // healthy. Note that during startup, only a single successful health check is
   // required to mark a host healthy.
   google.protobuf.UInt32Value healthy_threshold = 5;
 
-  // Non-serving port for health checking.
+  // [#not-implemented-hide:] Non-serving port for health checking.
   google.protobuf.UInt32Value alt_port = 6;
+
   // Reuse health check connection between health checks. Default is true.
   google.protobuf.BoolValue reuse_connection = 7;
 
-  // Describes the encoding of the payload bytes in the payload
+  // Describes the encoding of the payload bytes in the payload.
   message Payload {
     oneof payload {
-      string text = 1;
+      option (validate.required) = true;
+
+      // Hex encoded payload. E.g., "000000FF".
+      string text = 1 [(validate.rules).string.min_len = 1];
+
+      // [#not-implemented-hide:] Binary payload.
       bytes binary = 2;
     }
   }
+
   message HttpHealthCheck {
-    // The value of the host header in the HTTPS health check request. If left
-    // empty (default value), the IP on behalf of which this health check is
-    // performed will be used.
+    // [#not-implemented-hide:] The value of the host header in the HTTPS health check request. If
+    // left empty (default value), the IP on behalf of which this health check is performed will be
+    // used.
     string host = 1;
-    // This parameter is required if the type is http. It species the HTTP path
-    // that will be requested during health checking. For example /healthcheck.
-    string path = 2;
+
+    // Specifies the HTTP path that will be requested during health checking. For example
+    // */healthcheck*.
+    string path = 2 [(validate.rules).string.min_len = 1];
+
+    // [#not-implemented-hide:] HTTP specific payload.
     Payload send = 3;
+
+    // [#not-implemented-hide:] HTTP specific response.
     Payload receive = 4;
-    // The Envoy HTTP health checker supports the service_name option. If this
-    // option is set, the health checker additionally compares the value of the
-    // x-envoy-upstream-healthchecked-cluster response header to service_name. If
-    // the values do not match, the health check does not pass. The upstream
-    // health check filter appends x-envoy-upstream-healthchecked-cluster to the
-    // response headers. The appended value is determined by the --service-cluster
-    // command line option.
+
+    // An optional service name parameter which is used to validate the identity of
+    // the health checked cluster. See the :ref:`architecture overview
+    // <arch_overview_health_checking_identity>` for more information.
     string service_name = 5;
   }
+
   message TcpHealthCheck {
     // Empty payloads imply a connect-only health check.
     Payload send = 1;
+
     // When checking the response, “fuzzy” matching is performed such that each
     // binary block must be found, and in the order specified, but not
-    // necessarly contiguous.
+    // necessarily contiguous.
     repeated Payload receive = 2;
   }
-  message RedisHealthCheck {
-  }
+
+  message RedisHealthCheck {}
+
   oneof health_checker {
+    option (validate.required) = true;
+
+    // HTTP health check.
     HttpHealthCheck http_health_check = 8;
+
+    // TCP health check.
     TcpHealthCheck tcp_health_check = 9;
+
+    // Redis health check.
     RedisHealthCheck redis_health_check = 10;
   }
 }
 
+// [#not-implemented-hide:] Part of HDS.
 enum HealthStatus {
   // UNKNOWN should be treated by Envoy as HEALTHY.
   UNKNOWN = 0;
+
+  // Healthy.
   HEALTHY = 1;
+
+  // Unhealthy.
   UNHEALTHY = 2;
-  // Connection draining in progress -
+
+  // Connection draining in progress. E.g.,
   // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
-  // and
+  // or
   // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
   DRAINING = 3;
+
   // This value is used by HDS Remote server. From Envoy’s perspective
   // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
   TIMEOUT = 4;
