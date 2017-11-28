@@ -12,10 +12,7 @@ import "validate/validate.proto";
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
   // that will be aborted with the error code provided.
-  uint32 percent = 1 [(validate.rules).uint32 = {
-      required: true,
-      lte: 100
-    }];
+  uint32 percent = 1 [(validate.rules).uint32.lte = 100];
 
   // Applicable only for HTTP connections.
   oneof error_type {

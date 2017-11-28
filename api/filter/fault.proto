@@ -22,10 +22,7 @@ message FaultDelay {
 
   // An integer between 0-100 indicating the percentage of operations/connection requests
   // on which the delay will be injected.
-  uint32 percent = 2 [(validate.rules).uint32 = {
-      required: true,
-      lte: 100
-    }];
+  uint32 percent = 2 [(validate.rules).uint32.lte = 100];
 
   oneof fault_delay_type {
     option (validate.required) = true;
