@@ -75,8 +75,6 @@ message LbEndpoint {
   // is "canary", providing the optional canary status of the upstream host.
   // This may be matched against in a route's ForwardAction metadata_match field
   // to subset the endpoints considered in cluster load balancing.
-  // [#comment: TODO(htuch): Need to plumb this through Envoy and have]
-  // [#comment: everywhere that canary is used be capable of working on metadata.]
   Metadata metadata = 3;
 
   // The optional load balancing weight of the upstream host, in the range 1 -
