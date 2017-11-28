@@ -291,9 +291,11 @@ message Cluster {
     google.protobuf.UInt64Value minimum_ring_size = 1;
 
     message DeprecatedV1 {
-      // Envoy uses xxHash by default in v2. Previously std::hash was used
-      // which can vary based on platform. This field exists for migration
-      // purposes.
+      // Defaults to true, meaning that std::hash is used to hash hosts onto
+      // the ketama ring. std::hash can vary by platform. For this reason,
+      // Envoy will eventually use xxHash by default. This field exists for
+      // migration purposes and will eventually be deprecated. Set it to false
+      // to use xxHash now.
       google.protobuf.BoolValue use_std_hash = 1;
     }
     DeprecatedV1 deprecated_v1 = 2;
