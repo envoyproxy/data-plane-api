@@ -28,7 +28,7 @@ validate_clusters
   defined via the :ref:`route_config <config_http_conn_man_route_config>` option. This setting
   default to false if the route table is loaded dynamically via the :ref:`rds
   <config_http_conn_man_rds_option>` option. Users may which to override the default behavior in
-  certain cases (for example when using :ref:`cds <config_cluster_manager_cds>` with a static
+  certain cases (for example when using :ref:`cds <config_cluster_manager_cds_v1>` with a static
   route table).
 
 :ref:`virtual_hosts <config_http_conn_man_route_table_vhost>`
