@@ -20,7 +20,7 @@ message FaultAbort {
     // HTTP status code to use to abort the HTTP request.
     uint32 http_status = 2 [(validate.rules).uint32 = {
         gte: 200,
-        lte: 600
+        lt: 600
       }];
   }
 }
