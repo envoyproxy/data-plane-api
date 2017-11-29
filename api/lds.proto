@@ -164,7 +164,7 @@ message Listener {
   // the listener hands off redirected connections to the listener associated with the original
   // destination port. If there is no listener associated with the original destination port, the
   // connection is handled by the listener that receives it. Default is false.
-  // google.protobuf.BoolValue use_original_dst = 4;
+  google.protobuf.BoolValue use_original_dst = 4;
 
   // Soft limit on size of the listener’s new connection read and write buffers.
   // If unspecified, an implementation defined default is applied (1MiB).
