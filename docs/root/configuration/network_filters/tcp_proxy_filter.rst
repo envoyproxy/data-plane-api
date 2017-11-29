@@ -4,8 +4,8 @@ TCP proxy
 =========
 
 * TCP proxy :ref:`architecture overview <arch_overview_tcp_proxy>`
-* :ref:`v1 API reference <config_network_filters_tcp_proxy_v1>`
-* :ref:`v2 API reference <envoy_api_msg_filter.network.TcpProxy>`
+* :ref:`v1 configuration <config_network_filters_tcp_proxy_v1>`
+* :ref:`v2 configuration <envoy_api_msg_filter.network.TcpProxy>`
 
 .. _config_network_filters_tcp_proxy_stats:
 

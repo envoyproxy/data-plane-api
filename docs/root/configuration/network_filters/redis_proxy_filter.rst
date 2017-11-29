@@ -3,7 +3,7 @@
 Redis proxy
 ===========
 
-Redis :ref:`architecture overview <arch_overview_redis>`.
+Redis :ref:`architecture overview <arch_overview_redis>`
 
 .. code-block:: json
 

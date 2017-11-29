@@ -3,10 +3,9 @@
 Mongo proxy
 ===========
 
-MongoDB :ref:`architecture overview <arch_overview_mongo>`.
-
-- :ref:`v1 API reference <config_network_filters_mongo_proxy_v1>`
-- :ref:`v2 API reference <envoy_api_msg_filter.network.MongoProxy>`
+- MongoDB :ref:`architecture overview <arch_overview_mongo>`
+- :ref:`v1 configuration <config_network_filters_mongo_proxy_v1>`
+- :ref:`v2 configuration <envoy_api_msg_filter.network.MongoProxy>`
 
 .. _config_network_filters_mongo_proxy_stats:
 
