@@ -45,6 +45,7 @@ PROTO_RST="
   /api/filter/http/transcoder/api/filter/http/transcoder.proto.rst
   /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst
   /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
+  /api/filter/network/redis_proxy/api/filter/network/redis_proxy.proto.rst
   /api/filter/network/tcp_proxy/api/filter/network/tcp_proxy.proto.rst
   /api/protocol/api/protocol.proto.rst
   /api/rds/api/rds.proto.rst
