@@ -75,7 +75,8 @@ You can now send a request to service1 via the front-envoy as follows::
 
 **Step 3: View the traces in Zipkin UI**
 
-Point your browser to http://localhost:9411 . You should see the Zipkin dashboard.
+Point your browser to http://192.168.99.100:9411 . You should see the Zipkin dashboard.
+If this ip address is incorrect, you can find the correct one by running: ``$ docker-machine ip default``.
 Set the service to "front-proxy" and set the start time to a few minutes before
 the start of the test (step 2) and hit enter. You should see traces from the front-proxy.
 Click on a trace to explore the path taken by the request from front-proxy to service1
