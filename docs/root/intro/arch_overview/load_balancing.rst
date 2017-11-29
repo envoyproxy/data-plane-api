@@ -15,10 +15,14 @@ healthy.
 Supported load balancers
 ------------------------
 
+.. _arch_overview_load_balancing_types_round_robin:
+
 Round robin
 ^^^^^^^^^^^
 
 This is a simple policy in which each healthy upstream host is selected in round robin order.
+
+.. _arch_overview_load_balancing_types_least_request:
 
 Weighted least request
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -48,6 +52,8 @@ specified in :ref:`runtime <config_cluster_manager_cluster_runtime_ring_hash>`. 
 size governs the replication factor for each host in the ring. For example, if the minimum ring
 size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
 balancer does not currently support weighting.
+
+.. _arch_overview_load_balancing_types_random:
 
 Random
 ^^^^^^

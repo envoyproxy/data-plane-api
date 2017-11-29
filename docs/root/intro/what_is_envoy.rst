@@ -76,7 +76,7 @@ for DynamoDB connections.
 **Service discovery:** :ref:`Service discovery <arch_overview_service_discovery>` is a critical
 component of service oriented architectures. Envoy supports multiple service discovery methods
 including asynchronous DNS resolution and REST based lookup via a :ref:`service discovery service
-<arch_overview_service_discovery_sds>`.
+<arch_overview_service_discovery_types_sds>`.
 
 **Health checking:** The :ref:`recommended <arch_overview_service_discovery_eventually_consistent>`
 way of building an Envoy mesh is to treat service discovery as an eventually consistent process.
