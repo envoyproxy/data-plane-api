@@ -10,7 +10,7 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: TLS configuration and Secret Discovery Service (SDS)]
+// [#protodoc-title: Common TLS configuration]
 
 service SecretDiscoveryService{
   rpc StreamSecrets(stream DiscoveryRequest)
@@ -143,9 +143,8 @@ message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use in verifying
   // a presented client side certificate. If not specified and a client certificate is presented it
   // will not be verified. By default, a client certificate is optional, unless one of the additional
-  // options (
-  // :ref:`require_client_certificate <envoy_api_field_DownstreamTlsContext.require_client_certificate>`,
-  // :ref:`verify_certificate_hash <envoy_api_field_CertificateValidationContext.verify_certificate_hash>` or
+  // options (:ref:`require_client_certificate <envoy_api_field_DownstreamTlsContext.require_client_certificate>`,
+  // :ref:`verify_certificate_hash <envoy_api_field_CertificateValidationContext.verify_certificate_hash>`, or
   // :ref:`verify_subject_alt_name <envoy_api_field_CertificateValidationContext.verify_subject_alt_name>`) is also
   // specified.
   DataSource trusted_ca = 1;
@@ -160,8 +159,8 @@ message CertificateValidationContext {
   // [#not-implemented-hide:]
   repeated string verify_spki_sha256 = 3;
 
-  // An optional list of subject alt names. If specified, Envoy will verify that
-  // the certificate’s subject alt name matches one of the specified values.
+  // An optional list of subject alternative names. If specified, Envoy will verify that
+  // the certificate’s subject alternative name matches one of the specified values.
   repeated string verify_subject_alt_name = 4;
 
   // [#not-implemented-hide:] Must present a signed time-stamped OCSP response.
@@ -176,9 +175,8 @@ message CommonTlsContext {
   // TLS protocol versions, cipher suites etc.
   TlsParameters tls_params = 1;
 
-  // Multiple TLS certificates can be associated with the same context,
-  // e.g. to allow both RSA and ECDSA certificates TLS certificates can be either configured
-  // locally or fetched from SDS.
+  // Multiple TLS certificates can be associated with the same context.
+  // E.g. to allow both RSA and ECDSA certificates, two TLS certificates can be configured.
   //
   // .. attention::
   //
@@ -199,6 +197,8 @@ message CommonTlsContext {
   //
   // * "h2,http/1.1" If the listener is going to support both HTTP/2 and HTTP/1.1.
   // * "http/1.1" If the listener is only going to support HTTP/1.1.
+  //
+  // There is no default for this parameter. If empty, Envoy will not expose ALPN.
   repeated string alpn_protocols = 4;
 
   // These fields are deprecated and only are used during the interim v1 -> v2
