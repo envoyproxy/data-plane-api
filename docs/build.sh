@@ -39,6 +39,7 @@ PROTO_RST="
   /api/filter/accesslog/accesslog/api/filter/accesslog/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
   /api/filter/http/buffer/api/filter/http/buffer.proto.rst
+  /api/filter/http/fault/api/filter/http/fault.proto.rst
   /api/filter/http/health_check/api/filter/http/health_check.proto.rst
   /api/filter/http/lua/api/filter/http/lua.proto.rst
   /api/filter/http/router/api/filter/http/router.proto.rst
