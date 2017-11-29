@@ -63,19 +63,20 @@ print_options
 
   add_whitespace
     *(optional, boolean)* Whether to add spaces, line breaks and indentation to make the JSON
-    output easy to read. Default to false.
+    output easy to read. Defaults to false.
 
   always_print_primitive_fields
-    *(optional, boolean)* Whether to always print primitive fields. By default primitive fields
-    with default values will be omitted in JSON output. For example, an int32 field set to 0
-    will be omitted. Set this flag to true will override the default behavior and print primitive
-    fields regardless of their values. Default to false.
+    *(optional, boolean)* Whether to always print primitive fields. By default primitive
+    fields with default values will be omitted in JSON output. For
+    example, an int32 field set to 0 will be omitted. Setting this flag to
+    true will override the default behavior and print primitive fields
+    regardless of their values. Defaults to false.
 
   always_print_enums_as_ints
-    *(optional, boolean)* Whether to always print enums as ints. By default they are rendered as
-    strings. Default to false.
+    *(optional, boolean)* Whether to always print enums as ints. By default they are rendered
+    as strings. Defaults to false.
 
   preserve_proto_field_names
-    *(optional, boolean)* Whether to preserve proto field names. By default protobuf will generate
-    JSON field names use ``json_name`` option, or lower camel case, in that order. Set this flag
-    will preserve original field names. Default to false.
+    *(optional, boolean)* Whether to preserve proto field names. By default protobuf will
+    generate JSON field names using the ``json_name`` option, or lower camel case,
+    in that order. Setting this flag will preserve the original field names. Defaults to false.
