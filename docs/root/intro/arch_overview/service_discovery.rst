@@ -11,11 +11,15 @@ Envoy needs to know how to resolve the members of the cluster. This is known as 
 Supported service discovery types
 ---------------------------------
 
+.. _arch_overview_service_discovery_types_static:
+
 Static
 ^^^^^^
 
 Static is the simplest service discovery type. The configuration explicitly specifies the resolved
 network name (IP address/port, unix domain socket, etc.) of each upstream host.
+
+.. _arch_overview_service_discovery_types_strict_dns:
 
 Strict DNS
 ^^^^^^^^^^
@@ -27,6 +31,8 @@ assume the cluster has three hosts, and all three should be load balanced to. If
 from the result Envoy assumes it no longer exists and will drain traffic from any existing
 connection pools. Note that Envoy never synchronously resolves DNS in the forwarding path. At the
 expense of eventual consistency, there is never a worry of blocking on a long running DNS query.
+
+.. _arch_overview_service_discovery_types_logical_dns:
 
 Logical DNS
 ^^^^^^^^^^^
@@ -60,7 +66,7 @@ are pooled and unused hosts are flushed out when they have been idle longer than
 Original destination service discovery must be used with the original destination :ref:`load
 balancer <arch_overview_load_balancing_types_original_destination>`.
 
-.. _arch_overview_service_discovery_sds:
+.. _arch_overview_service_discovery_types_sds:
 
 Service discovery service (SDS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
