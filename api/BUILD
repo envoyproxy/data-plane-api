@@ -148,6 +148,7 @@ proto_library(
         ":rds",
         "//api/filter/accesslog:accesslog",
         "//api/filter/http:buffer",
+        "//api/filter/http:health_check",
         "//api/filter/http:lua",
         "//api/filter/http:router",
         "//api/filter/http:transcoder",
