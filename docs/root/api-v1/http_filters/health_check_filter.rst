@@ -12,7 +12,7 @@ Health check :ref:`configuration overview <config_http_filters_health_check>`.
     "config": {
       "pass_through_mode": "...",
       "endpoint": "...",
-      "cache_time_ms": "...",
+      "cache_time_ms": "..."
      }
   }
 

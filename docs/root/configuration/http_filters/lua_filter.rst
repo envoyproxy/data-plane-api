@@ -55,8 +55,8 @@ API.
 Configuration
 -------------
 
-* :ref:`v1 configuration <config_http_filters_lua_v1>`
-* :ref:`v2 configuration <envoy_api_msg_filter.http.Lua>`
+* :ref:`v1 API reference <config_http_filters_lua_v1>`
+* :ref:`v2 API reference <envoy_api_msg_filter.http.Lua>`
 
 Script examples
 ---------------
