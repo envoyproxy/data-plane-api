@@ -1,7 +1,7 @@
 .. _config_listeners_lds:
 
-Listener discovery service
-==========================
+v1 Listener discovery service (LDS)
+===================================
 
 The listener discovery service (LDS) is an optional API that Envoy will call to dynamically fetch
 listeners. Envoy will reconcile the API response and add, modify, or remove known listeners

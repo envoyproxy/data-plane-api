@@ -14,6 +14,7 @@ import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 
 // [#protodoc-title: Listeners and LDS]
+// Listener :ref:`configuration overview <config_listeners>`
 
 // The Envoy instance initiates an RPC at startup to discover a list of
 // listeners. Updates are delivered via streaming from the LDS server and
@@ -35,8 +36,15 @@ service ListenerDiscoveryService {
 
 message Filter {
   // The name of the filter to instantiate. The name must match a supported
-  // filter.
-  string name = 1;
+  // filter. The built-in filters are:
+  //
+  // [#comment:TODO(mattklein123): Auto generate the following list]
+  // * :ref:`envoy.echo <config_network_filters_echo>`
+  // * :ref:`envoy.http_connection_manager <config_http_conn_man>`
+  // * :ref:`envoy.mongo_proxy <config_network_filters_mongo_proxy>`
+  // * :ref:`envoy.redis_proxy <config_network_filters_redis_proxy>`
+  // * :ref:`envoy.tcp_proxy <config_network_filters_tcp_proxy>`
+  string name = 1 [(validate.rules).string.min_len = 1];
 
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
@@ -56,6 +64,11 @@ message Filter {
 message FilterChainMatch {
   // If non-empty, the SNI domains to consider. May contain a wildcard prefix,
   // e.g. ``*.example.com``.
+  //
+  // .. attention::
+  //
+  //   See the :ref:`FAQ entry <faq_how_to_setup_sni>` on how to configure SNI for more
+  //   information.
   repeated string sni_domains = 1;
 
   // If non-empty, an IP address and prefix length to match addresses when the
@@ -65,7 +78,9 @@ message FilterChainMatch {
 
   // If non-empty, an IP address and suffix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
+  // [#not-implemented-hide:]
   string address_suffix = 4;
+
   // [#not-implemented-hide:]
   google.protobuf.UInt32Value suffix_len = 5;
 
@@ -88,13 +103,13 @@ message FilterChainMatch {
   google.protobuf.UInt32Value destination_port = 8;
 }
 
-// Grouping of FilterChainMatch criteria, DownstreamTlsContext, the actual filter chain
-// and related parameters.
+// A filter chain wraps a set of match criteria, an option TLS context, a set of filters, and
+// various other parameters.
 message FilterChain {
-  // fixfix
+  // The criteria to use when matching a connection to this filter chain.
   FilterChainMatch filter_chain_match = 1;
 
-  // fixfix
+  // The TLS context for this filter chain.
   DownstreamTlsContext tls_context = 2;
 
   // A list of individual network filters that make up the filter chain for
@@ -111,49 +126,51 @@ message FilterChain {
   // connection as the remote address.
   google.protobuf.BoolValue use_proxy_proto = 4;
 
-  // See base.Metadata description.
+  // [#not-implemented-hide:] filter chain metadata.
   Metadata metadata = 5;
 
-  // See base.TransportSocket description.
-  // [#not-implemented-hide:]
+  // [#not-implemented-hide:] See base.TransportSocket description.
   TransportSocket transport_socket = 6;
 }
 
 message Listener {
-  // The unique name of the listener. If no name is provided, Envoy will generate a
-  // UUID for internal use. The name is used for dynamic listener update and removal
-  // via the LDS APIs.
+  // The unique name by which this listener is known. If no name is provided,
+  // Envoy will allocate an internal UUID for the listener. If the listener is to be dynamically
+  // updated or removed via :ref:`LDS <config_listeners_lds>` a unique name must be provided.
+  // By default, the maximum length of a listener's name is limited to 60 characters. This limit can be
+  // increased by setting the :option:`--max-obj-name-len` command line argument to the desired value.
   string name = 1;
 
   // The address that the listener should listen on.
-  Address address = 2;
+  Address address = 2 [(validate.rules).message.required = true];
 
-  // A list of filter chains to consider for this listener. The FilterChain with
-  // the most specific FilterChainMatch criteria is used on a connection. The
-  // algorithm works as follows:
+  // A list of filter chains to consider for this listener. The
+  // :ref:`FilterChain <envoy_api_msg_FilterChain>` with the most specific :ref:`FilterChainMatch
+  // <envoy_api_msg_FilterChainMatch>` criteria is used on a connection.
   //
-  // 1. If SNI information is presented at connection time, only the
-  //    FilterChains matching the SNI are considered. Otherwise, only
-  //    FilterChains with no SNI domains are considered.
-  // 2. Of the FilterChains from step 1, the longest prefix match on the
-  //    bound destination address is used to select the next set of
-  //    FilterChains. This may be one FilterChain or multiple if there is
-  //    a tie.
-  // 3. The longest suffix match on the bound destination address is used to
-  //    select the FilterChain from step 2 that is used.
-  repeated FilterChain filter_chains = 3;
+  // .. attention::
+  //
+  //   In the current version, multiple filter chains are supported **only** so that SNI can be
+  //   configured. See the :ref:`FAQ entry <faq_how_to_setup_sni>` on how to configure SNI for more
+  //   information. When multiple filter chains are configured, each filter chain must have an
+  //   **identical** set of :ref:`filters <envoy_api_field_FilterChain.filters>`. If the filters
+  //   differ, the configuration will fail to load. In the future, this limitation will be relaxed such that
+  //   different filters can be used depending on which filter chain matches (based on SNI or
+  //   some other parameter).
+  repeated FilterChain filter_chains = 3 [(validate.rules).repeated.min_items = 1];
 
-  // If a connection is redirected using iptables, the port on which the proxy
-  // receives it might be different from the original destination port. When
-  // this flag is set to true, the listener uses the original destination
-  // address and port during FilterChain matching. Default is false.
-  google.protobuf.BoolValue use_original_dst = 4;
+  // If a connection is redirected using *iptables*, the port on which the proxy
+  // receives it might be different from the original destination port. When this flag is set to true,
+  // the listener hands off redirected connections to the listener associated with the original
+  // destination port. If there is no listener associated with the original destination port, the
+  // connection is handled by the listener that receives it. Default is false.
+  // google.protobuf.BoolValue use_original_dst = 4;
 
   // Soft limit on size of the listener’s new connection read and write buffers.
   // If unspecified, an implementation defined default is applied (1MiB).
   google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
 
-  // See base.Metadata description.
+  // [#not-implemented-hide:] Listener metadata.
   Metadata metadata = 6;
 
   // [#not-implemented-hide:]
