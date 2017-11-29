@@ -84,7 +84,7 @@ message Cluster {
   // By default, the maximum length of a cluster name is limited to 60
   // characters. This limit can be increased by setting the
   // :option:`--max-obj-name-len` command line argument to the desired value.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Refer to :ref:`service discovery type <arch_overview_service_discovery_types>`
   // for an explanation on each type.
@@ -124,7 +124,7 @@ message Cluster {
     // Optional alternative to cluster name to present to EDS. This does not
     // have the same restrictions as cluster name, i.e. it may be arbritary
     // length.
-    string service_name = 2 [(validate.rules).string.min_len = 1];
+    string service_name = 2 [(validate.rules).string.min_bytes = 1];
   }
   // Configuration to use for EDS updates for the Cluster.
   EdsClusterConfig eds_cluster_config = 3;

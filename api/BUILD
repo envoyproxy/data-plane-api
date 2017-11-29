@@ -98,7 +98,7 @@ api_proto_library(
     has_services = 1,
     deps = [
         ":base",
-        "@promotheus_metrics_model//:client_model_protos_lib",
+        "@promotheus_metrics_model//:client_model",
     ],
     require_py = 0,
 )
