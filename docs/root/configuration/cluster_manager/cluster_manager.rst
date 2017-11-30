@@ -10,6 +10,7 @@ Cluster manager
   cluster_runtime
   cds
   cluster_hc
+  cluster_circuit_breakers
 
 * Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`
 * :ref:`v1 API reference <config_cluster_manager_v1>`
