@@ -1,11 +1,9 @@
-.. _config_rate_limit_service:
+.. _config_rate_limit_service_v1:
 
 Rate limit service
 ==================
 
-The :ref:`rate limit service <arch_overview_rate_limit>` configuration specifies the global rate
-limit service Envoy should talk to when it needs to make global rate limit decisions. If no rate
-limit service is configured, a "null" service will be used which will always return OK if called.
+Rate limit :ref:`configuration overview <config_rate_limit_service>`.
 
 .. code-block:: json
 
@@ -28,10 +26,3 @@ config
     *(required, string)* Specifies the cluster manager cluster name that hosts the rate limit
     service. The client will connect to this cluster when it needs to make rate limit service
     requests.
-
-gRPC service IDL
-----------------
-
-Envoy expects the rate limit service to support the gRPC IDL specified in
-:repo:`/source/common/ratelimit/ratelimit.proto`. See the IDL documentation for more information
-on how the API works. See Lyft's reference implementation `here <https://github.com/lyft/ratelimit>`_.

@@ -125,11 +125,11 @@ message LocalityLbEndpoints {
   //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 3 [(validate.rules).uint32 = {gte:1, lte:128}];
 
-  // Optional: the priority for this LocalityLbEndpoints.  If unspecified this will
+  // Optional: the priority for this LocalityLbEndpoints. If unspecified this will
   // default to the highest priority (0).
   //
   // Under usual circumstances, Envoy will only select endpoints for the highest
-  // priority (0).  In the event all endpoints for a particular priority are
+  // priority (0). In the event all endpoints for a particular priority are
   // unavailable/unhealthy, Envoy will fail over to selecting endpoints for the
   // next highest priority group.
   //
@@ -239,7 +239,10 @@ message LoadStatsRequest {
 // effective weight of a host is its load_balancing_weight multiplied by the
 // load_balancing_weight of its Locality.
 message ClusterLoadAssignment {
-  // Name of the cluster.
+  // Name of the cluster. This will be the :ref:`service_name
+  // <envoy_api_field_Cluster.EdsClusterConfig.service_name>` value if specified
+  // in the cluster :ref:`EdsClusterConfig
+  // <envoy_api_msg_Cluster.EdsClusterConfig>`.
   string cluster_name = 1 [(validate.rules).string.min_len = 1];
 
   // List of endpoints to load balance to.

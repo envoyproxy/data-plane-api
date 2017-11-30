@@ -1,4 +1,4 @@
-.. _config_admin:
+.. _config_admin_v1:
 
 Administration interface
 ========================
