@@ -4,7 +4,13 @@ def _CcSuffix(d):
     return d + "_cc"
 
 def _PySuffix(d):
-    return d + "_py"
+  return d + "_py"
+
+def _PySuffixLibrary(library_name):
+  # Transform //a/b/c to //a/b/c:c in preparation for suffix operation below.
+  if library_name.startswith("//") and ":" not in library_name:
+      library_name += ":" + Label(library_name).name
+  return _PySuffix(library_name)
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
@@ -17,7 +23,7 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
         srcs = srcs,
         default_runtime = "@com_google_protobuf//:protobuf_python",
         protoc = "@com_google_protobuf//:protoc",
-        deps = [_PySuffix(d) for d in deps] + [
+        deps = [_PySuffixLibrary(d) for d in deps] + [
             "@com_lyft_protoc_gen_validate//validate:validate_py",
             "@googleapis//:http_api_protos_py",
         ],
