@@ -7,6 +7,9 @@ The cluster discovery service (CDS) is an optional API that Envoy will call to d
 cluster manager members. Envoy will reconcile the API response and add, modify, or remove known
 clusters depending on what is required.
 
+* :ref:`v1 CDS API <config_cluster_manager_cds_v1>`
+* :ref:`v2 CDS API <v2_grpc_streaming_endpoints>`
+
 Statistics
 ----------
 
