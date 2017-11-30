@@ -125,11 +125,11 @@ message LocalityLbEndpoints {
   //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
   google.protobuf.UInt32Value load_balancing_weight = 3 [(validate.rules).uint32 = {gte:1, lte:128}];
 
-  // Optional: the priority for this LocalityLbEndpoints.  If unspecified this will
+  // Optional: the priority for this LocalityLbEndpoints. If unspecified this will
   // default to the highest priority (0).
   //
   // Under usual circumstances, Envoy will only select endpoints for the highest
-  // priority (0).  In the event all endpoints for a particular priority are
+  // priority (0). In the event all endpoints for a particular priority are
   // unavailable/unhealthy, Envoy will fail over to selecting endpoints for the
   // next highest priority group.
   //

@@ -98,6 +98,6 @@ message TcpProxy {
   DeprecatedV1 deprecated_v1 = 6;
 
   // The maximum number of unsuccessful connection attempts that will be made before
-  // giving up.  If the parameter is not specified, 1 connection attempt will be made.
+  // giving up. If the parameter is not specified, 1 connection attempt will be made.
   google.protobuf.UInt32Value max_connect_attempts = 7 [(validate.rules).uint32.gte = 1];
 }

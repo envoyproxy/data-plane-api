@@ -100,7 +100,7 @@ message ClusterManager {
   BindConfig upstream_bind_config = 3;
 
   // A management server endpoint to stream load stats to via
-  // :ref:`StreamLoadStats <envoy_api_msg_LoadStatsRequest>`.  This must have
+  // :ref:`StreamLoadStats <envoy_api_msg_LoadStatsRequest>`. This must have
   // :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
   // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
   ApiConfigSource load_stats_config = 4;
@@ -231,6 +231,8 @@ message StatsConfig {
   google.protobuf.BoolValue use_all_default_tags = 2;
 }
 
+// Envoy process watchdog configuration. When configured, this monitors for
+// nonresponsive threads and kills the process after the configured thresholds.
 message Watchdog {
   // The duration after which Envoy counts a nonresponsive thread in the
   // *server.watchdog_miss* statistic. If not specified the default is 200ms.
@@ -246,10 +248,10 @@ message Watchdog {
   // kill behavior. If not specified the default is 0 (disabled).
 
   google.protobuf.Duration kill_timeout = 3;
+
   // If at least two watched threads have been nonresponsive for at least this
   // duration assume a true deadlock and kill the entire Envoy process. Set to 0
   // to disable this behavior. If not specified the default is 0 (disabled).
-
   google.protobuf.Duration multikill_timeout = 4;
 }
 
@@ -291,6 +293,8 @@ message Bootstrap {
   Node node = 1 [(validate.rules).message.required = true];
 
   message StaticResources {
+    // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
+    // available regardless of LDS configuration.
     repeated Listener listeners = 1;
     // If a network based configuration source is specified for :ref:`cds_config
     // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary
