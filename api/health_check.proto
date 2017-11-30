@@ -85,7 +85,8 @@ message HealthCheck {
     repeated Payload receive = 2;
   }
 
-  message RedisHealthCheck {}
+  message RedisHealthCheck {
+  }
 
   oneof health_checker {
     option (validate.required) = true;

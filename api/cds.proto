@@ -20,7 +20,8 @@ import "validate/validate.proto";
 
 // Return list of all clusters this proxy will load balance to.
 service ClusterDiscoveryService {
-  rpc StreamClusters(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
+  rpc StreamClusters(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
 
   rpc FetchClusters(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {

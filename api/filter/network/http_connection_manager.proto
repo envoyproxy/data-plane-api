@@ -52,7 +52,9 @@ message HttpFilter {
 
   // [#not-implemented-hide:]
   // This is hidden as type has been deprecated and is no longer required.
-  message DeprecatedV1 { string type = 1; }
+  message DeprecatedV1 {
+    string type = 1;
+  }
 
   // [#not-implemented-hide:]
   // This is hidden as type has been deprecated and is no longer required.

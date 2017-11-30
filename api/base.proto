@@ -50,7 +50,9 @@ message Node {
 }
 
 // Upstream host identifier.
-message Endpoint { Address address = 1; }
+message Endpoint {
+  Address address = 1;
+}
 
 // Metadata provides additional inputs to filters based on matched listeners,
 // filter chains, routes and endpoints. It is structured as a map from filter
@@ -158,7 +160,8 @@ message ApiConfigSource {
 // Aggregated Discovery Service (ADS) options. This is currently empty, but when
 // set in :ref:`ConfigSource <envoy_api_msg_ConfigSource>` can be used to
 // specify that ADS is to be used.
-message AggregatedConfigSource {}
+message AggregatedConfigSource {
+}
 
 // Configuration for :ref:`listeners <config_listeners>`, :ref:`clusters
 // <config_cluster_manager_cluster>`, :ref:`routes

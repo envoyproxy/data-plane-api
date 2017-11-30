@@ -11,7 +11,8 @@ import "validate/validate.proto";
 // [#protodoc-title: Protocol options]
 
 // [#not-implemented-hide:]
-message TcpProtocolOptions {}
+message TcpProtocolOptions {
+}
 
 message Http1ProtocolOptions {
   // Handle HTTP requests with absolute URLs in the requests. These requests
@@ -55,4 +56,6 @@ message Http2ProtocolOptions {
 }
 
 // [#not-implemented-hide:]
-message GrpcProtocolOptions { Http2ProtocolOptions http2_protocol_options = 1; }
+message GrpcProtocolOptions {
+  Http2ProtocolOptions http2_protocol_options = 1;
+}

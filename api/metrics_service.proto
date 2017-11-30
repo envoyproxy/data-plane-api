@@ -14,10 +14,12 @@ import "metrics.proto";
 service MetricsService {
   // Envoy will connect and send StreamMetricsMessage messages forever. It does not expect any
   // response to be sent as nothing would be done in the case of failure.
-  rpc StreamMetrics(stream StreamMetricsMessage) returns (StreamMetricsResponse) {}
+  rpc StreamMetrics(stream StreamMetricsMessage) returns (StreamMetricsResponse) {
+  }
 }
 
-message StreamMetricsResponse {}
+message StreamMetricsResponse {
+}
 
 message StreamMetricsMessage {
   message Identifier {

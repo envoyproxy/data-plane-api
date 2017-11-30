@@ -275,11 +275,13 @@ message DurationFilter {
 
 // Filters for requests that are not health check requests. A health check
 // request is marked by the health check filter.
-message NotHealthCheckFilter {}
+message NotHealthCheckFilter {
+}
 
 // Filters for requests that are traceable. See the tracing overview for more
 // information on how a request becomes traceable.
-message TraceableFilter {}
+message TraceableFilter {
+}
 
 // Filters for random sampling of requests. Sampling pivots on the header
 // :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` being present. If
@@ -377,10 +379,14 @@ message StreamAccessLogsMessage {
   Identifier identifier = 1;
 
   // Wrapper for batches of HTTP access log entries.
-  message HTTPAccessLogEntries { repeated HTTPAccessLogEntry log_entry = 1; }
+  message HTTPAccessLogEntries {
+    repeated HTTPAccessLogEntry log_entry = 1;
+  }
 
   // Wrapper for batches of TCP access log entries.
-  message TCPAccessLogEntries { repeated TCPAccessLogEntry log_entry = 1; }
+  message TCPAccessLogEntries {
+    repeated TCPAccessLogEntry log_entry = 1;
+  }
 
   // Batches of log entries of a single type. Generally speaking, a given stream should only
   // ever incude one type of log entry.
@@ -392,7 +398,8 @@ message StreamAccessLogsMessage {
 
 // Empty response for the StreamAccessLogs API. Will never be sent. See below.
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-message StreamAccessLogsResponse {}
+message StreamAccessLogsResponse {
+}
 
 // Service for streaming access logs from Envoy to an access log server.
 service AccessLogService {
@@ -402,7 +409,8 @@ service AccessLogService {
   // API for "critical" access logs in which Envoy will buffer access logs for some period of time
   // until it gets an ACK so it could then retry. This API is designed for high throughput with the
   // expectation that it might be lossy.
-  rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {}
+  rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {
+  }
 }
 
 message AccessLog {

@@ -17,7 +17,8 @@ import "validate/validate.proto";
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
   // to subscribe to updates for.
-  rpc StreamEndpoints(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
+  rpc StreamEndpoints(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
 
   rpc FetchEndpoints(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
@@ -54,7 +55,8 @@ service EndpointDiscoveryService {
   // 6. The management server uses the load reports from all reported Envoys
   //    from around the world, computes global assignment and prepares traffic
   //    assignment destined for each zone Envoys are located in. Goto 2.
-  rpc StreamLoadStats(stream LoadStatsRequest) returns (stream LoadStatsResponse) {}
+  rpc StreamLoadStats(stream LoadStatsRequest) returns (stream LoadStatsResponse) {
+  }
 }
 
 // An Endpoint that Envoy can route traffic to.

@@ -20,7 +20,8 @@ import "validate/validate.proto";
 // configurations. Each listener will bind its HTTP connection manager filter to
 // a route table via this identifier.
 service RouteDiscoveryService {
-  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
+  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
 
   rpc FetchRoutes(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
@@ -507,7 +508,8 @@ message RateLimit {
     //   ("source_cluster", "<local service cluster>")
     //
     // <local service cluster> is derived from the :option:`--service-cluster` option.
-    message SourceCluster {}
+    message SourceCluster {
+    }
 
     // The following descriptor entry is appended to the descriptor:
     //
@@ -525,7 +527,8 @@ message RateLimit {
     //   chooses a cluster randomly from a set of clusters with attributed weight.
     // * :ref:`cluster_header <envoy_api_field_RouteAction.cluster_header>` indicates which
     //   header in the request contains the target cluster.
-    message DestinationCluster {}
+    message DestinationCluster {
+    }
 
     // The following descriptor entry is appended when a header contains a key that matches the
     // *header_name*:
@@ -549,7 +552,8 @@ message RateLimit {
     // .. code-block:: cpp
     //
     //   ("remote_address", "<trusted address from x-forwarded-for>")
-    message RemoteAddress {}
+    message RemoteAddress {
+    }
 
     // The following descriptor entry is appended to the descriptor:
     //

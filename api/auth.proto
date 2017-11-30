@@ -19,10 +19,14 @@ message AuthAction {
   ActionType action_type = 1;
 
   // Logic AND that requires all rules match.
-  message AndRule { repeated Rule rules = 1; }
+  message AndRule {
+    repeated Rule rules = 1;
+  }
 
   // Logic OR that requires at least one rule matches.
-  message OrRule { repeated Rule rules = 1; }
+  message OrRule {
+    repeated Rule rules = 1;
+  }
 
   // Check peer identity using X.509 certificate.
   message X509Rule {

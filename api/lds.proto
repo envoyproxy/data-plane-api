@@ -21,7 +21,8 @@ import "validate/validate.proto";
 // consist of a complete update of all listeners. Existing connections will be
 // allowed to drain from listeners that are no longer present.
 service ListenerDiscoveryService {
-  rpc StreamListeners(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
+  rpc StreamListeners(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
 
   rpc FetchListeners(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
@@ -48,7 +49,9 @@ message Filter {
   google.protobuf.Struct config = 2;
 
   // [#not-implemented-hide:]
-  message DeprecatedV1 { string type = 1; }
+  message DeprecatedV1 {
+    string type = 1;
+  }
 
   // [#not-implemented-hide:]
   DeprecatedV1 deprecated_v1 = 3;

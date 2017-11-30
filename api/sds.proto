@@ -13,7 +13,8 @@ import "validate/validate.proto";
 // [#protodoc-title: Common TLS configuration]
 
 service SecretDiscoveryService {
-  rpc StreamSecrets(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
+  rpc StreamSecrets(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
 
   rpc FetchSecrets(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
@@ -203,7 +204,9 @@ message CommonTlsContext {
   // These fields are deprecated and only are used during the interim v1 -> v2
   // transition period for internal purposes. They should not be used outside of
   // the Envoy binary. [#not-implemented-hide:]
-  message DeprecatedV1 { string alt_alpn_protocols = 1; }
+  message DeprecatedV1 {
+    string alt_alpn_protocols = 1;
+  }
 
   // [#not-implemented-hide:]
   DeprecatedV1 deprecated_v1 = 5;
