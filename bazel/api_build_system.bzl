@@ -28,7 +28,11 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
         deps = [_LibrarySuffix(d, _PY_SUFFIX) for d in deps] + [
             "@com_lyft_protoc_gen_validate//validate:validate_py",
             "@googleapis//:http_api_protos_py",
+<<<<<<< HEAD
             "@com_github_gogo_protobuf//:gogo_proto_py",
+=======
+            "@googleapis//:rpc_status_protos_py",
+>>>>>>> Initial proposal for external auth filter
         ],
         visibility = ["//visibility:public"],
     )
@@ -53,7 +57,12 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
             "@com_google_protobuf//:timestamp_proto",
             "@com_google_protobuf//:wrappers_proto",
             "@googleapis//:http_api_protos_proto",
+<<<<<<< HEAD
             "@com_github_gogo_protobuf//:gogo_proto",
+=======
+            "@googleapis//:http_api_protos_lib",
+            "@googleapis//:rpc_status_protos_lib",
+>>>>>>> Initial proposal for external auth filter
             "@com_lyft_protoc_gen_validate//validate:validate_proto",
         ],
         visibility = ["//visibility:public"],
