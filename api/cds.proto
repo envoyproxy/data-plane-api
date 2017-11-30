@@ -122,9 +122,9 @@ message Cluster {
     ConfigSource eds_config = 1;
 
     // Optional alternative to cluster name to present to EDS. This does not
-    // have the same restrictions as cluster name, i.e. it may be arbritary
+    // have the same restrictions as cluster name, i.e. it may be arbitrary
     // length.
-    string service_name = 2 [(validate.rules).string.min_bytes = 1];
+    string service_name = 2;
   }
   // Configuration to use for EDS updates for the Cluster.
   EdsClusterConfig eds_cluster_config = 3;
@@ -330,13 +330,13 @@ message Cluster {
   // The interval for removing stale hosts from a cluster type
   // :ref:`ORIGINAL_DST<envoy_api_enum_value_Cluster.DiscoveryType.ORIGINAL_DST>`.
   // Hosts are considered stale if they have not been used
-  // as upstream destinations during this interval.  New hosts are added
+  // as upstream destinations during this interval. New hosts are added
   // to original destination clusters on demand as new connections are
   // redirected to Envoy, causing the number of hosts in the cluster to
-  // grow over time.  Hosts that are not stale (they are actively used as
+  // grow over time. Hosts that are not stale (they are actively used as
   // destinations) are kept in the cluster, which allows connections to
   // them remain open, saving the latency that would otherwise be spent
-  // on opening new connections.  If this setting is not specified, the
+  // on opening new connections. If this setting is not specified, the
   // value defaults to 5000ms. For cluster types other than
   // :ref:`ORIGINAL_DST<envoy_api_enum_value_Cluster.DiscoveryType.ORIGINAL_DST>`
   // this setting is ignored.

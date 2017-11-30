@@ -65,7 +65,7 @@ message AccessLogCommon {
   // selection.
   //
   // This can be used to associate IDs attached to the various configurations
-  // used to process this request with the access log entry.  For example, a
+  // used to process this request with the access log entry. For example, a
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.

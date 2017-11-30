@@ -15,4 +15,6 @@ Configuration reference
   http_filters/http_filters
   cluster_manager/cluster_manager
   access_log
+  rate_limit
+  runtime
   tools/router_check

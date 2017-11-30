@@ -3,8 +3,11 @@
 Administration interface
 ========================
 
-Envoy exposes a :ref:`local administration interface <config_admin>` that can be used to query and
-modify different aspects of the server.
+Envoy exposes a local administration interface that can be used to query and
+modify different aspects of the server:
+
+* :ref:`v1 API reference <config_admin_v1>`
+* :ref:`v2 API reference <envoy_api_msg_Admin>`
 
 .. http:get:: /
 
