@@ -134,7 +134,7 @@ message LocalityLbEndpoints {
   // next highest priority group.
   //
   // Priorities should range from 0 (highest) to N (lowest) without skipping.
-  google.protobuf.UInt32Value priority = 5;
+  uint32 priority = 5;
 }
 
 message EndpointLoadMetricStats {
@@ -194,7 +194,7 @@ message UpstreamLocalityStats {
 
   // [#not-implemented-hide:] The priority of the endpoint group these metrics
   // were collected from.
-  google.protobuf.UInt32Value priority = 6;
+  uint32 priority = 6;
 }
 
 // Per cluster load stats. Envoy reports these stats a management server in a
