@@ -99,7 +99,9 @@ the route. The name can also be overridden using the
 Envoy automatically sends spans to tracing collectors. Depending on the tracing collector,
 multiple spans are stitched together using common information such as the globally unique
 request ID :ref:`config_http_conn_man_headers_x-request-id` (LightStep) or
-the trace ID :ref:`configuration <config_tracing>` (Zipkin).
+the trace ID configuration (Zipkin). See
 
-See tracing :ref:`configuration <config_tracing>` for more information on how to setup tracing in
-Envoy.
+* :ref:`v1 API reference <config_tracing_v1>`
+* :ref:`v2 API reference <envoy_api_msg_Tracing>`
+
+for more information on how to setup tracing in Envoy.
