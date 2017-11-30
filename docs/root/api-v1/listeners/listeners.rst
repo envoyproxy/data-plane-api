@@ -3,6 +3,11 @@
 Listeners
 =========
 
+.. toctree::
+  :hidden:
+
+  lds
+
 .. code-block:: json
 
   {
@@ -57,10 +62,10 @@ use_proxy_proto
 
 use_original_dst
   *(optional, boolean)* If a connection is redirected using *iptables*, the port on which the proxy
-  receives it might be different from the original destination port. When this flag is set to true,
+  receives it might be different from the original destination address. When this flag is set to true,
   the listener hands off redirected connections to the listener associated with the original
-  destination port. If there is no listener associated with the original destination port, the
-  connection is handled by the listener that receives it. Default is false.
+  destination address. If there is no listener associated with the original destination address, the
+  connection is handled by the listener that receives it. Defaults to false.
 
 .. _config_listeners_per_connection_buffer_limit_bytes:
 

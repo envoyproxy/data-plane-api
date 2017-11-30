@@ -141,7 +141,9 @@ message Listener {
   // increased by setting the :option:`--max-obj-name-len` command line argument to the desired value.
   string name = 1;
 
-  // The address that the listener should listen on.
+  // The address that the listener should listen on. In general, the address must be unique, though
+  // that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
+  // Linux as the actual port will be allocated by the OS.
   Address address = 2 [(validate.rules).message.required = true];
 
   // A list of filter chains to consider for this listener. The
@@ -160,10 +162,10 @@ message Listener {
   repeated FilterChain filter_chains = 3 [(validate.rules).repeated.min_items = 1];
 
   // If a connection is redirected using *iptables*, the port on which the proxy
-  // receives it might be different from the original destination port. When this flag is set to true,
+  // receives it might be different from the original destination address. When this flag is set to true,
   // the listener hands off redirected connections to the listener associated with the original
-  // destination port. If there is no listener associated with the original destination port, the
-  // connection is handled by the listener that receives it. Default is false.
+  // destination address. If there is no listener associated with the original destination address, the
+  // connection is handled by the listener that receives it. Defaults to false.
   google.protobuf.BoolValue use_original_dst = 4;
 
   // Soft limit on size of the listener’s new connection read and write buffers.
