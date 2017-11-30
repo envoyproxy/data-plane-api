@@ -52,6 +52,7 @@ message Tracing {
     // supported HTTP trace driver. *envoy.lightstep* and *envoy.zipkin* are
     // built-in trace drivers.
     string name = 1 [(validate.rules).string.min_len = 1];
+
     // Trace driver specific configuration which depends on the driver being
     // instantiated. See the :ref:`LightstepConfig
     // <envoy_api_msg_LightstepConfig>` and :ref:`ZipkinConfig
@@ -85,7 +86,9 @@ message ClusterManager {
   // If *local_cluster_name* is defined then :ref:`clusters
   // <config_cluster_manager_clusters>` must be defined in the :ref:`Bootstrap
   // static cluster resources
-  // <envoy_api_field_Bootstrap.StaticResources.clusters>`.
+  // <envoy_api_field_Bootstrap.StaticResources.clusters>`. This is unrelated to
+  // the :option:`--service-cluster` option which does not `affect zone aware
+  // routing <https://github.com/envoyproxy/envoy/issues/774>`_.
   string local_cluster_name = 1;
 
   message OutlierDetection {
@@ -241,13 +244,13 @@ message Watchdog {
   // The duration after which Envoy counts a nonresponsive thread in the
   // *server.watchdog_mega_miss* statistic. If not specified the default is
   // 1000ms.
-
   google.protobuf.Duration megamiss_timeout = 2;
+
   // If a watched thread has been nonresponsive for this duration, assume a
   // programming error and kill the entire Envoy process. Set to 0 to disable
   // kill behavior. If not specified the default is 0 (disabled).
-
   google.protobuf.Duration kill_timeout = 3;
+
 
   // If at least two watched threads have been nonresponsive for at least this
   // duration assume a true deadlock and kill the entire Envoy process. Set to 0
@@ -296,6 +299,7 @@ message Bootstrap {
     // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
     // available regardless of LDS configuration.
     repeated Listener listeners = 1;
+
     // If a network based configuration source is specified for :ref:`cds_config
     // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary
     // to have some initial cluster definitions available to allow Envoy to know
@@ -314,10 +318,12 @@ message Bootstrap {
     // All :ref:`Listeners <envoy_api_msg_Listener>` are provided by a single
     // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
     ConfigSource lds_config = 1;
+
     // All post-bootstrap :ref:`Cluster <envoy_api_msg_Cluster>` definitions are
     // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
     // configuration source.
     ConfigSource cds_config = 2;
+
     // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
     // specified. This must have :ref:`api_type
     // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
