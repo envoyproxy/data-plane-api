@@ -1,4 +1,4 @@
-.. _config_cluster_manager_cluster_circuit_breakers:
+.. _config_cluster_manager_cluster_circuit_breakers_v1:
 
 Circuit breakers
 ================
@@ -62,12 +62,3 @@ max_retries
   *(optional, integer)* The maximum number of parallel retries that Envoy will allow to the upstream
   cluster. If not specified, the default is 3. See the :ref:`circuit breaking overview
   <arch_overview_circuit_break>` for more information.
-
-Runtime
--------
-
-All four circuit breaking settings are runtime configurable for all defined priorities based on cluster
-name. They follow the following naming scheme ``circuit_breakers.<cluster_name>.<priority>.<setting>``.
-``cluster_name`` is the name field in each cluster's configuration, which is set in the envoy
-:ref:`config file <config_cluster_manager_cluster_name>`. Available runtime settings will override
-settings set in the envoy config file.
