@@ -6,6 +6,8 @@ package envoy.api.v2;
 
 import "google/protobuf/wrappers.proto";
 
+import "validate/validate.proto";
+
 // [#protodoc-title: Protocol options]
 
 // [#not-implemented-hide:]
@@ -30,7 +32,8 @@ message Http2ProtocolOptions {
   // `Maximum concurrent streams <http://httpwg.org/specs/rfc7540.html#rfc.section.5.1.2>`_
   // allowed for peer on one HTTP/2 connection. Valid values range from 1 to 2147483647 (2^31 - 1)
   // and defaults to 2147483647.
-  google.protobuf.UInt32Value max_concurrent_streams = 2;
+  google.protobuf.UInt32Value max_concurrent_streams = 2
+      [(validate.rules).uint32 = {gte: 1, lte: 2147483647}];
 
   // `Initial stream-level flow-control window
   // <http://httpwg.org/specs/rfc7540.html#rfc.section.6.9.2>`_ size. Valid values range from 65535
@@ -43,11 +46,13 @@ message Http2ProtocolOptions {
   // This field also acts as a soft limit on the number of bytes Envoy will buffer per-stream in the
   // HTTP/2 codec buffers. Once the buffer reaches this pointer, watermark callbacks will fire to
   // stop the flow of data to the codec buffers.
-  google.protobuf.UInt32Value initial_stream_window_size = 3;
+  google.protobuf.UInt32Value initial_stream_window_size = 3
+      [(validate.rules).uint32 = {gte: 65535, lte: 2147483647}];
 
   // Similar to *initial_stream_window_size*, but for connection-level flow-control
   // window. Currently, this has the same minimum/maximum/default as *initial_stream_window_size*.
-  google.protobuf.UInt32Value initial_connection_window_size = 4;
+  google.protobuf.UInt32Value initial_connection_window_size = 4
+      [(validate.rules).uint32 = {gte: 65535, lte: 2147483647}];
 }
 
 // [#not-implemented-hide:]

@@ -43,7 +43,7 @@ message WeightedCluster {
   message ClusterWeight {
     // Name of the upstream cluster. The cluster must exist in the
     // :ref:`cluster manager configuration <config_cluster_manager>`.
-    string name = 1 [(validate.rules).string.min_len = 1];
+    string name = 1 [(validate.rules).string.min_bytes = 1];
 
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
@@ -242,7 +242,7 @@ message RouteAction {
   message RequestMirrorPolicy {
     // Specifies the cluster that requests will be mirrored to. The cluster must
     // exist in the cluster manager configuration.
-    string cluster = 1 [(validate.rules).string.min_len = 1];
+    string cluster = 1 [(validate.rules).string.min_bytes = 1];
 
     // If not specified, all requests to the target cluster will be mirrored. If
     // specified, Envoy will lookup the runtime key to get the % of requests to
@@ -291,7 +291,7 @@ message RouteAction {
     message Header {
       // The name of the request header that will be used to obtain the hash
       // key. If the request header is not present, no hash will be produced.
-      string header_name = 1 [(validate.rules).string.min_len = 1];
+      string header_name = 1 [(validate.rules).string.min_bytes = 1];
     }
 
     // Envoy supports two types of cookie affinity:
@@ -312,7 +312,7 @@ message RouteAction {
       // The name of the cookie that will be used to obtain the hash key. If the
       // cookie is not present and ttl below is not set, no hash will be
       // produced.
-      string name = 1 [(validate.rules).string.min_len = 1];
+      string name = 1 [(validate.rules).string.min_bytes = 1];
 
       // If specified, a cookie with the TTL will be generated if the cookie is
       // not present.
@@ -410,7 +410,7 @@ message Decorator {
   //   For ingress (inbound) requests, or egress (outbound) responses, this value may be overridden
   //   by the :ref:`x-envoy-decorator-operation
   //   <config_http_filters_router_x-envoy-decorator-operation>` header.
-  string operation = 1 [(validate.rules).string.min_len = 1];
+  string operation = 1 [(validate.rules).string.min_bytes = 1];
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -476,12 +476,12 @@ message VirtualCluster {
   // * The regex */rides/\d+* matches the path */rides/0*
   // * The regex */rides/\d+* matches the path */rides/123*
   // * The regex */rides/\d+* does not match the path */rides/123/456*
-  string pattern = 1 [(validate.rules).string.min_len = 1];
+  string pattern = 1 [(validate.rules).string.min_bytes = 1];
 
   //  Specifies the name of the virtual cluster. The virtual cluster name as well
   // as the virtual host name are used when emitting statistics. The statistics are emitted by the
   // router filter and are documented :ref:`here <config_http_filters_router_stats>`.
-  string name = 2 [(validate.rules).string.min_len = 1];
+  string name = 2 [(validate.rules).string.min_bytes = 1];
 
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
@@ -540,10 +540,10 @@ message RateLimit {
       // The header name to be queried from the request headers. The header’s
       // value is used to populate the value of the descriptor entry for the
       // descriptor_key.
-      string header_name = 1 [(validate.rules).string.min_len = 1];
+      string header_name = 1 [(validate.rules).string.min_bytes = 1];
 
       // The key to use in the descriptor entry.
-      string descriptor_key = 2 [(validate.rules).string.min_len = 1];
+      string descriptor_key = 2 [(validate.rules).string.min_bytes = 1];
     }
 
     // The following descriptor entry is appended to the descriptor and is populated using the
@@ -561,7 +561,7 @@ message RateLimit {
     //   ("generic_key", "<descriptor_value>")
     message GenericKey {
       // The value to use in the descriptor entry.
-      string descriptor_value = 1 [(validate.rules).string.min_len = 1];
+      string descriptor_value = 1 [(validate.rules).string.min_bytes = 1];
     }
 
     // The following descriptor entry is appended to the descriptor:
@@ -571,7 +571,7 @@ message RateLimit {
     //   ("header_match", "<descriptor_value>")
     message HeaderValueMatch {
       // The value to use in the descriptor entry.
-      string descriptor_value = 1 [(validate.rules).string.min_len = 1];
+      string descriptor_value = 1 [(validate.rules).string.min_bytes = 1];
 
       // If set to true, the action will append a descriptor entry when the
       // request matches the headers. If set to false, the action will append a
@@ -616,7 +616,7 @@ message RateLimit {
   // cannot append a descriptor entry, no descriptor is generated for the
   // configuration. See :ref:`composing actions
   // <config_http_filters_rate_limit_composing_actions>` for additional documentation.
-  repeated Action actions = 3 [(validate.rules).string.min_len = 1];
+  repeated Action actions = 3 [(validate.rules).repeated.min_items = 1];
 }
 
 // .. attention::
@@ -637,7 +637,7 @@ message RateLimit {
 //     }
 message HeaderMatcher {
   // Specifies the name of the header in the request.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Specifies the value of the header. If the value is absent a request that
   // has the name header will match, regardless of the header’s value.
@@ -665,7 +665,7 @@ message HeaderMatcher {
 message VirtualHost {
   // The logical name of the virtual host. This is used when emitting certain
   // statistics but is not relevant for routing.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // A list of domains (host/authority header) that will be matched to this
   // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
