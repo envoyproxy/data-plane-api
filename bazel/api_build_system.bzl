@@ -1,5 +1,8 @@
 load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 
+_PY_SUFFIX="_py"
+_CC_SUFFIX="_cc"
+
 def _Suffix(d, suffix):
   return d + suffix
 
@@ -16,11 +19,11 @@ def _LibrarySuffix(library_name, suffix):
 # https://github.com/bazelbuild/bazel/issues/2626 are resolved.
 def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
     py_proto_library(
-        name = _Suffix(name, "_py"),
+        name = _Suffix(name, _PY_SUFFIX),
         srcs = srcs,
         default_runtime = "@com_google_protobuf//:protobuf_python",
         protoc = "@com_google_protobuf//:protoc",
-        deps = [_LibrarySuffix(d, "_py") for d in deps] + [
+        deps = [_LibrarySuffix(d, _PY_SUFFIX) for d in deps] + [
             "@com_lyft_protoc_gen_validate//validate:validate_py",
             "@googleapis//:http_api_protos_py",
         ],
@@ -46,7 +49,7 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
         visibility = ["//visibility:public"],
     )
     native.cc_proto_library(
-        name = _Suffix(name, "_cc"),
+        name = _Suffix(name, _CC_SUFFIX),
         deps = [name],
         visibility = ["//visibility:public"],
     )
@@ -57,5 +60,5 @@ def api_cc_test(name, srcs, proto_deps):
     native.cc_test(
         name = name,
         srcs = srcs,
-        deps = [_LibrarySuffix(d, "_cc") for d in proto_deps],
+        deps = [_LibrarySuffix(d, _CC_SUFFIX) for d in proto_deps],
     )
