@@ -1,16 +1,13 @@
 load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 
-def _CcSuffix(d):
-    return d + "_cc"
+def _Suffix(d, suffix):
+  return d + suffix
 
-def _PySuffix(d):
-  return d + "_py"
-
-def _PySuffixLibrary(library_name):
+def _LibrarySuffix(library_name, suffix):
   # Transform //a/b/c to //a/b/c:c in preparation for suffix operation below.
   if library_name.startswith("//") and ":" not in library_name:
       library_name += ":" + Label(library_name).name
-  return _PySuffix(library_name)
+  return _Suffix(library_name, suffix)
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
@@ -19,11 +16,11 @@ def _PySuffixLibrary(library_name):
 # https://github.com/bazelbuild/bazel/issues/2626 are resolved.
 def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
     py_proto_library(
-        name = _PySuffix(name),
+        name = _Suffix(name, "_py"),
         srcs = srcs,
         default_runtime = "@com_google_protobuf//:protobuf_python",
         protoc = "@com_google_protobuf//:protoc",
-        deps = [_PySuffixLibrary(d) for d in deps] + [
+        deps = [_LibrarySuffix(d, "_py") for d in deps] + [
             "@com_lyft_protoc_gen_validate//validate:validate_py",
             "@googleapis//:http_api_protos_py",
         ],
@@ -49,7 +46,7 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
         visibility = ["//visibility:public"],
     )
     native.cc_proto_library(
-        name = _CcSuffix(name),
+        name = _Suffix(name, "_cc"),
         deps = [name],
         visibility = ["//visibility:public"],
     )
@@ -60,5 +57,5 @@ def api_cc_test(name, srcs, proto_deps):
     native.cc_test(
         name = name,
         srcs = srcs,
-        deps = [_CcSuffix(d) for d in proto_deps],
+        deps = [_LibrarySuffix(d, "_cc") for d in proto_deps],
     )
