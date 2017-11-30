@@ -11,5 +11,6 @@ SortIncludes: false
 Language: Proto
 ColumnLimit: 100
 SpacesInContainerLiterals: false
+AllowShortFunctionsOnASingleLine: false
 ...
 
