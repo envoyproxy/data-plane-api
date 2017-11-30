@@ -122,9 +122,9 @@ message Cluster {
     ConfigSource eds_config = 1;
 
     // Optional alternative to cluster name to present to EDS. This does not
-    // have the same restrictions as cluster name, i.e. it may be arbritary
+    // have the same restrictions as cluster name, i.e. it may be arbitrary
     // length.
-    string service_name = 2 [(validate.rules).string.min_len = 1];
+    string service_name = 2;
   }
   // Configuration to use for EDS updates for the Cluster.
   EdsClusterConfig eds_cluster_config = 3;

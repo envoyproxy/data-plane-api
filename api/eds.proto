@@ -235,7 +235,9 @@ message LoadStatsRequest {
 // effective weight of a host is its load_balancing_weight multiplied by the
 // load_balancing_weight of its Locality.
 message ClusterLoadAssignment {
-  // Name of the cluster.
+  // Name of the cluster. This will be the
+  // :ref:`service_name <envoy_api_field_Cluster.EdsClusterConfig.service_name>`
+  // value if specified in CDS.
   string cluster_name = 1 [(validate.rules).string.min_len = 1];
 
   // List of endpoints to load balance to.
