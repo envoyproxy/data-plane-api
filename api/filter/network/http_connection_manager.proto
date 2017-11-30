@@ -25,7 +25,7 @@ message Rds {
   // API. This allows an Envoy configuration with multiple HTTP listeners (and
   // associated HTTP connection manager filters) to use different route
   // configurations.
-  string route_config_name = 2 [(validate.rules).string.min_len = 1];
+  string route_config_name = 2 [(validate.rules).string.min_bytes = 1];
 }
 
 message HttpFilter {
@@ -44,7 +44,7 @@ message HttpFilter {
   // * :ref:`envoy.lua <config_http_filters_lua>`
   // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
   // * :ref:`envoy.router <config_http_filters_router>`
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
@@ -83,7 +83,7 @@ message HttpConnectionManager {
   // The human readable prefix to use when emitting statistics for the
   // connection manager. See the :ref:`statistics documentation <config_http_conn_man_stats>` for
   // more information.
-  string stat_prefix = 2 [(validate.rules).string.min_len = 1];
+  string stat_prefix = 2 [(validate.rules).string.min_bytes = 1];
 
   oneof route_specifier {
     option (validate.required) = true;

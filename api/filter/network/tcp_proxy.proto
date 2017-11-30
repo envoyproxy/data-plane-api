@@ -19,10 +19,10 @@ import "validate/validate.proto";
 message TcpProxy {
   // The prefix to use when emitting :ref:`statistics
   // <config_network_filters_tcp_proxy_stats>`.
-  string stat_prefix = 1 [(validate.rules).string.min_len = 1];
+  string stat_prefix = 1 [(validate.rules).string.min_bytes = 1];
 
   // The upstream cluster to connect to.
-  string cluster = 2 [(validate.rules).string.min_len = 1];
+  string cluster = 2 [(validate.rules).string.min_bytes = 1];
 
   // [#not-implemented-hide:] The idle timeout for connections managed by the TCP proxy
   // filter. The idle timeout is defined as the period in which there is no
@@ -54,7 +54,7 @@ message TcpProxy {
     message TCPRoute {
       // The cluster to connect to when a the downstream network connection
       // matches the specified criteria.
-      string cluster = 1 [(validate.rules).string.min_len = 1];
+      string cluster = 1 [(validate.rules).string.min_bytes = 1];
 
       // An optional list of IP address subnets in the form
       // “ip_address/xx”. The criteria is satisfied if the destination IP
