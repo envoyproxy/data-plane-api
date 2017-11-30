@@ -8,7 +8,9 @@ import "api/discovery.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
-// [#protodoc-title: TLS configuration and Secret Discovery Service (SDS)]
+import "validate/validate.proto";
+
+// [#protodoc-title: Common TLS configuration]
 
 service SecretDiscoveryService{
   rpc StreamSecrets(stream DiscoveryRequest)
@@ -26,24 +28,66 @@ service SecretDiscoveryService{
 
 message DataSource {
   oneof specifier {
-    string filename = 1;
+    option (validate.required) = true;
+
+    // Local filesystem data source.
+    string filename = 1 [(validate.rules).string.min_len = 1];
+
+    // [#not-implemented-hide:]
     bytes inline = 2;
   }
 }
 
 message TlsParameters {
   enum TlsProtocol {
+    // Envoy will choose the optimal TLS version.
     TLS_AUTO = 0;
+
+    // TLS 1.0
     TLSv1_0 = 1;
+
+    // TLS 1.1
     TLSv1_1 = 2;
+
+    // TLS 1.2
     TLSv1_2 = 3;
+
+    // TLS 1.3
     TLSv1_3 = 4;
   }
-  // Allowed TLS protocols.
-  TlsProtocol tls_minimum_protocol_version = 1;
-  TlsProtocol tls_maximum_protocol_version = 2;
 
-  // If specified, the TLS listener will only support the specified cipher list.
+  // Minimum TLS protocol version.
+  TlsProtocol tls_minimum_protocol_version = 1 [(validate.rules).enum.defined_only = true];
+
+  // Maximum TLS protocol version.
+  TlsProtocol tls_maximum_protocol_version = 2 [(validate.rules).enum.defined_only = true];
+
+  // If specified, the TLS listener will only support the specified `cipher list
+  // <https://commondatastorage.googleapis.com/chromium-boringssl-docs/ssl.h.html#Cipher-suite-configuration>`_.
+  // If not specified, the default list:
+  //
+  // .. code-block:: none
+  //
+  //   [ECDHE-ECDSA-AES128-GCM-SHA256|ECDHE-ECDSA-CHACHA20-POLY1305]
+  //   [ECDHE-RSA-AES128-GCM-SHA256|ECDHE-RSA-CHACHA20-POLY1305]
+  //   ECDHE-ECDSA-AES128-SHA256
+  //   ECDHE-RSA-AES128-SHA256
+  //   ECDHE-ECDSA-AES128-SHA
+  //   ECDHE-RSA-AES128-SHA
+  //   AES128-GCM-SHA256
+  //   AES128-SHA256
+  //   AES128-SHA
+  //   ECDHE-ECDSA-AES256-GCM-SHA384
+  //   ECDHE-RSA-AES256-GCM-SHA384
+  //   ECDHE-ECDSA-AES256-SHA384
+  //   ECDHE-RSA-AES256-SHA384
+  //   ECDHE-ECDSA-AES256-SHA
+  //   ECDHE-RSA-AES256-SHA
+  //   AES256-GCM-SHA384
+  //   AES256-SHA256
+  //   AES256-SHA
+  //
+  // will be used.
   repeated string cipher_suites = 3;
 
   // If specified, the TLS connection will only support the specified ECDH
@@ -51,49 +95,78 @@ message TlsParameters {
   repeated string ecdh_curves = 4;
 }
 
-// TLS certs can be loaded from file or delivered inline [V2-API-DIFF]. Individual fields may
-// be loaded from either.
 message TlsCertificate {
+  // The TLS certificate chain.
   DataSource certificate_chain = 1;
+
+  // The TLS private key.
   DataSource private_key = 2;
+
+  // [#not-implemented-hide:]
   DataSource password = 3;
+
+  // [#not-implemented-hide:]
   DataSource ocsp_staple = 4;
+
+  // [#not-implemented-hide:]
   repeated DataSource signed_certificate_timestamp = 5;
 }
 
 message TlsSessionTicketKeys {
-  // Keys to encrypt/decrypt TLS session tickets for session resumption.  The first
-  // key is used to encrypt new tickets that are created.  All keys are candidates
-  // for decrypting received tickets.
+  // Keys for encrypting and decrypting TLS session tickets. The
+  // first key in the array contains the key to encrypt all new sessions created by this context.
+  // All keys are candidates for decrypting received tickets. This allows for easy rotation of keys
+  // by, for example, putting the new key first, and the previous key second.
   //
-  // Each key must be exactly 80 bytes long, containing cryptographically-secure random
-  // data.  For example, the output of "openssl rand 80".
-  repeated DataSource keys = 1;
+  // If :ref:`session_ticket_keys <envoy_api_field_DownstreamTlsContext.session_ticket_keys>` is not
+  // specified, the TLS library will still support resuming
+  // sessions via tickets, but it will use an internally-generated and managed key, so sessions
+  // cannot be resumed across hot restarts or on different hosts.
+  //
+  // Each key must contain exactly 80 bytes of cryptographically-secure random data. For
+  // example, the output of ``openssl rand 80``.
+  //
+  // .. attention::
+  //
+  //   Using this feature has serious security considerations and risks. Improper handling of keys may
+  //   result in loss of secrecy in connections, even if ciphers supporting perfect forward secrecy
+  //   are used. See https://www.imperialviolet.org/2013/06/27/botchingpfs.html for some discussion.
+  //   To minimize the risk, you must:
+  //
+  //   * Keep the session ticket keys at least as secure as your TLS certificate private keys
+  //   * Rotate session ticket keys at least daily, and preferably hourly
+  //   * Always generate keys using a cryptographically-secure random data source
+  repeated DataSource keys = 1 [(validate.rules).repeated.min_items = 1];
 }
 
 message CertificateValidationContext {
-  // TLS certificate data containing certificate authority certificates to use
-  // in verifying a presented certificate. If not specified and a certificate is
-  // presented it will not be verified.
+  // TLS certificate data containing certificate authority certificates to use in verifying
+  // a presented client side certificate. If not specified and a client certificate is presented it
+  // will not be verified. By default, a client certificate is optional, unless one of the additional
+  // options (:ref:`require_client_certificate <envoy_api_field_DownstreamTlsContext.require_client_certificate>`,
+  // :ref:`verify_certificate_hash <envoy_api_field_CertificateValidationContext.verify_certificate_hash>`, or
+  // :ref:`verify_subject_alt_name <envoy_api_field_CertificateValidationContext.verify_subject_alt_name>`) is also
+  // specified.
   DataSource trusted_ca = 1;
 
-  // If specified, Envoy will verify (pin) hex-encoded SHA-256 hash of
+  // If specified, Envoy will verify (pin) the hex-encoded SHA-256 hash of
   // the presented certificate.
   repeated string verify_certificate_hash = 2;
 
   // If specified, Envoy will verify (pin) base64-encoded SHA-256 hash of
   // the Subject Public Key Information (SPKI) of the presented certificate.
   // This is the same format as used in HTTP Public Key Pinning.
+  // [#not-implemented-hide:]
   repeated string verify_spki_sha256 = 3;
 
-  // An optional list of subject alt names. If specified, Envoy will verify that
-  // the certificate’s subject alt name matches one of the specified values.
+  // An optional list of subject alternative names. If specified, Envoy will verify that
+  // the certificate’s subject alternative name matches one of the specified values.
   repeated string verify_subject_alt_name = 4;
 
-  // Must present a signed time-stamped OCSP response.
+  // [#not-implemented-hide:] Must present a signed time-stamped OCSP response.
   google.protobuf.BoolValue require_ocsp_staple = 5;
 
-  // Must present signed certificate time-stamp.
+  // [#not-implemented-hide:] Must present signed certificate time-stamp.
   google.protobuf.BoolValue require_signed_certificate_timestamp = 6;
 }
 
@@ -102,38 +175,53 @@ message CommonTlsContext {
   // TLS protocol versions, cipher suites etc.
   TlsParameters tls_params = 1;
 
-  // Multiple TLS certificates can be associated with the same context,
-  // e.g. to allow both RSA and ECDSA certificates [V2-API-DIFF].
-  // TLS certificates can be either configured locally or fetched from SDS.
-  repeated TlsCertificate tls_certificates = 2;
+  // Multiple TLS certificates can be associated with the same context.
+  // E.g. to allow both RSA and ECDSA certificates, two TLS certificates can be configured.
+  //
+  // .. attention::
+  //
+  //   Although this is a list, currently only a single certificate is supported. This will be
+  //   relaxed in the future.
+  repeated TlsCertificate tls_certificates = 2 [(validate.rules).repeated.max_items = 1];
+
+  // [#not-implemented-hide:]
   repeated SdsSecretConfig tls_certificate_sds_secret_configs = 6;
 
   // How to validate peer certificates.
   CertificateValidationContext validation_context = 3;
 
-  // Protocols to negotiate over ALPN
+  // Supplies the list of ALPN protocols that the listener should expose. In
+  // practice this is likely to be set to one of two values (see the
+  // :ref:`codec_type <config_http_conn_man_codec_type>` parameter in the HTTP connection
+  // manager for more information):
+  //
+  // * "h2,http/1.1" If the listener is going to support both HTTP/2 and HTTP/1.1.
+  // * "http/1.1" If the listener is only going to support HTTP/1.1.
+  //
+  // There is no default for this parameter. If empty, Envoy will not expose ALPN.
   repeated string alpn_protocols = 4;
 
   // These fields are deprecated and only are used during the interim v1 -> v2
   // transition period for internal purposes. They should not be used outside of
-  // the Envoy binary.
+  // the Envoy binary. [#not-implemented-hide:]
   message DeprecatedV1 {
     string alt_alpn_protocols = 1;
   }
+
+  // [#not-implemented-hide:]
   DeprecatedV1 deprecated_v1 = 5;
 }
 
 message UpstreamTlsContext {
+  // Common TLS context settings.
   CommonTlsContext common_tls_context = 1;
 
   // SNI string to use when creating TLS backend connections.
   string sni = 2;
 }
 
-// [V2-API-DIFF] This has been reworked to support alternative modes of
-// certificate/key delivery, for consistency with the upstream TLS context and
-// to segregate the client/server aspects of the TLS context.
 message DownstreamTlsContext {
+  // Common TLS context settings.
   CommonTlsContext common_tls_context = 1;
 
   // If specified, Envoy will reject connections without a valid client
@@ -141,15 +229,20 @@ message DownstreamTlsContext {
   google.protobuf.BoolValue require_client_certificate = 2;
 
   // If specified, Envoy will reject connections without a valid and matching SNI.
+  // [#not-implemented-hide:]
   google.protobuf.BoolValue require_sni = 3;
 
   oneof session_ticket_keys_type {
+    // TLS session ticket key settings.
     TlsSessionTicketKeys session_ticket_keys = 4;
+
+    // [#not-implemented-hide:]
     SdsSecretConfig session_ticket_keys_sds_secret_config = 5;
   }
 }
 
 // [#proto-status: experimental]
+// [#not-implemented-hide:]
 message SdsSecretConfig {
   // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
   // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
@@ -159,6 +252,7 @@ message SdsSecretConfig {
 }
 
 // [#proto-status: experimental]
+// [#not-implemented-hide:]
 message Secret {
   // Name (FQDN, UUID, SPKI, SHA256, etc.) by which the secret can be uniquely referred to.
   string name = 1;

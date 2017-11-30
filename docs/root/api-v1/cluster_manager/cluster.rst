@@ -121,7 +121,7 @@ max_requests_per_connection
   parameter is respected by both the HTTP/1.1 and HTTP/2 connection pool implementations. If not
   specified, there is no limit. Setting this parameter to 1 will effectively disable keep alive.
 
-:ref:`circuit_breakers <config_cluster_manager_cluster_circuit_breakers>`
+:ref:`circuit_breakers <config_cluster_manager_cluster_circuit_breakers_v1>`
   *(optional, object)* Optional :ref:`circuit breaking <arch_overview_circuit_break>` settings
   for the cluster.
 
@@ -201,7 +201,5 @@ dns_resolvers
   cluster_hc
   cluster_circuit_breakers
   cluster_ssl
-  cluster_stats
-  cluster_runtime
   cluster_outlier_detection
   cluster_ring_hash_lb_config

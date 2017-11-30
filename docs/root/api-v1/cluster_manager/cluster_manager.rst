@@ -4,10 +4,14 @@ Cluster manager
 ===============
 
 .. toctree::
-  :glob:
-  :maxdepth: 2
+  :hidden:
 
-  *
+  cluster
+  outlier
+  cds
+  sds
+
+Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
 
 .. code-block:: json
 
@@ -29,7 +33,7 @@ Cluster manager
 
 :ref:`sds <config_cluster_manager_sds>`
   *(sometimes required, object)* If any defined clusters use the :ref:`sds
-  <arch_overview_service_discovery_sds>` cluster type, a global SDS configuration must be specified.
+  <arch_overview_service_discovery_types_sds>` cluster type, a global SDS configuration must be specified.
 
 .. _config_cluster_manager_local_cluster_name:
 
@@ -43,5 +47,5 @@ local_cluster_name
 :ref:`outlier_detection <config_cluster_manager_outlier_detection>`
   *(optional, object)* Optional global configuration for outlier detection.
 
-:ref:`cds <config_cluster_manager_cds>`
+:ref:`cds <config_cluster_manager_cds_v1>`
   *(optional, object)* Optional configuration for the cluster discovery service (CDS) API.
