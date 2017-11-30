@@ -103,9 +103,8 @@ message ClusterManager {
   BindConfig upstream_bind_config = 3;
 
   // A management server endpoint to stream load stats to via
-  // :ref:`StreamLoadStats <envoy_api_msg_LoadStatsRequest>`. This must have
-  // :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
-  // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
+  // *StreamLoadStats*. This must have :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>`
+  // :ref:`GRPC <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
   ApiConfigSource load_stats_config = 4;
 }
 

@@ -10,6 +10,7 @@ v1 API reference
   route_config/route_config
   http_filters/http_filters
   cluster_manager/cluster_manager
+  access_log
   admin
   rate_limit
   runtime

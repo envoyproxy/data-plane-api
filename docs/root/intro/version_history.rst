@@ -136,7 +136,7 @@ Version history
 * :ref:`Auto host rewrite <config_http_conn_man_route_table_route_auto_host_rewrite>` during HTTP
   routing.
 * :ref:`Regex header matching <config_http_conn_man_route_table_route_headers>` during HTTP routing.
-* HTTP access log :ref:`runtime filter <config_http_con_manager_access_log_filters_runtime>`.
+* HTTP access log :ref:`runtime filter <config_http_con_manager_access_log_filters_runtime_v1>`.
 * LightStep tracer :ref:`parent/child span association <arch_overview_tracing>`.
 * :ref:`Route discovery service (RDS) API <config_http_conn_man_rds>`.
 * HTTP router :ref:`x-envoy-upstream-rq-timeout-alt-response header

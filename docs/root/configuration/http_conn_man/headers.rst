@@ -204,7 +204,8 @@ is out of scope for this documentation. If *x-request-id* is propagated across a
 following features are available:
 
 * Stable :ref:`access logging <config_access_log>` via the
-  :ref:`runtime filter<config_http_con_manager_access_log_filters_runtime>`.
+  :ref:`v1 API runtime filter<config_http_con_manager_access_log_filters_runtime_v1>` or the
+  :ref:`v2 API runtime filter<envoy_api_field_filter.accesslog.AccessLogFilter.runtime_filter>`.
 * Stable tracing when performing random sampling via the :ref:`tracing.random_sampling
   <config_http_conn_man_runtime_random_sampling>` runtime setting or via forced tracing using the
   :ref:`config_http_conn_man_headers_x-envoy-force-trace` and
