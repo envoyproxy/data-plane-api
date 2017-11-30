@@ -20,15 +20,12 @@ import "validate/validate.proto";
 // configurations. Each listener will bind its HTTP connection manager filter to
 // a route table via this identifier.
 service RouteDiscoveryService {
-  rpc StreamRoutes(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
-  }
+  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {}
 
-  rpc FetchRoutes(DiscoveryRequest)
-      returns (DiscoveryResponse) {
+  rpc FetchRoutes(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
-      post: "/v2/discovery:routes"
-      body: "*"
+      post : "/v2/discovery:routes"
+      body : "*"
     };
   }
 }
@@ -43,12 +40,12 @@ message WeightedCluster {
   message ClusterWeight {
     // Name of the upstream cluster. The cluster must exist in the
     // :ref:`cluster manager configuration <config_cluster_manager>`.
-    string name = 1 [(validate.rules).string.min_len = 1];
+    string name = 1 [ (validate.rules).string.min_len = 1 ];
 
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
-    google.protobuf.UInt32Value weight = 2 [(validate.rules).uint32.lte = 100];
+    google.protobuf.UInt32Value weight = 2 [ (validate.rules).uint32.lte = 100 ];
 
     // Optional endpoint metadata match criteria. Only endpoints in the upstream
     // cluster with metadata matching that set in metadata_match will be
@@ -57,7 +54,7 @@ message WeightedCluster {
   }
 
   // Specifies one or more upstream clusters associated with the route.
-  repeated ClusterWeight clusters = 1 [(validate.rules).repeated.min_items = 1];
+  repeated ClusterWeight clusters = 1 [ (validate.rules).repeated .min_items = 1 ];
 
   // Specifies the runtime key prefix that should be used to construct the
   // runtime keys associated with each cluster. When the *runtime_key_prefix* is
@@ -242,7 +239,7 @@ message RouteAction {
   message RequestMirrorPolicy {
     // Specifies the cluster that requests will be mirrored to. The cluster must
     // exist in the cluster manager configuration.
-    string cluster = 1 [(validate.rules).string.min_len = 1];
+    string cluster = 1 [ (validate.rules).string.min_len = 1 ];
 
     // If not specified, all requests to the target cluster will be mirrored. If
     // specified, Envoy will lookup the runtime key to get the % of requests to
@@ -291,7 +288,7 @@ message RouteAction {
     message Header {
       // The name of the request header that will be used to obtain the hash
       // key. If the request header is not present, no hash will be produced.
-      string header_name = 1 [(validate.rules).string.min_len = 1];
+      string header_name = 1 [ (validate.rules).string.min_len = 1 ];
     }
 
     // Envoy supports two types of cookie affinity:
@@ -312,7 +309,7 @@ message RouteAction {
       // The name of the cookie that will be used to obtain the hash key. If the
       // cookie is not present and ttl below is not set, no hash will be
       // produced.
-      string name = 1 [(validate.rules).string.min_len = 1];
+      string name = 1 [ (validate.rules).string.min_len = 1 ];
 
       // If specified, a cookie with the TTL will be generated if the cookie is
       // not present.
@@ -410,7 +407,7 @@ message Decorator {
   //   For ingress (inbound) requests, or egress (outbound) responses, this value may be overridden
   //   by the :ref:`x-envoy-decorator-operation
   //   <config_http_filters_router_x-envoy-decorator-operation>` header.
-  string operation = 1 [(validate.rules).string.min_len = 1];
+  string operation = 1 [ (validate.rules).string.min_len = 1 ];
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -422,7 +419,7 @@ message Decorator {
 //   <envoy_api_msg_HeaderMatcher>`.
 message Route {
   // Route matching parameters.
-  RouteMatch match = 1 [(validate.rules).message.required = true];
+  RouteMatch match = 1 [ (validate.rules).message.required = true ];
 
   oneof action {
     option (validate.required) = true;
@@ -476,12 +473,12 @@ message VirtualCluster {
   // * The regex */rides/\d+* matches the path */rides/0*
   // * The regex */rides/\d+* matches the path */rides/123*
   // * The regex */rides/\d+* does not match the path */rides/123/456*
-  string pattern = 1 [(validate.rules).string.min_len = 1];
+  string pattern = 1 [ (validate.rules).string.min_len = 1 ];
 
   //  Specifies the name of the virtual cluster. The virtual cluster name as well
   // as the virtual host name are used when emitting statistics. The statistics are emitted by the
   // router filter and are documented :ref:`here <config_http_filters_router_stats>`.
-  string name = 2 [(validate.rules).string.min_len = 1];
+  string name = 2 [ (validate.rules).string.min_len = 1 ];
 
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
@@ -497,7 +494,7 @@ message RateLimit {
   // .. note::
   //
   //   The filter supports a range of 0 - 10 inclusively for stage numbers.
-  google.protobuf.UInt32Value stage = 1 [(validate.rules).uint32.lte = 10];
+  google.protobuf.UInt32Value stage = 1 [ (validate.rules).uint32.lte = 10 ];
 
   // The key to be set in runtime to disable this rate limit configuration.
   string disable_key = 2;
@@ -540,10 +537,10 @@ message RateLimit {
       // The header name to be queried from the request headers. The header’s
       // value is used to populate the value of the descriptor entry for the
       // descriptor_key.
-      string header_name = 1 [(validate.rules).string.min_len = 1];
+      string header_name = 1 [ (validate.rules).string.min_len = 1 ];
 
       // The key to use in the descriptor entry.
-      string descriptor_key = 2 [(validate.rules).string.min_len = 1];
+      string descriptor_key = 2 [ (validate.rules).string.min_len = 1 ];
     }
 
     // The following descriptor entry is appended to the descriptor and is populated using the
@@ -561,7 +558,7 @@ message RateLimit {
     //   ("generic_key", "<descriptor_value>")
     message GenericKey {
       // The value to use in the descriptor entry.
-      string descriptor_value = 1 [(validate.rules).string.min_len = 1];
+      string descriptor_value = 1 [ (validate.rules).string.min_len = 1 ];
     }
 
     // The following descriptor entry is appended to the descriptor:
@@ -571,7 +568,7 @@ message RateLimit {
     //   ("header_match", "<descriptor_value>")
     message HeaderValueMatch {
       // The value to use in the descriptor entry.
-      string descriptor_value = 1 [(validate.rules).string.min_len = 1];
+      string descriptor_value = 1 [ (validate.rules).string.min_len = 1 ];
 
       // If set to true, the action will append a descriptor entry when the
       // request matches the headers. If set to false, the action will append a
@@ -584,7 +581,7 @@ message RateLimit {
       // specified headers in the config. A match will happen if all the
       // headers in the config are present in the request with the same values
       // (or based on presence if the value field is not in the config).
-      repeated HeaderMatcher headers = 3 [(validate.rules).repeated.min_items = 1];
+      repeated HeaderMatcher headers = 3 [ (validate.rules).repeated .min_items = 1 ];
     }
 
     oneof action_specifier {
@@ -616,7 +613,7 @@ message RateLimit {
   // cannot append a descriptor entry, no descriptor is generated for the
   // configuration. See :ref:`composing actions
   // <config_http_filters_rate_limit_composing_actions>` for additional documentation.
-  repeated Action actions = 3 [(validate.rules).string.min_len = 1];
+  repeated Action actions = 3 [ (validate.rules).string.min_len = 1 ];
 }
 
 // .. attention::
@@ -637,7 +634,7 @@ message RateLimit {
 //     }
 message HeaderMatcher {
   // Specifies the name of the header in the request.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [ (validate.rules).string.min_len = 1 ];
 
   // Specifies the value of the header. If the value is absent a request that
   // has the name header will match, regardless of the header’s value.
@@ -659,13 +656,13 @@ message HeaderMatcher {
 
 // The top level element in the routing configuration is a virtual host. Each virtual host has
 // a logical name as well as a set of domains that get routed to it based on the incoming request's
-// host header. This allows a single listener to service multiple top level domain path trees. Once a
-// virtual host is selected based on the domain, the routes are processed in order to see which
+// host header. This allows a single listener to service multiple top level domain path trees. Once
+// a virtual host is selected based on the domain, the routes are processed in order to see which
 // upstream cluster to route to or whether to perform a redirect.
 message VirtualHost {
   // The logical name of the virtual host. This is used when emitting certain
   // statistics but is not relevant for routing.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [ (validate.rules).string.min_len = 1 ];
 
   // A list of domains (host/authority header) that will be matched to this
   // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
@@ -679,7 +676,7 @@ message VirtualHost {
   //   host/authority header. Only a single virtual host in the entire route
   //   configuration can match on “*”. A domain must be unique across all virtual
   //   hosts or the config will fail to load.
-  repeated string domains = 2 [(validate.rules).repeated.min_items = 1];
+  repeated string domains = 2 [ (validate.rules).repeated .min_items = 1 ];
 
   // The list of routes that will be matched, in order, for incoming requests.
   // The first route that matches will be used.

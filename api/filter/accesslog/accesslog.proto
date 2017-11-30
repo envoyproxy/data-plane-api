@@ -28,7 +28,7 @@ import "validate/validate.proto";
 message AccessLogCommon {
   // This field indicates the rate at which this log entry was sampled.
   // Valid range is (0.0, 1.0].
-  double sample_rate = 1 [(validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0];
+  double sample_rate = 1 [ (validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0 ];
 
   // This field is the IP and port on which the request from the user was
   // received.
@@ -65,7 +65,7 @@ message AccessLogCommon {
   // selection.
   //
   // This can be used to associate IDs attached to the various configurations
-  // used to process this request with the access log entry.  For example, a
+  // used to process this request with the access log entry. For example, a
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
@@ -251,24 +251,18 @@ message ComparisonFilter {
 }
 
 // Filters on HTTP response/status code.
-message StatusCodeFilter {
-  ComparisonFilter comparison = 1;
-}
+message StatusCodeFilter { ComparisonFilter comparison = 1; }
 
 // Filters on total request duration in milliseconds.
-message DurationFilter {
-  ComparisonFilter comparison = 1;
-}
+message DurationFilter { ComparisonFilter comparison = 1; }
 
 // Filters for requests that are not health check requests. A health check
 // request is marked by the health check filter.
-message NotHealthCheckFilter {
-}
+message NotHealthCheckFilter {}
 
 // Filters for requests that are traceable. See the tracing overview for more
 // information on how a request becomes traceable.
-message TraceableFilter {
-}
+message TraceableFilter {}
 
 // Filters for random sampling of requests. Sampling pivots on the header
 // x-request-id being present. If x-request-id is present, the filter will
@@ -284,16 +278,12 @@ message RuntimeFilter {
 // Performs a logical “and” operation on the result of each filter in filters.
 // Filters are evaluated sequentially and if one of them returns false, the
 // filter returns false immediately.
-message AndFilter {
-  repeated AccessLogFilter filters = 1;
-}
+message AndFilter { repeated AccessLogFilter filters = 1; }
 
 // Performs a logical “or” operation on the result of each individual filter.
 // Filters are evaluated sequentially and if one of them returns true, the
 // filter returns true immediately.
-message OrFilter {
-  repeated AccessLogFilter filters = 2;
-}
+message OrFilter { repeated AccessLogFilter filters = 2; }
 
 message AccessLogFilter {
   oneof filter_specifier {
@@ -354,14 +344,10 @@ message StreamAccessLogsMessage {
   Identifier identifier = 1;
 
   // Wrapper for batches of HTTP access log entries.
-  message HTTPAccessLogEntries {
-    repeated HTTPAccessLogEntry log_entry = 1;
-  }
+  message HTTPAccessLogEntries { repeated HTTPAccessLogEntry log_entry = 1; }
 
   // Wrapper for batches of TCP access log entries.
-  message TCPAccessLogEntries {
-    repeated TCPAccessLogEntry log_entry = 1;
-  }
+  message TCPAccessLogEntries { repeated TCPAccessLogEntry log_entry = 1; }
 
   // Batches of log entries of a single type. Generally speaking, a given stream should only
   // ever incude one type of log entry.
@@ -382,9 +368,7 @@ service AccessLogService {
   // API for "critical" access logs in which Envoy will buffer access logs for some period of time
   // until it gets an ACK so it could then retry. This API is designed for high throughput with the
   // expectation that it might be lossy.
-  rpc StreamAccessLogs(stream StreamAccessLogsMessage)
-      returns (StreamAccessLogsResponse) {
-  }
+  rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {}
 }
 
 message AccessLog {

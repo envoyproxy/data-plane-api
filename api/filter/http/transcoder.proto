@@ -29,13 +29,13 @@ message GrpcJsonTranscoder {
   //   --descriptor_set_out=proto.pb test/proto/bookstore.proto
   //
   // If you have more than one proto source files, you can pass all of them in one command.
-  string proto_descriptor = 1 [(validate.rules).string.min_len = 1];
+  string proto_descriptor = 1 [ (validate.rules).string.min_len = 1 ];
 
   // A list of strings that supplies the service names that the
   // transcoder will translate. If the service name doesn't exist in ``proto_descriptor``, Envoy
   // will fail at startup. The ``proto_descriptor`` may contain more services than the service names
   // specified here, but they won't be translated.
-  repeated string services = 2 [(validate.rules).repeated.min_items = 1];
+  repeated string services = 2 [ (validate.rules).repeated .min_items = 1 ];
 
   message PrintOptions {
     // Whether to add spaces, line breaks and indentation to make the JSON

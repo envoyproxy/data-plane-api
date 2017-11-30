@@ -9,8 +9,7 @@ import "google/protobuf/wrappers.proto";
 // [#protodoc-title: Protocol options]
 
 // [#not-implemented-hide:]
-message TcpProtocolOptions {
-}
+message TcpProtocolOptions {}
 
 message Http1ProtocolOptions {
   // Handle HTTP requests with absolute URLs in the requests. These requests
@@ -41,7 +40,7 @@ message Http2ProtocolOptions {
   // window size now, so it's also the minimum.
 
   // This field also acts as a soft limit on the number of bytes Envoy will buffer per-stream in the
-  // HTTP/2 codec buffers.  Once the buffer reaches this pointer, watermark callbacks will fire to
+  // HTTP/2 codec buffers. Once the buffer reaches this pointer, watermark callbacks will fire to
   // stop the flow of data to the codec buffers.
   google.protobuf.UInt32Value initial_stream_window_size = 3;
 
@@ -51,6 +50,4 @@ message Http2ProtocolOptions {
 }
 
 // [#not-implemented-hide:]
-message GrpcProtocolOptions {
-  Http2ProtocolOptions http2_protocol_options = 1;
-}
+message GrpcProtocolOptions { Http2ProtocolOptions http2_protocol_options = 1; }

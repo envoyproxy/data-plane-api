@@ -11,12 +11,12 @@ import "validate/validate.proto";
 
 message RedisProxy {
   // The prefix to use when emitting :ref:`statistics <config_network_filters_redis_proxy_stats>`.
-  string stat_prefix = 1 [(validate.rules).string.min_len = 1];
+  string stat_prefix = 1 [ (validate.rules).string.min_len = 1 ];
 
   // Name of cluster from cluster manager. See the :ref:`configuration section
   // <arch_overview_redis_configuration>` of the architecture overview for recommendations on
   // configuring the backing cluster.
-  string cluster = 2 [(validate.rules).string.min_len = 1];
+  string cluster = 2 [ (validate.rules).string.min_len = 1 ];
 
   // Redis connection pool settings.
   message ConnPoolSettings {
@@ -26,9 +26,9 @@ message RedisProxy {
     // The only exception to this behavior is when a connection to a backend is not yet established.
     // In that case, the connect timeout on the cluster will govern the timeout until the connection
     // is ready.
-    google.protobuf.Duration op_timeout = 1 [(validate.rules).duration.required = true];
+    google.protobuf.Duration op_timeout = 1 [ (validate.rules).duration.required = true ];
   }
 
   // Network settings for the connection pool to the upstream cluster.
-  ConnPoolSettings settings = 3 [(validate.rules).message.required = true];
+  ConnPoolSettings settings = 3 [ (validate.rules).message.required = true ];
 }

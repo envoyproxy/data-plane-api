@@ -5,7 +5,7 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "router",
     srcs = ["router.proto"],
-    deps = ["//api/filter/accesslog:accesslog"],
+    deps = ["//api/filter/accesslog"],
 )
 
 api_proto_library(

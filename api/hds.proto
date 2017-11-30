@@ -50,17 +50,15 @@ service HealthDiscoveryService {
   // invariant?
   // TODO(htuch): Add @amb67's diagram.
   rpc StreamHealthCheck(stream HealthCheckRequestOrEndpointHealthResponse)
-      returns (stream HealthCheckSpecifier) {
-  }
+      returns (stream HealthCheckSpecifier) {}
 
   // TODO(htuch): Unlike the gRPC version, there is no stream-based binding of
   // request/response. Should we add an identifier to the HealthCheckSpecifier
   // to bind with the response?
-  rpc FetchHealthCheck(HealthCheckRequestOrEndpointHealthResponse)
-      returns (HealthCheckSpecifier) {
+  rpc FetchHealthCheck(HealthCheckRequestOrEndpointHealthResponse) returns (HealthCheckSpecifier) {
     option (google.api.http) = {
-      post: "/v2/discovery:health_check"
-      body: "*"
+      post : "/v2/discovery:health_check"
+      body : "*"
     };
   }
 }
@@ -88,9 +86,7 @@ message EndpointHealth {
   HealthStatus health_status = 2;
 }
 
-message EndpointHealthResponse {
-  repeated EndpointHealth endpoints_health = 1;
-}
+message EndpointHealthResponse { repeated EndpointHealth endpoints_health = 1; }
 
 message HealthCheckRequestOrEndpointHealthResponse {
   oneof request_type {

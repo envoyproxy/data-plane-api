@@ -68,9 +68,7 @@ message ClusterManager {
   string local_cluster_name = 1;
 
   // Optional global configuration for outlier detection.
-  message OutlierDetection {
-    string event_log_path = 1;
-  }
+  message OutlierDetection { string event_log_path = 1; }
   OutlierDetection outlier_detection = 2;
 
   // Optional configuration used to bind newly established upstream connections.
@@ -121,7 +119,7 @@ message TagSpecifier {
 
   // The first capture group identifies the portion of the name to remove. The
   // second capture group (which will normally be nested inside the first)
-  // will designate the value of the tag for the statistic. If no second 
+  // will designate the value of the tag for the statistic. If no second
   // capture group is provided, the first will also be used to set the value of
   // the tag. All other capture groups will be ignored.
   //
@@ -153,7 +151,7 @@ message TagSpecifier {
   // The second regex will remove "connection_manager_1." from the tag extracted
   // name produced by the first regex
   // ("http.connection_manager_1.user_agent.downstream_cx_total"), leaving
-  // "http.user_agent.downstream_cx_total" as the tag extracted name.  The tag
+  // "http.user_agent.downstream_cx_total" as the tag extracted name. The tag
   // "envoy.http_conn_manager_prefix" will be added with the tag value
   // "connection_manager_1".
   string regex = 2;

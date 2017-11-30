@@ -35,9 +35,9 @@ message Locality {
 // configuration for serving.
 message Node {
   // An opaque node identifier for the Envoy node.
-  string id = 1 [(validate.rules).string.min_len = 1];
+  string id = 1 [ (validate.rules).string.min_len = 1 ];
   // The cluster that the Envoy node belongs to.
-  string cluster = 2 [(validate.rules).string.min_len = 1];
+  string cluster = 2 [ (validate.rules).string.min_len = 1 ];
   // Opaque metadata extending the node identifier. Envoy will pass this
   // directly to the management server.
   google.protobuf.Struct metadata = 3;
@@ -50,9 +50,7 @@ message Node {
 }
 
 // Upstream host identifier.
-message Endpoint {
-  Address address = 1;
-}
+message Endpoint { Address address = 1; }
 
 // Metadata provides additional inputs to filters based on matched listeners,
 // filter chains, routes and endpoints. It is structured as a map from filter
@@ -84,7 +82,7 @@ message RuntimeUInt32 {
   uint32 default_value = 2;
 
   // Runtime key to get value for comparison. This value is used if defined.
-  string runtime_key = 3 [(validate.rules).string.min_len = 1];
+  string runtime_key = 3 [ (validate.rules).string.min_len = 1 ];
 }
 
 // Envoy supports :ref:`upstream priority routing
@@ -152,7 +150,7 @@ message ApiConfigSource {
   ApiType api_type = 1;
   // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
   // will be cycled through if any kind of failure occurs.
-  repeated string cluster_name = 2 [(validate.rules).repeated.min_items = 1];
+  repeated string cluster_name = 2 [ (validate.rules).repeated .min_items = 1 ];
   // For REST APIs, the delay between successive polls.
   google.protobuf.Duration refresh_delay = 3;
 }
@@ -160,8 +158,7 @@ message ApiConfigSource {
 // Aggregated Discovery Service (ADS) options. This is currently empty, but when
 // set in :ref:`ConfigSource <envoy_api_msg_ConfigSource>` can be used to
 // specify that ADS is to be used.
-message AggregatedConfigSource {
-}
+message AggregatedConfigSource {}
 
 // Configuration for :ref:`listeners <config_listeners>`, :ref:`clusters
 // <config_cluster_manager_cluster>`, :ref:`routes
@@ -189,7 +186,7 @@ message ConfigSource {
 message TransportSocket {
   // The name of the transport socket to instantiate. The name must match a supported transport
   // socket implementation.
-  string name = 1 [(validate.rules).string.min_len = 1];
+  string name = 1 [ (validate.rules).string.min_len = 1 ];
 
   // Implementation specific configuration which depends on the implementation being instantiated.
   // See the supported transport socket implementations for further documentation.

@@ -13,16 +13,13 @@ import "validate/validate.proto";
 message FaultAbort {
   // An integer between 0-100 indicating the percentage of requests/operations/connections
   // that will be aborted with the error code provided.
-  uint32 percent = 1 [(validate.rules).uint32.lte = 100];
+  uint32 percent = 1 [ (validate.rules).uint32.lte = 100 ];
 
   oneof error_type {
     option (validate.required) = true;
 
     // HTTP status code to use to abort the HTTP request.
-    uint32 http_status = 2 [(validate.rules).uint32 = {
-        gte: 200,
-        lt: 600
-      }];
+    uint32 http_status = 2 [ (validate.rules).uint32 = {gte : 200, lt : 600} ];
   }
 }
 
@@ -41,17 +38,18 @@ message HTTPFault {
   string upstream_cluster = 3;
 
   // Specifies a set of headers that the filter should match on. The fault
-  // injection filter can be applied selectively to requests that match a set of headers specified in
-  // the fault filter config. The chances of actual fault injection further depend on the value of
-  // the :ref:`percent <envoy_api_field_filter.http.FaultAbort.percent>` field. The filter will check the request's headers
-  // against all the specified headers in the filter config. A match will happen if all the headers in
-  // the config are present in the request with the same values (or based on presence if the *value*
-  // field is not in the config).
-  repeated HeaderMatcher headers = 4 [(validate.rules).repeated.unique = true];
+  // injection filter can be applied selectively to requests that match a set of headers specified
+  // in the fault filter config. The chances of actual fault injection further depend on the value
+  // of the :ref:`percent <envoy_api_field_filter.http.FaultAbort.percent>` field. The filter will
+  // check the request's headers against all the specified headers in the filter config. A match
+  // will happen if all the headers in the config are present in the request with the same values
+  // (or based on presence if the *value* field is not in the config).
+  repeated HeaderMatcher headers = 4 [ (validate.rules).repeated .unique = true ];
 
   // Faults are injected for the specified list of downstream hosts. If this setting is
   // not set, faults are injected for all downstream nodes. Downstream node name is taken from
-  // :ref:`the HTTP x-envoy-downstream-service-node <config_http_conn_man_headers_downstream-service-node>`
-  // header and compared against downstream_nodes list.
-  repeated string downstream_nodes = 5 [(validate.rules).repeated.unique = true];
+  // :ref:`the HTTP x-envoy-downstream-service-node
+  // <config_http_conn_man_headers_downstream-service-node>` header and compared against
+  // downstream_nodes list.
+  repeated string downstream_nodes = 5 [ (validate.rules).repeated .unique = true ];
 }

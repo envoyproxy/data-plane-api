@@ -11,7 +11,7 @@ import "validate/validate.proto";
 
 message Pipe {
   // Unix Domain Socket path.
-  string path = 1 [(validate.rules).string.min_len = 1];
+  string path = 1 [ (validate.rules).string.min_len = 1 ];
 }
 
 message SocketAddress {
@@ -20,7 +20,7 @@ message SocketAddress {
     // [#not-implemented-hide:]
     UDP = 1;
   }
-  Protocol protocol = 1 [(validate.rules).enum = {in: [0]}];
+  Protocol protocol = 1 [ (validate.rules).enum = {in : [ 0 ]} ];
   // The address for this socket. :ref:`Listeners <config_listeners>` will bind
   // to the address or outbound connections will be made. An empty address
   // implies a bind to 0.0.0.0 or ::. It's still possible to distinguish on an
@@ -47,7 +47,7 @@ message SocketAddress {
 
 message BindConfig {
   // The address to bind to when creating a socket.
-  SocketAddress source_address = 1 [(validate.rules).message.required = true];
+  SocketAddress source_address = 1 [ (validate.rules).message.required = true ];
 }
 
 // Addresses specify either a logical or physical address and port, which are
@@ -65,7 +65,7 @@ message Address {
 // the subnet mask for a `CIDR <https://tools.ietf.org/html/rfc4632>`_ range.
 message CidrRange {
   // IPv4 or IPv6 address, e.g. 192.0.0.0 or 2001:db8::.
-  string address_prefix = 1 [(validate.rules).string.min_len = 1];
+  string address_prefix = 1 [ (validate.rules).string.min_len = 1 ];
   // Length of prefix, e.g. 0, 32.
-  google.protobuf.UInt32Value prefix_len = 2 [(validate.rules).uint32.lte = 128];
+  google.protobuf.UInt32Value prefix_len = 2 [ (validate.rules).uint32.lte = 128 ];
 }

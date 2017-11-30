@@ -96,11 +96,11 @@ api_proto_library(
     name = "metrics",
     srcs = ["metrics_service.proto"],
     has_services = 1,
+    require_py = 0,
     deps = [
         ":base",
         "@promotheus_metrics_model//:client_model_protos_lib",
     ],
-    require_py = 0,
 )
 
 api_proto_library(
@@ -146,7 +146,7 @@ proto_library(
         ":lds",
         ":protocol",
         ":rds",
-        "//api/filter/accesslog:accesslog",
+        "//api/filter/accesslog",
         "//api/filter/http:buffer",
         "//api/filter/http:fault",
         "//api/filter/http:health_check",
