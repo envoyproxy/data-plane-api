@@ -134,6 +134,8 @@ The fields are:
 * Total uptime in seconds (across all hot restarts)
 * Current hot restart epoch
 
+.. _operations_admin_interface_stats:
+
 .. http:get:: /stats
 
   Outputs all statistics on demand. This includes only counters and gauges. Histograms are not
