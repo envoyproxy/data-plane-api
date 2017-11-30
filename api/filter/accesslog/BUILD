@@ -6,6 +6,6 @@ api_proto_library(
     has_services = 1,
     deps = [
         "//api:address",
-        "//api:base"
+        "//api:base",
     ],
 )

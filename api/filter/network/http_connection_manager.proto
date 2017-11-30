@@ -173,9 +173,9 @@ message HttpConnectionManager {
   google.protobuf.BoolValue use_remote_address = 14;
 
   // Whether the connection manager will generate the :ref:`x-request-id
-  // <config_http_conn_man_headers_x-request-id>` header if it does not exist. This defaults to true.
-  // Generating a random UUID4 is expensive so in high throughput scenarios where this feature is
-  // not desired it can be disabled.
+  // <config_http_conn_man_headers_x-request-id>` header if it does not exist. This defaults to
+  // true. Generating a random UUID4 is expensive so in high throughput scenarios where this feature
+  // is not desired it can be disabled.
   google.protobuf.BoolValue generate_request_id = 15;
 
   // How to handle the :ref:`config_http_conn_man_headers_x-forwarded-client-cert` (XFCC) HTTP
@@ -204,7 +204,7 @@ message HttpConnectionManager {
   // How to handle the :ref:`config_http_conn_man_headers_x-forwarded-client-cert` (XFCC) HTTP
   // header.
   ForwardClientCertDetails forward_client_cert_details = 16
-    [(validate.rules).enum.defined_only = true];
+      [(validate.rules).enum.defined_only = true];
 
   message SetCurrentClientCertDetails {
     // Whether to forward the subject of the client cert. Defaults to false.

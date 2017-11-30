@@ -12,13 +12,11 @@ import "validate/validate.proto";
 
 // [#protodoc-title: Common TLS configuration]
 
-service SecretDiscoveryService{
-  rpc StreamSecrets(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
+service SecretDiscoveryService {
+  rpc StreamSecrets(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 
-  rpc FetchSecrets(DiscoveryRequest)
-      returns (DiscoveryResponse) {
+  rpc FetchSecrets(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:secrets"
       body: "*"
@@ -128,25 +126,27 @@ message TlsSessionTicketKeys {
   //
   // .. attention::
   //
-  //   Using this feature has serious security considerations and risks. Improper handling of keys may
-  //   result in loss of secrecy in connections, even if ciphers supporting perfect forward secrecy
-  //   are used. See https://www.imperialviolet.org/2013/06/27/botchingpfs.html for some discussion.
-  //   To minimize the risk, you must:
+  //   Using this feature has serious security considerations and risks. Improper handling of keys
+  //   may result in loss of secrecy in connections, even if ciphers supporting perfect forward
+  //   secrecy are used. See https://www.imperialviolet.org/2013/06/27/botchingpfs.html for some
+  //   discussion. To minimize the risk, you must:
   //
   //   * Keep the session ticket keys at least as secure as your TLS certificate private keys
   //   * Rotate session ticket keys at least daily, and preferably hourly
   //   * Always generate keys using a cryptographically-secure random data source
-  repeated DataSource keys = 1 [(validate.rules).repeated.min_items = 1];
+  repeated DataSource keys = 1 [(validate.rules).repeated .min_items = 1];
 }
 
 message CertificateValidationContext {
   // TLS certificate data containing certificate authority certificates to use in verifying
   // a presented client side certificate. If not specified and a client certificate is presented it
-  // will not be verified. By default, a client certificate is optional, unless one of the additional
-  // options (:ref:`require_client_certificate <envoy_api_field_DownstreamTlsContext.require_client_certificate>`,
-  // :ref:`verify_certificate_hash <envoy_api_field_CertificateValidationContext.verify_certificate_hash>`, or
-  // :ref:`verify_subject_alt_name <envoy_api_field_CertificateValidationContext.verify_subject_alt_name>`) is also
-  // specified.
+  // will not be verified. By default, a client certificate is optional, unless one of the
+  // additional options (:ref:`require_client_certificate
+  // <envoy_api_field_DownstreamTlsContext.require_client_certificate>`,
+  // :ref:`verify_certificate_hash
+  // <envoy_api_field_CertificateValidationContext.verify_certificate_hash>`, or
+  // :ref:`verify_subject_alt_name
+  // <envoy_api_field_CertificateValidationContext.verify_subject_alt_name>`) is also specified.
   DataSource trusted_ca = 1;
 
   // If specified, Envoy will verify (pin) the hex-encoded SHA-256 hash of
@@ -182,7 +182,7 @@ message CommonTlsContext {
   //
   //   Although this is a list, currently only a single certificate is supported. This will be
   //   relaxed in the future.
-  repeated TlsCertificate tls_certificates = 2 [(validate.rules).repeated.max_items = 1];
+  repeated TlsCertificate tls_certificates = 2 [(validate.rules).repeated .max_items = 1];
 
   // [#not-implemented-hide:]
   repeated SdsSecretConfig tls_certificate_sds_secret_configs = 6;

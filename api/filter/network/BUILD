@@ -9,7 +9,7 @@ api_proto_library(
         "//api:base",
         "//api:protocol",
         "//api:rds",
-        "//api/filter/accesslog:accesslog",
+        "//api/filter/accesslog",
     ],
 )
 
@@ -23,8 +23,8 @@ api_proto_library(
     name = "tcp_proxy",
     srcs = ["tcp_proxy.proto"],
     deps = [
-        "//api/filter/accesslog:accesslog",
         "//api:address",
+        "//api/filter/accesslog",
     ],
 )
 

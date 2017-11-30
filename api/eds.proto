@@ -17,12 +17,10 @@ import "validate/validate.proto";
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
   // to subscribe to updates for.
-  rpc StreamEndpoints(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
+  rpc StreamEndpoints(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 
-  rpc FetchEndpoints(DiscoveryRequest)
-      returns (DiscoveryResponse) {
+  rpc FetchEndpoints(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:endpoints"
       body: "*"
@@ -57,8 +55,7 @@ service EndpointDiscoveryService {
   // 6. The management server uses the load reports from all reported Envoys
   //    from around the world, computes global assignment and prepares traffic
   //    assignment destined for each zone Envoys are located in. Goto 2.
-  rpc StreamLoadStats(stream LoadStatsRequest)
-      returns (stream LoadStatsResponse) {
+  rpc StreamLoadStats(stream LoadStatsRequest) returns (stream LoadStatsResponse) {
   }
 }
 
@@ -93,7 +90,8 @@ message LbEndpoint {
   //   The limit of 128 is somewhat arbitrary, but is applied due to performance
   //   concerns with the current implementation and can be removed when
   //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
-  google.protobuf.UInt32Value load_balancing_weight = 4 [(validate.rules).uint32 = {gte:1, lte:128}];
+  google.protobuf.UInt32Value load_balancing_weight = 4
+      [(validate.rules).uint32 = {gte: 1, lte: 128}];
 }
 
 // A group of endpoints belonging to a Locality.
@@ -123,7 +121,8 @@ message LocalityLbEndpoints {
   //   The limit of 128 is somewhat arbitrary, but is applied due to performance
   //   concerns with the current implementation and can be removed when
   //   `this issue <https://github.com/envoyproxy/envoy/issues/1285>`_ is fixed.
-  google.protobuf.UInt32Value load_balancing_weight = 3 [(validate.rules).uint32 = {gte:1, lte:128}];
+  google.protobuf.UInt32Value load_balancing_weight = 3
+      [(validate.rules).uint32 = {gte: 1, lte: 128}];
 
   // Optional: the priority for this LocalityLbEndpoints. If unspecified this will
   // default to the highest priority (0).
@@ -207,7 +206,8 @@ message ClusterStats {
   string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Need at least one.
-  repeated UpstreamLocalityStats upstream_locality_stats = 2 [(validate.rules).repeated.min_items = 1];
+  repeated UpstreamLocalityStats upstream_locality_stats = 2
+      [(validate.rules).repeated .min_items = 1];
 
   // Cluster-level stats such as total_successful_requests may be computed by
   // summing upstream_locality_stats. In addition, below there are additional
@@ -259,7 +259,7 @@ message ClusterLoadAssignment {
     // recover from an outage or should they be unable to autoscale and hence
     // overall incoming traffic volume need to be trimmed to protect them.
     // [#v2-api-diff: This is known as maintenance mode in v1.]
-    double drop_overload = 1 [(validate.rules).double = {gte:0, lte: 100}];
+    double drop_overload = 1 [(validate.rules).double = {gte: 0, lte: 100}];
   }
 
   // Load balancing policy settings.
@@ -271,7 +271,7 @@ message ClusterLoadAssignment {
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
 message LoadStatsResponse {
   // Clusters to report stats for.
-  repeated string clusters = 1 [(validate.rules).repeated.min_items = 1];
+  repeated string clusters = 1 [(validate.rules).repeated .min_items = 1];
 
   // The interval of time to collect stats. The default is 10 seconds.
   google.protobuf.Duration load_reporting_interval = 2;

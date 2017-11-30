@@ -20,6 +20,14 @@ jobs:
        - run: docs/publish.sh
        - store_artifacts:
            path: generated/docs
+   format:
+     docker:
+       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+     resource_class: xlarge
+     working_directory: /source
+     steps:
+       - checkout
+       - run: ci/do_ci.sh check_format
 
 workflows:
   version: 2
@@ -27,3 +35,4 @@ workflows:
     jobs:
       - test
       - docs
+      - format

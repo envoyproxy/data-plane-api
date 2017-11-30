@@ -20,12 +20,10 @@ import "validate/validate.proto";
 // configurations. Each listener will bind its HTTP connection manager filter to
 // a route table via this identifier.
 service RouteDiscoveryService {
-  rpc StreamRoutes(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
+  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 
-  rpc FetchRoutes(DiscoveryRequest)
-      returns (DiscoveryResponse) {
+  rpc FetchRoutes(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:routes"
       body: "*"
@@ -57,7 +55,7 @@ message WeightedCluster {
   }
 
   // Specifies one or more upstream clusters associated with the route.
-  repeated ClusterWeight clusters = 1 [(validate.rules).repeated.min_items = 1];
+  repeated ClusterWeight clusters = 1 [(validate.rules).repeated .min_items = 1];
 
   // Specifies the runtime key prefix that should be used to construct the
   // runtime keys associated with each cluster. When the *runtime_key_prefix* is
@@ -510,7 +508,8 @@ message RateLimit {
     //   ("source_cluster", "<local service cluster>")
     //
     // <local service cluster> is derived from the :option:`--service-cluster` option.
-    message SourceCluster {}
+    message SourceCluster {
+    }
 
     // The following descriptor entry is appended to the descriptor:
     //
@@ -528,7 +527,8 @@ message RateLimit {
     //   chooses a cluster randomly from a set of clusters with attributed weight.
     // * :ref:`cluster_header <envoy_api_field_RouteAction.cluster_header>` indicates which
     //   header in the request contains the target cluster.
-    message DestinationCluster {}
+    message DestinationCluster {
+    }
 
     // The following descriptor entry is appended when a header contains a key that matches the
     // *header_name*:
@@ -552,7 +552,8 @@ message RateLimit {
     // .. code-block:: cpp
     //
     //   ("remote_address", "<trusted address from x-forwarded-for>")
-    message RemoteAddress {}
+    message RemoteAddress {
+    }
 
     // The following descriptor entry is appended to the descriptor:
     //
@@ -584,7 +585,7 @@ message RateLimit {
       // specified headers in the config. A match will happen if all the
       // headers in the config are present in the request with the same values
       // (or based on presence if the value field is not in the config).
-      repeated HeaderMatcher headers = 3 [(validate.rules).repeated.min_items = 1];
+      repeated HeaderMatcher headers = 3 [(validate.rules).repeated .min_items = 1];
     }
 
     oneof action_specifier {
@@ -616,7 +617,7 @@ message RateLimit {
   // cannot append a descriptor entry, no descriptor is generated for the
   // configuration. See :ref:`composing actions
   // <config_http_filters_rate_limit_composing_actions>` for additional documentation.
-  repeated Action actions = 3 [(validate.rules).repeated.min_items = 1];
+  repeated Action actions = 3 [(validate.rules).repeated .min_items = 1];
 }
 
 // .. attention::
@@ -659,8 +660,8 @@ message HeaderMatcher {
 
 // The top level element in the routing configuration is a virtual host. Each virtual host has
 // a logical name as well as a set of domains that get routed to it based on the incoming request's
-// host header. This allows a single listener to service multiple top level domain path trees. Once a
-// virtual host is selected based on the domain, the routes are processed in order to see which
+// host header. This allows a single listener to service multiple top level domain path trees. Once
+// a virtual host is selected based on the domain, the routes are processed in order to see which
 // upstream cluster to route to or whether to perform a redirect.
 message VirtualHost {
   // The logical name of the virtual host. This is used when emitting certain
@@ -679,7 +680,7 @@ message VirtualHost {
   //   host/authority header. Only a single virtual host in the entire route
   //   configuration can match on “*”. A domain must be unique across all virtual
   //   hosts or the config will fail to load.
-  repeated string domains = 2 [(validate.rules).repeated.min_items = 1];
+  repeated string domains = 2 [(validate.rules).repeated .min_items = 1];
 
   // The list of routes that will be matched, in order, for incoming requests.
   // The first route that matches will be used.

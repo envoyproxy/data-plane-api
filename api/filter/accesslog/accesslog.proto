@@ -275,11 +275,13 @@ message DurationFilter {
 
 // Filters for requests that are not health check requests. A health check
 // request is marked by the health check filter.
-message NotHealthCheckFilter {}
+message NotHealthCheckFilter {
+}
 
 // Filters for requests that are traceable. See the tracing overview for more
 // information on how a request becomes traceable.
-message TraceableFilter {}
+message TraceableFilter {
+}
 
 // Filters for random sampling of requests. Sampling pivots on the header
 // :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` being present. If
@@ -297,14 +299,14 @@ message RuntimeFilter {
 // Filters are evaluated sequentially and if one of them returns false, the
 // filter returns false immediately.
 message AndFilter {
-  repeated AccessLogFilter filters = 1 [(validate.rules).repeated.min_items = 2];
+  repeated AccessLogFilter filters = 1 [(validate.rules).repeated .min_items = 2];
 }
 
 // Performs a logical “or” operation on the result of each individual filter.
 // Filters are evaluated sequentially and if one of them returns true, the
 // filter returns true immediately.
 message OrFilter {
-  repeated AccessLogFilter filters = 2 [(validate.rules).repeated.min_items = 2];
+  repeated AccessLogFilter filters = 2 [(validate.rules).repeated .min_items = 2];
 }
 
 message AccessLogFilter {
@@ -396,7 +398,8 @@ message StreamAccessLogsMessage {
 
 // Empty response for the StreamAccessLogs API. Will never be sent. See below.
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-message StreamAccessLogsResponse {}
+message StreamAccessLogsResponse {
+}
 
 // Service for streaming access logs from Envoy to an access log server.
 service AccessLogService {
@@ -406,8 +409,7 @@ service AccessLogService {
   // API for "critical" access logs in which Envoy will buffer access logs for some period of time
   // until it gets an ACK so it could then retry. This API is designed for high throughput with the
   // expectation that it might be lossy.
-  rpc StreamAccessLogs(stream StreamAccessLogsMessage)
-      returns (StreamAccessLogsResponse) {
+  rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {
   }
 }
 

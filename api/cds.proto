@@ -20,12 +20,10 @@ import "validate/validate.proto";
 
 // Return list of all clusters this proxy will load balance to.
 service ClusterDiscoveryService {
-  rpc StreamClusters(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
+  rpc StreamClusters(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 
-  rpc FetchClusters(DiscoveryRequest)
-      returns (DiscoveryResponse) {
+  rpc FetchClusters(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:clusters"
       body: "*"
@@ -319,7 +317,8 @@ message Cluster {
     // The % chance that a host will be actually ejected when an outlier status
     // is detected through consecutive gateway failures. This setting can be
     // used to disable ejection or to ramp it up slowly. Defaults to 0.
-    google.protobuf.UInt32Value enforcing_consecutive_gateway_failure = 11 [(validate.rules).uint32.lte = 100];
+    google.protobuf.UInt32Value enforcing_consecutive_gateway_failure = 11
+        [(validate.rules).uint32.lte = 100];
   }
 
   // If specified, outlier detection will be enabled for this upstream cluster.

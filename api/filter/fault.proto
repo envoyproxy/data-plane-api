@@ -17,7 +17,8 @@ message FaultDelay {
     FIXED = 0;
   }
 
-  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.
+  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is
+  // supported.
   FaultDelayType type = 1 [(validate.rules).enum.defined_only = true];
 
   // An integer between 0-100 indicating the percentage of operations/connection requests
