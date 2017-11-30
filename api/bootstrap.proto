@@ -67,14 +67,14 @@ message Tracing {
 message Admin {
   // The path to write the access log for the administration server. If no
   // access log is desired specify ‘/dev/null’.
-  string access_log_path = 1;
+  string access_log_path = 1 [(validate.rules).string.min_len = 1];
 
   // The cpu profiler output path for the administration server. If no profile
   // path is specified, the default is ‘/var/log/envoy/envoy.prof’.
   string profile_path = 2;
 
   // The TCP address that the administration server will listen on.
-  Address address = 3;
+  Address address = 3 [(validate.rules).message.required = true];
 }
 
 // Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
@@ -265,7 +265,7 @@ message Runtime {
   // Specifies the subdirectory to load within the root directory. This is
   // useful if multiple systems share the same delivery mechanism. Envoy
   // configuration elements can be contained in a dedicated subdirectory.
-  string subdirectory = 2;
+  string subdirectory = 2 [(validate.rules).string.min_len = 1];
 
   // Specifies an optional subdirectory to load within the root directory. If
   // specified and the directory exists, configuration values within this
@@ -317,7 +317,10 @@ message Bootstrap {
     // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
     // specified. This must have :ref:`api_type
     // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
-    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
+    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`. Only
+    // :ref:`ConfigSources <envoy_api_msg_ConfigSource>` that have
+    // the :ref:`ads <envoy_api_field_ConfigSource.ads>` field set will be
+    // streamed on the ADS channel.
     ApiConfigSource ads_config = 3;
 
     message DeprecatedV1 {
@@ -334,7 +337,7 @@ message Bootstrap {
 
   // Configuration for the cluster manager which owns all upstream clusters
   // within the server.
-  ClusterManager cluster_manager = 4;
+  ClusterManager cluster_manager = 4 [(validate.rules).message.required = true];
 
   // Optional file system path to search for startup flag files.
   string flags_path = 5;
@@ -368,5 +371,5 @@ message Bootstrap {
   Runtime runtime = 11;
 
   // Configuration for the local administration HTTP server.
-  Admin admin = 12;
+  Admin admin = 12 [(validate.rules).message.required = true];
 }
