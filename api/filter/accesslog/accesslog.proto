@@ -28,7 +28,7 @@ import "validate/validate.proto";
 message AccessLogCommon {
   // This field indicates the rate at which this log entry was sampled.
   // Valid range is (0.0, 1.0].
-  double sample_rate = 1 [ (validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0 ];
+  double sample_rate = 1 [(validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0];
 
   // This field is the IP and port on which the request from the user was
   // received.

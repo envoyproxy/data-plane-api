@@ -19,13 +19,13 @@ import "validate/validate.proto";
 
 message Rds {
   // Configuration source specifier for RDS.
-  ConfigSource config_source = 1 [ (validate.rules).message.required = true ];
+  ConfigSource config_source = 1 [(validate.rules).message.required = true];
 
   // The name of the route configuration. This name will be passed to the RDS
   // API. This allows an Envoy configuration with multiple HTTP listeners (and
   // associated HTTP connection manager filters) to use different route
   // configurations.
-  string route_config_name = 2 [ (validate.rules).string.min_len = 1 ];
+  string route_config_name = 2 [(validate.rules).string.min_len = 1];
 }
 
 message HttpFilter {
@@ -44,7 +44,7 @@ message HttpFilter {
   // * :ref:`envoy.lua <config_http_filters_lua>`
   // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
   // * :ref:`envoy.router <config_http_filters_router>`
-  string name = 1 [ (validate.rules).string.min_len = 1 ];
+  string name = 1 [(validate.rules).string.min_len = 1];
 
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
@@ -78,12 +78,12 @@ message HttpConnectionManager {
   }
 
   // Supplies the type of codec that the connection manager should use.
-  CodecType codec_type = 1 [ (validate.rules).enum.defined_only = true ];
+  CodecType codec_type = 1 [(validate.rules).enum.defined_only = true];
 
   // The human readable prefix to use when emitting statistics for the
   // connection manager. See the :ref:`statistics documentation <config_http_conn_man_stats>` for
   // more information.
-  string stat_prefix = 2 [ (validate.rules).string.min_len = 1 ];
+  string stat_prefix = 2 [(validate.rules).string.min_len = 1];
 
   oneof route_specifier {
     option (validate.required) = true;
@@ -115,7 +115,7 @@ message HttpConnectionManager {
     }
 
     // The span name will be derived from this field.
-    OperationName operation_name = 1 [ (validate.rules).enum.defined_only = true ];
+    OperationName operation_name = 1 [(validate.rules).enum.defined_only = true];
 
     // A list of header names used to create tags for the active span. The header name is used to
     // populate the tag name, and the header value is used to populate the tag value. The tag is
@@ -202,7 +202,7 @@ message HttpConnectionManager {
   // How to handle the :ref:`config_http_conn_man_headers_x-forwarded-client-cert` (XFCC) HTTP
   // header.
   ForwardClientCertDetails forward_client_cert_details = 16
-      [ (validate.rules).enum.defined_only = true ];
+      [(validate.rules).enum.defined_only = true];
 
   message SetCurrentClientCertDetails {
     // Whether to forward the subject of the client cert. Defaults to false.

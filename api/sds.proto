@@ -17,8 +17,8 @@ service SecretDiscoveryService {
 
   rpc FetchSecrets(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
-      post : "/v2/discovery:secrets"
-      body : "*"
+      post: "/v2/discovery:secrets"
+      body: "*"
     };
   }
 }
@@ -28,7 +28,7 @@ message DataSource {
     option (validate.required) = true;
 
     // Local filesystem data source.
-    string filename = 1 [ (validate.rules).string.min_len = 1 ];
+    string filename = 1 [(validate.rules).string.min_len = 1];
 
     // [#not-implemented-hide:]
     bytes inline = 2;
@@ -54,10 +54,10 @@ message TlsParameters {
   }
 
   // Minimum TLS protocol version.
-  TlsProtocol tls_minimum_protocol_version = 1 [ (validate.rules).enum.defined_only = true ];
+  TlsProtocol tls_minimum_protocol_version = 1 [(validate.rules).enum.defined_only = true];
 
   // Maximum TLS protocol version.
-  TlsProtocol tls_maximum_protocol_version = 2 [ (validate.rules).enum.defined_only = true ];
+  TlsProtocol tls_maximum_protocol_version = 2 [(validate.rules).enum.defined_only = true];
 
   // If specified, the TLS listener will only support the specified `cipher list
   // <https://commondatastorage.googleapis.com/chromium-boringssl-docs/ssl.h.html#Cipher-suite-configuration>`_.
@@ -133,7 +133,7 @@ message TlsSessionTicketKeys {
   //   * Keep the session ticket keys at least as secure as your TLS certificate private keys
   //   * Rotate session ticket keys at least daily, and preferably hourly
   //   * Always generate keys using a cryptographically-secure random data source
-  repeated DataSource keys = 1 [ (validate.rules).repeated .min_items = 1 ];
+  repeated DataSource keys = 1 [(validate.rules).repeated .min_items = 1];
 }
 
 message CertificateValidationContext {
@@ -181,7 +181,7 @@ message CommonTlsContext {
   //
   //   Although this is a list, currently only a single certificate is supported. This will be
   //   relaxed in the future.
-  repeated TlsCertificate tls_certificates = 2 [ (validate.rules).repeated .max_items = 1 ];
+  repeated TlsCertificate tls_certificates = 2 [(validate.rules).repeated .max_items = 1];
 
   // [#not-implemented-hide:]
   repeated SdsSecretConfig tls_certificate_sds_secret_configs = 6;

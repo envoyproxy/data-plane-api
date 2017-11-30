@@ -22,23 +22,23 @@ import "validate/validate.proto";
 // Configuration for the LightStep tracer.
 message LightstepConfig {
   // The cluster manager cluster that hosts the LightStep collectors.
-  string collector_cluster = 1 [ (validate.rules).string.min_len = 1 ];
+  string collector_cluster = 1 [(validate.rules).string.min_len = 1];
 
   // File containing the access token to the `LightStep
   // <http://lightstep.com/>`_ API.
-  string access_token_file = 2 [ (validate.rules).string.min_len = 1 ];
+  string access_token_file = 2 [(validate.rules).string.min_len = 1];
 }
 
 message ZipkinConfig {
   // The cluster manager cluster that hosts the Zipkin collectors. Note that the
   // Zipkin cluster must be defined in the :ref:`Bootstrap static cluster
   // resources <envoy_api_field_Bootstrap.StaticResources.clusters>`.
-  string collector_cluster = 1 [ (validate.rules).string.min_len = 1 ];
+  string collector_cluster = 1 [(validate.rules).string.min_len = 1];
 
   // The API endpoint of the Zipkin service where the spans will be sent. When
   // using a standard Zipkin installation, the API endpoint is typically
   // /api/v1/spans, which is the default value.
-  string collector_endpoint = 2 [ (validate.rules).string.min_len = 1 ];
+  string collector_endpoint = 2 [(validate.rules).string.min_len = 1];
 }
 
 // The :ref:`tracing <arch_overview_tracing>` configuration specifies global
@@ -51,7 +51,7 @@ message Tracing {
     // The name of the HTTP trace driver to instantiate. The name must match a
     // supported HTTP trace driver. *envoy.lightstep* and *envoy.zipkin* are
     // built-in trace drivers.
-    string name = 1 [ (validate.rules).string.min_len = 1 ];
+    string name = 1 [(validate.rules).string.min_len = 1];
 
     // Trace driver specific configuration which depends on the driver being
     // instantiated. See the :ref:`LightstepConfig
@@ -68,14 +68,14 @@ message Tracing {
 message Admin {
   // The path to write the access log for the administration server. If no
   // access log is desired specify ‘/dev/null’.
-  string access_log_path = 1 [ (validate.rules).string.min_len = 1 ];
+  string access_log_path = 1 [(validate.rules).string.min_len = 1];
 
   // The cpu profiler output path for the administration server. If no profile
   // path is specified, the default is ‘/var/log/envoy/envoy.prof’.
   string profile_path = 2;
 
   // The TCP address that the administration server will listen on.
-  Address address = 3 [ (validate.rules).message.required = true ];
+  Address address = 3 [(validate.rules).message.required = true];
 }
 
 // Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
@@ -264,12 +264,12 @@ message Runtime {
   // switched to. This parameter specifies the path to the symbolic link. Envoy
   // will watch the location for changes and reload the file system tree when
   // they happen.
-  string symlink_root = 1 [ (validate.rules).string.min_len = 1 ];
+  string symlink_root = 1 [(validate.rules).string.min_len = 1];
 
   // Specifies the subdirectory to load within the root directory. This is
   // useful if multiple systems share the same delivery mechanism. Envoy
   // configuration elements can be contained in a dedicated subdirectory.
-  string subdirectory = 2 [ (validate.rules).string.min_len = 1 ];
+  string subdirectory = 2 [(validate.rules).string.min_len = 1];
 
   // Specifies an optional subdirectory to load within the root directory. If
   // specified and the directory exists, configuration values within this
@@ -285,14 +285,14 @@ message RateLimitServiceConfig {
   // Specifies the cluster manager cluster name that hosts the rate limit
   // service. The client will connect to this cluster when it needs to make rate
   // limit service requests.
-  string cluster_name = 1 [ (validate.rules).string.min_len = 1 ];
+  string cluster_name = 1 [(validate.rules).string.min_len = 1];
 }
 
 // Bootstrap :ref:`configuration overview <config_overview_v2_bootstrap>`.
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
-  Node node = 1 [ (validate.rules).message.required = true ];
+  Node node = 1 [(validate.rules).message.required = true];
 
   message StaticResources {
     // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
@@ -346,7 +346,7 @@ message Bootstrap {
 
   // Configuration for the cluster manager which owns all upstream clusters
   // within the server.
-  ClusterManager cluster_manager = 4 [ (validate.rules).message.required = true ];
+  ClusterManager cluster_manager = 4 [(validate.rules).message.required = true];
 
   // Optional file system path to search for startup flag files.
   string flags_path = 5;
@@ -380,5 +380,5 @@ message Bootstrap {
   Runtime runtime = 11;
 
   // Configuration for the local administration HTTP server.
-  Admin admin = 12 [ (validate.rules).message.required = true ];
+  Admin admin = 12 [(validate.rules).message.required = true];
 }

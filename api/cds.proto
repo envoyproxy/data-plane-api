@@ -24,8 +24,8 @@ service ClusterDiscoveryService {
 
   rpc FetchClusters(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
-      post : "/v2/discovery:clusters"
-      body : "*"
+      post: "/v2/discovery:clusters"
+      body: "*"
     };
   }
 }
@@ -81,7 +81,7 @@ message Cluster {
   // By default, the maximum length of a cluster name is limited to 60
   // characters. This limit can be increased by setting the
   // :option:`--max-obj-name-len` command line argument to the desired value.
-  string name = 1 [ (validate.rules).string.min_len = 1 ];
+  string name = 1 [(validate.rules).string.min_len = 1];
 
   // Refer to :ref:`service discovery type <arch_overview_service_discovery_types>`
   // for an explanation on each type.
@@ -111,7 +111,7 @@ message Cluster {
   }
   // The :ref:`service discovery type <arch_overview_service_discovery_types>`
   // to use for resolving the cluster.
-  DiscoveryType type = 2 [ (validate.rules).enum.defined_only = true ];
+  DiscoveryType type = 2 [(validate.rules).enum.defined_only = true];
 
   // Only valid when discovery type is EDS.
   message EdsClusterConfig {
@@ -127,7 +127,7 @@ message Cluster {
   EdsClusterConfig eds_cluster_config = 3;
 
   // The timeout for new network connections to hosts in the cluster.
-  google.protobuf.Duration connect_timeout = 4 [ (validate.rules).duration.gt = {} ];
+  google.protobuf.Duration connect_timeout = 4 [(validate.rules).duration.gt = {}];
 
   // Soft limit on size of the cluster’s connections read and write buffers. If
   // unspecified, an implementation defined default is applied (1MiB).
@@ -164,7 +164,7 @@ message Cluster {
   }
   // The :ref:`load balancer type <arch_overview_load_balancing_types>` to use
   // when picking a host in the cluster.
-  LbPolicy lb_policy = 6 [ (validate.rules).enum.defined_only = true ];
+  LbPolicy lb_policy = 6 [(validate.rules).enum.defined_only = true];
 
   // If the service discovery type is
   // :ref:`STATIC<envoy_api_enum_value_Cluster.DiscoveryType.STATIC>`,
@@ -220,7 +220,7 @@ message Cluster {
   // :ref:`STRICT_DNS<envoy_api_enum_value_Cluster.DiscoveryType.STRICT_DNS>`
   // and :ref:`LOGICAL_DNS<envoy_api_enum_value_Cluster.DiscoveryType.LOGICAL_DNS>`
   // this setting is ignored.
-  google.protobuf.Duration dns_refresh_rate = 16 [ (validate.rules).duration.gt = {} ];
+  google.protobuf.Duration dns_refresh_rate = 16 [(validate.rules).duration.gt = {}];
 
   // When V4_ONLY is selected, the DNS resolver will only perform a lookup for
   // addresses in the IPv4 family. If V6_ONLY is selected, the DNS resolver will
@@ -241,7 +241,7 @@ message Cluster {
   // The DNS IP address resolution policy. If this setting is not specified, the
   // value defaults to
   // :ref:`V4_ONLY<envoy_api_enum_value_Cluster.DnsLookupFamily.V4_ONLY>`.
-  DnsLookupFamily dns_lookup_family = 17 [ (validate.rules).enum.defined_only = true ];
+  DnsLookupFamily dns_lookup_family = 17 [(validate.rules).enum.defined_only = true];
 
   // If DNS resolvers are specified and the cluster type is either
   // :ref:`STRICT_DNS<envoy_api_enum_value_Cluster.DiscoveryType.STRICT_DNS>`,
@@ -265,26 +265,26 @@ message Cluster {
     // The time interval between ejection analysis sweeps. This can result in
     // both new ejections as well as hosts being returned to service. Defaults
     // to 10000ms or 10s.
-    google.protobuf.Duration interval = 2 [ (validate.rules).duration.gt = {} ];
+    google.protobuf.Duration interval = 2 [(validate.rules).duration.gt = {}];
 
     // The base time that a host is ejected for. The real time is equal to the
     // base time multiplied by the number of times the host has been ejected.
     // Defaults to 30000ms or 30s.
-    google.protobuf.Duration base_ejection_time = 3 [ (validate.rules).duration.gt = {} ];
+    google.protobuf.Duration base_ejection_time = 3 [(validate.rules).duration.gt = {}];
 
     // The maximum % of an upstream cluster that can be ejected due to outlier
     // detection. Defaults to 10%.
-    google.protobuf.UInt32Value max_ejection_percent = 4 [ (validate.rules).uint32.lte = 100 ];
+    google.protobuf.UInt32Value max_ejection_percent = 4 [(validate.rules).uint32.lte = 100];
 
     // The % chance that a host will be actually ejected when an outlier status
     // is detected through consecutive 5xx. This setting can be used to disable
     // ejection or to ramp it up slowly. Defaults to 100.
-    google.protobuf.UInt32Value enforcing_consecutive_5xx = 5 [ (validate.rules).uint32.lte = 100 ];
+    google.protobuf.UInt32Value enforcing_consecutive_5xx = 5 [(validate.rules).uint32.lte = 100];
 
     // The % chance that a host will be actually ejected when an outlier status
     // is detected through success rate statistics. This setting can be used to
     // disable ejection or to ramp it up slowly. Defaults to 100.
-    google.protobuf.UInt32Value enforcing_success_rate = 6 [ (validate.rules).uint32.lte = 100 ];
+    google.protobuf.UInt32Value enforcing_success_rate = 6 [(validate.rules).uint32.lte = 100];
 
     // The number of hosts in a cluster that must have enough request volume to
     // detect success rate outliers. If the number of hosts is less than this
@@ -317,7 +317,7 @@ message Cluster {
     // is detected through consecutive gateway failures. This setting can be
     // used to disable ejection or to ramp it up slowly. Defaults to 0.
     google.protobuf.UInt32Value enforcing_consecutive_gateway_failure = 11
-        [ (validate.rules).uint32.lte = 100 ];
+        [(validate.rules).uint32.lte = 100];
   }
 
   // If specified, outlier detection will be enabled for this upstream cluster.
@@ -338,7 +338,7 @@ message Cluster {
   // value defaults to 5000ms. For cluster types other than
   // :ref:`ORIGINAL_DST<envoy_api_enum_value_Cluster.DiscoveryType.ORIGINAL_DST>`
   // this setting is ignored.
-  google.protobuf.Duration cleanup_interval = 20 [ (validate.rules).duration.gt = {} ];
+  google.protobuf.Duration cleanup_interval = 20 [(validate.rules).duration.gt = {}];
 
   // Optional configuration used to bind newly established upstream connections.
   // This overrides any bind_config specified in the bootstrap proto.
@@ -363,7 +363,7 @@ message Cluster {
     // The behavior used when no endpoint subset matches the selected route's
     // metadata. The value defaults to
     // :ref:`NO_FALLBACK<envoy_api_enum_value_Cluster.LbSubsetConfig.LbSubsetFallbackPolicy.NO_FALLBACK>`.
-    LbSubsetFallbackPolicy fallback_policy = 1 [ (validate.rules).enum.defined_only = true ];
+    LbSubsetFallbackPolicy fallback_policy = 1 [(validate.rules).enum.defined_only = true];
 
     // Specifies the default subset of endpoints used during fallback if
     // fallback_policy is

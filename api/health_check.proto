@@ -15,10 +15,10 @@ import "validate/validate.proto";
 message HealthCheck {
   // The time to wait for a health check response. If the timeout is reached the
   // health check attempt will be considered a failure.
-  google.protobuf.Duration timeout = 1 [ (validate.rules).duration.required = true ];
+  google.protobuf.Duration timeout = 1 [(validate.rules).duration.required = true];
 
   // The interval between health checks.
-  google.protobuf.Duration interval = 2 [ (validate.rules).duration.required = true ];
+  google.protobuf.Duration interval = 2 [(validate.rules).duration.required = true];
 
   // An optional jitter amount in millseconds. If specified, during every
   // internal Envoy will add 0 to interval_jitter to the wait time.
@@ -46,7 +46,7 @@ message HealthCheck {
       option (validate.required) = true;
 
       // Hex encoded payload. E.g., "000000FF".
-      string text = 1 [ (validate.rules).string.min_len = 1 ];
+      string text = 1 [(validate.rules).string.min_len = 1];
 
       // [#not-implemented-hide:] Binary payload.
       bytes binary = 2;
@@ -61,7 +61,7 @@ message HealthCheck {
 
     // Specifies the HTTP path that will be requested during health checking. For example
     // */healthcheck*.
-    string path = 2 [ (validate.rules).string.min_len = 1 ];
+    string path = 2 [(validate.rules).string.min_len = 1];
 
     // [#not-implemented-hide:] HTTP specific payload.
     Payload send = 3;

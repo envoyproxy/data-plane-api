@@ -25,8 +25,8 @@ service ListenerDiscoveryService {
 
   rpc FetchListeners(DiscoveryRequest) returns (DiscoveryResponse) {
     option (google.api.http) = {
-      post : "/v2/discovery:listeners"
-      body : "*"
+      post: "/v2/discovery:listeners"
+      body: "*"
     };
   }
 }
@@ -41,7 +41,7 @@ message Filter {
   // * :ref:`envoy.mongo_proxy <config_network_filters_mongo_proxy>`
   // * :ref:`envoy.redis_proxy <config_network_filters_redis_proxy>`
   // * :ref:`envoy.tcp_proxy <config_network_filters_tcp_proxy>`
-  string name = 1 [ (validate.rules).string.min_len = 1 ];
+  string name = 1 [(validate.rules).string.min_len = 1];
 
   // Filter specific configuration which depends on the filter being
   // instantiated. See the supported filters for further documentation.
@@ -140,7 +140,7 @@ message Listener {
   // The address that the listener should listen on. In general, the address must be unique, though
   // that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
   // Linux as the actual port will be allocated by the OS.
-  Address address = 2 [ (validate.rules).message.required = true ];
+  Address address = 2 [(validate.rules).message.required = true];
 
   // A list of filter chains to consider for this listener. The
   // :ref:`FilterChain <envoy_api_msg_FilterChain>` with the most specific :ref:`FilterChainMatch
@@ -155,7 +155,7 @@ message Listener {
   //   differ, the configuration will fail to load. In the future, this limitation will be relaxed
   //   such that different filters can be used depending on which filter chain matches (based on SNI
   //   or some other parameter).
-  repeated FilterChain filter_chains = 3 [ (validate.rules).repeated .min_items = 1 ];
+  repeated FilterChain filter_chains = 3 [(validate.rules).repeated .min_items = 1];
 
   // If a connection is redirected using *iptables*, the port on which the proxy
   // receives it might be different from the original destination address. When this flag is set to
