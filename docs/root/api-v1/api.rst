@@ -5,6 +5,7 @@ v1 API reference
   :glob:
   :maxdepth: 2
 
+  listeners/listeners
   network_filters/network_filters
   route_config/route_config
   http_filters/http_filters
