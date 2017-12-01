@@ -178,7 +178,8 @@ message RouteAction {
 
   // The HTTP status code to use when configured cluster is not found.
   // The default response code is 503 Service Unavailable.
-  ClusterNotFoundResponseCode cluster_not_found_response_code = 20;
+  ClusterNotFoundResponseCode cluster_not_found_response_code = 20
+      [(validate.rules).enum.defined_only = true];
 
   // Optional endpoint metadata match criteria. Only endpoints in the upstream
   // cluster with metadata matching that set in metadata_match will be
@@ -408,7 +409,7 @@ message RedirectAction {
 
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
-  RedirectResponseCode response_code = 3;
+  RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
 }
 
 message Decorator {
