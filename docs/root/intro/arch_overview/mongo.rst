@@ -10,6 +10,7 @@ Envoy supports a network level MongoDB sniffing filter with the following featur
   routed clusters.
 * Query logging.
 * Per callsite statistics via the $comment query parameter.
+* Fault injection.
 
 The MongoDB filter is a good example of Envoy’s extensibility and core abstractions. At Lyft we use
 this filter between all applications and our databases. It provides an invaluable source of data

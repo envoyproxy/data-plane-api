@@ -45,6 +45,8 @@ that :option:`--service-cluster` has been set to ``my-cluster``. Envoy will firs
 If found, the value will override any value found in the primary lookup path. This allows the user
 to customize the runtime values for individual clusters on top of global defaults.
 
+.. _config_runtime_comments:
+
 Comments
 --------
 

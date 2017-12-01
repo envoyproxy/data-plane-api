@@ -1,6 +1,69 @@
 Version history
 ---------------
 
+1.5.0
+=====
+
+* access log: added fields for :ref:`UPSTREAM_LOCAL_ADDRESS and DOWNSTREAM_ADDRESS
+  <config_access_log_format>`.
+* admin: added :ref:`JSON output <operations_admin_interface_stats>` for stats admin endpoint.
+* admin: added basic :ref:`Prometheus output <operations_admin_interface_stats>` for stats admin
+  endpoint. Histograms are not currently output.
+* config: the :ref:`v2 API <config_overview_v2>` is now considered production ready.
+* config: added ::option:`--v2-config-only` CLI flag.
+* cors: added :ref:`CORS filter <config_http_filters_cors>`.
+* health check: added :ref:`x-envoy-immediate-health-check-fail
+  <config_http_filters_router_x-envoy-immediate-health-check-fail>` header support.
+* health check: added :ref:`reuse_connection <envoy_api_field_HealthCheck.reuse_connection>` option.
+* http: added :ref:`per-listener stats <config_http_conn_man_stats_per_listener>`.
+* http: end-to-end HTTP flow control is now complete across both connections, streams, and filters.
+* load balancer: added :ref:`subset load balancer <arch_overview_load_balancer_subsets>`.
+* load balancer: added ring size and hash :ref:`configuration options
+  <envoy_api_msg_Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
+  configuration was deleted without deprecation as we are fairly certain no one is using it.
+* log: added the ability to optionally log to a file instead of stderr via the
+  ::option:`--log-path` option.
+* listeners: added :ref:`drain_type <envoy_api_field_Listener.drain_type>` option.
+* lua: added experimental :ref:`Lua filter <config_http_filters_lua>`.
+* mongo filter: added :ref:`fault injection <config_network_filters_mongo_proxy_fault_injection>`.
+* mongo filter: added :ref:`"drain close" <arch_overview_draining>` support.
+* outlier detection: added :ref:`HTTP gateway failure type <arch_overview_outlier_detection>`.
+  See `DEPRECATED.md <https://github.com/envoyproxy/envoy/blob/master/DEPRECATED.md#version-150>`_
+  for outlier detection stats deprecations in this release.
+* redis: the :ref:`redis proxy filter <config_network_filters_redis_proxy>` is now considered
+  production ready.
+* redis: added :ref:`"drain close" <arch_overview_draining>` functionality.
+* router: added :ref:`x-envoy-overloaded <config_http_filters_router_x-envoy-overloaded>` support.
+* router: added :ref:`regex <envoy_api_field_RouteMatch.regex>` route matching.
+* router: added :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`
+  for upstream requests.
+* router: added :ref:`downstream IP hashing
+  <envoy_api_field_RouteAction.HashPolicy.connection_properties>` for HTTP ketama routing.
+* router: added :ref:`cookie hashing <envoy_api_field_RouteAction.HashPolicy.cookie>`.
+* router: added :ref:`start_child_span <envoy_api_field_filter.http.Router.start_child_span>` option
+  to create child span for egress calls.
+* router: added optional :ref:`upstream logs <envoy_api_field_filter.http.Router.upstream_log>`.
+* router: added complete :ref:`custom append/override/remove support
+  <config_http_conn_man_headers_custom_request_headers>` of request/response headers.
+* router: added support to :ref:`specify response code during redirect
+  <envoy_api_field_RedirectAction.response_code>`.
+* runtime: added :ref:`comment capability <config_runtime_comments>`.
+* server: change default ::`-l` to info level.
+* stats: maximum stat/name sizes and maximum number of stats are now variable via the
+  ::option:`--max-obj-name-len` and ::option:`--max-stats` options.
+* tcp proxy: added :ref:`access logging <envoy_api_field_filter.network.TcpProxy.access_log>`.
+* tcp proxy: added :ref:`configurable connect retries
+  <envoy_api_field_filter.network.TcpProxy.max_connect_attempts>`.
+* tcp proxy: enable use of :ref:`outlier detector <arch_overview_outlier_detection>`.
+* tls: added :ref:`SNI support <faq_how_to_setup_sni>`.
+* tls: added support for specifying :ref:`TLS session ticket keys
+  <envoy_api_field_DownstreamTlsContext.session_ticket_keys>`.
+* tls: allow configuration of the :ref:`min
+  <envoy_api_field_TlsParameters.tls_minimum_protocol_version>` and :ref:`max
+  <envoy_api_field_TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
+* tracing: added :ref:`custom trace span decorators <envoy_api_field_Route.decorator>`.
+* Many small bug fixes and performance improvements not listed.
+
 1.4.0
 =====
 

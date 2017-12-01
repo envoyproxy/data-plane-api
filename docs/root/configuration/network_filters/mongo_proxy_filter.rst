@@ -7,6 +7,14 @@ Mongo proxy
 - :ref:`v1 API reference <config_network_filters_mongo_proxy_v1>`
 - :ref:`v2 API reference <envoy_api_msg_filter.network.MongoProxy>`
 
+.. _config_network_filters_mongo_proxy_fault_injection:
+
+Fault injection
+---------------
+
+The Mongo proxy filter supports fault injection. See the v1 and v2 API reference for how to
+configure.
+
 .. _config_network_filters_mongo_proxy_stats:
 
 Statistics
