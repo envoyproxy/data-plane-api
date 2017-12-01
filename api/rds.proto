@@ -168,6 +168,19 @@ message RouteAction {
     WeightedCluster weighted_clusters = 3;
   }
 
+  enum ClusterNotFoundResponseCode {
+    // HTTP status code - 503 Service Unavailable.
+    SERVICE_UNAVAILABLE = 0;
+
+    // HTTP status code - 404 Not Found.
+    NOT_FOUND = 1;
+  }
+
+  // The HTTP status code to use when configured cluster is not found.
+  // The default response code is 503 Service Unavailable.
+  ClusterNotFoundResponseCode cluster_not_found_response_code = 20
+      [(validate.rules).enum.defined_only = true];
+
   // Optional endpoint metadata match criteria. Only endpoints in the upstream
   // cluster with metadata matching that set in metadata_match will be
   // considered. The filter name should be specified as *envoy.lb*.
@@ -396,7 +409,7 @@ message RedirectAction {
 
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
-  RedirectResponseCode response_code = 3;
+  RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
 }
 
 message Decorator {
