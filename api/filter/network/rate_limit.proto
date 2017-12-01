@@ -18,7 +18,7 @@ message RateLimit {
   string domain = 2 [(validate.rules).string.min_bytes = 1];
 
   // The rate limit descriptor list to use in the rate limit service request.
-  repeated RateLimitDescriptor descriptors = 3 [(validate.rules).repeated.min_items = 1];
+  repeated RateLimitDescriptor descriptors = 3 [(validate.rules).repeated .min_items = 1];
 
   // The timeout in milliseconds for the rate limit service RPC. If not
   // set, this defaults to 20ms.
