@@ -17,50 +17,6 @@ import "validate/validate.proto";
 // [#protodoc-title: HTTP connection manager]
 // HTTP connection manager :ref:`configuration overview <config_http_conn_man>`.
 
-message Rds {
-  // Configuration source specifier for RDS.
-  ConfigSource config_source = 1 [(validate.rules).message.required = true];
-
-  // The name of the route configuration. This name will be passed to the RDS
-  // API. This allows an Envoy configuration with multiple HTTP listeners (and
-  // associated HTTP connection manager filters) to use different route
-  // configurations.
-  string route_config_name = 2 [(validate.rules).string.min_bytes = 1];
-}
-
-message HttpFilter {
-  // The name of the filter to instantiate. The name must match a supported
-  // filter. The built-in filters are:
-  //
-  // [#comment:TODO(mattklein123): Auto generate the following list]
-  // * :ref:`envoy.buffer <config_http_filters_buffer>`
-  // * :ref:`envoy.cors <config_http_filters_cors>`
-  // * :ref:`envoy.fault <config_http_filters_fault_injection>`
-  // * :ref:`envoy.http_dynamo_filter <config_http_filters_dynamo>`
-  // * :ref:`envoy.grpc_http1_bridge <config_http_filters_grpc_bridge>`
-  // * :ref:`envoy.grpc_json_transcoder <config_http_filters_grpc_json_transcoder>`
-  // * :ref:`envoy.grpc_web <config_http_filters_grpc_web>`
-  // * :ref:`envoy.health_check <config_http_filters_health_check>`
-  // * :ref:`envoy.lua <config_http_filters_lua>`
-  // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
-  // * :ref:`envoy.router <config_http_filters_router>`
-  string name = 1 [(validate.rules).string.min_bytes = 1];
-
-  // Filter specific configuration which depends on the filter being
-  // instantiated. See the supported filters for further documentation.
-  google.protobuf.Struct config = 2;
-
-  // [#not-implemented-hide:]
-  // This is hidden as type has been deprecated and is no longer required.
-  message DeprecatedV1 {
-    string type = 1;
-  }
-
-  // [#not-implemented-hide:]
-  // This is hidden as type has been deprecated and is no longer required.
-  DeprecatedV1 deprecated_v1 = 3;
-}
-
 message HttpConnectionManager {
   enum CodecType {
     // For every new connection, the connection manager will determine which
@@ -221,4 +177,48 @@ message HttpConnectionManager {
   // :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header, *Hash* is always set, and
   // *By* is always set when the client certificate presents the SAN value.
   SetCurrentClientCertDetails set_current_client_cert_details = 17;
+}
+
+message Rds {
+  // Configuration source specifier for RDS.
+  ConfigSource config_source = 1 [(validate.rules).message.required = true];
+
+  // The name of the route configuration. This name will be passed to the RDS
+  // API. This allows an Envoy configuration with multiple HTTP listeners (and
+  // associated HTTP connection manager filters) to use different route
+  // configurations.
+  string route_config_name = 2 [(validate.rules).string.min_bytes = 1];
+}
+
+message HttpFilter {
+  // The name of the filter to instantiate. The name must match a supported
+  // filter. The built-in filters are:
+  //
+  // [#comment:TODO(mattklein123): Auto generate the following list]
+  // * :ref:`envoy.buffer <config_http_filters_buffer>`
+  // * :ref:`envoy.cors <config_http_filters_cors>`
+  // * :ref:`envoy.fault <config_http_filters_fault_injection>`
+  // * :ref:`envoy.http_dynamo_filter <config_http_filters_dynamo>`
+  // * :ref:`envoy.grpc_http1_bridge <config_http_filters_grpc_bridge>`
+  // * :ref:`envoy.grpc_json_transcoder <config_http_filters_grpc_json_transcoder>`
+  // * :ref:`envoy.grpc_web <config_http_filters_grpc_web>`
+  // * :ref:`envoy.health_check <config_http_filters_health_check>`
+  // * :ref:`envoy.lua <config_http_filters_lua>`
+  // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
+  // * :ref:`envoy.router <config_http_filters_router>`
+  string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // Filter specific configuration which depends on the filter being
+  // instantiated. See the supported filters for further documentation.
+  google.protobuf.Struct config = 2;
+
+  // [#not-implemented-hide:]
+  // This is hidden as type has been deprecated and is no longer required.
+  message DeprecatedV1 {
+    string type = 1;
+  }
+
+  // [#not-implemented-hide:]
+  // This is hidden as type has been deprecated and is no longer required.
+  DeprecatedV1 deprecated_v1 = 3;
 }

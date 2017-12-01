@@ -31,6 +31,169 @@ service RouteDiscoveryService {
   }
 }
 
+// * Routing :ref:`architecture overview <arch_overview_http_routing>`
+// * HTTP :ref:`router filter <config_http_filters_router>`
+message RouteConfiguration {
+  // The name of the route configuration. For example, it might match
+  // :ref:`route_config_name <envoy_api_field_filter.network.Rds.route_config_name>` in
+  // :ref:`envoy_api_msg_filter.network.Rds`.
+  string name = 1;
+
+  // An array of virtual hosts that make up the route table.
+  repeated VirtualHost virtual_hosts = 2;
+
+  // Optionally specifies a list of HTTP headers that the connection manager
+  // will consider to be internal only. If they are found on external requests they will be cleaned
+  // prior to filter invocation. See :ref:`config_http_conn_man_headers_x-envoy-internal` for more
+  // information.
+  repeated string internal_only_headers = 3;
+
+  // Specifies a list of HTTP headers that should be added to each response that
+  // the connection manager encodes. Headers specified at this level are applied
+  // after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
+  // :ref:`envoy_api_msg_RouteAction`.
+  repeated HeaderValueOption response_headers_to_add = 4;
+
+  // Specifies a list of HTTP headers that should be removed from each response
+  // that the connection manager encodes.
+  repeated string response_headers_to_remove = 5;
+
+  // Specifies a list of HTTP headers that should be added to each request
+  // routed by the HTTP connection manager. Headers specified at this level are
+  // applied after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
+  // :ref:`envoy_api_msg_RouteAction`. For more information see the documentation on
+  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+  repeated HeaderValueOption request_headers_to_add = 6;
+
+  // An optional boolean that specifies whether the clusters that the route
+  // table refers to will be validated by the cluster manager. If set to true
+  // and a route refers to a non-existent cluster, the route table will not
+  // load. If set to false and a route refers to a non-existent cluster, the
+  // route table will load and the router filter will return a 404 if the route
+  // is selected at runtime. This setting defaults to true if the route table
+  // is statically defined via the :ref:`route_config
+  // <envoy_api_field_filter.network.HttpConnectionManager.route_config>` option. This setting
+  // default to false if the route table is loaded dynamically via the :ref:`rds
+  // <envoy_api_field_filter.network.HttpConnectionManager.rds>` option. Users
+  // may which to override the default behavior in certain cases (for example
+  // when using CDS with a static route table).
+  google.protobuf.BoolValue validate_clusters = 7;
+}
+
+// The top level element in the routing configuration is a virtual host. Each virtual host has
+// a logical name as well as a set of domains that get routed to it based on the incoming request's
+// host header. This allows a single listener to service multiple top level domain path trees. Once
+// a virtual host is selected based on the domain, the routes are processed in order to see which
+// upstream cluster to route to or whether to perform a redirect.
+message VirtualHost {
+  // The logical name of the virtual host. This is used when emitting certain
+  // statistics but is not relevant for routing.
+  string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // A list of domains (host/authority header) that will be matched to this
+  // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
+  // “*-bar.foo.com”.
+  //
+  // .. note::
+  //
+  //   The wildcard will not match the empty string.
+  //   e.g. “*-bar.foo.com” will match “baz-bar.foo.com” but not “-bar.foo.com”.
+  //   Additionally, a special entry “*” is allowed which will match any
+  //   host/authority header. Only a single virtual host in the entire route
+  //   configuration can match on “*”. A domain must be unique across all virtual
+  //   hosts or the config will fail to load.
+  repeated string domains = 2 [(validate.rules).repeated .min_items = 1];
+
+  // The list of routes that will be matched, in order, for incoming requests.
+  // The first route that matches will be used.
+  repeated Route routes = 3;
+
+  enum TlsRequirementType {
+    // No TLS requirement for the virtual host.
+    NONE = 0;
+
+    // External requests must use TLS. If a request is external and it is not
+    // using TLS, a 301 redirect will be sent telling the client to use HTTPS.
+    EXTERNAL_ONLY = 1;
+
+    // All requests must use TLS. If a request is not using TLS, a 301 redirect
+    // will be sent telling the client to use HTTPS.
+    ALL = 2;
+  }
+
+  // Specifies the type of TLS enforcement the virtual host expects. If this option is not
+  // specified, there is no TLS requirement for the virtual host.
+  TlsRequirementType require_tls = 4;
+
+  // A list of virtual clusters defined for this virtual host. Virtual clusters
+  // are used for additional statistics gathering.
+  repeated VirtualCluster virtual_clusters = 5;
+
+  // Specifies a set of rate limit configurations that will be applied to the
+  // virtual host.
+  repeated RateLimit rate_limits = 6;
+
+  // Specifies a list of HTTP headers that should be added to each request
+  // handled by this virtual host. Headers specified at this level are applied
+  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
+  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information see the documentation
+  // on :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+  repeated HeaderValueOption request_headers_to_add = 7;
+
+  // Specifies a list of HTTP headers that should be added to each response
+  // handled by this virtual host. Headers specified at this level are applied
+  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
+  // enclosing :ref:`envoy_api_msg_RouteConfiguration`.
+  repeated HeaderValueOption response_headers_to_add = 10;
+
+  // Specifies a list of HTTP headers that should be removed from each response
+  // handle by this virtual host.
+  repeated string response_headers_to_remove = 11;
+
+  // Indicates that the virtual host has a CORS policy.
+  CorsPolicy cors = 8;
+
+  // [#not-implemented-hide:]
+  // Return a 401/403 when auth checks fail.
+  AuthAction auth = 9;
+}
+
+// A route is both a specification of how to match a request as well as an indication of what to do
+// next (e.g., redirect, forward, rewrite, etc.).
+//
+// .. attention::
+//
+//   Envoy supports routing on HTTP method via :ref:`header matching
+//   <envoy_api_msg_HeaderMatcher>`.
+message Route {
+  // Route matching parameters.
+  RouteMatch match = 1 [(validate.rules).message.required = true];
+
+  oneof action {
+    option (validate.required) = true;
+
+    // Route request to some upstream cluster.
+    RouteAction route = 2;
+
+    // Return a redirect.
+    RedirectAction redirect = 3;
+  }
+
+  // The Metadata field can be used to provide additional information
+  // about the route. It can be used for configuration, stats, and logging.
+  // The metadata should go under the filter namespace that will need it.
+  // For instance, if the metadata is intended for the Router filter,
+  // the filter name should be specified as *envoy.router*.
+  Metadata metadata = 4;
+
+  // Decorator for the matched route.
+  Decorator decorator = 5;
+
+  // [#not-implemented-hide:]
+  // Return a 401/403 when auth checks fail.
+  AuthAction auth = 6;
+}
+
 // Compared to the :ref:`cluster <envoy_api_field_RouteAction.cluster>` field that specifies a
 // single upstream cluster as the target of a request, the :ref:`weighted_clusters
 // <envoy_api_field_RouteAction.weighted_clusters>` option allows for specification of
@@ -424,42 +587,6 @@ message Decorator {
   string operation = 1 [(validate.rules).string.min_bytes = 1];
 }
 
-// A route is both a specification of how to match a request as well as an indication of what to do
-// next (e.g., redirect, forward, rewrite, etc.).
-//
-// .. attention::
-//
-//   Envoy supports routing on HTTP method via :ref:`header matching
-//   <envoy_api_msg_HeaderMatcher>`.
-message Route {
-  // Route matching parameters.
-  RouteMatch match = 1 [(validate.rules).message.required = true];
-
-  oneof action {
-    option (validate.required) = true;
-
-    // Route request to some upstream cluster.
-    RouteAction route = 2;
-
-    // Return a redirect.
-    RedirectAction redirect = 3;
-  }
-
-  // The Metadata field can be used to provide additional information
-  // about the route. It can be used for configuration, stats, and logging.
-  // The metadata should go under the filter namespace that will need it.
-  // For instance, if the metadata is intended for the Router filter,
-  // the filter name should be specified as *envoy.router*.
-  Metadata metadata = 4;
-
-  // Decorator for the matched route.
-  Decorator decorator = 5;
-
-  // [#not-implemented-hide:]
-  // Return a 401/403 when auth checks fail.
-  AuthAction auth = 6;
-}
-
 // A virtual cluster is a way of specifying a regex matching rule against
 // certain important endpoints such that statistics are generated explicitly for
 // the matched requests. The reason this is useful is that when doing
@@ -669,131 +796,4 @@ message HeaderMatcher {
   // * The regex *\d{3}* does not match the value *1234*
   // * The regex *\d{3}* does not match the value *123.456*
   google.protobuf.BoolValue regex = 3;
-}
-
-// The top level element in the routing configuration is a virtual host. Each virtual host has
-// a logical name as well as a set of domains that get routed to it based on the incoming request's
-// host header. This allows a single listener to service multiple top level domain path trees. Once
-// a virtual host is selected based on the domain, the routes are processed in order to see which
-// upstream cluster to route to or whether to perform a redirect.
-message VirtualHost {
-  // The logical name of the virtual host. This is used when emitting certain
-  // statistics but is not relevant for routing.
-  string name = 1 [(validate.rules).string.min_bytes = 1];
-
-  // A list of domains (host/authority header) that will be matched to this
-  // virtual host. Wildcard hosts are supported in the form of “*.foo.com” or
-  // “*-bar.foo.com”.
-  //
-  // .. note::
-  //
-  //   The wildcard will not match the empty string.
-  //   e.g. “*-bar.foo.com” will match “baz-bar.foo.com” but not “-bar.foo.com”.
-  //   Additionally, a special entry “*” is allowed which will match any
-  //   host/authority header. Only a single virtual host in the entire route
-  //   configuration can match on “*”. A domain must be unique across all virtual
-  //   hosts or the config will fail to load.
-  repeated string domains = 2 [(validate.rules).repeated .min_items = 1];
-
-  // The list of routes that will be matched, in order, for incoming requests.
-  // The first route that matches will be used.
-  repeated Route routes = 3;
-
-  enum TlsRequirementType {
-    // No TLS requirement for the virtual host.
-    NONE = 0;
-
-    // External requests must use TLS. If a request is external and it is not
-    // using TLS, a 301 redirect will be sent telling the client to use HTTPS.
-    EXTERNAL_ONLY = 1;
-
-    // All requests must use TLS. If a request is not using TLS, a 301 redirect
-    // will be sent telling the client to use HTTPS.
-    ALL = 2;
-  }
-
-  // Specifies the type of TLS enforcement the virtual host expects. If this option is not
-  // specified, there is no TLS requirement for the virtual host.
-  TlsRequirementType require_tls = 4;
-
-  // A list of virtual clusters defined for this virtual host. Virtual clusters
-  // are used for additional statistics gathering.
-  repeated VirtualCluster virtual_clusters = 5;
-
-  // Specifies a set of rate limit configurations that will be applied to the
-  // virtual host.
-  repeated RateLimit rate_limits = 6;
-
-  // Specifies a list of HTTP headers that should be added to each request
-  // handled by this virtual host. Headers specified at this level are applied
-  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information see the documentation
-  // on :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
-  repeated HeaderValueOption request_headers_to_add = 7;
-
-  // Specifies a list of HTTP headers that should be added to each response
-  // handled by this virtual host. Headers specified at this level are applied
-  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`.
-  repeated HeaderValueOption response_headers_to_add = 10;
-
-  // Specifies a list of HTTP headers that should be removed from each response
-  // handle by this virtual host.
-  repeated string response_headers_to_remove = 11;
-
-  // Indicates that the virtual host has a CORS policy.
-  CorsPolicy cors = 8;
-
-  // [#not-implemented-hide:]
-  // Return a 401/403 when auth checks fail.
-  AuthAction auth = 9;
-}
-
-// * Routing :ref:`architecture overview <arch_overview_http_routing>`
-// * HTTP :ref:`router filter <config_http_filters_router>`
-message RouteConfiguration {
-  // The name of the route configuration. For example, it might match
-  // :ref:`route_config_name <envoy_api_field_filter.network.Rds.route_config_name>` in
-  // :ref:`envoy_api_msg_filter.network.Rds`.
-  string name = 1;
-
-  // An array of virtual hosts that make up the route table.
-  repeated VirtualHost virtual_hosts = 2;
-
-  // Optionally specifies a list of HTTP headers that the connection manager
-  // will consider to be internal only. If they are found on external requests they will be cleaned
-  // prior to filter invocation. See :ref:`config_http_conn_man_headers_x-envoy-internal` for more
-  // information.
-  repeated string internal_only_headers = 3;
-
-  // Specifies a list of HTTP headers that should be added to each response that
-  // the connection manager encodes. Headers specified at this level are applied
-  // after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`.
-  repeated HeaderValueOption response_headers_to_add = 4;
-
-  // Specifies a list of HTTP headers that should be removed from each response
-  // that the connection manager encodes.
-  repeated string response_headers_to_remove = 5;
-
-  // Specifies a list of HTTP headers that should be added to each request
-  // routed by the HTTP connection manager. Headers specified at this level are
-  // applied after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`. For more information see the documentation on
-  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
-  repeated HeaderValueOption request_headers_to_add = 6;
-
-  // An optional boolean that specifies whether the clusters that the route
-  // table refers to will be validated by the cluster manager. If set to true
-  // and a route refers to a non-existent cluster, the route table will not
-  // load. If set to false and a route refers to a non-existent cluster, the
-  // route table will load and the router filter will return a 404 if the route
-  // is selected at runtime. This setting defaults to true if the route table
-  // is statically defined via the :ref:`route_config
-  // <envoy_api_field_filter.network.HttpConnectionManager.route_config>` option. This setting
-  // default to false if the route table is loaded dynamically via the :ref:`rds
-  // <envoy_api_field_filter.network.HttpConnectionManager.rds>` option. Users
-  // may which to override the default behavior in certain cases (for example
-  // when using CDS with a static route table).
-  google.protobuf.BoolValue validate_clusters = 7;
 }

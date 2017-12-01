@@ -19,6 +19,101 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
+// Bootstrap :ref:`configuration overview <config_overview_v2_bootstrap>`.
+message Bootstrap {
+  // Node identity to present to the management server and for instance
+  // identification purposes (e.g. in generated headers).
+  Node node = 1 [(validate.rules).message.required = true];
+
+  message StaticResources {
+    // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
+    // available regardless of LDS configuration.
+    repeated Listener listeners = 1;
+
+    // If a network based configuration source is specified for :ref:`cds_config
+    // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary
+    // to have some initial cluster definitions available to allow Envoy to know
+    // how to speak to the management server. These cluster definitions may not
+    // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
+    // IP or DNS-based).
+    repeated Cluster clusters = 2;
+
+    // [#not-implemented-hide:]
+    repeated Secret secrets = 3;
+  }
+  // Statically specified resources.
+  StaticResources static_resources = 2;
+
+  message DynamicResources {
+    // All :ref:`Listeners <envoy_api_msg_Listener>` are provided by a single
+    // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
+    ConfigSource lds_config = 1;
+
+    // All post-bootstrap :ref:`Cluster <envoy_api_msg_Cluster>` definitions are
+    // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
+    // configuration source.
+    ConfigSource cds_config = 2;
+
+    // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
+    // specified. This must have :ref:`api_type
+    // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
+    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`. Only
+    // :ref:`ConfigSources <envoy_api_msg_ConfigSource>` that have
+    // the :ref:`ads <envoy_api_field_ConfigSource.ads>` field set will be
+    // streamed on the ADS channel.
+    ApiConfigSource ads_config = 3;
+
+    message DeprecatedV1 {
+      // This is the global :ref:`SDS <arch_overview_dynamic_config_sds>` config
+      // when using v1 REST for :ref:`CDS
+      // <arch_overview_dynamic_config_cds>`/:ref:`EDS
+      // <arch_overview_dynamic_config_sds>`.
+      ConfigSource sds_config = 1;
+    }
+    DeprecatedV1 deprecated_v1 = 4;
+  }
+  // xDS configuration sources.
+  DynamicResources dynamic_resources = 3;
+
+  // Configuration for the cluster manager which owns all upstream clusters
+  // within the server.
+  ClusterManager cluster_manager = 4 [(validate.rules).message.required = true];
+
+  // Optional file system path to search for startup flag files.
+  string flags_path = 5;
+
+  // Optional set of stats sinks.
+  repeated StatsSink stats_sinks = 6;
+
+  // Configuration for internal processing of stats.
+  StatsConfig stats_config = 13;
+
+  // Optional duration between flushes to configured stats sinks. For
+  // performance reasons Envoy latches counters and only flushes counters and
+  // gauges at a periodic interval. If not specified the default is 5000ms (5
+  // seconds).
+  google.protobuf.Duration stats_flush_interval = 7;
+
+  // Optional watchdog configuration.
+  Watchdog watchdog = 8;
+
+  // Configuration for an external tracing provider. If not specified, no
+  // tracing will be performed.
+  Tracing tracing = 9;
+
+  // Configuration for an external rate limit service provider. If not
+  // specified, any calls to the rate limit service will immediately return
+  // success.
+  RateLimitServiceConfig rate_limit_service = 10;
+
+  // Configuration for the runtime configuration provider. If not specified, a
+  // “null” provider will be used which will result in all defaults being used.
+  Runtime runtime = 11;
+
+  // Configuration for the local administration HTTP server.
+  Admin admin = 12 [(validate.rules).message.required = true];
+}
+
 // Configuration for the LightStep tracer.
 message LightstepConfig {
   // The cluster manager cluster that hosts the LightStep collectors.
@@ -285,99 +380,4 @@ message RateLimitServiceConfig {
   // service. The client will connect to this cluster when it needs to make rate
   // limit service requests.
   string cluster_name = 1 [(validate.rules).string.min_len = 1];
-}
-
-// Bootstrap :ref:`configuration overview <config_overview_v2_bootstrap>`.
-message Bootstrap {
-  // Node identity to present to the management server and for instance
-  // identification purposes (e.g. in generated headers).
-  Node node = 1 [(validate.rules).message.required = true];
-
-  message StaticResources {
-    // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
-    // available regardless of LDS configuration.
-    repeated Listener listeners = 1;
-
-    // If a network based configuration source is specified for :ref:`cds_config
-    // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary
-    // to have some initial cluster definitions available to allow Envoy to know
-    // how to speak to the management server. These cluster definitions may not
-    // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
-    // IP or DNS-based).
-    repeated Cluster clusters = 2;
-
-    // [#not-implemented-hide:]
-    repeated Secret secrets = 3;
-  }
-  // Statically specified resources.
-  StaticResources static_resources = 2;
-
-  message DynamicResources {
-    // All :ref:`Listeners <envoy_api_msg_Listener>` are provided by a single
-    // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
-    ConfigSource lds_config = 1;
-
-    // All post-bootstrap :ref:`Cluster <envoy_api_msg_Cluster>` definitions are
-    // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
-    // configuration source.
-    ConfigSource cds_config = 2;
-
-    // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
-    // specified. This must have :ref:`api_type
-    // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
-    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`. Only
-    // :ref:`ConfigSources <envoy_api_msg_ConfigSource>` that have
-    // the :ref:`ads <envoy_api_field_ConfigSource.ads>` field set will be
-    // streamed on the ADS channel.
-    ApiConfigSource ads_config = 3;
-
-    message DeprecatedV1 {
-      // This is the global :ref:`SDS <arch_overview_dynamic_config_sds>` config
-      // when using v1 REST for :ref:`CDS
-      // <arch_overview_dynamic_config_cds>`/:ref:`EDS
-      // <arch_overview_dynamic_config_sds>`.
-      ConfigSource sds_config = 1;
-    }
-    DeprecatedV1 deprecated_v1 = 4;
-  }
-  // xDS configuration sources.
-  DynamicResources dynamic_resources = 3;
-
-  // Configuration for the cluster manager which owns all upstream clusters
-  // within the server.
-  ClusterManager cluster_manager = 4 [(validate.rules).message.required = true];
-
-  // Optional file system path to search for startup flag files.
-  string flags_path = 5;
-
-  // Optional set of stats sinks.
-  repeated StatsSink stats_sinks = 6;
-
-  // Configuration for internal processing of stats.
-  StatsConfig stats_config = 13;
-
-  // Optional duration between flushes to configured stats sinks. For
-  // performance reasons Envoy latches counters and only flushes counters and
-  // gauges at a periodic interval. If not specified the default is 5000ms (5
-  // seconds).
-  google.protobuf.Duration stats_flush_interval = 7;
-
-  // Optional watchdog configuration.
-  Watchdog watchdog = 8;
-
-  // Configuration for an external tracing provider. If not specified, no
-  // tracing will be performed.
-  Tracing tracing = 9;
-
-  // Configuration for an external rate limit service provider. If not
-  // specified, any calls to the rate limit service will immediately return
-  // success.
-  RateLimitServiceConfig rate_limit_service = 10;
-
-  // Configuration for the runtime configuration provider. If not specified, a
-  // “null” provider will be used which will result in all defaults being used.
-  Runtime runtime = 11;
-
-  // Configuration for the local administration HTTP server.
-  Admin admin = 12 [(validate.rules).message.required = true];
 }
