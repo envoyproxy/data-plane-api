@@ -27,6 +27,8 @@ Version history
 * mongo filter: added :ref:`fault injection <config_network_filters_mongo_proxy_fault_injection>`.
 * mongo filter: added :ref:`"drain close" <arch_overview_draining>` support.
 * outlier detection: added :ref:`HTTP gateway failure type <arch_overview_outlier_detection>`.
+  See `DEPRECATED.md <https://github.com/envoyproxy/envoy/blob/master/DEPRECATED.md#version-150>`_
+  for outlier detection stats deprecations in this release.
 * redis: the :ref:`redis proxy filter <config_network_filters_redis_proxy>` is now considered
   production ready.
 * redis: added :ref:`"drain close" <arch_overview_draining>` functionality.
@@ -40,7 +42,7 @@ Version history
 * router: added :ref:`start_child_span <envoy_api_field_filter.http.Router.start_child_span>` option
   to create child span for egress calls.
 * router: added optional :ref:`upstream logs <envoy_api_field_filter.http.Router.upstream_log>`.
-* router: added complete :ref:`custom append/override/remove support 
+* router: added complete :ref:`custom append/override/remove support
   <config_http_conn_man_headers_custom_request_headers>` of request/response headers.
 * router: added support to :ref:`specify response code during redirect
   <envoy_api_field_RedirectAction.response_code>`.
@@ -52,12 +54,13 @@ Version history
 * tcp proxy: added :ref:`configurable connect retries
   <envoy_api_field_filter.network.TcpProxy.max_connect_attempts>`.
 * tcp proxy: enable use of :ref:`outlier detector <arch_overview_outlier_detection>`.
+* tls: added :ref:`SNI support <faq_how_to_setup_sni>`.
 * tls: added support for specifying :ref:`TLS session ticket keys
   <envoy_api_field_DownstreamTlsContext.session_ticket_keys>`.
 * tls: allow configuration of the :ref:`min
   <envoy_api_field_TlsParameters.tls_minimum_protocol_version>` and :ref:`max
   <envoy_api_field_TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
-* tracing: added :ref:`custom tracing span decorators <envoy_api_field_Route.decorator>`.
+* tracing: added :ref:`custom trace span decorators <envoy_api_field_Route.decorator>`.
 * Many small bug fixes and performance improvements not listed.
 
 1.4.0
