@@ -44,6 +44,7 @@ PROTO_RST="
   /api/filter/http/lua/api/filter/http/lua.proto.rst
   /api/filter/http/router/api/filter/http/router.proto.rst
   /api/filter/http/transcoder/api/filter/http/transcoder.proto.rst
+  /api/filter/network/client_ssl_auth/api/filter/network/client_ssl_auth.proto.rst
   /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst
   /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
   /api/filter/network/redis_proxy/api/filter/network/redis_proxy.proto.rst
