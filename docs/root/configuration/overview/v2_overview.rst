@@ -7,10 +7,10 @@ The Envoy v2 APIs are defined as `proto3
 <https://developers.google.com/protocol-buffers/docs/proto3>`_ `Protocol Buffers
 <https://developers.google.com/protocol-buffers/>`_ in the `data plane API
 repository <https://github.com/envoyproxy/data-plane-api/tree/master/api>`_. They evolve the
-existing :ref:`v1 xDS APIs and concepts <config_overview_v1>` to support:
+existing :ref:`v1 APIs and concepts <config_overview_v1>` to support:
 
-* Streaming delivery of xDS API updates via gRPC. This reduces resource requirements and can
-  lower the update latency.
+* Streaming delivery of `xDS <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_
+  API updates via gRPC. This reduces resource requirements and can lower the update latency.
 * A new REST-JSON API in which the JSON/YAML formats are derived mechanically via the `proto3
   canonical JSON mapping
   <https://developers.google.com/protocol-buffers/docs/proto3#json>`_.
@@ -47,11 +47,11 @@ debug experience when configuration parsing fails.
 The :ref:`Bootstrap <envoy_api_msg_Bootstrap>` message is the root of the
 configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
 message is the distinction between static and dynamic resouces.  Resources such
-as a :ref:`Listener <config_listeners>` or :ref:`Cluster
-<config_cluster_manager_cluster>` may be supplied either statically in
+as a :ref:`Listener <envoy_api_msg_Listener>` or :ref:`Cluster
+<envoy_api_msg_Cluster>` may be supplied either statically in
 :ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have
 an xDS service such as :ref:`LDS
-<config_overview_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
+<config_listeners_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
 :ref:`dynamic_resources <envoy_api_field_Bootstrap.dynamic_resources>`.
 
 Example
@@ -305,7 +305,7 @@ gRPC streaming endpoints
 .. http:post:: /envoy.api.v2.ClusterDiscoveryService/StreamClusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -322,7 +322,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -339,7 +339,7 @@ is set in the :ref:`eds_cluster_config
 .. http:post:: /envoy.api.v2.ListenerDiscoveryService/StreamListeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -356,7 +356,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -377,7 +377,7 @@ REST endpoints
 .. http:post:: /v2/discovery:clusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto#L18>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -394,7 +394,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /v2/discovery:endpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto#L13>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -411,7 +411,7 @@ is set in the :ref:`eds_cluster_config
 .. http:post:: /v2/discovery:listeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto#L22>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -428,7 +428,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /v2/discovery:routes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto#L22>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -448,13 +448,13 @@ is set in the :ref:`rds
 Aggregated Discovery Service
 ----------------------------
 
-While fundamentally Envoy employs an eventual consistency model, ADS provides an
+While Envoy fundamentally employs an eventual consistency model, ADS provides an
 opportunity to sequence API update pushes and ensure affinity of a single
 management server for an Envoy node for API updates. ADS allows one or more APIs
-to be delivered on a single gRPC bidi stream by the management server, and
-within an API to have all resources aggregated onto a single stream. Without
-this, some APIs such as RDS and EDS may require the management of multiple
-streams and connections to distinct management servers.
+and their resources to be delivered on a single, bidirectional gRPC stream by
+the management server. Without this, some APIs such as RDS and EDS may require
+the management of multiple streams and connections to distinct management
+servers.
 
 ADS will allow for hitless updates of configuration by appropriate sequencing.
 For example, suppose *foo.com* was mappped to cluster *X*. We wish to change the
@@ -478,7 +478,7 @@ document.  The gRPC endpoint is:
 .. http:post:: /envoy.api.v2.AggregatedDiscoveryService/StreamAggregatedResources
 
 See `discovery.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto#L15>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
