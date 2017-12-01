@@ -3,7 +3,9 @@
 Rate limit
 ==========
 
-Global rate limiting :ref:`architecture overview <arch_overview_rate_limit>`.
+* Global rate limiting :ref:`architecture overview <arch_overview_rate_limit>`
+* :ref:`v1 API reference <config_http_filters_rate_limit_v1>`
+* :ref:`v2 API reference <envoy_api_msg_filter.http.RateLimit>`
 
 The HTTP rate limit filter will call the rate limit service when the request's route or virtual host
 has one or more :ref:`rate limit configurations<config_http_conn_man_route_table_route_rate_limits>`
@@ -13,39 +15,6 @@ apply to a request. Each configuration results in a descriptor being sent to the
 
 If the rate limit service is called, and the response for any of the descriptors is over limit, a
 429 response is returned.
-
-.. code-block:: json
-
-  {
-    "name": "rate_limit",
-    "config": {
-      "domain": "...",
-      "stage": "...",
-      "request_type": "...",
-      "timeout_ms": "..."
-    }
-  }
-
-domain
-  *(required, string)* The rate limit domain to use when calling the rate limit service.
-
-stage
-  *(optional, integer)* Specifies the rate limit configurations to be applied with the same stage
-  number. If not set, the default stage number is 0.
-
-  **NOTE:** The filter supports a range of 0 - 10 inclusively for stage numbers.
-
-request_type
-  *(optional, string)* The type of requests the filter should apply to. The supported
-  types are *internal*, *external* or *both*. A request is considered internal if
-  :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is set to true. If
-  :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is not set or false, a
-  request is considered external. The filter defaults to *both*, and it will apply to all request
-  types.
-
-timeout_ms
-  *(optional, integer)* The timeout in milliseconds for the rate limit service RPC. If not set,
-  this defaults to 20ms.
 
 .. _config_http_filters_rate_limit_composing_actions:
 

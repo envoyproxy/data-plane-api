@@ -31,7 +31,10 @@ message DiscoveryRequest {
   // as applied or the previous API config version respectively. Each type_url
   // (see below) has an independent version associated with it.
   string version_info = 1;
+
+  // The node making the request.
   Node node = 2;
+
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are
   // returned. LDS/CDS expect empty resource_names, since this is global
@@ -39,11 +42,13 @@ message DiscoveryRequest {
   // a number of resources that need to be fetched via EDS/RDS, which will be
   // explicitly enumerated in resource_names.
   repeated string resource_names = 3;
+
   // Type of the resource that is being requested, e.g.
   // "type.googleapis.com/envoy.api.v2.ClusterLoadAssignment". This is implicit
   // in requests made via singleton xDS APIs such as CDS, LDS, etc. but is
   // required for ADS.
   string type_url = 4;
+
   // nonce corresponding to DiscoveryResponse being ACK/NACKed. See above
   // discussion on version_info and the DiscoveryResponse nonce comment. This
   // may be empty if no nonce is available, e.g. at startup or for non-stream
@@ -52,8 +57,13 @@ message DiscoveryRequest {
 }
 
 message DiscoveryResponse {
+  // The version of the response data.
   string version_info = 1;
+
+  // The response resources. These resources are typed and depend on the API being called.
   repeated google.protobuf.Any resources = 2;
+
+  // [#not-implemented-hide:]
   // Canary is used to support two Envoy command line flags:
   //
   // * --terminate-on-canary-transition-failure. When set, Envoy is able to
@@ -68,10 +78,12 @@ message DiscoveryResponse {
   // * --dry-run-canary. When set, a canary response will never be applied, only
   //   validated via a dry run.
   bool canary = 3;
+
   // Type URL for resources. This must be consistent with the type_url in the
   // Any messages for resources if resources is non-empty. This effectively
   // identifies the xDS API when muxing over ADS.
   string type_url = 4;
+
   // For gRPC based subscriptions, the nonce provides a way to explicitly ack a
   // specific DiscoveryResponse in a following DiscoveryRequest. Additional
   // messages may have been sent by Envoy to the management server for the
