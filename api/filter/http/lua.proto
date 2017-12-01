@@ -2,9 +2,15 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
-// The Lua filter allows for generic scripting in an HTTP filter context.
-// TODO(mattklein123): Link to filter docs.
+import "validate/validate.proto";
+
+// [#protodoc-title: Lua]
+// Lua :ref:`configuration overview <config_http_filters_lua>`.
+
 message Lua {
-  // The Lua code to execute.
-  string inline_code = 1;
+  // The Lua code that Envoy will execute. This can be a very small script that
+  // further loads code from disk if desired. Note that if JSON configuration is used, the code must
+  // be properly escaped. YAML configuration may be easier to read since YAML supports multi-line
+  // strings so complex scripts can be easily expressed inline in the configuration.
+  string inline_code = 1 [(validate.rules).string.min_bytes = 1];
 }

@@ -6,6 +6,8 @@ import "api/base.proto";
 
 import "google/protobuf/any.proto";
 
+// [#protodoc-title: Common discovery API components]
+
 // See https://github.com/lyft/envoy-api#apis for a description of the role of
 // ADS and how it is intended to be used by a management server. ADS requests
 // have the same structure as their singleton xDS counterparts, but can
@@ -14,8 +16,7 @@ import "google/protobuf/any.proto";
 // the multiplexed singleton APIs at the Envoy instance and management server.
 service AggregatedDiscoveryService {
   // This is a gRPC-only API.
-  rpc StreamAggregatedResources(stream DiscoveryRequest)
-      returns (stream DiscoveryResponse) {
+  rpc StreamAggregatedResources(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 }
 
@@ -54,6 +55,7 @@ message DiscoveryResponse {
   string version_info = 1;
   repeated google.protobuf.Any resources = 2;
   // Canary is used to support two Envoy command line flags:
+  //
   // * --terminate-on-canary-transition-failure. When set, Envoy is able to
   //   terminate if it detects that configuration is stuck at canary. Consider
   //   this example sequence of updates:

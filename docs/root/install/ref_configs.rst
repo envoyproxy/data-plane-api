@@ -42,13 +42,13 @@ information on how the different expansions work.
 
 A few notes about the example configurations:
 
-* An instance of :ref:`service discovery service <arch_overview_service_discovery_sds>` is assumed
+* An instance of :ref:`service discovery service <arch_overview_service_discovery_types_sds>` is assumed
   to be running at `discovery.yourcompany.net`.
 * DNS for `yourcompany.net` is assumed to be setup for various things. Search the configuration
   templates for different instances of this.
 * Tracing is configured for `LightStep <http://lightstep.com/>`_. To
   disable this or enable `Zipkin <http://zipkin.io>` tracing, delete or
-  change the :ref:`tracing configuration <config_tracing>` accordingly.
+  change the :ref:`tracing configuration <config_tracing_v1>` accordingly.
 * The configuration demonstrates the use of a :ref:`global rate limiting service
   <arch_overview_rate_limit>`. To disable this delete the :ref:`rate limit configuration
   <config_rate_limit_service>`.

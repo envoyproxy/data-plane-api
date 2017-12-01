@@ -9,6 +9,18 @@ Statistics
 General
 -------
 
+The cluster manager has a statistics tree rooted at *cluster_manager.* with the following
+statistics. Any ``:`` character in the stats name is replaced with ``_``.
+
+.. csv-table::
+  :header: Name, Type, Description
+  :widths: 1, 1, 2
+
+  cluster_added, Counter, Total clusters added (either via static config or CDS)
+  cluster_modified, Counter, Total clusters modified (via CDS)
+  cluster_removed, Counter, Total clusters removed (via CDS)
+  total_clusters, Gauge, Number of currently loaded clusters
+
 Every cluster has a statistics tree rooted at *cluster.<name>.* with the following statistics:
 
 .. csv-table::
@@ -21,6 +33,7 @@ Every cluster has a statistics tree rooted at *cluster.<name>.* with the followi
   upstream_cx_http2_total, Counter, Total HTTP/2 connections
   upstream_cx_connect_fail, Counter, Total connection failures
   upstream_cx_connect_timeout, Counter, Total connection timeouts
+  upstream_cx_connect_attempts_exceeded, Counter, Total consecutive connection failures exceeding configured connection attempts
   upstream_cx_overflow, Counter, Total times that the cluster's connection circuit breaker overflowed
   upstream_cx_connect_ms, Histogram, Connection establishment milliseconds
   upstream_cx_length_ms, Histogram, Connection length milliseconds
@@ -99,10 +112,17 @@ statistics will be rooted at *cluster.<name>.outlier_detection.* and contain the
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
-  ejections_total, Counter, Number of ejections due to any outlier type
+  ejections_enforced_total, Counter, Number of enforced ejections due to any outlier type
   ejections_active, Gauge, Number of currently ejected hosts
   ejections_overflow, Counter, Number of ejections aborted due to the max ejection %
-  ejections_consecutive_5xx, Counter, Number of consecutive 5xx ejections
+  ejections_enforced_consecutive_5xx, Counter, Number of enforced consecutive 5xx ejections
+  ejections_detected_consecutive_5xx, Counter, Number of detected consecutive 5xx ejections (even if unenforced)
+  ejections_enforced_success_rate, Counter, Number of enforced success rate outlier ejections
+  ejections_detected_success_rate, Counter, Number of detected success rate outlier ejections (even if unenforced)
+  ejections_enforced_consecutive_gateway_failure, Counter, Number of enforced consecutive gateway failure ejections
+  ejections_detected_consecutive_gateway_failure, Counter, Number of detected consecutive gateway failure ejections (even if unenforced)
+  ejections_total, Counter, Deprecated. Number of ejections due to any outlier type (even if unenforced)
+  ejections_consecutive_5xx, Counter, Deprecated. Number of consecutive 5xx ejections (even if unenforced)
 
 .. _config_cluster_manager_cluster_stats_dynamic_http:
 
@@ -147,7 +167,7 @@ Per service zone dynamic HTTP statistics
 ----------------------------------------
 
 If the service zone is available for the local service (via :option:`--service-zone`)
-and the :ref:`upstream cluster <arch_overview_service_discovery_sds>`,
+and the :ref:`upstream cluster <arch_overview_service_discovery_types_sds>`,
 Envoy will track the following statistics in *cluster.<name>.zone.<from_zone>.<to_zone>.* namespace.
 
 .. csv-table::

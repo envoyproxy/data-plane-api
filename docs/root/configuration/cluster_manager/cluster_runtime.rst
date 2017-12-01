@@ -37,6 +37,11 @@ outlier_detection.consecutive_5xx
   <config_cluster_manager_cluster_outlier_detection_consecutive_5xx>`
   setting in outlier detection
 
+outlier_detection.consecutive_gateway_failure
+  :ref:`consecutive_gateway_failure
+  <config_cluster_manager_cluster_outlier_detection_consecutive_gateway_failure>`
+  setting in outlier detection
+
 outlier_detection.interval_ms
   :ref:`interval_ms
   <config_cluster_manager_cluster_outlier_detection_interval_ms>`
@@ -55,6 +60,11 @@ outlier_detection.max_ejection_percent
 outlier_detection.enforcing_consecutive_5xx
   :ref:`enforcing_consecutive_5xx
   <config_cluster_manager_cluster_outlier_detection_enforcing_consecutive_5xx>`
+  setting in outlier detection
+
+outlier_detection.enforcing_consecutive_gateway_failure
+  :ref:`enforcing_consecutive_gateway_failure
+  <config_cluster_manager_cluster_outlier_detection_enforcing_consecutive_gateway_failure>`
   setting in outlier detection
 
 outlier_detection.enforcing_success_rate
@@ -93,13 +103,6 @@ upstream.weight_enabled
   is enabled. Defaults to enabled.
 
 .. _config_cluster_manager_cluster_runtime_ring_hash:
-
-Ring hash load balancing
-------------------------
-
-upstream.ring_hash.min_ring_size
-  The minimum size of the hash ring for the :ref:`ring hash load balancer
-  <arch_overview_load_balancing_types>`. The default is 1024.
 
 .. _config_cluster_manager_cluster_runtime_zone_routing:
 

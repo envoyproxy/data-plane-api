@@ -1,22 +1,20 @@
 GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
 PROMETHEUS_SHA = "6f3806018612930941127f2a7c6c453ba2c527d2" # Nov 02, 2017
 
-PGV_GIT_SHA = "f3332cbd75bb28f711377dfb84761ef0d52eca0f"
-PGV_TAR_SHA = "039ffa842eb62495b6aca305a4eb3d6dc3ac1dd056e228fba5e720161ddfb9c1"
+PGV_GIT_SHA = "af35f0b0d2cee1178f77329d30252e07047918c3"
 
 def api_dependencies():
-    native.http_archive(
+    native.git_repository(
         name = "com_lyft_protoc_gen_validate",
-        strip_prefix = "protoc-gen-validate-" + PGV_GIT_SHA,
-        sha256 = PGV_TAR_SHA,
-        url = "https://github.com/lyft/protoc-gen-validate/archive/" + PGV_GIT_SHA + ".tar.gz",
+        remote = "https://github.com/lyft/protoc-gen-validate.git",
+        commit = PGV_GIT_SHA,
     )
     native.new_http_archive(
         name = "googleapis",
         strip_prefix = "googleapis-" + GOOGLEAPIS_SHA,
         url = "https://github.com/googleapis/googleapis/archive/" + GOOGLEAPIS_SHA + ".tar.gz",
         build_file_content = """
-load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
+load("@com_google_protobuf//:protobuf.bzl", "cc_proto_library", "py_proto_library")
 
 filegroup(
     name = "http_api_protos_src",
@@ -28,7 +26,7 @@ filegroup(
  )
 
 proto_library(
-    name = "http_api_protos_lib",
+    name = "http_api_protos_proto",
     srcs = [":http_api_protos_src"],
     deps = ["@com_google_protobuf//:descriptor_proto"],
     visibility = ["//visibility:public"],
@@ -36,7 +34,13 @@ proto_library(
 
 cc_proto_library(
     name = "http_api_protos",
-    deps = [":http_api_protos_lib"],
+    srcs = [
+        "google/api/annotations.proto",
+        "google/api/http.proto",
+    ],
+    default_runtime = "@com_google_protobuf//:protobuf",
+    protoc = "@com_google_protobuf//:protoc",
+    deps = ["@com_google_protobuf//:cc_wkt_protos"],
     visibility = ["//visibility:public"],
 )
 
@@ -60,25 +64,13 @@ py_proto_library(
         strip_prefix = "client_model-" + PROMETHEUS_SHA,
         url = "https://github.com/prometheus/client_model/archive/" + PROMETHEUS_SHA + ".tar.gz",
         build_file_content = """
+load("@envoy_api//bazel:api_build_system.bzl", "api_proto_library")
 
-filegroup(
-    name = "client_model_protos_src",
+api_proto_library(
+    name = "client_model",
     srcs = [
         "metrics.proto",
     ],
-    visibility = ["//visibility:public"],
- )
-
-proto_library(
-    name = "client_model_protos_lib",
-    srcs = [":client_model_protos_src"],
-    visibility = ["//visibility:public"],
-)
-
-cc_proto_library(
-    name = "client_model_protos",
-    deps = [":client_model_protos_lib"],
-    visibility = ["//visibility:public"],
 )
         """,
     )

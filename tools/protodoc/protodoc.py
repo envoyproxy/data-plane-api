@@ -35,36 +35,70 @@ NOT_IMPLEMENTED_WARN_ANNOTATION = 'not-implemented-warn'
 # field.
 NOT_IMPLEMENTED_HIDE_ANNOTATION = 'not-implemented-hide'
 
+# Comment. Just used for adding text that will not go into the docs at all.
+COMMENT_ANNOTATION = 'comment'
+
+# proto compatibility status.
+PROTO_STATUS_ANNOTATION = 'proto-status'
+
 # Where v2 differs from v1..
 V2_API_DIFF_ANNOTATION = 'v2-api-diff'
 
 VALID_ANNOTATIONS = set([
-    DOC_TITLE_ANNOTATION, NOT_IMPLEMENTED_WARN_ANNOTATION,
-    NOT_IMPLEMENTED_HIDE_ANNOTATION, V2_API_DIFF_ANNOTATION
+    DOC_TITLE_ANNOTATION,
+    NOT_IMPLEMENTED_WARN_ANNOTATION,
+    NOT_IMPLEMENTED_HIDE_ANNOTATION,
+    V2_API_DIFF_ANNOTATION,
+    COMMENT_ANNOTATION,
+    PROTO_STATUS_ANNOTATION,
 ])
+
+# These can propagate from file scope to message/enum scope (and be overriden).
+INHERITED_ANNOTATIONS = set([
+    PROTO_STATUS_ANNOTATION,
+])
+
+# Template for data-plane-api URLs.
+# TODO(htuch): Add the ability to build a permalink by feeding a hash
+# to the tool or inferring from local tree (only really make sense in CI).
+DATA_PLANE_API_URL_FMT = 'https://github.com/envoyproxy/data-plane-api/blob/master/%s#L%d'
 
 
 class ProtodocError(Exception):
   """Base error class for the protodoc module."""
 
 
-def FormatCommentWithAnnotations(s, annotations):
+def FormatCommentWithAnnotations(s, annotations, type_name):
   if NOT_IMPLEMENTED_WARN_ANNOTATION in annotations:
-    s += '\n.. WARNING::\n  ' + 'Not implemented yet\n'
+    s += '\n.. WARNING::\n  Not implemented yet\n'
   if V2_API_DIFF_ANNOTATION in annotations:
-    s += '\n.. NOTE::\n  v2 API difference: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
+    s += '\n.. NOTE::\n  **v2 API difference**: ' + annotations[V2_API_DIFF_ANNOTATION] + '\n'
+  if type_name == 'message' or type_name == 'enum':
+    if PROTO_STATUS_ANNOTATION in annotations:
+      status = annotations[PROTO_STATUS_ANNOTATION]
+      if status not in ['frozen', 'draft', 'experimental']:
+        raise ProtodocError('Unknown proto status: %s' % status)
+      if status == 'draft' or status == 'experimental':
+        s += ('\n.. WARNING::\n This %s type has :ref:`%s '
+              '<config_overview_v2_status>` status.\n' % (type_name, status))
   return s
 
 
-def ExtractAnnotations(s):
+def ExtractAnnotations(s, inherited_annotations=None, type_name='file'):
   """Extract annotations from a given comment string.
 
   Args:
     s: string that may contains annotations.
+    inherited_annotations: annotation map from file-level inherited annotations
+      (or None) if this is a file-level comment.
   Returns:
     Pair of string with with annotations stripped and annotation map.
   """
-  annotations = {}
+  annotations = {
+      k: v
+      for k, v in (inherited_annotations or {}).items()
+      if k in INHERITED_ANNOTATIONS
+  }
   stripped_lines = []
   for line in s.split('\n'):
     groups = re.findall(ANNOTATION_REGEX, line)
@@ -76,14 +110,15 @@ def ExtractAnnotations(s):
       if annotation not in VALID_ANNOTATIONS:
         raise ProtodocError('Unknown annotation: %s' % annotation)
       annotations[group[0]] = group[1].lstrip()
-  return FormatCommentWithAnnotations('\n'.join(stripped_lines),
-                                      annotations), annotations
+  return FormatCommentWithAnnotations('\n'.join(stripped_lines), annotations,
+                                      type_name), annotations
 
 
 class SourceCodeInfo(object):
   """Wrapper for SourceCodeInfo proto."""
 
-  def __init__(self, source_code_info):
+  def __init__(self, name, source_code_info):
+    self._name = name
     self._proto = source_code_info
 
   @property
@@ -99,12 +134,13 @@ class SourceCodeInfo(object):
         earliest_detached_comment = location.span[0]
     return comment
 
-  def LeadingCommentPathLookup(self, path):
+  def LeadingCommentPathLookup(self, path, type_name):
     """Lookup leading comment by path in SourceCodeInfo.
 
     Args:
       path: a list of path indexes as per
         https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
+      type_name: name of type the comment belongs to.
     Returns:
       Pair of attached leading comment and Annotation objects, where there is a
       leading comment
@@ -112,9 +148,25 @@ class SourceCodeInfo(object):
     """
     for location in self._proto.location:
       if location.path == path:
+        _, file_annotations = ExtractAnnotations(self.file_level_comment)
         return ExtractAnnotations(
-            StripLeadingSpace(location.leading_comments) + '\n')
+            StripLeadingSpace(location.leading_comments) + '\n',
+            file_annotations, type_name)
     return '', []
+
+  def GithubUrl(self, path):
+    """Obtain data-plane-api Github URL by path from SourceCodeInfo.
+
+    Args:
+      path: a list of path indexes as per
+        https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
+    Returns:
+      A string with a corresponding data-plan-api GitHub Url.
+    """
+    for location in self._proto.location:
+      if location.path == path:
+        return DATA_PLANE_API_URL_FMT % (self._name, location.span[0])
+    return ''
 
 
 class TypeContext(object):
@@ -124,14 +176,14 @@ class TypeContext(object):
   nested messages/enums.
   """
 
-  def __init__(self, source_code_info, path, name):
+  def __init__(self, source_code_info, name):
     # SourceCodeInfo as per
     # https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto.
     self.source_code_info = source_code_info
     # path: a list of path indexes as per
     #  https://github.com/google/protobuf/blob/a08b03d4c00a5793b88b494f672513f6ad46a681/src/google/protobuf/descriptor.proto#L717.
     #  Extended as nested objects are traversed.
-    self.path = path
+    self.path = []
     # Message/enum/field name. Extended as nested objects are traversed.
     self.name = name
     # Map from type name to the correct type annotation string, e.g. from
@@ -140,15 +192,80 @@ class TypeContext(object):
     self.map_typenames = {}
     # Map from a message's oneof index to the fields sharing a oneof.
     self.oneof_fields = {}
+    # Map from a message's oneof index to the "required" bool property.
+    self.oneof_required = {}
+    self.type_name = 'file'
 
-  def Extend(self, path, name):
+  def _Extend(self, path, type_name, name):
     extended = copy.deepcopy(self)
     extended.path.extend(path)
-    extended.name = '%s.%s' % (self.name, name)
+    extended.type_name = type_name
+    if not self.name:
+      extended.name = name
+    else:
+      extended.name = '%s.%s' % (self.name, name)
     return extended
 
+  def ExtendMessage(self, index, name):
+    """Extend type context with a message.
+
+    Args:
+      index: message index in file.
+      name: message name.
+    """
+    return self._Extend([4, index], 'message', name)
+
+  def ExtendNestedMessage(self, index, name):
+    """Extend type context with a nested message.
+
+    Args:
+      index: nested message index in message.
+      name: message name.
+    """
+    return self._Extend([3, index], 'message', name)
+
+  def ExtendField(self, index, name):
+    """Extend type context with a field.
+
+    Args:
+      index: field index in message.
+      name: field name.
+    """
+    return self._Extend([2, index], 'field', name)
+
+  def ExtendEnum(self, index, name):
+    """Extend type context with an enum.
+
+    Args:
+      index: enum index in file.
+      name: enum name.
+    """
+    return self._Extend([5, index], 'enum', name)
+
+  def ExtendNestedEnum(self, index, name):
+    """Extend type context with a nested enum.
+
+    Args:
+      index: enum index in message.
+      name: enum name.
+    """
+    return self._Extend([4, index], 'enum', name)
+
+  def ExtendEnumValue(self, index, name):
+    """Extend type context with an enum enum.
+
+    Args:
+      index: enum value index in enum.
+      name: value name.
+    """
+    return self._Extend([2, index], 'enum_value', name)
+
   def LeadingCommentPathLookup(self):
-    return self.source_code_info.LeadingCommentPathLookup(self.path)
+    return self.source_code_info.LeadingCommentPathLookup(
+        self.path, self.type_name)
+
+  def GithubUrl(self):
+    return self.source_code_info.GithubUrl(self.path)
 
 
 def MapLines(f, s):
@@ -204,11 +321,12 @@ def FormatHeaderFromFile(style, file_level_comment, alt):
   Returns:
     RST formatted header, and file level comment without page title strings.
   """
+  anchor = FormatAnchor(FileCrossRefLabel(alt))
   stripped_comment, annotations = ExtractAnnotations(file_level_comment)
   if DOC_TITLE_ANNOTATION in annotations:
-    return FormatHeader(style,
-                        annotations[DOC_TITLE_ANNOTATION]), stripped_comment
-  return FormatHeader(style, alt), stripped_comment
+    return anchor + FormatHeader(
+        style, annotations[DOC_TITLE_ANNOTATION]), stripped_comment
+  return anchor + FormatHeader(style, alt), stripped_comment
 
 
 def FormatFieldTypeAsJson(type_context, field):
@@ -238,12 +356,21 @@ def FormatMessageAsJson(type_context, msg):
   Return:
     RST formatted pseudo-JSON string representation of message definition.
   """
-  lines = [
-      '"%s": %s' % (f.name, FormatFieldTypeAsJson(type_context, f))
-      for f in msg.field
-  ]
-  return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
-      4, lines)) + '\n  }\n\n'
+  lines = []
+  for index, field in enumerate(msg.field):
+    field_type_context = type_context.ExtendField(index, field.name)
+    leading_comment, comment_annotations = field_type_context.LeadingCommentPathLookup(
+    )
+    if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+      continue
+    lines.append('"%s": %s' % (field.name,
+                               FormatFieldTypeAsJson(type_context, field)))
+
+  if lines:
+    return '.. code-block:: json\n\n  {\n' + ',\n'.join(IndentLines(
+        4, lines)) + '\n  }\n\n'
+  else:
+    return '.. code-block:: json\n\n  {}\n\n'
 
 
 def NormalizeFQN(fqn):
@@ -324,6 +451,11 @@ def StripLeadingSpace(s):
   return MapLines(lambda s: s[1:], s)
 
 
+def FileCrossRefLabel(msg_name):
+  """File cross reference label."""
+  return 'envoy_api_file_%s' % msg_name
+
+
 def MessageCrossRefLabel(msg_name):
   """Message cross reference label."""
   return 'envoy_api_msg_%s' % msg_name
@@ -349,27 +481,33 @@ def FormatAnchor(label):
   return '.. _%s:\n\n' % label
 
 
-def FormatFieldAsDefinitionListItem(type_context, field):
+def FormatFieldAsDefinitionListItem(outer_type_context, type_context, field):
   """Format a FieldDescriptorProto as RST definition list item.
 
   Args:
+    outer_type_context: contextual information for enclosing message.
     type_context: contextual information for message/enum/field.
     field: FieldDescriptorProto.
   Returns:
     RST formatted definition list item.
   """
   if field.HasField('oneof_index'):
-    oneof_comment = '\nOnly one of %s may be set.\n' % ', '.join(
-        type_context.oneof_fields[field.oneof_index])
+    oneof_template = '\nPrecisely one of %s must be set.\n' if type_context.oneof_required[
+        field.oneof_index] else '\nOnly one of %s may be set.\n'
+    oneof_comment = oneof_template % ', '.join(
+        FormatInternalLink(
+            f, FieldCrossRefLabel(outer_type_context.ExtendField(0, f).name))
+        for f in type_context.oneof_fields[field.oneof_index])
   else:
     oneof_comment = ''
   anchor = FormatAnchor(FieldCrossRefLabel(type_context.name))
   annotations = []
   if field.options.HasExtension(validate_pb2.rules):
     rule = field.options.Extensions[validate_pb2.rules]
-    if rule.HasField('message'):
-      if rule.message.required:
-        annotations.append('*REQUIRED*')
+    if ((rule.HasField('message') and rule.message.required) or
+        (rule.HasField('string') and rule.string.min_bytes > 0) or
+        (rule.HasField('repeated') and rule.repeated.min_items > 0)):
+      annotations.append('*REQUIRED*')
   leading_comment, comment_annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
     return ''
@@ -389,12 +527,21 @@ def FormatMessageAsDefinitionList(type_context, msg):
     RST formatted definition list item.
   """
   type_context.oneof_fields = defaultdict(list)
-  for field in msg.field:
+  type_context.oneof_required = defaultdict(bool)
+  for index, field in enumerate(msg.field):
     if field.HasField('oneof_index'):
+      _, comment_annotations = type_context.ExtendField(
+          index, field.name).LeadingCommentPathLookup()
+      if NOT_IMPLEMENTED_HIDE_ANNOTATION in comment_annotations:
+        continue
       type_context.oneof_fields[field.oneof_index].append(field.name)
+  for index, oneof_decl in enumerate(msg.oneof_decl):
+    if oneof_decl.options.HasExtension(validate_pb2.required):
+      type_context.oneof_required[index] = oneof_decl.options.Extensions[
+          validate_pb2.required]
   return '\n'.join(
       FormatFieldAsDefinitionListItem(
-          type_context.Extend([2, index], field.name), field)
+          type_context, type_context.ExtendField(index, field.name), field)
       for index, field in enumerate(msg.field)) + '\n'
 
 
@@ -422,18 +569,20 @@ def FormatMessage(type_context, msg):
   }
   nested_msgs = '\n'.join(
       FormatMessage(
-          type_context.Extend([3, index], nested_msg.name), nested_msg)
+          type_context.ExtendNestedMessage(index, nested_msg.name), nested_msg)
       for index, nested_msg in enumerate(msg.nested_type))
   nested_enums = '\n'.join(
       FormatEnum(
-          type_context.Extend([4, index], nested_enum.name), nested_enum)
+          type_context.ExtendNestedEnum(index, nested_enum.name), nested_enum)
       for index, nested_enum in enumerate(msg.enum_type))
   anchor = FormatAnchor(MessageCrossRefLabel(type_context.name))
   header = FormatHeader('-', type_context.name)
+  proto_link = FormatExternalLink('[%s proto]' % type_context.name,
+                                  type_context.GithubUrl()) + '\n\n'
   leading_comment, annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
     return ''
-  return anchor + header + leading_comment + FormatMessageAsJson(
+  return anchor + header + proto_link + leading_comment + FormatMessageAsJson(
       type_context, msg) + FormatMessageAsDefinitionList(
           type_context, msg) + nested_msgs + '\n' + nested_enums
 
@@ -468,7 +617,7 @@ def FormatEnumAsDefinitionList(type_context, enum):
   """
   return '\n'.join(
       FormatEnumValueAsDefinitionListItem(
-          type_context.Extend([2, index], enum_value.name), enum_value)
+          type_context.ExtendEnumValue(index, enum_value.name), enum_value)
       for index, enum_value in enumerate(enum.value)) + '\n'
 
 
@@ -483,10 +632,12 @@ def FormatEnum(type_context, enum):
   """
   anchor = FormatAnchor(EnumCrossRefLabel(type_context.name))
   header = FormatHeader('-', 'Enum %s' % type_context.name)
+  proto_link = FormatExternalLink('[%s proto]' % type_context.name,
+                                  type_context.GithubUrl()) + '\n\n'
   leading_comment, annotations = type_context.LeadingCommentPathLookup()
   if NOT_IMPLEMENTED_HIDE_ANNOTATION in annotations:
     return ''
-  return anchor + header + leading_comment + FormatEnumAsDefinitionList(
+  return anchor + header + proto_link + leading_comment + FormatEnumAsDefinitionList(
       type_context, enum)
 
 
@@ -501,22 +652,22 @@ def FormatProtoAsBlockComment(proto):
 
 def GenerateRst(proto_file):
   """Generate a RST representation from a FileDescriptor proto."""
-  source_code_info = SourceCodeInfo(proto_file.source_code_info)
+  source_code_info = SourceCodeInfo(proto_file.name,
+                                    proto_file.source_code_info)
   # Find the earliest detached comment, attribute it to file level.
   # Also extract file level titles if any.
   header, comment = FormatHeaderFromFile(
       '=', source_code_info.file_level_comment, proto_file.name)
-  package_prefix = NormalizeFQN('.' + proto_file.package + '.')
+  package_prefix = NormalizeFQN('.' + proto_file.package + '.')[:-1]
+  package_type_context = TypeContext(source_code_info, package_prefix)
   msgs = '\n'.join(
-      FormatMessage(
-          TypeContext(source_code_info, [4, index], package_prefix + msg.name),
-          msg) for index, msg in enumerate(proto_file.message_type))
+      FormatMessage(package_type_context.ExtendMessage(index, msg.name), msg)
+      for index, msg in enumerate(proto_file.message_type))
   enums = '\n'.join(
-      FormatEnum(
-          TypeContext(source_code_info, [5, index], package_prefix + enum.name),
-          enum) for index, enum in enumerate(proto_file.enum_type))
+      FormatEnum(package_type_context.ExtendEnum(index, enum.name), enum)
+      for index, enum in enumerate(proto_file.enum_type))
   debug_proto = FormatProtoAsBlockComment(proto_file)
-  return header + comment + msgs + enums  #+ debug_proto
+  return header + comment + msgs + enums  # + debug_proto
 
 
 if __name__ == '__main__':

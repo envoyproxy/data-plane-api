@@ -22,4 +22,5 @@ batched and periodically flushed to improve performance. Histograms are written 
 received. Note: what were previously referred to as timers have become histograms as the only
 difference between the two representations was the units.
 
-Statistics :ref:`configuration <config_overview>`.
+* :ref:`v1 API reference <config_overview_v1>`.
+* :ref:`v2 API reference <envoy_api_field_Bootstrap.stats_sinks>`.

@@ -6,7 +6,7 @@ Version history
 
 * macOS is :repo:`now supported </bazel#quick-start-bazel-build-for-developers>`. (A few features
   are missing such as hot restart and original destination routing).
-* YAML is now directly supported for :ref:`config files <config_overview>`.
+* YAML is now directly supported for :ref:`config files <config_overview_v1>`.
 * Added :ref:`/routes <operations_admin_interface_routes>` admin endpoint.
 * End-to-end flow control is now supported for TCP proxy, HTTP/1, and HTTP/2. HTTP flow control
   that includes filter buffering is incomplete and will be implemented in 1.5.0.
@@ -82,7 +82,7 @@ Version history
   <config_http_conn_man_route_table_route_include_vh>` to inherit the virtual host level options if
   desired.
 * HTTP routes can now add request headers on a per route and per virtual host basis via the
-  :ref:`request_headers_to_add <config_http_conn_man_route_table_route_add_req_headers>` option.
+  :ref:`request_headers_to_add <config_http_conn_man_headers_custom_request_headers>` option.
 * The :ref:`example configurations <install_ref_configs>` have been refreshed to demonstrate the
   latest features.
 * :ref:`per_try_timeout_ms <config_http_conn_man_route_table_route_retry>` can now be configured in
@@ -102,8 +102,8 @@ Version history
   do not have `$maxTimeMS` set.
 * The :ref:`MongoDB filter <config_network_filters_mongo_proxy>` now emits logs that are fully valid
   JSON.
-* The CPU profiler output path is now :ref:`configurable <config_admin>`.
-* A :ref:`watchdog system <config_overview>` has been added that can kill the server if a deadlock
+* The CPU profiler output path is now :ref:`configurable <config_admin_v1>`.
+* A :ref:`watchdog system <config_overview_v1>` has been added that can kill the server if a deadlock
   is detected.
 * A :ref:`route table checking tool <install_tools_route_table_check_tool>` has been added that can
   be used to test route tables before use.
@@ -124,7 +124,7 @@ Version history
 
 * :ref:`Cluster discovery service (CDS) API <config_cluster_manager_cds>`.
 * :ref:`Outlier detection <arch_overview_outlier_detection>` (passive health checking).
-* Envoy configuration is now checked against a :ref:`JSON schema <config_overview>`.
+* Envoy configuration is now checked against a :ref:`JSON schema <config_overview_v1>`.
 * :ref:`Ring hash <arch_overview_load_balancing_types>` consistent load balancer, as well as HTTP
   consistent hash routing :ref:`based on a policy <config_http_conn_man_route_table_hash_policy>`.
 * Vastly :ref:`enhanced global rate limit configuration <arch_overview_rate_limit>` via the HTTP
@@ -136,7 +136,7 @@ Version history
 * :ref:`Auto host rewrite <config_http_conn_man_route_table_route_auto_host_rewrite>` during HTTP
   routing.
 * :ref:`Regex header matching <config_http_conn_man_route_table_route_headers>` during HTTP routing.
-* HTTP access log :ref:`runtime filter <config_http_con_manager_access_log_filters_runtime>`.
+* HTTP access log :ref:`runtime filter <config_http_con_manager_access_log_filters_runtime_v1>`.
 * LightStep tracer :ref:`parent/child span association <arch_overview_tracing>`.
 * :ref:`Route discovery service (RDS) API <config_http_conn_man_rds>`.
 * HTTP router :ref:`x-envoy-upstream-rq-timeout-alt-response header

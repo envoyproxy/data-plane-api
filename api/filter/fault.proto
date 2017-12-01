@@ -17,14 +17,16 @@ message FaultDelay {
     FIXED = 0;
   }
 
-  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is supported.
-  FaultDelayType type = 1;
+  // Delay type to use (fixed|exponential|..). Currently, only fixed delay (step function) is
+  // supported.
+  FaultDelayType type = 1 [(validate.rules).enum.defined_only = true];
 
   // An integer between 0-100 indicating the percentage of operations/connection requests
   // on which the delay will be injected.
   uint32 percent = 2 [(validate.rules).uint32.lte = 100];
 
   oneof fault_delay_type {
+    option (validate.required) = true;
     // Add a fixed delay before forwarding the operation upstream. See
     // https://developers.google.com/protocol-buffers/docs/proto3#json for
     // the JSON/YAML Duration mapping. For HTTP/Mongo/Redis, the specified

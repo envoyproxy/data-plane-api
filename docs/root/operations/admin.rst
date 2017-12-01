@@ -3,8 +3,11 @@
 Administration interface
 ========================
 
-Envoy exposes a :ref:`local administration interface <config_admin>` that can be used to query and
-modify different aspects of the server.
+Envoy exposes a local administration interface that can be used to query and
+modify different aspects of the server:
+
+* :ref:`v1 API reference <config_admin_v1>`
+* :ref:`v2 API reference <envoy_api_msg_Admin>`
 
 .. http:get:: /
 
@@ -141,3 +144,9 @@ The fields are:
   .. http:get:: /stats?format=json
 
   Outputs /stats in JSON format. This can be used for programmatic access of stats.
+
+  .. http:get:: /stats?format=prometheus
+
+  Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
+  v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
+  gauges are outputed. Histograms will be outputed in a future update.

@@ -122,13 +122,25 @@ corresponding to its node identification. Other resource types, e.g.
 earlier CDS/LDS updates and Envoy is able to explicitly enumerate these
 resources.
 
-The management server does not need to supply every requested resource and may
-also supply additional, unrequested resources, `resource_names` is only a hint.
-Envoy will silently ignore any superfluous resources. When a requested resource is
-missing in an update, Envoy will retain the last known value for this resource.
-The management server may be able to infer all the required EDS/RDS resources
-from the `node` identification in the `DiscoveryRequest`, in which case this
-hint may be discarded.
+LDS/CDS resource hints will always be empty and it is expected that the
+management server will provide the complete state of the LDS/CDS resources in
+each response. An absent `Listener` or `Cluster` will be deleted.
+
+For EDS/RDS, the management server does not need to supply every requested
+resource and may also supply additional, unrequested resources, `resource_names`
+is only a hint.  Envoy will silently ignore any superfluous resources. When a
+requested resource is missing in a RDS or EDS update, Envoy will retain the last
+known value for this resource. The management server may be able to infer all
+the required EDS/RDS resources from the `node` identification in the
+`DiscoveryRequest`, in which case this hint may be discarded. An empty EDS/RDS
+`DiscoveryResponse` is effectively a nop from the perspective of the respective
+resources in the Envoy.
+
+When a `Listener` or `Cluster` is deleted, its corresponding EDS and RDS
+resources are also deleted inside the Envoy instance. In order for EDS resources
+to be known or tracked by Envoy, there must exist an applied `Cluster`
+definition (e.g. sourced via CDS). A similar relationship exists between RDS and
+`Listeners` (e.g. sourced via LDS).
 
 For EDS/RDS, Envoy may either generate a distinct stream for each resource of a
 given type (e.g. if each `ConfigSource` has its own distinct upstream cluster
