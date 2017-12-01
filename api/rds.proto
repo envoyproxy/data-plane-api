@@ -171,9 +171,11 @@ message RouteAction {
   enum ClusterNotFoundResponseCode {
     // HTTP status code - 503 Service Unavailable.
     SERVICE_UNAVAILABLE = 0;
+
     // HTTP status code - 404 Not Found.
     NOT_FOUND = 1;
   }
+
   // The HTTP status code to use when configured cluster is not found.
   // The default response code is 503 Service Unavailable.
   ClusterNotFoundResponseCode cluster_not_found_response_code = 20;
