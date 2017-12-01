@@ -244,6 +244,48 @@ message HTTPAccessLogEntry {
   HTTPResponseProperties response = 4;
 }
 
+message AccessLog {
+  // The name of the access log implementation to instantiate. The name must
+  // match a statically registered access log. Current built-in loggers include:
+  // 1) "envoy.file_access_log"
+  string name = 1;
+
+  // Filter which is used to determine if the access log needs to be written.
+  AccessLogFilter filter = 2;
+
+  // Custom configuration that depends on the access log being instantiated. built-in configurations
+  // include:
+  // 1) "envoy.file_access_log": :ref:`FileAccessLog <envoy_api_msg_filter.accesslog.FileAccessLog>`
+  google.protobuf.Struct config = 3;
+}
+
+message AccessLogFilter {
+  oneof filter_specifier {
+    option (validate.required) = true;
+
+    // Status code filter.
+    StatusCodeFilter status_code_filter = 1;
+
+    // Duration filter.
+    DurationFilter duration_filter = 2;
+
+    // Not health check filter.
+    NotHealthCheckFilter not_health_check_filter = 3;
+
+    // Traceable filter.
+    TraceableFilter traceable_filter = 4;
+
+    // Runtime filter.
+    RuntimeFilter runtime_filter = 5;
+
+    // And filter.
+    AndFilter and_filter = 6;
+
+    // Or filter.
+    OrFilter or_filter = 7;
+  }
+}
+
 // Filter on an integer comparison.
 message ComparisonFilter {
   enum Op {
@@ -307,33 +349,6 @@ message AndFilter {
 // filter returns true immediately.
 message OrFilter {
   repeated AccessLogFilter filters = 2 [(validate.rules).repeated .min_items = 2];
-}
-
-message AccessLogFilter {
-  oneof filter_specifier {
-    option (validate.required) = true;
-
-    // Status code filter.
-    StatusCodeFilter status_code_filter = 1;
-
-    // Duration filter.
-    DurationFilter duration_filter = 2;
-
-    // Not health check filter.
-    NotHealthCheckFilter not_health_check_filter = 3;
-
-    // Traceable filter.
-    TraceableFilter traceable_filter = 4;
-
-    // Runtime filter.
-    RuntimeFilter runtime_filter = 5;
-
-    // And filter.
-    AndFilter and_filter = 6;
-
-    // Or filter.
-    OrFilter or_filter = 7;
-  }
 }
 
 // Custom configuration for an AccessLog that writes log entries directly to a file.
@@ -411,19 +426,4 @@ service AccessLogService {
   // expectation that it might be lossy.
   rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {
   }
-}
-
-message AccessLog {
-  // The name of the access log implementation to instantiate. The name must
-  // match a statically registered access log. Current built-in loggers include:
-  // 1) "envoy.file_access_log"
-  string name = 1;
-
-  // Filter which is used to determine if the access log needs to be written.
-  AccessLogFilter filter = 2;
-
-  // Custom configuration that depends on the access log being instantiated. built-in configurations
-  // include:
-  // 1) "envoy.file_access_log": :ref:`FileAccessLog <envoy_api_msg_filter.accesslog.FileAccessLog>`
-  google.protobuf.Struct config = 3;
 }

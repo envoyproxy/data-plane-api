@@ -32,6 +32,79 @@ service ListenerDiscoveryService {
   }
 }
 
+message Listener {
+  // The unique name by which this listener is known. If no name is provided,
+  // Envoy will allocate an internal UUID for the listener. If the listener is to be dynamically
+  // updated or removed via :ref:`LDS <config_listeners_lds>` a unique name must be provided.
+  // By default, the maximum length of a listener's name is limited to 60 characters. This limit can
+  // be increased by setting the :option:`--max-obj-name-len` command line argument to the desired
+  // value.
+  string name = 1;
+
+  // The address that the listener should listen on. In general, the address must be unique, though
+  // that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
+  // Linux as the actual port will be allocated by the OS.
+  Address address = 2 [(validate.rules).message.required = true];
+
+  // A list of filter chains to consider for this listener. The
+  // :ref:`FilterChain <envoy_api_msg_FilterChain>` with the most specific :ref:`FilterChainMatch
+  // <envoy_api_msg_FilterChainMatch>` criteria is used on a connection.
+  //
+  // .. attention::
+  //
+  //   In the current version, multiple filter chains are supported **only** so that SNI can be
+  //   configured. See the :ref:`FAQ entry <faq_how_to_setup_sni>` on how to configure SNI for more
+  //   information. When multiple filter chains are configured, each filter chain must have an
+  //   **identical** set of :ref:`filters <envoy_api_field_FilterChain.filters>`. If the filters
+  //   differ, the configuration will fail to load. In the future, this limitation will be relaxed
+  //   such that different filters can be used depending on which filter chain matches (based on SNI
+  //   or some other parameter).
+  repeated FilterChain filter_chains = 3 [(validate.rules).repeated .min_items = 1];
+
+  // If a connection is redirected using *iptables*, the port on which the proxy
+  // receives it might be different from the original destination address. When this flag is set to
+  // true, the listener hands off redirected connections to the listener associated with the
+  // original destination address. If there is no listener associated with the original destination
+  // address, the connection is handled by the listener that receives it. Defaults to false.
+  google.protobuf.BoolValue use_original_dst = 4;
+
+  // Soft limit on size of the listener’s new connection read and write buffers.
+  // If unspecified, an implementation defined default is applied (1MiB).
+  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
+
+  // [#not-implemented-hide:] Listener metadata.
+  Metadata metadata = 6;
+
+  // [#not-implemented-hide:]
+  message DeprecatedV1 {
+    // Whether the listener should bind to the port. A listener that doesn’t
+    // bind can only receive connections redirected from other listeners that
+    // set use_original_dst parameter to true. Default is true.
+    //
+    // [V2-API-DIFF] This is deprecated in v2, all Listeners will bind to their
+    // port. An additional filter chain must be created for every original
+    // destination port this listener may redirect to in v2, with the original
+    // port specified in the FilterChainMatch destination_port field.
+    google.protobuf.BoolValue bind_to_port = 1;
+  }
+
+  // [#not-implemented-hide:]
+  DeprecatedV1 deprecated_v1 = 7;
+
+  enum DrainType {
+    // Drain in response to calling /healthcheck/fail admin endpoint (along with the health check
+    // filter), listener removal/modification, and hot restart.
+    DEFAULT = 0;
+    // Drain in response to listener removal/modification and hot restart. This setting does not
+    // include /healthcheck/fail. This setting may be desirable if Envoy is hosting both ingress
+    // and egress listeners.
+    MODIFY_ONLY = 1;
+  }
+
+  // The type of draining to perform at a listener-wide level.
+  DrainType drain_type = 8;
+}
+
 message Filter {
   // The name of the filter to instantiate. The name must match a supported
   // filter. The built-in filters are:
@@ -129,77 +202,4 @@ message FilterChain {
 
   // [#not-implemented-hide:] See base.TransportSocket description.
   TransportSocket transport_socket = 6;
-}
-
-message Listener {
-  // The unique name by which this listener is known. If no name is provided,
-  // Envoy will allocate an internal UUID for the listener. If the listener is to be dynamically
-  // updated or removed via :ref:`LDS <config_listeners_lds>` a unique name must be provided.
-  // By default, the maximum length of a listener's name is limited to 60 characters. This limit can
-  // be increased by setting the :option:`--max-obj-name-len` command line argument to the desired
-  // value.
-  string name = 1;
-
-  // The address that the listener should listen on. In general, the address must be unique, though
-  // that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
-  // Linux as the actual port will be allocated by the OS.
-  Address address = 2 [(validate.rules).message.required = true];
-
-  // A list of filter chains to consider for this listener. The
-  // :ref:`FilterChain <envoy_api_msg_FilterChain>` with the most specific :ref:`FilterChainMatch
-  // <envoy_api_msg_FilterChainMatch>` criteria is used on a connection.
-  //
-  // .. attention::
-  //
-  //   In the current version, multiple filter chains are supported **only** so that SNI can be
-  //   configured. See the :ref:`FAQ entry <faq_how_to_setup_sni>` on how to configure SNI for more
-  //   information. When multiple filter chains are configured, each filter chain must have an
-  //   **identical** set of :ref:`filters <envoy_api_field_FilterChain.filters>`. If the filters
-  //   differ, the configuration will fail to load. In the future, this limitation will be relaxed
-  //   such that different filters can be used depending on which filter chain matches (based on SNI
-  //   or some other parameter).
-  repeated FilterChain filter_chains = 3 [(validate.rules).repeated .min_items = 1];
-
-  // If a connection is redirected using *iptables*, the port on which the proxy
-  // receives it might be different from the original destination address. When this flag is set to
-  // true, the listener hands off redirected connections to the listener associated with the
-  // original destination address. If there is no listener associated with the original destination
-  // address, the connection is handled by the listener that receives it. Defaults to false.
-  google.protobuf.BoolValue use_original_dst = 4;
-
-  // Soft limit on size of the listener’s new connection read and write buffers.
-  // If unspecified, an implementation defined default is applied (1MiB).
-  google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
-
-  // [#not-implemented-hide:] Listener metadata.
-  Metadata metadata = 6;
-
-  // [#not-implemented-hide:]
-  message DeprecatedV1 {
-    // Whether the listener should bind to the port. A listener that doesn’t
-    // bind can only receive connections redirected from other listeners that
-    // set use_original_dst parameter to true. Default is true.
-    //
-    // [V2-API-DIFF] This is deprecated in v2, all Listeners will bind to their
-    // port. An additional filter chain must be created for every original
-    // destination port this listener may redirect to in v2, with the original
-    // port specified in the FilterChainMatch destination_port field.
-    google.protobuf.BoolValue bind_to_port = 1;
-  }
-
-  // [#not-implemented-hide:]
-  DeprecatedV1 deprecated_v1 = 7;
-
-  enum DrainType {
-    // Drain in response to calling /healthcheck/fail admin endpoint (along with the health check
-    // filter), listener removal/modification, and hot restart.
-    DEFAULT = 0;
-    // Drain in response to listener removal/modification and hot restart. This setting does not
-    // include /healthcheck/fail. This setting may be desirable if Envoy is hosting both ingress
-    // and egress listeners.
-    MODIFY_ONLY = 1;
-  }
-
-  // The type of draining to perform at a listener-wide level.
-  DrainType drain_type = 8;
 }
