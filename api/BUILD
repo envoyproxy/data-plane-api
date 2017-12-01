@@ -153,6 +153,7 @@ proto_library(
         "//api/filter/http:lua",
         "//api/filter/http:router",
         "//api/filter/http:transcoder",
+        "//api/filter/network:client_ssl_auth",
         "//api/filter/network:http_connection_manager",
         "//api/filter/network:mongo_proxy",
         "//api/filter/network:redis_proxy",
