@@ -58,9 +58,12 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
             "@com_google_protobuf//:wrappers_proto",
             "@googleapis//:http_api_protos_proto",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "@com_github_gogo_protobuf//:gogo_proto",
 =======
             "@googleapis//:http_api_protos_lib",
+=======
+>>>>>>> Remove several fields that will not be used
             "@googleapis//:rpc_status_protos_lib",
 >>>>>>> Initial proposal for external auth filter
             "@com_lyft_protoc_gen_validate//validate:validate_proto",
@@ -78,7 +81,11 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
         external_deps = [
             "@com_google_protobuf//:cc_wkt_protos",
             "@googleapis//:http_api_protos",
+<<<<<<< HEAD
             "@com_github_gogo_protobuf//:gogo_proto_cc",
+=======
+            "@googleapis//:rpc_status_protos",
+>>>>>>> Remove several fields that will not be used
         ],
         visibility = ["//visibility:public"],
     )

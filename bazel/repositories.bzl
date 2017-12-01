@@ -73,7 +73,12 @@ proto_library(
 )
 cc_proto_library(
      name = "rpc_status_protos",
-     deps = [":rpc_status_protos_lib"],
+     srcs = [":rpc_status_protos_src"],
+     default_runtime = "@com_google_protobuf//:protobuf",
+     protoc = "@com_google_protobuf//:protoc",
+     deps = [
+         "@com_google_protobuf//:cc_wkt_protos"
+     ],
      visibility = ["//visibility:public"],
 )
 py_proto_library(

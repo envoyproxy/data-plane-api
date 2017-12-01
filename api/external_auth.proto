@@ -56,10 +56,10 @@ message AttributeContext {
     // The source of the labels could be an X.509 certificate or other configuration.
     map<string, string> labels = 4;
 
-    // The identity of this peer. Similar to `Request.auth.principal`, but
-    // relative to the peer instead of the request. For example, the
-    // the identity associated with the workload.
-    // This field can be sourced from the `Subject Aleternative Names` of an X.509 certificate. 
+    // The validated identity of this peer.
+    // For example, the identity associated with the workload such as a service account.
+    // If an X.509 certificate is used to assert the identity this field should be sourced from
+    // `Subject` and `Subject Alternative Names`.
     repeated string principals = 5;
 
     // Other claims about the peer that are not captured in labels and principals.
@@ -69,52 +69,6 @@ message AttributeContext {
     // If the IP address is private, the `region_code` should reflect the
     // physical location where this peer is running.
     string region_code = 7;
-  }
-
-  // This message defines request authentication attributes. Terminology is
-  // based on the JSON Web Token (JWT) standard, but the terms also
-  // correlate to concepts in other standards.
-  message Auth {
-    // The authenticated principal. Reflects the issuer (`iss`) and subject
-    // (`sub`) claims within a JWT, usually by joining them with a `/`.
-    string principal = 1;
-
-    // The intended audience(s) for this authentication information. Reflects
-    // the audience (`aud`) claim within a JWT. The audience
-    // value(s) depends on the `issuer`, but typically include one or more of
-    // the following pieces of information:
-    //
-    // *  The services intended to receive the credential such as
-    //    ["pubsub.googleapis.com", "storage.googleapis.com"]
-    // *  A set of service-based scopes. For example,
-    //    ["https://www.googleapis.com/auth/cloud-platform"]
-    // *  The client id of an app, such as the Firebase project id for JWTs
-    //    from Firebase Auth.
-    //
-    repeated string audiences = 2;
-
-    // The authorized presenter of the credential. Reflects the optional
-    // Authorized Presenter (`azp`) claim within a JWT or the
-    // OAuth client id. For example, a Google Cloud Platform client id looks
-    // as follows: "123456789012.apps.googleusercontent.com".
-    string presenter = 3;
-
-    // Structured claims presented with the credential. JWTs include
-    // `{key: value}` pairs for standard and private claims. The following
-    // is a subset of the standard required and optional claims that would
-    // typically be presented for a Google-based JWT:
-    //
-    //    {'iss': 'accounts.google.com',
-    //     'sub': '113289723416554971153',
-    //     'aud': ['123456789012', 'pubsub.googleapis.com'],
-    //     'azp': '123456789012.apps.googleusercontent.com',
-    //     'email': 'jsmith@example.com',
-    //     'iat': 1353601026,
-    //     'exp': 1353604926}
-    //
-    // SAML assertions are similarly specified, but with an identity provider
-    // dependent structure.
-    google.protobuf.Struct claims = 4;
   }
 
   // This message defines attributes for an HTTP request. If the actual
@@ -164,38 +118,6 @@ message AttributeContext {
     // https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
     // for details.
     string protocol = 11;
-
-    // A special parameter for request reason. It is used by security systems
-    // to associate auditing information with a request.
-    string reason = 12;
-
-    // The request authentication. May be absent for unauthenticated requests.
-    // Derived from the HTTP request `Authorization` header or equivalent.
-    Auth auth = 13;
-
-    // API key used for this request.
-    string api_key = 14;
-  }
-
-  // Api models the external API surface of a service.
-  message Api {
-    // The public service name. This is distinct from the in-mesh service identity
-    // and reflects the name of the service exposed to the client.
-    // example: mypetstore.com
-    string service = 1;
-
-    // version of the service.
-    string version = 2;
-
-    // Unique string used to identify the operation.
-    // The id is unique among all operations described in a specific <service, version>.
-    // example: `getPetsById`
-    string operation = 3;
-
-    // The protocol type of the API call. Mainly for monitoring/analytics.
-    // Note that this is the frontend protocol exposed to the client, not the protocol implemented by the backend service.
-    // example: `http`, `grpc`
-    string protocol = 4;
   }
 
   // The source of a network activity, such as starting a TCP connection.
@@ -208,16 +130,8 @@ message AttributeContext {
   // the last hop.
   Peer destination = 2;
 
-  // The origin of a network activity. In a multi hop network activity,
-  // the origin represents the sender of the first hop. For the first hop,
-  // the `source` and the `origin` must have the same content.
-  Peer origin = 3; 
-
   // Represents a network request, such as an HTTP request.
   Request request = 4;
-
-  // Api information extracted using the api spec.
-  Api api = 5;
 
   // This is analogous to request.headers, however these contents will not be sent to the upstream server.
   // request_context provides an extension mechanism for sending additional information to the auth server
@@ -226,8 +140,10 @@ message AttributeContext {
   map<string, string> request_context = 10;
 }
 
-
 // The following items are left out of this proto
+// Request.Auth field for jwt tokens
+// Request.Api for api management
+// Origin peer that originated the request
 // Caching Protocol
 // request_context return values to inject back into the filter chain
 // Configuration
