@@ -3,20 +3,9 @@
 DynamoDB
 ========
 
-DynamoDB :ref:`architecture overview <arch_overview_dynamo>`.
-
-.. code-block:: json
-
-  {
-    "name": "http_dynamo_filter",
-    "config": {}
-  }
-
-name
-  *(required, string)* Filter name. The only supported value is `http_dynamo_filter`.
-
-config
-  *(required, object)* The filter does not use any configuration.
+* DynamoDB :ref:`architecture overview <arch_overview_dynamo>`
+* :ref:`v1 API reference <config_http_filters_dynamo_v1>`
+* :ref:`v2 API reference <envoy_api_field_filter.network.HttpFilter.name>`
 
 Statistics
 ----------

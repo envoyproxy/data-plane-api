@@ -3,7 +3,9 @@
 gRPC HTTP/1.1 bridge
 ====================
 
-gRPC :ref:`architecture overview <arch_overview_grpc>`.
+* gRPC :ref:`architecture overview <arch_overview_grpc>`
+* :ref:`v1 API reference <config_http_filters_grpc_bridge_v1>`
+* :ref:`v2 API reference <envoy_api_field_filter.network.HttpFilter.name>`
 
 This is a simple filter which enables the bridging of an HTTP/1.1 client which does not support
 response trailers to a compliant gRPC server. It works by doing the following:
@@ -33,13 +35,6 @@ More info: http://www.grpc.io/docs/guides/wire.html
 
 This filter also collects stats for all gRPC requests that transit, even if those requests are
 normal gRPC requests over HTTP/2.
-
-.. code-block:: json
-
-  {
-    "name": "grpc_http1_bridge",
-    "config": {}
-  }
 
 Statistics
 ----------
