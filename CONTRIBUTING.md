@@ -68,7 +68,8 @@ Or to use a hermetic docker container:
 
 This process builds RST documentation directly from the proto files, merges it with the static RST
 files, and then runs [Sphinx](http://www.sphinx-doc.org/en/stable/rest.html) over the entire tree to
-produce the final documentation.
+produce the final documentation. The generated RST files are not committed as they are regenerated
+every time the documentation is built.
 
 ### Viewing documentation
 
