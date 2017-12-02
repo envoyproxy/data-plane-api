@@ -44,8 +44,8 @@ message RateLimitRequest {
 //   ["authenticated": "false"], ["remote_address": "10.0.0.1"]
 //
 // What it does: Limits all unauthenticated traffic for the IP address 10.0.0.1. The
-// configuration supplies a default limit for the *remote_address* key. If there is a desire to raise
-// the limit for 10.0.0.1 or block it entirely it can be specified directly in the
+// configuration supplies a default limit for the *remote_address* key. If there is a desire to
+// raise the limit for 10.0.0.1 or block it entirely it can be specified directly in the
 // configuration.
 //
 // .. code-block:: cpp
