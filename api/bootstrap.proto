@@ -23,7 +23,7 @@ import "validate/validate.proto";
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
-  Node node = 1 [(validate.rules).message.required = true];
+  Node node = 1;
 
   message StaticResources {
     // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
@@ -77,7 +77,7 @@ message Bootstrap {
 
   // Configuration for the cluster manager which owns all upstream clusters
   // within the server.
-  ClusterManager cluster_manager = 4 [(validate.rules).message.required = true];
+  ClusterManager cluster_manager = 4;
 
   // Optional file system path to search for startup flag files.
   string flags_path = 5;
@@ -363,7 +363,7 @@ message Runtime {
   // Specifies the subdirectory to load within the root directory. This is
   // useful if multiple systems share the same delivery mechanism. Envoy
   // configuration elements can be contained in a dedicated subdirectory.
-  string subdirectory = 2 [(validate.rules).string.min_bytes = 1];
+  string subdirectory = 2;
 
   // Specifies an optional subdirectory to load within the root directory. If
   // specified and the directory exists, configuration values within this

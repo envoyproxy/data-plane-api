@@ -10,7 +10,7 @@ Version history
 * admin: added basic :ref:`Prometheus output <operations_admin_interface_stats>` for stats admin
   endpoint. Histograms are not currently output.
 * config: the :ref:`v2 API <config_overview_v2>` is now considered production ready.
-* config: added ::option:`--v2-config-only` CLI flag.
+* config: added :option:`--v2-config-only` CLI flag.
 * cors: added :ref:`CORS filter <config_http_filters_cors>`.
 * health check: added :ref:`x-envoy-immediate-health-check-fail
   <config_http_filters_router_x-envoy-immediate-health-check-fail>` header support.
@@ -22,7 +22,7 @@ Version history
   <envoy_api_msg_Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
   configuration was deleted without deprecation as we are fairly certain no one is using it.
 * log: added the ability to optionally log to a file instead of stderr via the
-  ::option:`--log-path` option.
+  :option:`--log-path` option.
 * listeners: added :ref:`drain_type <envoy_api_field_Listener.drain_type>` option.
 * lua: added experimental :ref:`Lua filter <config_http_filters_lua>`.
 * mongo filter: added :ref:`fault injection <config_network_filters_mongo_proxy_fault_injection>`.
@@ -50,7 +50,7 @@ Version history
 * runtime: added :ref:`comment capability <config_runtime_comments>`.
 * server: change default ::`-l` to info level.
 * stats: maximum stat/name sizes and maximum number of stats are now variable via the
-  ::option:`--max-obj-name-len` and ::option:`--max-stats` options.
+  :option:`--max-obj-name-len` and :option:`--max-stats` options.
 * tcp proxy: added :ref:`access logging <envoy_api_field_filter.network.TcpProxy.access_log>`.
 * tcp proxy: added :ref:`configurable connect retries
   <envoy_api_field_filter.network.TcpProxy.max_connect_attempts>`.
