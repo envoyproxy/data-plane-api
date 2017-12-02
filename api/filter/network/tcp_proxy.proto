@@ -13,9 +13,6 @@ import "validate/validate.proto";
 
 // [#protodoc-title: TCP Proxy]
 // TCP Proxy :ref:`configuration overview <config_network_filters_tcp_proxy>`.
-// [#v2-api-diff: NOT IMPLEMENTED: The route match will be done in the :ref:`FilterChainMatch
-// <envoy_api_msg_FilterChainMatch>` table].
-
 message TcpProxy {
   // The prefix to use when emitting :ref:`statistics
   // <config_network_filters_tcp_proxy_stats>`.
@@ -43,9 +40,6 @@ message TcpProxy {
   // ability to match source/destination at the listener level (called
   // filter chain match).
   message DeprecatedV1 {
-    // [V2-API-DIFF] This is deprecated in v2. Routes will be matched using
-    // the FilterChainMatch in Listeners.
-    //
     // A TCP proxy route consists of a set of optional L4 criteria and the
     // name of a cluster. If a downstream connection matches all the
     // specified criteria, the cluster in the route is used for the
@@ -94,11 +88,11 @@ message TcpProxy {
 
     // The route table for the filter. All filter instances must have a route
     // table, even if it is empty.
-    repeated TCPRoute routes = 1;
+    repeated TCPRoute routes = 1 [(validate.rules).repeated.min_items = 1];
   }
 
   // TCP Proxy filter configuration using deprecated V1 format.
-  DeprecatedV1 deprecated_v1 = 6;
+  DeprecatedV1 deprecated_v1 = 6 [(validate.rules).message.required = true];
 
   // The maximum number of unsuccessful connection attempts that will be made before
   // giving up. If the parameter is not specified, 1 connection attempt will be made.
