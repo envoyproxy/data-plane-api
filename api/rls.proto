@@ -41,10 +41,10 @@ message RateLimitRequest {
 //
 // .. code-block:: cpp
 //
-//   ["authenticated": "false"], ["ip_address": "10.0.0.1"]
+//   ["authenticated": "false"], ["remote_address": "10.0.0.1"]
 //
 // What it does: Limits all unauthenticated traffic for the IP address 10.0.0.1. The
-// configuration supplies a default limit for the ip_address field. If there is a desire to raise
+// configuration supplies a default limit for the *remote_address* key. If there is a desire to raise
 // the limit for 10.0.0.1 or block it entirely it can be specified directly in the
 // configuration.
 //
@@ -57,7 +57,7 @@ message RateLimitRequest {
 //
 // .. code-block:: cpp
 //
-//   ["authenticated": "false"], ["path": "/foo/bar"], ["ip_address": "10.0.0.1"]
+//   ["authenticated": "false"], ["path": "/foo/bar"], ["remote_address": "10.0.0.1"]
 //
 // What it does: Limits unauthenticated traffic to a specific path for a specific IP address.
 // Like (1) we can raise/block specific IP addresses if we want with an override configuration.

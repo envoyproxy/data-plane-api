@@ -14,8 +14,11 @@ message RateLimit {
   string domain = 1 [(validate.rules).string.min_bytes = 1];
 
   // Specifies the rate limit configurations to be applied with the same
-  // stage number. If not set, the default stage number is 0. NOTE: The
-  // filter supports a range of 0 - 10 inclusively for stage numbers.
+  // stage number. If not set, the default stage number is 0.
+  //
+  // .. note::
+  //
+  //  The filter supports a range of 0 - 10 inclusively for stage numbers.
   uint32 stage = 2 [(validate.rules).uint32.lte = 10];
 
   // The type of requests the filter should apply to. The supported
