@@ -50,7 +50,7 @@ Version history
 * router: added :ref:`configuration <envoy_api_field_RouteAction.cluster_not_found_response_code>`
   to return either a 404 or 503 if the upstream cluster does not exist.
 * runtime: added :ref:`comment capability <config_runtime_comments>`.
-* server: change default ::`-l` to info level.
+* server: change default log level (:option:`-l`) to `info`.
 * stats: maximum stat/name sizes and maximum number of stats are now variable via the
   :option:`--max-obj-name-len` and :option:`--max-stats` options.
 * tcp proxy: added :ref:`access logging <envoy_api_field_filter.network.TcpProxy.access_log>`.

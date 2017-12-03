@@ -59,10 +59,10 @@ stat_prefix
 
 .. _config_http_conn_man_rds_option:
 
-:ref:`rds <config_http_conn_man_rds>`
+:ref:`rds <config_http_conn_man_rds_v1>`
   *(sometimes required, object)* The connection manager configuration must specify one of *rds* or
   *route_config*. If *rds* is specified, the connection manager's route table will be dynamically
-  loaded via the RDS API. See the :ref:`documentation <config_http_conn_man_rds>` for more
+  loaded via the RDS API. See the :ref:`documentation <config_http_conn_man_rds_v1>` for more
   information.
 
 .. _config_http_conn_man_route_config:
