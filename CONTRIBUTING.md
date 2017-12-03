@@ -50,7 +50,11 @@ The following high level procedure is used to make Envoy changes that require AP
 The Envoy project takes documentation seriously. We view it as one of the reasons the project has
 seen rapid adoption. As such, it is required that all features have complete documentation. This is
 generally going to be a combination of API documentation as well as architecture/overview
-documentation. The documentation can be built locally in the root of this repo via:
+documentation.
+
+### Building documentation locally
+
+The documentation can be built locally in the root of this repo via:
 
 ```
 docs/build.sh
@@ -64,7 +68,25 @@ Or to use a hermetic docker container:
 
 This process builds RST documentation directly from the proto files, merges it with the static RST
 files, and then runs [Sphinx](http://www.sphinx-doc.org/en/stable/rest.html) over the entire tree to
-produce the final documentation. The following are some general guidelines around documentation.
+produce the final documentation. The generated RST files are not committed as they are regenerated
+every time the documentation is built.
+
+### Viewing documentation
+
+Once the documentation is built, it is available rooted at `generated/docs/index.html`. The
+generated RST files are also viewable in `generated/rst`.
+
+Note also that the generated documentation can be viewed in CI:
+
+1. Open docs job in CircleCI.
+2. Navigate to "artifacts" tab.
+3. Expand files and click on `index.html`.
+
+If you do not see an artifacts tab this is a bug in CircleCI. Try logging out and logging back in.
+
+### Documentation guidelines
+
+The following are some general guidelines around documentation.
 
 * Cross link as much as possible. Sphinx is fantastic at this. Use it! See ample examples with the
   existing documentation as a guide.
