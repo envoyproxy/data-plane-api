@@ -47,6 +47,8 @@ Version history
   <config_http_conn_man_headers_custom_request_headers>` of request/response headers.
 * router: added support to :ref:`specify response code during redirect
   <envoy_api_field_RedirectAction.response_code>`.
+* router: added :ref:`configuration <envoy_api_field_RouteAction.cluster_not_found_response_code>`
+  to return either a 404 or 503 if the upstream cluster does not exist.
 * runtime: added :ref:`comment capability <config_runtime_comments>`.
 * server: change default ::`-l` to info level.
 * stats: maximum stat/name sizes and maximum number of stats are now variable via the
