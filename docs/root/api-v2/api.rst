@@ -22,4 +22,5 @@ v2 API reference
   address.proto
   protocol.proto
   discovery.proto
+  rls.proto
   filter/filter

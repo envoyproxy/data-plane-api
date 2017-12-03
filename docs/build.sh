@@ -35,6 +35,7 @@ PROTO_RST="
   /api/health_check/api/health_check.proto.rst
   /api/lds/api/lds.proto.rst
   /api/rds/api/rds.proto.rst
+  /api/rls/api/rls.proto.rst
   /api/sds/api/sds.proto.rst
   /api/filter/accesslog/accesslog/api/filter/accesslog/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
@@ -42,11 +43,13 @@ PROTO_RST="
   /api/filter/http/fault/api/filter/http/fault.proto.rst
   /api/filter/http/health_check/api/filter/http/health_check.proto.rst
   /api/filter/http/lua/api/filter/http/lua.proto.rst
+  /api/filter/http/rate_limit/api/filter/http/rate_limit.proto.rst
   /api/filter/http/router/api/filter/http/router.proto.rst
   /api/filter/http/transcoder/api/filter/http/transcoder.proto.rst
   /api/filter/network/client_ssl_auth/api/filter/network/client_ssl_auth.proto.rst
   /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst
   /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
+  /api/filter/network/rate_limit/api/filter/network/rate_limit.proto.rst
   /api/filter/network/redis_proxy/api/filter/network/redis_proxy.proto.rst
   /api/filter/network/tcp_proxy/api/filter/network/tcp_proxy.proto.rst
   /api/protocol/api/protocol.proto.rst
