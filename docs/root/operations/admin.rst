@@ -18,11 +18,19 @@ modify different aspects of the server:
   List out all loaded TLS certificates, including file name, serial number, and days until
   expiration.
 
+.. _operations_admin_interface_clusters:
+
 .. http:get:: /clusters
 
   List out all configured :ref:`cluster manager <arch_overview_cluster_manager>` clusters. This
   information includes all discovered upstream hosts in each cluster along with per host statistics.
   This is useful for debugging service discovery issues.
+
+  Cluster manager information
+    - ``version_info`` string -- the version info string of the last loaded
+      :ref:`CDS<config_cluster_manager_cds>` update.
+      If envoy does not have :ref:`CDS<config_cluster_manager_cds>` setup, the
+      output will read ``version_info::static``.
 
   Cluster wide information
     - :ref:`circuit breakers<config_cluster_manager_cluster_circuit_breakers>` settings for all priority settings.
