@@ -165,6 +165,9 @@ message VirtualHost {
 //
 //   Envoy supports routing on HTTP method via :ref:`header matching
 //   <envoy_api_msg_HeaderMatcher>`.
+//
+//   Envoy also supports routing on HTTP URL query strings via
+//   :ref:`query arg matching <envoy_api_msg_QueryArgMatcher>`
 message Route {
   // Route matching parameters.
   RouteMatch match = 1 [(validate.rules).message.required = true];
@@ -279,6 +282,13 @@ message RouteMatch {
   // the request with the same values (or based on presence if the value field
   // is not in the config).
   repeated HeaderMatcher headers = 6;
+
+  // [#not-implemented-hide:] Specifies a set of URL query parameters on which the route should match.
+  // The router will check the query string from the *path* header against
+  // all the specified query args.  If the number of specified query args
+  // is nonzero, they all must match the *path* header's query string in
+  // order or a match to occur.
+  repeated QueryArgMatcher query_args = 7;
 }
 
 message CorsPolicy {
@@ -796,4 +806,23 @@ message HeaderMatcher {
   // * The regex *\d{3}* does not match the value *1234*
   // * The regex *\d{3}* does not match the value *123.456*
   google.protobuf.BoolValue regex = 3;
+}
+
+message QueryArgMatcher {
+  // Specifies the name of an arg in the requested *path*'s query string.
+  string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // If specified, indicates whether the presence or abscence of the named arg
+  // is sufficient for a match.
+  bool present = 2;
+
+  // If specified, the requested *path*'s query string must contain at least
+  // one arg with the specified name and value.
+  string value = 3;
+
+  // If specified, the requested *path*'s query string must contain at least
+  // one arg with the specified name and a value that matches the regular
+  // expression.  The entirety of the value must match the regular expression
+  // for a match to happen.
+  string regex = 4;
 }

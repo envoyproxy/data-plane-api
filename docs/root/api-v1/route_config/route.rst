@@ -33,6 +33,7 @@ next (e.g., redirect, forward, rewrite, etc.).
     "shadow": "{...}",
     "priority": "...",
     "headers": [],
+    "query_args": [],
     "rate_limits": [],
     "include_vh_rate_limits" : "...",
     "hash_policy": "{...}",
@@ -191,6 +192,11 @@ priority
   check the request's headers against all the specified headers in the route config. A match will
   happen if all the headers in the route are present in the request with the same values (or based
   on presence if the ``value`` field is not in the config).
+
+:ref:`headers <config_http_conn_man_route_table_route_query_args>`
+  *(optional, array)* Specifies a set of query args in the :path on which the route should match.
+  The router will check the request's headers against all the specified query args in the route
+  config.  A match will happen if all the query args match.
 
 request_headers_to_add
   *(optional, array)* Specifies a list of HTTP headers that should be added to each
@@ -377,6 +383,37 @@ regex
       "name": ":method",
       "value": "POST"
     }
+
+.. _config_http_conn_man_route_table_route_query_args:
+
+Query Args
+----------
+
+.. code-block:: json
+
+  {
+    "name": "...",
+    "present": "...",
+    "value": "...",
+    "regex": "..."
+  }
+
+name
+  *(required, string)* Specifies the name of the query arg in the request.
+
+present
+  *(sometimes required, boolean)* If specified and set to true, the named query arg must be
+  present for the route to match. If specified and set to false, the named query arg must be
+  absent for the route to match. One of *present*, *value*, or *regex* must be specified.
+
+value
+  *(sometimes required, string)* Specifies the exact value that the query arg must have for
+  the route to match. One of *present*, *value*, or *regex* must be specified.
+
+regex
+  *(sometimes required, regex)* Specifies a regular expression that the query arg's value
+  must match. The entire value of the query arg must match the regular expression.
+  One of *present*, *value*, or *regex* must be specified.
 
 .. _config_http_conn_man_route_table_route_weighted_clusters:
 
