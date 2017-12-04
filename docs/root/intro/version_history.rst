@@ -9,6 +9,7 @@ Version history
 * admin: added :ref:`JSON output <operations_admin_interface_stats>` for stats admin endpoint.
 * admin: added basic :ref:`Prometheus output <operations_admin_interface_stats>` for stats admin
   endpoint. Histograms are not currently output.
+* admin: added ``version_info`` to the :ref:`/clusters admin endpoint<operations_admin_interface_clusters>`.
 * config: the :ref:`v2 API <config_overview_v2>` is now considered production ready.
 * config: added :option:`--v2-config-only` CLI flag.
 * cors: added :ref:`CORS filter <config_http_filters_cors>`.

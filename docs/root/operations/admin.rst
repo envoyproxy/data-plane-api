@@ -18,6 +18,8 @@ modify different aspects of the server:
   List out all loaded TLS certificates, including file name, serial number, and days until
   expiration.
 
+.. _operations_admin_interface_clusters:
+
 .. http:get:: /clusters
 
   List out all configured :ref:`cluster manager <arch_overview_cluster_manager>` clusters. This
