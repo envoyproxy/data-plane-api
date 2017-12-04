@@ -4,7 +4,6 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
@@ -12,20 +11,20 @@ import "google/rpc/status.proto";
 // Authorization service.
 // Primarily responds with OK or NOT OK.
 service Authorization {
-   rpc Check(CheckRequest) returns (CheckResponse);
+  rpc Check(CheckRequest) returns (CheckResponse);
 }
 
 message CheckRequest {
-    // The name of the tenant for multi-tenant support.
-    string tenant_name = 1;
+  // The name of the tenant for multi-tenant support.
+  string tenant_name = 1;
 
-    // The request attributes.
-    AttributeContext attributes = 2;
+  // The request attributes.
+  AttributeContext attributes = 2;
 }
 
 message CheckResponse {
-    // Status OK allows the request. Any other response indicates the request should be denied.
-    google.rpc.Status status = 1;
+  // Status OK allows the request. Any other response indicates the request should be denied.
+  google.rpc.Status status = 1;
 }
 
 // An attribute is a piece of metadata that describes an activity on a network.
@@ -133,10 +132,10 @@ message AttributeContext {
   // Represents a network request, such as an HTTP request.
   Request request = 4;
 
-  // This is analogous to request.headers, however these contents will not be sent to the upstream server.
-  // request_context provides an extension mechanism for sending additional information to the auth server
-  // without adding it to request.headers.
-  // request_context may map to the internal opaque context in the filter chain.
+  // This is analogous to request.headers, however these contents will not be sent to the upstream
+  // server. request_context provides an extension mechanism for sending additional information to
+  // the auth server without adding it to request.headers. request_context may map to the internal
+  // opaque context in the filter chain.
   map<string, string> request_context = 10;
 }
 

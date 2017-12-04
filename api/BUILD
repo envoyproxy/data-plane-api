@@ -9,7 +9,10 @@ api_proto_library(
 
 api_proto_library(
     name = "auth",
-    srcs = ["auth.proto", "external_auth.proto"],
+    srcs = [
+        "auth.proto",
+        "external_auth.proto",
+    ],
     deps = [":sds"],
 )
 

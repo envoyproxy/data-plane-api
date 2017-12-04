@@ -73,7 +73,7 @@ proto_library(
 )
 cc_proto_library(
      name = "rpc_status_protos",
-     srcs = [":rpc_status_protos_src"],
+     srcs = ["google/rpc/status.proto"],
      default_runtime = "@com_google_protobuf//:protobuf",
      protoc = "@com_google_protobuf//:protoc",
      deps = [
