@@ -812,17 +812,21 @@ message QueryArgMatcher {
   // Specifies the name of an arg in the requested *path*'s query string.
   string name = 1 [(validate.rules).string.min_bytes = 1];
 
-  // If specified, indicates whether the presence or abscence of the named arg
-  // is sufficient for a match.
-  bool present = 2;
+  oneof condition {
+    option (validate.required) = true;
 
-  // If specified, the requested *path*'s query string must contain at least
-  // one arg with the specified name and value.
-  string value = 3;
+    // If specified, indicates whether the presence or abscence of the named arg
+    // is sufficient for a match.
+    bool present = 2;
 
-  // If specified, the requested *path*'s query string must contain at least
-  // one arg with the specified name and a value that matches the regular
-  // expression.  The entirety of the value must match the regular expression
-  // for a match to happen.
-  string regex = 4;
+    // If specified, the requested *path*'s query string must contain at least
+    // one arg with the specified name and value.
+    string value = 3;
+
+    // If specified, the requested *path*'s query string must contain at least
+    // one arg with the specified name and a value that matches the regular
+    // expression.  The entirety of the value must match the regular expression
+    // for a match to happen.
+    string regex = 4;
+  }
 }
