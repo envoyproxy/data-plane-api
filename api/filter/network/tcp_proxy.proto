@@ -30,7 +30,7 @@ message TcpProxy {
   // timeout based on the last byte sent on the downstream/upstream connection.
   google.protobuf.Duration downstream_idle_timeout = 3;
 
-  // [#not-implemented-hide:]
+  // [#not-implemented-hide:]  
   google.protobuf.Duration upstream_idle_timeout = 4;
 
   // Configuration for :ref:`access logs <arch_overview_access_logs>`
