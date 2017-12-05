@@ -88,7 +88,7 @@ If you do not see an artifacts tab this is a bug in CircleCI. Try logging out an
 
 The following are some general guidelines around documentation.
 
-* Cross link as much as possible. Sphinx is fantastic at this. Use it! See ample examples with the
+* Cross link as much as possible. Sphinx is fantastic at this. Use it! See examples with the
   existing documentation as a guide.
 * Please use a **single space** after a period in documentation so that all generated text is
   consistent.
