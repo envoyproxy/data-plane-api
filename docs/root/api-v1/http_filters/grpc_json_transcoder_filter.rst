@@ -28,27 +28,9 @@ services to be transcoded.
   }
 
 proto_descriptor
-  *(required, string)* Supplies the binary protobuf descriptor set for the gRPC services.
-  The descriptor set has to include all of the types that are used in the services. Make sure
-  to use the ``--include_import`` option for ``protoc``.
-
-  To generate a protobuf descriptor set for the gRPC service, you'll also need to clone the
-  googleapis repository from Github before running protoc, as you'll need annotations.proto
-  in your include path.
-
-  .. code-block:: bash
-
-    git clone https://github.com/googleapis/googleapis
-    GOOGLEAPIS_DIR=<your-local-googleapis-folder>
-
-  Then run protoc to generate the descriptor set from bookstore.proto:
-
-  .. code-block:: bash
-
-    protoc -I$(GOOGLEAPIS_DIR) -I. --include_imports --include_source_info \
-      --descriptor_set_out=proto.pb test/proto/bookstore.proto
-
-  If you have more than one proto source files, you can pass all of them in one command.
+  *(required, string)* Supplies the filename of
+  :ref:`the proto descriptor set <config_grpc_json_generate_proto_descriptor_set>` for the gRPC
+  services.
 
 services
   *(required, array)* A list of strings that supplies the service names that the
