@@ -4,27 +4,31 @@ package envoy.api.v2.filter.http;
 
 import "google/protobuf/duration.proto";
 
-// HTTP rate limit filter configuration. The HTTP rate limit filter will
-// call the rate limit service when the request’s route or virtual host has
-// one or more rate limit configurations that match the filter stage
-// setting. The route can optionally include the virtual host rate limit
-// configurations. More than one configuration can apply to a request. Each
-// configuration results in a descriptor being sent to the rate limit
-// service. If the rate limit service is called, and the response for any
-// of the descriptors is over limit, a 429 response is returned.
+import "validate/validate.proto";
+
+// [#protodoc-title: Rate limit]
+// Rate limit :ref:`configuration overview <config_http_filters_rate_limit>`.
+
 message RateLimit {
   // The rate limit domain to use when calling the rate limit service.
-  string domain = 1;
+  string domain = 1 [(validate.rules).string.min_bytes = 1];
+
   // Specifies the rate limit configurations to be applied with the same
-  // stage number. If not set, the default stage number is 0. NOTE: The
-  // filter supports a range of 0 - 10 inclusively for stage numbers.
-  uint32 stage = 2;
-  // The type of requests the filter should apply to. The supported types
-  // are internal, external or both. A request is considered internal if
-  // x-envoy-internal is set to true. If x-envoy-internal is not set or
-  // false, a request is considered external. The filter defaults to both,
-  // and it will apply to all request types.
+  // stage number. If not set, the default stage number is 0.
+  //
+  // .. note::
+  //
+  //  The filter supports a range of 0 - 10 inclusively for stage numbers.
+  uint32 stage = 2 [(validate.rules).uint32.lte = 10];
+
+  // The type of requests the filter should apply to. The supported
+  // types are *internal*, *external* or *both*. A request is considered internal if
+  // :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is set to true. If
+  // :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is not set or false, a
+  // request is considered external. The filter defaults to *both*, and it will apply to all request
+  // types.
   string request_type = 3;
+
   // The timeout in milliseconds for the rate limit service RPC. If not
   // set, this defaults to 20ms.
   google.protobuf.Duration timeout = 4;

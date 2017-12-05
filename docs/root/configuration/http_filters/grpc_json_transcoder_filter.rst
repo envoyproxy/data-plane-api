@@ -3,7 +3,9 @@
 gRPC-JSON transcoder filter
 ===========================
 
-gRPC :ref:`architecture overview <arch_overview_grpc>`.
+* gRPC :ref:`architecture overview <arch_overview_grpc>`
+* :ref:`v1 API reference <config_http_filters_grpc_json_transcoder_v1>`
+* :ref:`v2 API reference <envoy_api_msg_filter.http.GrpcJsonTranscoder>`
 
 This is a filter which allows a RESTful JSON API client to send requests to Envoy over HTTP
 and get proxied to a gRPC service. The HTTP mapping for the gRPC service has to be defined by
@@ -33,6 +35,3 @@ Then run protoc to generate the descriptor set from bookstore.proto:
     --descriptor_set_out=proto.pb test/proto/bookstore.proto
 
 If you have more than one proto source files, you can pass all of them in one command.
-
-* :ref:`v1 API reference <config_http_filters_grpc_json_transcoder_v1>`
-* :ref:`v2 API reference <envoy_api_msg_filter.http.GrpcJsonTranscoder>`

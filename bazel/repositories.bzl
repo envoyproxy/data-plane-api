@@ -1,7 +1,7 @@
 GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
 PROMETHEUS_SHA = "6f3806018612930941127f2a7c6c453ba2c527d2" # Nov 02, 2017
 
-PGV_GIT_SHA = "36e0c0b5946eb7347d755b9b2f55bb3fc0967846"
+PGV_GIT_SHA = "8e6aaf55f4954f1ef9d3ee2e8f5a50e79cc04f8f"
 
 def api_dependencies():
     native.git_repository(

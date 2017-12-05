@@ -86,3 +86,4 @@ request_headers_to_add
   route
   vcluster
   rate_limits
+  rds

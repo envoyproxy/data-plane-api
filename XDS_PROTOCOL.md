@@ -1,9 +1,11 @@
 # xDS REST and gRPC protocol
 
-Envoy discovers its various dynamic xDS resources via the filesystem or by querying
-one or more management servers. Resources are requested via _subscriptions_, by
-either specifying a filesystem path to watch, initiating gRPC streams or
-REST-JSON polling. The latter two methods involve sending requests with a
+Envoy discovers its various dynamic resources via the filesystem or by querying
+one or more management servers. Collectively, these discovery services and their
+corresponding APIs are referred to as _xDS_. Resources are requested via
+_subscriptions_, by specifying a filesystem path to watch, initiating gRPC
+streams or polling a REST-JSON URL. The latter two methods involve sending
+requests with a
 [`DiscoveryRequest`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L24)
 proto payload. Resources are delivered in a
 [`DiscoveryResponse`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L53)
@@ -39,7 +41,7 @@ control of sequencing is required.
 #### Type URLs
 
 Each xDS API is concerned with resources of a given type. There is a 1:1
-correspondence between xDS API and a resource type. That is:
+correspondence between an xDS API and a resource type. That is:
 
 * [LDS: `envoy.api.v2.Listener`](api/lds.proto)
 * [RDS: `envoy.api.v2.RouteConfiguration`](api/rds.proto)
@@ -128,7 +130,7 @@ each response. An absent `Listener` or `Cluster` will be deleted.
 
 For EDS/RDS, the management server does not need to supply every requested
 resource and may also supply additional, unrequested resources, `resource_names`
-is only a hint.  Envoy will silently ignore any superfluous resources. When a
+is only a hint. Envoy will silently ignore any superfluous resources. When a
 requested resource is missing in a RDS or EDS update, Envoy will retain the last
 known value for this resource. The management server may be able to infer all
 the required EDS/RDS resources from the `node` identification in the
@@ -181,7 +183,7 @@ The management server should not send a `DiscoveryResponse` for any
 newer nonce being presented to Envoy in a `DiscoveryResponse`. A management
 server does not need to send an update until it determines a new version is
 available. Earlier requests at a version then also become stale. It may process
-multiple`DiscoveryRequests` at a version until a new version is ready.
+multiple `DiscoveryRequests` at a version until a new version is ready.
 
 ![Requests become stale](diagrams/stale-requests.svg)
 
@@ -271,5 +273,5 @@ persistent stream is maintained to the management server. It is expected that
 there is only a single outstanding request at any point in time, and as a result
 the response nonce is optional in REST-JSON. The [JSON canonical transform of
 proto3](https://developers.google.com/protocol-buffers/docs/proto3#json) is used
-to encode `DiscoveryRequest` and `DiscoveryResponse` messages.  ADS is not
+to encode `DiscoveryRequest` and `DiscoveryResponse` messages. ADS is not
 available for REST-JSON polling.

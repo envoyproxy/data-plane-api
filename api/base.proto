@@ -35,9 +35,9 @@ message Locality {
 // configuration for serving.
 message Node {
   // An opaque node identifier for the Envoy node.
-  string id = 1 [(validate.rules).string.min_bytes = 1];
+  string id = 1;
   // The cluster that the Envoy node belongs to.
-  string cluster = 2 [(validate.rules).string.min_bytes = 1];
+  string cluster = 2;
   // Opaque metadata extending the node identifier. Envoy will pass this
   // directly to the management server.
   google.protobuf.Struct metadata = 3;
