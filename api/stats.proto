@@ -1,5 +1,5 @@
-// [#protodoc-title: Stats sinks]
-// Protos for each pluggable stats sink configuration.
+// [#protodoc-title: Stats]
+// Protos for stats related messages.
 
 syntax = "proto3";
 
