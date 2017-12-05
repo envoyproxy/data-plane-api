@@ -28,6 +28,7 @@ api_proto_library(
         ":cds",
         ":lds",
         ":sds",
+        ":stats",
     ],
 )
 
@@ -132,6 +133,14 @@ api_proto_library(
     deps = [
         ":base",
         ":discovery",
+    ],
+)
+
+api_proto_library(
+    name = "stats",
+    srcs = ["stats.proto"],
+    deps = [
+        ":address",
     ],
 )
 

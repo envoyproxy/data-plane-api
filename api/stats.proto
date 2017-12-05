@@ -1,0 +1,36 @@
+// [#protodoc-title: Stats sinks]
+// Protos for each pluggable stats sink configuration.
+
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "api/address.proto";
+
+import "validate/validate.proto";
+
+// Stats configuration proto schema for built-in *envoy.statsd* sink.
+message StatsdSink {
+  oneof statsd_specifier {
+    option (validate.required) = true;
+
+    // The UDP address of a running `statsd <https://github.com/etsy/statsd>`_
+    // compliant listener. If specified, statistics will be flushed to this
+    // address.
+    Address address = 1;
+
+    // The name of a cluster that is running a TCP `statsd
+    // <https://github.com/etsy/statsd>`_ compliant listener. If specified,
+    // Envoy will connect to this cluster to flush statistics.
+    string tcp_cluster_name = 2;
+  }
+}
+
+// Stats configuration proto schema for built-in *envoy.dog_statsd* sink.
+// The sink emits stats with `DogStatsD <https://docs.datadoghq.com/guides/dogstatsd/>`_
+// compatible tags. Tags are configurable via :ref:`StatsConfig <envoy_api_msg_StatsConfig>`.
+message DogStatsdSink {
+  // The UDP address of a running DogStatsD compliant listener. If specified,
+  // statistics will be flushed to this address.
+  Address address = 1 [(validate.rules).message.required = true];
+}
