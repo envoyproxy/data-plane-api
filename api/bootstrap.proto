@@ -221,6 +221,32 @@ message StatsSink {
   google.protobuf.Struct config = 2;
 }
 
+// Statistics :ref:`architecture overview <arch_overview_statistics>`.
+message StatsConfig {
+  // Each stat name is iteratively processed through these tag specifiers.
+  // When a tag is matched, the first capture group is removed from the name so
+  // later :ref:`TagSpecifiers <envoy_api_msg_TagSpecifier>` cannot match that
+  // same portion of the match.
+  repeated TagSpecifier stats_tags = 1;
+
+  // Use all default tag regexes specified in Envoy. These can be combined with
+  // custom tags specified in :ref:`stats_tags
+  // <envoy_api_field_StatsConfig.stats_tags>`. They will be processed before
+  // the custom tags.
+  //
+  // .. note::
+  //
+  //   If any default tags are specified twice, the config will be considered
+  //   invalid.
+  //
+  // See `well_known_names.h
+  // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
+  // for a list of the default tags in Envoy.
+  //
+  // If not provided, the value is assumed to be true.
+  google.protobuf.BoolValue use_all_default_tags = 2;
+}
+
 // Designates a tag to strip from the tag extracted name and provide as a named
 // tag value for all statistics. This will only occur if any part of the name
 // matches the regex provided with one or more capture groups.
@@ -288,32 +314,6 @@ message TagSpecifier {
   // ``envoy.http_conn_manager_prefix`` will be added with the tag value
   // ``connection_manager_1``.
   string regex = 2;
-}
-
-// Statistics :ref:`architecture overview <arch_overview_statistics>`.
-message StatsConfig {
-  // Each stat name is iteratively processed through these tag specifiers.
-  // When a tag is matched, the first capture group is removed from the name so
-  // later :ref:`TagSpecifiers <envoy_api_msg_TagSpecifier>` cannot match that
-  // same portion of the match.
-  repeated TagSpecifier stats_tags = 1;
-
-  // Use all default tag regexes specified in Envoy. These can be combined with
-  // custom tags specified in :ref:`stats_tags
-  // <envoy_api_field_StatsConfig.stats_tags>`. They will be processed before
-  // the custom tags.
-  //
-  // .. note::
-  //
-  //   If any default tags are specified twice, the config will be considered
-  //   invalid.
-  //
-  // See `well_known_names.h
-  // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
-  // for a list of the default tags in Envoy.
-  //
-  // If not provided, the value is assumed to be true.
-  google.protobuf.BoolValue use_all_default_tags = 2;
 }
 
 // Envoy process watchdog configuration. When configured, this monitors for
