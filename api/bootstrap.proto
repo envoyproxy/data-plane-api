@@ -220,11 +220,23 @@ message StatsdSink {
   }
 }
 
+// Stats configuration proto schema for built-in *envoy.dog_statsd* sink.
+// The sink emits stats with `DogStatsD <https://docs.datadoghq.com/guides/dogstatsd/>`_
+// compatible tags. Tags are configurable via :ref:`StatsConfig <envoy_api_msg_StatsConfig>`.
+message DogStatsdSink {
+  // The UDP address of a running DogStatsD compliant listener. If specified,
+  // statistics will be flushed to this address.
+  Address address = 1 [(validate.rules).message.required = true];;
+}
+
 // Configuration for pluggable stats sinks.
 message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
   // stats sink. *envoy.statsd* is a built-in sink suitable for emitting to
-  // `statsd <https://github.com/etsy/statsd>`_.
+  // `statsd <https://github.com/etsy/statsd>`_. Any other built-in stats sink
+  // can be found in
+  // `well_known_names.h <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
+  // in the Envoy repository.
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being
