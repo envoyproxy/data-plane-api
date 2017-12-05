@@ -8,7 +8,7 @@ import "validate/validate.proto";
 // gRPC-JSON transcoder :ref:`configuration overview <config_http_filters_grpc_json_transcoder>`.
 
 message GrpcJsonTranscoder {
-  oneof descriptor {
+  oneof descriptor_set {
     option (validate.required) = true;
 
     // Supplies the filename of
