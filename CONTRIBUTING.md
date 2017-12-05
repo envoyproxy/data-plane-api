@@ -66,7 +66,7 @@ This process builds RST documentation directly from the proto files, merges it w
 files, and then runs [Sphinx](http://www.sphinx-doc.org/en/stable/rest.html) over the entire tree to
 produce the final documentation. The following are some general guidelines around documentation.
 
-* Cross link as much as possible. Sphinx is fantastic at this. Use it! See ample examples with the
+* Cross link as much as possible. Sphinx is fantastic at this. Use it! See examples with the
   existing documentation as a guide.
 * Please use a **single space** after a period in documentation so that all generated text is
   consistent.
