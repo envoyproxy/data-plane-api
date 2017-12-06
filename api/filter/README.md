@@ -6,13 +6,13 @@ setting the `"deprecated_v1"` field to true in the filter's
 configuration. For example,
 
 ```json
-{ 
+{
  "name": "envoy.rate_limit",
-  "config": { 
+  "config": {
     "deprecated_v1": true,
-     "value": { 
+     "value": {
        "domain": "some_domain",
-        "timeout_ms": 500 
+        "timeout_ms": 500
        }
     }
  }

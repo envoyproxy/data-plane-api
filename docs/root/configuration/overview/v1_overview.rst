@@ -9,7 +9,7 @@ Overview (v1 API)
   and eventually removed completely. If you are new to Envoy please consider starting with the
   :ref:`v2 configuration/API <config_overview_v2>`.
 
-The Envoy configuration format is written in JSON and is validated against a JSON schema.  The
+The Envoy configuration format is written in JSON and is validated against a JSON schema. The
 schema can be found in :repo:`source/common/json/config_schemas.cc`. The main configuration for the
 server is contained within the listeners and cluster manager sections. The other top level elements
 specify miscellaneous configuration.

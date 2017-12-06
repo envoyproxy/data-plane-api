@@ -98,7 +98,7 @@ In addition to the above APIs, an aggregation API will be provided to allow for
 fine grained control over the sequencing of API updates across discovery
 services:
 
-* [Aggregated Discovery Service (ADS)](api/discovery.proto). See 
+* [Aggregated Discovery Service (ADS)](api/discovery.proto). See
   the [ADS overview](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service).
 
 A protocol description for the xDS APIs is provided [here](XDS_PROTOCOL.md).

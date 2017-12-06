@@ -6,7 +6,7 @@ Zipkin Tracing
 The Zipkin tracing sandbox demonstrates Envoy's :ref:`request tracing <arch_overview_tracing>`
 capabilities using `Zipkin <http://zipkin.io/>`_ as the tracing provider. This sandbox
 is very similar to the front proxy architecture described above, with one difference:
-service1 makes an API call to service2 before returning a response. 
+service1 makes an API call to service2 before returning a response.
 The three containers will be deployed inside a virtual network called ``envoymesh``.
 
 All incoming requests are routed via the front envoy, which is acting as a reverse proxy
@@ -46,9 +46,9 @@ To build this sandbox example, and start the example apps run the following comm
     $ docker-compose ps
             Name                       Command               State      Ports
     -------------------------------------------------------------------------------------------------------------
-    zipkintracing_service1_1      /bin/sh -c /usr/local/bin/ ...    Up       80/tcp
-    zipkintracing_service2_1      /bin/sh -c /usr/local/bin/ ...    Up       80/tcp
-    zipkintracing_front-envoy_1   /bin/sh -c /usr/local/bin/ ...    Up       0.0.0.0:8000->80/tcp, 0.0.0.0:8001->8001/tcp
+    zipkintracing_service1_1      /bin/sh -c /usr/local/bin/ ... Up       80/tcp
+    zipkintracing_service2_1      /bin/sh -c /usr/local/bin/ ... Up       80/tcp
+    zipkintracing_front-envoy_1   /bin/sh -c /usr/local/bin/ ... Up       0.0.0.0:8000->80/tcp, 0.0.0.0:8001->8001/tcp
 
 **Step 2: Generate some load**
 

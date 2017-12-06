@@ -8,7 +8,8 @@ import os.path
 import sys
 
 EXCLUDED_PREFIXES = ("./generated/", "./bazel-", "./bazel/external")
-SUFFIXES = (".cc", ".h", "BUILD", ".proto")
+SUFFIXES = (".cc", ".h", "BUILD", ".proto", ".md", ".rst")
+DOCS_SUFFIX = (".md", ".rst")
 
 CLANG_FORMAT_PATH = os.getenv("CLANG_FORMAT", "clang-format-5.0")
 BUILDIFIER_PATH = os.getenv("BUILDIFIER", "/usr/lib/go/bin/buildifier")
@@ -52,6 +53,9 @@ def checkFilePath(file_path):
       printError("buildifier check failed for file: %s" % file_path)
     return
   checkFileContents(file_path)
+
+  if file_path.endswith(DOCS_SUFFIX):
+    return
   command = ("%s %s | diff -q %s - > /dev/null" % (CLANG_FORMAT_PATH, file_path,
                                                    file_path))
   if os.system(command) != 0:
@@ -64,6 +68,8 @@ def fixFilePath(file_path):
       printError("buildifier rewrite failed for file: %s" % file_path)
     return
   fixFileContents(file_path)
+  if file_path.endswith(DOCS_SUFFIX):
+    return
   command = "%s -i %s" % (CLANG_FORMAT_PATH, file_path)
   if os.system(command) != 0:
     printError("clang-format rewrite error: %s" % (file_path))

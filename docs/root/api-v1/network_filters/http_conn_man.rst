@@ -131,7 +131,7 @@ http2_settings
     size now, so it's also the minimum.
 
     This field also acts as a soft limit on the number of bytes Envoy will buffer per-stream in the
-    HTTP/2 codec buffers.  Once the buffer reaches this pointer, watermark callbacks will fire to
+    HTTP/2 codec buffers. Once the buffer reaches this pointer, watermark callbacks will fire to
     stop the flow of data to the codec buffers.
 
   initial_connection_window_size
