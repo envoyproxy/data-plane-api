@@ -94,7 +94,7 @@ Priority levels
 ------------------
 
 During load balancing, Envoy will generally only consider hosts configured at the highest priority
-level. For each EDS :ref:`LocalityEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional priority
+level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional priority
 may also be specified. Currently the failover mechanics for routing from one priority level to
 another are fairly simplistic: a given priority level will be used until it has zero healthy hosts,
 at which point it will hard fail to the next highest priority level.
