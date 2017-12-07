@@ -149,7 +149,7 @@ message ApiConfigSource {
     // gRPC v2 API.
     GRPC = 2;
   }
-  ApiType api_type = 1;
+  ApiType api_type = 1 [(validate.rules).enum.defined_only = true];
   // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
   // will be cycled through if any kind of failure occurs.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
