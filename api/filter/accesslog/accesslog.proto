@@ -150,6 +150,7 @@ message TCPAccessLogEntry {
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
 message HTTPRequestProperties {
   // The request method (RFC 7231/2616).
+  // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
   RequestMethod request_method = 1;
 
   // The scheme portion of the incoming request URI.
