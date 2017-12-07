@@ -23,7 +23,7 @@ message SocketAddress {
   Protocol protocol = 1;
   // The address for this socket. :ref:`Listeners <config_listeners>` will bind
   // to the address or outbound connections will be made. An empty address is
-  // not allowed, specify 0.0.0.0 or :: to bind any. It's still possible to
+  // not allowed, specify ``0.0.0.0`` or ``::`` to bind any. It's still possible to
   // distinguish on an address via the prefix/suffix matching in
   // FilterChainMatch after connection. For :ref:`clusters
   // <config_cluster_manager_cluster>`, an address may be either an IP or
@@ -65,7 +65,7 @@ message Address {
 // CidrRange specifies an IP Address and a prefix length to construct
 // the subnet mask for a `CIDR <https://tools.ietf.org/html/rfc4632>`_ range.
 message CidrRange {
-  // IPv4 or IPv6 address, e.g. 192.0.0.0 or 2001:db8::.
+  // IPv4 or IPv6 address, e.g. ``192.0.0.0`` or ``2001:db8::``.
   string address_prefix = 1 [(validate.rules).string.min_bytes = 1];
   // Length of prefix, e.g. 0, 32.
   google.protobuf.UInt32Value prefix_len = 2 [(validate.rules).uint32.lte = 128];
