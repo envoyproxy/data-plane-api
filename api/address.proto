@@ -22,14 +22,15 @@ message SocketAddress {
   }
   Protocol protocol = 1;
   // The address for this socket. :ref:`Listeners <config_listeners>` will bind
-  // to the address or outbound connections will be made. An empty address
-  // implies a bind to 0.0.0.0 or ::. It's still possible to distinguish on an
-  // address via the prefix/suffix matching in FilterChainMatch after connection.
-  // For :ref:`clusters <config_cluster_manager_cluster>`, an address may be
-  // either an IP or hostname to be resolved via DNS. If it is a hostname,
-  // :ref:`resolver_name <envoy_api_field_SocketAddress.resolver_name>` should
-  // be set unless default (i.e. DNS) resolution is expected.
-  string address = 2;
+  // to the address or outbound connections will be made. An empty address is
+  // not allowed, specify 0.0.0.0 or :: to bind any. It's still possible to
+  // distinguish on an address via the prefix/suffix matching in
+  // FilterChainMatch after connection. For :ref:`clusters
+  // <config_cluster_manager_cluster>`, an address may be either an IP or
+  // hostname to be resolved via DNS. If it is a hostname, :ref:`resolver_name
+  // <envoy_api_field_SocketAddress.resolver_name>` should be set unless default
+  // (i.e. DNS) resolution is expected.
+  string address = 2 [(validate.rules).string.min_bytes = 1];
   oneof port_specifier {
     option (validate.required) = true;
     uint32 port_value = 3;
