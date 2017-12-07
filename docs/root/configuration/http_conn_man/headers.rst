@@ -289,8 +289,8 @@ documentation.
 **Note:** Headers are appended to requests/responses in the following order: route level headers, virtual host
 level headers and finally global level headers.
 
-Envoy additionally supports adding dynamic values to the **request** headers. Supported dynamic
-values are:
+Envoy additionally supports adding dynamic values to **request** and **response** headers.
+Supported dynamic values are:
 
 %CLIENT_IP%
    The original client IP which is already added by Envoy as a
