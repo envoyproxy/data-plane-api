@@ -22,7 +22,7 @@ WKT_NAMESPACE_PREFIX = '.google.protobuf.'
 UNICODE_INVISIBLE_SEPARATOR = u'\u2063'
 
 # Key-value annotation regex.
-ANNOTATION_REGEX = re.compile('\[#([\w-]+?):(.*?)\]\s?')
+ANNOTATION_REGEX = re.compile('\[#([\w-]+?):(.*?)\]\s?', re.DOTALL)
 
 # Page/section titles with special prefixes in the proto comments
 DOC_TITLE_ANNOTATION = 'protodoc-title'
@@ -99,18 +99,16 @@ def ExtractAnnotations(s, inherited_annotations=None, type_name='file'):
       for k, v in (inherited_annotations or {}).items()
       if k in INHERITED_ANNOTATIONS
   }
-  stripped_lines = []
-  for line in s.split('\n'):
-    groups = re.findall(ANNOTATION_REGEX, line)
-    stripped_line = re.sub(ANNOTATION_REGEX, '', line)
-    if stripped_line.strip() or not groups:
-      stripped_lines.append(stripped_line)
-    for group in groups:
-      annotation = group[0]
-      if annotation not in VALID_ANNOTATIONS:
-        raise ProtodocError('Unknown annotation: %s' % annotation)
-      annotations[group[0]] = group[1].lstrip()
-  return FormatCommentWithAnnotations('\n'.join(stripped_lines), annotations,
+  # Extract annotations.
+  groups = re.findall(ANNOTATION_REGEX, s)
+  # Remove annotations.
+  without_annotations = re.sub(ANNOTATION_REGEX, '', s)
+  for group in groups:
+    annotation = group[0]
+    if annotation not in VALID_ANNOTATIONS:
+      raise ProtodocError('Unknown annotation: %s' % annotation)
+    annotations[group[0]] = group[1].lstrip()
+  return FormatCommentWithAnnotations(without_annotations, annotations,
                                       type_name), annotations
 
 

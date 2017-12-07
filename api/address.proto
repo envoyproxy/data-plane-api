@@ -20,7 +20,7 @@ message SocketAddress {
     // [#not-implemented-hide:]
     UDP = 1;
   }
-  Protocol protocol = 1;
+  Protocol protocol = 1 [(validate.rules).enum.defined_only = true];
   // The address for this socket. :ref:`Listeners <config_listeners>` will bind
   // to the address or outbound connections will be made. An empty address is
   // not allowed, specify ``0.0.0.0`` or ``::`` to bind any. It's still possible to
