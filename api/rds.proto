@@ -431,7 +431,8 @@ message RouteAction {
   RequestMirrorPolicy request_mirror_policy = 10;
 
   // Optionally specifies the :ref:`routing priority <arch_overview_http_routing_priority>`.
-  // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
+  // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once
+  // https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
   RoutingPriority priority = 11;
 
   // Specifies a set of headers that will be added to requests matching this
@@ -624,7 +625,8 @@ message VirtualCluster {
 
   // Optionally specifies the HTTP method to match on. For example GET, PUT,
   // etc.
-  // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
+  // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once
+  // https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
   RequestMethod method = 3;
 }
 
