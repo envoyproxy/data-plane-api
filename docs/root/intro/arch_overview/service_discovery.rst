@@ -57,12 +57,12 @@ Original destination
 ^^^^^^^^^^^^^^^^^^^^
 
 Original destination cluster can be used when incoming connections are redirected to Envoy either
-via an iptables REDIRECT rule or with Proxy Protocol.  In these cases requests routed to an original
+via an iptables REDIRECT rule or with Proxy Protocol. In these cases requests routed to an original
 destination cluster are forwarded to upstream hosts as addressed by the redirection metadata,
-without any explicit host configuration or upstream host discovery.  Connections to upstream hosts
+without any explicit host configuration or upstream host discovery. Connections to upstream hosts
 are pooled and unused hosts are flushed out when they have been idle longer than
 :ref:`*cleanup_interval_ms* <config_cluster_manager_cluster_cleanup_interval_ms>`, which defaults to
-5000ms.  If the original destination address is is not available, no upstream connection is opened.
+5000ms. If the original destination address is is not available, no upstream connection is opened.
 Original destination service discovery must be used with the original destination :ref:`load
 balancer <arch_overview_load_balancing_types_original_destination>`.
 

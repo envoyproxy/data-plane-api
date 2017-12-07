@@ -57,7 +57,7 @@ per_connection_buffer_limit_bytes
 lb_type
   *(required, string)* The :ref:`load balancer type <arch_overview_load_balancing_types>` to use
   when picking a host in the cluster. Possible options are *round_robin*, *least_request*,
-  *ring_hash*, *random*, and *original_dst_lb*.  Note that :ref:`*original_dst_lb*
+  *ring_hash*, *random*, and *original_dst_lb*. Note that :ref:`*original_dst_lb*
   <arch_overview_load_balancing_types_original_destination>` must be used with clusters of type
   :ref:`*original_dst* <arch_overview_service_discovery_types_original_destination>`, and may not be
   used with any other cluster type.

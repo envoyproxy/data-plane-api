@@ -6,7 +6,7 @@ Jaeger Tracing
 The Jaeger tracing sandbox demonstrates Envoy's :ref:`request tracing <arch_overview_tracing>`
 capabilities using `Jaeger <https://uber.github.io/jaeger/>`_ as the tracing provider. This sandbox
 is very similar to the front proxy architecture described above, with one difference:
-service1 makes an API call to service2 before returning a response. 
+service1 makes an API call to service2 before returning a response.
 The three containers will be deployed inside a virtual network called ``envoymesh``.
 
 All incoming requests are routed via the front envoy, which is acting as a reverse proxy

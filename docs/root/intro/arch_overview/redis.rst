@@ -167,7 +167,7 @@ For details on each command's usage see the official
   SETRANGE, String
   STRLEN, String
 
-Failure modes 
+Failure modes
 -------------
 
 If Redis throws an error, we pass that error along as the response to the command. Envoy treats a

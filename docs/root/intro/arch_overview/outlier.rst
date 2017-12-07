@@ -20,7 +20,7 @@ ejection algorithm works as follows:
 
 #. A host is determined to be an outlier.
 #. Envoy checks to make sure the number of ejected hosts is below the allowed threshold (specified
-   via the :ref:`outlier_detection.max_ejection_percent 
+   via the :ref:`outlier_detection.max_ejection_percent
    <config_cluster_manager_cluster_outlier_detection>` setting).
    If the number of ejected hosts is above the threshold the host is not ejected.
 #. The host is ejected for some number of milliseconds. Ejection means that the host is marked

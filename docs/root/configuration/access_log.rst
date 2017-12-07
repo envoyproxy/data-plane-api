@@ -23,8 +23,8 @@ has to specified as part of the format string.
 See the :ref:`default format <config_access_log_default_format>` for an example.
 Note that the access log line will contain a '-' character for every not set/empty value.
 
-The same format strings are used by different types of access logs (such as HTTP and TCP).  Some
-fields may have slightly different meanings, depending on what type of log it is.  Differences
+The same format strings are used by different types of access logs (such as HTTP and TCP). Some
+fields may have slightly different meanings, depending on what type of log it is. Differences
 are noted.
 
 The following command operators are supported:
@@ -74,7 +74,7 @@ The following command operators are supported:
 
 %RESPONSE_FLAGS%
   Additional details about the response or connection, if any. For TCP connections, the response codes mentioned in
-  the descriptions do not apply.  Possible values are:
+  the descriptions do not apply. Possible values are:
 
   HTTP and TCP
     * **UH**: No healthy upstream hosts in upstream cluster in addition to 503 response code.

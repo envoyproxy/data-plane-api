@@ -62,7 +62,7 @@ There are two steps to update any runtime value. First, create a hard copy of th
 tree and update the desired runtime values. Second, atomically swap the symbolic link root from the
 old tree to the new runtime tree, using the equivalent of the following command:
 
-..  code-block:: console
+.. code-block:: console
 
   /srv/runtime:~$ ln -s /srv/runtime/v2 new && mv -Tf new current
 
