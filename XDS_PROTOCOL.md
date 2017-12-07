@@ -113,6 +113,17 @@ resource type may have a
 distinct version, since the Envoy API allows distinct EDS/RDS resources to point
 at different `ConfigSource`s.
 
+#### When to send an update
+
+The management server should only send updates to the Envoy client when the
+resources in the `DiscoveryResponse` have changed. Envoy replies to any
+`DiscoveryResponse` with a `DiscoveryRequest` containing the ACK/NACK
+immediately after it has been either accepted or rejected. If the management
+server provides the same set of resources rather than waiting for a change to
+occur, it will cause Envoy and the management server to spin and have a severe
+performance impact.
+
+
 #### Resource hints
 
 The `resource_names` specified in the `DiscoveryRequest` are a hint. Some
@@ -275,3 +286,8 @@ the response nonce is optional in REST-JSON. The [JSON canonical transform of
 proto3](https://developers.google.com/protocol-buffers/docs/proto3#json) is used
 to encode `DiscoveryRequest` and `DiscoveryResponse` messages. ADS is not
 available for REST-JSON polling.
+
+When the poll period is set to a small value, with the intention of long
+polling, then there is also a requirement to avoid sending a `DiscoveryResponse`
+[unless a change to the underlying resources has
+occurred](#when-to-send-an-update).
