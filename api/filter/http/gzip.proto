@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+// [#proto-status: experimental]
+
+package envoy.api.v2.filter.http;
+
+import "validate/validate.proto";
+
+// This is an HTTP filter which enables Envoy to compress data dispatched from an upstream
+// service upon downstream client request.
+message Gzip {
+  // Value from 1 to 9 that controls the amount of internal memory used by zlib.
+  uint32 memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
+  
+  // Minimum length of the response body in bytes that is necessary for triggering the compressor. 
+  uint32 content_length = 2 [(validate.rules).uint32.gte = 30];
+
+  enum CompressionLevel {
+    DEFAULT = 0;
+    BEST = 1;
+    SPEED = 2;
+  }
+
+  // Allows selecting zlib's compression level.
+  CompressionLevel compression_level = 3;
+
+  enum CompressionStrategy {
+    DEFAULT = 0;
+    FILTERED = 1;
+    HUFFMAN = 2;
+    RLE = 3;
+  }
+
+  // Allows selecting zlib's compression strategy.
+  CompressionStrategy compression_strategy = 4;
+
+  enum CacheControl {
+    NO_CACHE = 0;
+    NO_STORE = 1;
+    PRIVATE = 2;
+  }
+
+  // Allows selecting which cache-control values will trigger the compressor if same header is present
+  // in the response.
+  repeated CacheControl cache_control = 5 [(validate.rules).repeated = {
+    min_items: 0, max_items: 3, unique: true
+  }];
+
+  enum ContentType {
+    TEXT_HTML = 0;
+    TEXT_CSS = 1;
+    TEXT_PLAIN = 2;
+    TEXT_XML = 3;
+    APPLICATION_JAVASCRIPT = 4;
+    APPLICATION_JSON = 5;
+    APPLICATION_XML = 6;
+    FONT_EOT = 7;
+    FONT_OPENTYPE = 8;
+    FONT_OTF = 9;
+    IMAGE_SVG_XML = 10;
+  }
+
+  // Allows selecting which content-type values will trigger the compressor if same header is present
+  // in the response.
+  repeated ContentType content_type = 6 [(validate.rules).repeated = {
+    min_items: 0, max_items: 11, unique: true}];
+
+  // Allows disabling compression if response contains etag header. 
+  google.protobuf.BoolValue disable_on_etag = 7;
+
+  // Allows disabling compression if response contains last_modified header.  
+  google.protobuf.BoolValue disable_on_last_modified = 8;
+}
