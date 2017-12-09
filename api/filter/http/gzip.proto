@@ -34,36 +34,17 @@ message Gzip {
   // Allows selecting zlib's compression strategy.
   CompressionStrategy compression_strategy = 4;
 
-  enum CacheControl {
-    NO_CACHE = 0;
-    NO_STORE = 1;
-    PRIVATE = 2;
-  }
-
   // Allows selecting which cache-control values will trigger the compressor if same header is present
   // in the response.
-  repeated CacheControl cache_control = 5 [(validate.rules).repeated = {
-    min_items: 0, max_items: 3, unique: true
+  repeated string cache_control = 5 [(validate.rules).repeated = {
+    min_items: 0, max_items: 10, unique: true
   }];
-
-  enum ContentType {
-    TEXT_HTML = 0;
-    TEXT_CSS = 1;
-    TEXT_PLAIN = 2;
-    TEXT_XML = 3;
-    APPLICATION_JAVASCRIPT = 4;
-    APPLICATION_JSON = 5;
-    APPLICATION_XML = 6;
-    FONT_EOT = 7;
-    FONT_OPENTYPE = 8;
-    FONT_OTF = 9;
-    IMAGE_SVG_XML = 10;
-  }
 
   // Allows selecting which content-type values will trigger the compressor if same header is present
   // in the response.
-  repeated ContentType content_type = 6 [(validate.rules).repeated = {
-    min_items: 0, max_items: 11, unique: true}];
+  repeated string content_type = 6 [(validate.rules).repeated = {
+    min_items: 0, max_items: 30, unique: true
+  }];
 
   // Allows disabling compression if response contains etag header. 
   google.protobuf.BoolValue disable_on_etag = 7;
