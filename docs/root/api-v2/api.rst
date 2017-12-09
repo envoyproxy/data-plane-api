@@ -14,6 +14,8 @@ v2 API reference
   health_check.proto
   rds.proto
   sds.proto
+  stats.proto
+  trace.proto
   base.proto
   address.proto
   protocol.proto

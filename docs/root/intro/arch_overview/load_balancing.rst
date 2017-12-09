@@ -88,6 +88,17 @@ panic threshold is 50%. This is :ref:`configurable <config_cluster_manager_clust
 runtime. The panic threshold is used to avoid a situation in which host failures cascade throughout
 the cluster as load increases.
 
+.. _arch_overview_load_balancing_priority_levels:
+
+Priority levels
+------------------
+
+During load balancing, Envoy will generally only consider hosts configured at the highest priority
+level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional priority
+may also be specified. Currently the failover mechanics for routing from one priority level to
+another are fairly simplistic: a given priority level will be used until it has zero healthy hosts,
+at which point it will hard fail to the next highest priority level.
+
 .. _arch_overview_load_balancing_zone_aware_routing:
 
 Zone aware routing

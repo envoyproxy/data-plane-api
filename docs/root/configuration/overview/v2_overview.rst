@@ -46,7 +46,7 @@ debug experience when configuration parsing fails.
 
 The :ref:`Bootstrap <envoy_api_msg_Bootstrap>` message is the root of the
 configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
-message is the distinction between static and dynamic resouces.  Resources such
+message is the distinction between static and dynamic resouces. Resources such
 as a :ref:`Listener <envoy_api_msg_Listener>` or :ref:`Cluster
 <envoy_api_msg_Cluster>` may be supplied either statically in
 :ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have
@@ -292,7 +292,7 @@ Management server
 -----------------
 
 A v2 xDS management server will implement the below endpoints as required for
-gRPC and/or REST serving.  In both streaming gRPC and
+gRPC and/or REST serving. In both streaming gRPC and
 REST-JSON cases, a :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>` is sent and a
 :ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>` received following the
 `xDS protocol <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_.
@@ -473,7 +473,7 @@ server would deliver the CDS, EDS and then RDS updates on a single stream.
 ADS is only available for gRPC streaming (not REST) and is described more fully
 in `this
 <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#aggregated-discovery-services-ads>`_
-document.  The gRPC endpoint is:
+document. The gRPC endpoint is:
 
 .. http:post:: /envoy.api.v2.AggregatedDiscoveryService/StreamAggregatedResources
 

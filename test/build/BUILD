@@ -1,4 +1,5 @@
 load("//bazel:api_build_system.bzl", "api_cc_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
 
 licenses(["notice"])  # Apache 2
 
@@ -15,5 +16,23 @@ api_cc_test(
         "//api:rds",
         "//api:rls",
         "//api/filter/accesslog",
+    ],
+)
+
+go_test(
+    name = "go_build_test",
+    size = "small",
+    srcs = ["go_build_test.go"],
+    importpath = "go_build_test",
+    deps = [
+        "//api:bootstrap_go_proto",
+        "//api:cds_go_grpc",
+        "//api:discovery_go_grpc",
+        "//api:eds_go_grpc",
+        "//api:hds_go_grpc",
+        "//api:lds_go_grpc",
+        "//api:rds_go_grpc",
+        "//api:rls_go_grpc",
+        "//api:sds_go_grpc",
     ],
 )

@@ -214,7 +214,7 @@ session_ticket_key_paths
   sessions via tickets, but it will use an internally-generated and managed key, so sessions cannot
   be resumed across hot restarts or on different hosts.
 
-  Each keyfile must contain exactly 80 bytes of cryptographically-secure random data.  For example,
+  Each keyfile must contain exactly 80 bytes of cryptographically-secure random data. For example,
   the output of ``openssl rand 80``.
 
   .. attention::

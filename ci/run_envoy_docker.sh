@@ -2,7 +2,7 @@
 
 set -e
 
-[[ -z "${IMAGE_NAME}" ]] && IMAGE_NAME="lyft/envoy-build-ubuntu"
+[[ -z "${IMAGE_NAME}" ]] && IMAGE_NAME="envoyproxy/envoy-build"
 [[ -z "${IMAGE_ID}" ]] && IMAGE_ID="latest"
 [[ -z "${ENVOY_API_DOCKER_BUILD_DIR}" ]] && ENVOY_API_DOCKER_BUILD_DIR=/tmp/envoy-api-docker-build
 

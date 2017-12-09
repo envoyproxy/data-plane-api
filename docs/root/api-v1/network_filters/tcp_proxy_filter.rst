@@ -73,7 +73,7 @@ destination_ip_list
   contained in at least one of the specified subnets.
   If the parameter is not specified or the list is empty, the destination IP address is ignored.
   The destination IP address of the downstream connection might be different from the addresses
-  on which the proxy is listening if the connection has been redirected.  Example:
+  on which the proxy is listening if the connection has been redirected. Example:
 
  .. code-block:: json
 
@@ -117,7 +117,7 @@ source_ports
   *(optional, string)* An optional string containing a comma-separated list of port numbers or
   ranges. The criteria is satisfied if the source port of the downstream connection is contained
   in at least one of the specified ranges. If the parameter is not specified, the source port is
-  ignored.  Example:
+  ignored. Example:
 
  .. code-block:: json
 

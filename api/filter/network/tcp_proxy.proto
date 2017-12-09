@@ -32,6 +32,12 @@ message TcpProxy {
   //
   string cluster = 2;
 
+  // The idle timeout for connections managed by the TCP proxy filter. The idle timeout
+  // is defined as the period in which there are no bytes sent or received on either
+  // the upstream or downstream connection. If not set, connections will never be closed
+  // by the TCP proxy due to being idle.
+  google.protobuf.Duration idle_timeout = 8 [(validate.rules).duration.gt = {}];
+
   // [#not-implemented-hide:] The idle timeout for connections managed by the TCP proxy
   // filter. The idle timeout is defined as the period in which there is no
   // active traffic. If not set, there is no idle timeout. When the idle timeout

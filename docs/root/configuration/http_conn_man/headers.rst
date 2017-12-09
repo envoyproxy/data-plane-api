@@ -289,13 +289,36 @@ documentation.
 **Note:** Headers are appended to requests/responses in the following order: route level headers, virtual host
 level headers and finally global level headers.
 
-Envoy additionally supports adding dynamic values to the **request** headers. Supported dynamic
-values are:
+Envoy additionally supports adding dynamic values to request and response headers.
+Supported dynamic values are:
 
 %CLIENT_IP%
    The original client IP which is already added by Envoy as a
    :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
 
+   .. attention::
+
+     This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
+
+ %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
+   Remote address of the downstream connection. If the address is an IP address the output does
+   *not* include port.
+
+   .. note::
+
+     This may not be the physical remote address of the peer if the address has been inferred from
+     :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
+     <config_http_conn_man_headers_x-forwarded-for>`.
+
 %PROTOCOL%
     The original protocol which is already added by Envoy as a
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.
+
+%UPSTREAM_METADATA(["namespace", "key", ...])%
+    Populates the header with ref:`EDS endpoint metadata <envoy_api_file_api/eds.proto>` from the
+    upstream host selected by the router. Metadata may be selected from any namespace. In general,
+    metadata values may be strings, numbers, booleans, lists, nested structures, or null. Upstream
+    metadata values may be selected from nested structs by specifying multiple keys. Otherwise,
+    only string, boolean, and numeric values are supported. If the namespace or key(s) are not
+    found, or if the selected value is not a supported type, then no header is emitted. The
+    namespace and key(s) are specified as a JSON array of strings.

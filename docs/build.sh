@@ -37,6 +37,8 @@ PROTO_RST="
   /api/rds/api/rds.proto.rst
   /api/rls/api/rls.proto.rst
   /api/sds/api/sds.proto.rst
+  /api/stats/api/stats.proto.rst
+  /api/trace/api/trace.proto.rst
   /api/filter/accesslog/accesslog/api/filter/accesslog/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
   /api/filter/http/buffer/api/filter/http/buffer.proto.rst
@@ -45,6 +47,7 @@ PROTO_RST="
   /api/filter/http/lua/api/filter/http/lua.proto.rst
   /api/filter/http/rate_limit/api/filter/http/rate_limit.proto.rst
   /api/filter/http/router/api/filter/http/router.proto.rst
+  /api/filter/http/squash/api/filter/http/squash.proto.rst
   /api/filter/http/transcoder/api/filter/http/transcoder.proto.rst
   /api/filter/network/client_ssl_auth/api/filter/network/client_ssl_auth.proto.rst
   /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst

@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package envoy.api.v2;
-option go_package = "api";
 
 import "api/address.proto";
 
@@ -10,6 +9,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: Common types]
 
@@ -18,7 +18,11 @@ message Locality {
   // Region this :ref:`zone <envoy_api_field_Locality.zone>` belongs to.
   string region = 1;
 
-  // `Availability Zone (AZ)
+  // Defines the local service zone where Envoy is running. Though optional, it
+  // should be set if discovery service routing is used and the discovery
+  // service exposes :ref:`zone data <config_cluster_manager_sds_api_host_az>`,
+  // either in this message or via :option:`--service-zone`. The meaning of zone
+  // is context dependent, e.g. `Availability Zone (AZ)
   // <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html>`_
   // on AWS, `Zone <https://cloud.google.com/compute/docs/regions-zones/>`_ on
   // GCP, etc.
@@ -34,15 +38,33 @@ message Locality {
 // management server, which may use this identifier to distinguish per Envoy
 // configuration for serving.
 message Node {
-  // An opaque node identifier for the Envoy node.
+  // An opaque node identifier for the Envoy node. This also provides the local
+  // service node name. It should be set if any of the following features are
+  // used: :ref:`statsd <arch_overview_statistics>`, :ref:`CDS
+  // <config_cluster_manager_cds>`, and :ref:`HTTP tracing
+  // <arch_overview_tracing>`, either in this message or via
+  // :option:`--service-node`.
   string id = 1;
-  // The cluster that the Envoy node belongs to.
+
+  // Defines the local service cluster name where Envoy is running. Though
+  // optional, it should be set if any of the following features are used:
+  // :ref:`statsd <arch_overview_statistics>`, :ref:`health check cluster
+  // verification <config_cluster_manager_cluster_hc_service_name>`,
+  // :ref:`runtime override directory <config_runtime_override_subdirectory>`,
+  // :ref:`user agent addition <config_http_conn_man_add_user_agent>`,
+  // :ref:`HTTP global rate limiting <config_http_filters_rate_limit>`,
+  // :ref:`CDS <config_cluster_manager_cds>`, and :ref:`HTTP tracing
+  // <arch_overview_tracing>`, either in this message or via
+  // :option:`--service-cluster`.
   string cluster = 2;
+
   // Opaque metadata extending the node identifier. Envoy will pass this
   // directly to the management server.
   google.protobuf.Struct metadata = 3;
+
   // Locality specifying where the Envoy instance is running.
   Locality locality = 4;
+
   // This is motivated by informing a management server during canary which
   // version of Envoy is being tested in a heterogeneous fleet. This will be set
   // by Envoy in management server RPCs.
@@ -149,12 +171,12 @@ message ApiConfigSource {
     // gRPC v2 API.
     GRPC = 2;
   }
-  ApiType api_type = 1;
+  ApiType api_type = 1 [(validate.rules).enum.defined_only = true];
   // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
   // will be cycled through if any kind of failure occurs.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
-  google.protobuf.Duration refresh_delay = 3;
+  google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
 }
 
 // Aggregated Discovery Service (ADS) options. This is currently empty, but when

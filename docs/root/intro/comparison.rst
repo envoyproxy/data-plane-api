@@ -35,11 +35,8 @@ features. Envoy provides the following main advantages over haproxy as a load ba
 
 * HTTP/2 support.
 * Pluggable architecture.
-* Multi-threaded architecture. It is substantially easier to operate and configure circuit breaking
-  settings when a single process is deployed per machine versus potentially multiple processes.
 * Integration with a remote service discovery service.
 * Integration with a remote global rate limiting service.
-* Ability to hot restart.
 * Substantially more detailed statistics.
 
 `AWS ELB <https://aws.amazon.com/elasticloadbalancing/>`_
@@ -102,7 +99,7 @@ versus a library that must be built into something by each project individually.
 
 gRPC is a new multi-platform message passing system out of Google. It uses an IDL to describe an RPC
 library and then implements application specific runtimes for a variety of different languages. The
-underlying transport is HTTP/2.  Although gRPC likely has the goal of implementing many Envoy like
+underlying transport is HTTP/2. Although gRPC likely has the goal of implementing many Envoy like
 features in the future (load balancing, etc.), as of this writing the various runtimes are somewhat
 immature and are primarily focused on serialization/de-serialization. We consider gRPC to be a
 companion to Envoy versus a competitor. How Envoy integrates with gRPC is described :ref:`here
