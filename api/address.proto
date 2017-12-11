@@ -5,6 +5,7 @@ package envoy.api.v2;
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: Network addresses]
 // [#v2-api-diff: Addresses now have .proto structure.]
@@ -54,7 +55,7 @@ message SocketAddress {
 
 message BindConfig {
   // The address to bind to when creating a socket.
-  SocketAddress source_address = 1 [(validate.rules).message.required = true];
+  SocketAddress source_address = 1 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 }
 
 // Addresses specify either a logical or physical address and port, which are

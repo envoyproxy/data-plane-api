@@ -13,6 +13,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: HTTP connection manager]
 // HTTP connection manager :ref:`configuration overview <config_http_conn_man>`.
@@ -102,7 +103,7 @@ message HttpConnectionManager {
   // reached the connection will be closed. If the connection is an HTTP/2
   // connection a drain sequence will occur prior to closing the connection. See
   // :ref:`drain_timeout <envoy_api_field_filter.network.HttpConnectionManager.drain_timeout>`.
-  google.protobuf.Duration idle_timeout = 11;
+  google.protobuf.Duration idle_timeout = 11 [(gogoproto.stdduration) = true];
 
   // The time that Envoy will wait between sending an HTTP/2 “shutdown
   // notification” (GOAWAY frame with max stream ID) and a final GOAWAY frame.
@@ -113,7 +114,7 @@ message HttpConnectionManager {
   // both when a connection hits the idle timeout or during general server
   // draining. The default grace period is 5000 milliseconds (5 seconds) if this
   // option is not specified.
-  google.protobuf.Duration drain_timeout = 12;
+  google.protobuf.Duration drain_timeout = 12 [(gogoproto.stdduration) = true];
 
   // Configuration for :ref:`HTTP access logs <arch_overview_access_logs>`
   // emitted by the connection manager.
@@ -181,7 +182,7 @@ message HttpConnectionManager {
 
 message Rds {
   // Configuration source specifier for RDS.
-  ConfigSource config_source = 1 [(validate.rules).message.required = true];
+  ConfigSource config_source = 1 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 
   // The name of the route configuration. This name will be passed to the RDS
   // API. This allows an Envoy configuration with multiple HTTP listeners (and

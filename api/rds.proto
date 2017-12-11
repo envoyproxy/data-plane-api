@@ -11,6 +11,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: HTTP route management and RDS]
 
@@ -375,7 +376,7 @@ message RouteAction {
   //   :ref:`config_http_filters_router_x-envoy-upstream-rq-timeout-ms`,
   //   :ref:`config_http_filters_router_x-envoy-upstream-rq-per-try-timeout-ms`, and the
   //   :ref:`retry overview <arch_overview_http_routing_retry>`.
-  google.protobuf.Duration timeout = 8;
+  google.protobuf.Duration timeout = 8 [(gogoproto.stdduration) = true];
 
   // HTTP retry :ref:`architecture overview <arch_overview_http_routing_retry>`.
   message RetryPolicy {
@@ -400,7 +401,7 @@ message RouteAction {
     //   Consequently, when using a :ref:`5xx <config_http_filters_router_x-envoy-retry-on>` based
     //   retry policy, a request that times out will not be retried as the total timeout budget
     //   would have been exhausted.
-    google.protobuf.Duration per_try_timeout = 3;
+    google.protobuf.Duration per_try_timeout = 3 [(gogoproto.stdduration) = true];
   }
 
   // Indicates that the route has a retry policy.
@@ -492,7 +493,7 @@ message RouteAction {
 
       // If specified, a cookie with the TTL will be generated if the cookie is
       // not present.
-      google.protobuf.Duration ttl = 2;
+      google.protobuf.Duration ttl = 2 [(gogoproto.stdduration) = true];
     }
 
     message ConnectionProperties {

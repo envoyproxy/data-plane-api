@@ -19,6 +19,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // Bootstrap :ref:`configuration overview <config_overview_v2_bootstrap>`.
 message Bootstrap {
@@ -93,7 +94,7 @@ message Bootstrap {
   // performance reasons Envoy latches counters and only flushes counters and
   // gauges at a periodic interval. If not specified the default is 5000ms (5
   // seconds).
-  google.protobuf.Duration stats_flush_interval = 7;
+  google.protobuf.Duration stats_flush_interval = 7 [(gogoproto.stdduration) = true];
 
   // Optional watchdog configuration.
   Watchdog watchdog = 8;
@@ -112,7 +113,7 @@ message Bootstrap {
   Runtime runtime = 11;
 
   // Configuration for the local administration HTTP server.
-  Admin admin = 12 [(validate.rules).message.required = true];
+  Admin admin = 12 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 }
 
 // Configuration for the LightStep tracer.
@@ -171,7 +172,7 @@ message Admin {
   string profile_path = 2;
 
   // The TCP address that the administration server will listen on.
-  Address address = 3 [(validate.rules).message.required = true];
+  Address address = 3 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 }
 
 // Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
