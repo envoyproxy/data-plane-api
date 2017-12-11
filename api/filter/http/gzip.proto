@@ -16,7 +16,7 @@ message Gzip {
   // used by zlib. Higher values usez more memory, but are faster and produce better compression
   // results. Default value is 8.
   uint32 memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
-  
+
   // [#not-implemented-hide:] Minimum length, in bytes, of a response which will trigger
   // compression. Default value is 30.
   uint32 content_length = 2 [(validate.rules).uint32.gte = 30];
@@ -44,28 +44,28 @@ message Gzip {
   // [#not-implemented-hide:] Allows selecting zlib's compression strategy. Strategy is directly
   // related to the characteristics of the content which is being compressed. Most of the time
   // DEFAULT will be the best choice, however there are situations which changing the strategy might
-  // produce better results. For example, Run-length encoding (RLE) is normally used when the content
-  // is known for having sequences which same data occurs many consecutive times. For more information
-  // about each strategy, please refer to Zlib manual.
+  // produce better results. For example, Run-length encoding (RLE) is normally used when the
+  // content is known for having sequences which same data occurs many consecutive times. For more
+  // information about each strategy, please refer to Zlib manual.
   CompressionStrategy compression_strategy = 4;
 
-  // [#not-implemented-hide:] Array of strings that allows specifying which cache-control header values
-  // yield compression. Normally, if cache-control is present in the response headers, compression
-  // should only occurs if directives indicate that the content should not be cached. For example,
-  // no-cache, no-store, etc.
-  repeated string cache_control = 5 [(validate.rules).repeated = {
-    min_items: 0, max_items: 10, unique: true
-  }];
+  // [#not-implemented-hide:] Array of strings that allows specifying which cache-control header
+  // values yield compression. Normally, if cache-control is present in the response headers,
+  // compression should only occurs if directives indicate that the content should not be cached.
+  // For example, no-cache, no-store, etc.
+  repeated string cache_control = 5
+      [(validate.rules).repeated = {min_items: 0, max_items: 10, unique: true}];
 
-  // [#not-implemented-hide:] Array of strings that allows specifying which mine-types yield compression.
-  // For example, application/json, text/html, etc.
-  repeated string content_type = 6 [(validate.rules).repeated = {
-    min_items: 0, max_items: 30, unique: true
-  }];
+  // [#not-implemented-hide:] Array of strings that allows specifying which mine-types yield
+  // compression. For example, application/json, text/html, etc.
+  repeated string content_type = 6
+      [(validate.rules).repeated = {min_items: 0, max_items: 30, unique: true}];
 
-  // [#not-implemented-hide:] Allows disabling compression if response contains etag (entity tag) header.
+  // [#not-implemented-hide:] Allows disabling compression if response contains etag (entity tag)
+  // header.
   google.protobuf.BoolValue disable_on_etag = 7;
 
-  // [#not-implemented-hide:] Allows disabling compression if response contains last_modified header.
+  // [#not-implemented-hide:] Allows disabling compression if response contains last_modified
+  // header.
   google.protobuf.BoolValue disable_on_last_modified = 8;
 }
