@@ -366,7 +366,7 @@ message FileAccessLog {
 }
 
 // Configuration for the built-in *envoy.tcp_grpc_access_log* type. This configuration will
-// populate *StreamAccessLogsMessage.tcp_logs*..
+// populate *StreamAccessLogsMessage.tcp_logs*.
 // [#not-implemented-hide:]
 // [#comment:TODO(mattklein123): Block type in non-tcp proxy cases?]
 message TcpAccessLogServiceServiceConfig {
