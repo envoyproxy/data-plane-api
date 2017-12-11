@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+// [#proto-status: experimental]
+
+package envoy.api.v2.filter.http;
+
+import "validate/validate.proto";
+
+// Gzip is an HTTP filter which enables Envoy to compress dispatched data from an upstream
+// service upon client request. This is useful in situations where large payloads need to
+// be transmitted without compromising the response time. Note that when compression is applied,
+// this filter will set "content-encoding" and "transfer-encoding" headers to gzip and chunked,
+// respectively.
+// TODO(gsagula): elaborate the last part in the final documentation.
+message Gzip {
+  // Value from 1 to 9 that controls the amount of internal memory
+  // used by zlib. Higher values use more memory, but are faster and produce better compression
+  // results. Default value is 8.
+  google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
+
+  // Minimum response length, in bytes, which will trigger
+  // compression. Default value is 30.
+  google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
+
+  enum CompressionLevel {
+    DEFAULT = 0;
+    BEST = 1;
+    SPEED = 2;
+  }
+
+  // Allows selecting Zlib's compression level. This setting will affect
+  // speed and amount of compression applied to the content. "BEST" option provides higher
+  // compression at cost of higher latency, "SPEED" provides lower compression with minimum impact
+  // on response time. "DEFAULT" provides an optimal result between speed and compression. This
+  // field will be set to "DEFAULT" if not specified.
+  CompressionLevel compression_level = 3 [(validate.rules).enum.defined_only = true];
+
+  enum CompressionStrategy {
+    DEFAULT = 0;
+    FILTERED = 1;
+    HUFFMAN = 2;
+    RLE = 3;
+  }
+
+  // Allows selecting zlib's compression strategy. Strategy is directly
+  // related to the characteristics of the content which is being compressed. Most of the time
+  // "DEFAULT" will be the best choice, however there are situations which changing the strategy
+  // might produce better results. For example, Run-length encoding (RLE) is normally used when the
+  // content is known for having sequences which same data occurs many consecutive times. For more
+  // information about each strategy, please refer to Zlib manual. This field will be set to
+  // "DEFAULT" if not specified.
+  CompressionStrategy compression_strategy = 4 [(validate.rules).enum.defined_only = true];
+
+  // Array of strings that allows specifying which "cache-control" header
+  // values yield compression. Normally, if "cache-control" is present in the response headers,
+  // compression should only occur if directives indicate that the content should not be cached;
+  // e.g. no-cache or no-store.
+  repeated string cache_control = 5
+      [(validate.rules).repeated = {min_items: 0, max_items: 10, unique: true}];
+
+  // Array of strings that allows specifying which mime-types yield compression; e.g.
+  // application/json, text/html, etc. When this field is not specified, compression will be applied
+  // to any "content-type".
+  repeated string content_type = 6
+      [(validate.rules).repeated = {min_items: 0, max_items: 30, unique: true}];
+
+  // Allows disabling compression if response contains "etag" (entity tag)
+  // header. Default is false.
+  google.protobuf.BoolValue disable_on_etag = 7;
+
+  // Allows disabling compression if response contains "last-modified"
+  // header. Default is false.
+  google.protobuf.BoolValue disable_on_last_modified = 8;
+}
