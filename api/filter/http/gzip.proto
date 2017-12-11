@@ -13,12 +13,12 @@ import "validate/validate.proto";
 // respectively.
 // TODO(gsagula): elaborate the last part in the final documentation.
 message Gzip {
-  // [#not-implemented-hide:] Value from 1 to 9 that controls the amount of internal memory
+  // Value from 1 to 9 that controls the amount of internal memory
   // used by zlib. Higher values use more memory, but are faster and produce better compression
   // results. Default value is 8.
   google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
 
-  // [#not-implemented-hide:] Minimum response length, in bytes, which will trigger
+  // Minimum response length, in bytes, which will trigger
   // compression. Default value is 30.
   google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
@@ -28,12 +28,12 @@ message Gzip {
     SPEED = 2;
   }
 
-  // [#not-implemented-hide:] Allows selecting Zlib's compression level. This setting will affect
+  // Allows selecting Zlib's compression level. This setting will affect
   // speed and amount of compression applied to the content. "BEST" option provides higher
-  // compression on cost of higher latency, "SPEED" provides lower compression with minimum impact
+  // compression at cost of higher latency, "SPEED" provides lower compression with minimum impact
   // on response time. "DEFAULT" provides an optimal result between speed and compression. This
   // field will be set to "DEFAULT" if not specified.
-  CompressionLevel compression_level = 3;
+  CompressionLevel compression_level = 3 [(validate.rules).enum.defined_only = true];
 
   enum CompressionStrategy {
     DEFAULT = 0;
@@ -42,32 +42,33 @@ message Gzip {
     RLE = 3;
   }
 
-  // [#not-implemented-hide:] Allows selecting zlib's compression strategy. Strategy is directly
+  // Allows selecting zlib's compression strategy. Strategy is directly
   // related to the characteristics of the content which is being compressed. Most of the time
   // "DEFAULT" will be the best choice, however there are situations which changing the strategy
   // might produce better results. For example, Run-length encoding (RLE) is normally used when the
   // content is known for having sequences which same data occurs many consecutive times. For more
   // information about each strategy, please refer to Zlib manual. This field will be set to
   // "DEFAULT" if not specified.
-  CompressionStrategy compression_strategy = 4;
+  CompressionStrategy compression_strategy = 4 [(validate.rules).enum.defined_only = true];
 
-  // [#not-implemented-hide:] Array of strings that allows specifying which "cache-control" header
+  // Array of strings that allows specifying which "cache-control" header
   // values yield compression. Normally, if "cache-control" is present in the response headers,
-  // compression should only occurs if directives indicate that the content should not be cached.
-  // For example, no-cache, no-store, etc.
+  // compression should only occur if directives indicate that the content should not be cached;
+  // e.g. no-cache or no-store.
   repeated string cache_control = 5
       [(validate.rules).repeated = {min_items: 0, max_items: 10, unique: true}];
 
-  // [#not-implemented-hide:] Array of strings that allows specifying which mime-types yield
-  // compression. For example, application/json, text/html, etc.
+  // Array of strings that allows specifying which mime-types yield compression; e.g.
+  // application/json, text/html, etc. When this field is not specified, compression will be applied
+  // to any "content-type".
   repeated string content_type = 6
       [(validate.rules).repeated = {min_items: 0, max_items: 30, unique: true}];
 
-  // [#not-implemented-hide:] Allows disabling compression if response contains "etag" (entity tag)
+  // Allows disabling compression if response contains "etag" (entity tag)
   // header. Default is false.
   google.protobuf.BoolValue disable_on_etag = 7;
 
-  // [#not-implemented-hide:] Allows disabling compression if response contains "last-modified"
+  // Allows disabling compression if response contains "last-modified"
   // header. Default is false.
   google.protobuf.BoolValue disable_on_last_modified = 8;
 }
