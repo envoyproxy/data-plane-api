@@ -369,16 +369,16 @@ message FileAccessLog {
 // populate *StreamAccessLogsMessage.tcp_logs*.
 // [#not-implemented-hide:]
 // [#comment:TODO(mattklein123): Block type in non-tcp proxy cases?]
-message TcpAccessLogServiceServiceConfig {
-  CommonAccessLogServiceConfig common_config = 1 [(validate.rules).message.required = true];
+message TcpGrpcAccessLogConfig {
+  CommonGrpcAccessLogConfig common_config = 1 [(validate.rules).message.required = true];
 }
 
 // Configuration for the built-in *envoy.http_grpc_access_log* type. This configuration will
 // populate *StreamAccessLogsMessage.http_logs*.
 // [#not-implemented-hide:]
 // [#comment:TODO(mattklein123): Block type in non-http/router proxy cases?]
-message HttpAccessLogServiceConfig {
-  CommonAccessLogServiceConfig common_config = 1 [(validate.rules).message.required = true];
+message HttpGrpcAccessLogConfig {
+  CommonGrpcAccessLogConfig common_config = 1 [(validate.rules).message.required = true];
 
   // Additional request headers to log in *HTTPRequestProperties.request_headers*.
   repeated string additional_request_headers_to_log = 2;
@@ -389,7 +389,7 @@ message HttpAccessLogServiceConfig {
 
 // Common configuration for gRPC access logs.
 // [#not-implemented-hide:]
-message CommonAccessLogServiceConfig {
+message CommonGrpcAccessLogConfig {
   // The friendly name of the access log to be returned in StreamAccessLogsMessage.Identifier. This
   // allows the access log server to differentiate between different access logs coming from the
   // same Envoy.
