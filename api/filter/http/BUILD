@@ -47,3 +47,8 @@ api_proto_library(
         "//api/filter:fault",
     ],
 )
+
+api_proto_library(
+    name = "gzip",
+    srcs = ["gzip.proto"],
+)
