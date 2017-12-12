@@ -10,6 +10,7 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: Common types]
 
@@ -176,7 +177,7 @@ message ApiConfigSource {
   // will be cycled through if any kind of failure occurs.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
-  google.protobuf.Duration refresh_delay = 3;
+  google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
 }
 
 // Aggregated Discovery Service (ADS) options. This is currently empty, but when
