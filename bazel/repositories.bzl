@@ -61,7 +61,7 @@ py_proto_library(
     )
 
     native.new_http_archive(
-        name = "gogoproto",
+        name = "com_github_gogo_protobuf",
         strip_prefix = "protobuf-" + GOGOPROTO_SHA,
         url = "https://github.com/gogo/protobuf/archive/" + GOGOPROTO_SHA + ".tar.gz",
         build_file_content = """
@@ -79,7 +79,7 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "cc_gogo_proto",
+    name = "gogo_proto_cc",
     srcs = [
         "gogoproto/gogo.proto",
     ],
@@ -90,11 +90,10 @@ cc_proto_library(
 )
 
 py_proto_library(
-    name = "py_gogo_proto",
+    name = "gogo_proto_py",
     srcs = [
         "gogoproto/gogo.proto",
     ],
-    include = ".",
     default_runtime = "@com_google_protobuf//:protobuf_python",
     protoc = "@com_google_protobuf//:protoc",
     visibility = ["//visibility:public"],
