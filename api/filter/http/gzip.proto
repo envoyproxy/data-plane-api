@@ -24,8 +24,8 @@ message Gzip {
   // compression. Default value is 30.
   google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
-  message CompressionLevelEnum {
-    enum CompressionLevel {
+  message CompressionLevel {
+    enum Enum {
       DEFAULT = 0;
       BEST = 1;
       SPEED = 2;
@@ -37,8 +37,7 @@ message Gzip {
   // compression at cost of higher latency, "SPEED" provides lower compression with minimum impact
   // on response time. "DEFAULT" provides an optimal result between speed and compression. This
   // field will be set to "DEFAULT" if not specified.
-  CompressionLevelEnum.CompressionLevel compression_level = 3
-      [(validate.rules).enum.defined_only = true];
+  CompressionLevel.Enum compression_level = 3 [(validate.rules).enum.defined_only = true];
 
   enum CompressionStrategy {
     DEFAULT = 0;
@@ -66,9 +65,7 @@ message Gzip {
   // Array of strings that allows specifying which mime-types yield compression; e.g.
   // application/json, text/html, etc. When this field is not specified, compression will be applied
   // to any "content-type".
-  // TODO(gsagula) put this back once protoc-gen-validate supports it:
-  // [(validate.rules).repeated = {min_items: 0, max_items: 30, unique: true}];
-  repeated string content_type = 6;
+  repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 30}];
 
   // Allows disabling compression if response contains "etag" (entity tag)
   // header. Default is false.
