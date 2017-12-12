@@ -37,7 +37,8 @@ message Gzip {
   // compression at cost of higher latency, "SPEED" provides lower compression with minimum impact
   // on response time. "DEFAULT" provides an optimal result between speed and compression. This
   // field will be set to "DEFAULT" if not specified.
-  CompressionLevelEnum.CompressionLevel compression_level = 3 [(validate.rules).enum.defined_only = true];
+  CompressionLevelEnum.CompressionLevel compression_level = 3
+      [(validate.rules).enum.defined_only = true];
 
   enum CompressionStrategy {
     DEFAULT = 0;
@@ -68,7 +69,6 @@ message Gzip {
   // TODO(gsagula) put this back once protoc-gen-validate supports it:
   // [(validate.rules).repeated = {min_items: 0, max_items: 30, unique: true}];
   repeated string content_type = 6;
-
 
   // Allows disabling compression if response contains "etag" (entity tag)
   // header. Default is false.
