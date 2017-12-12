@@ -4,6 +4,8 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
+import "google/protobuf/wrappers.proto";
+
 import "validate/validate.proto";
 
 // Gzip is an HTTP filter which enables Envoy to compress dispatched data from an upstream
@@ -23,7 +25,7 @@ message Gzip {
   google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
   enum CompressionLevel {
-    DEFAULT = 0;
+    DEFAULT_LEVEL = 0;
     BEST = 1;
     SPEED = 2;
   }
