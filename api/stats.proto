@@ -1,5 +1,5 @@
 // [#protodoc-title: Stats]
-// Protos for stats related messages.
+// Statistics :ref:`architecture overview <arch_overview_statistics>`.
 
 syntax = "proto3";
 
@@ -28,7 +28,7 @@ message StatsSink {
   google.protobuf.Struct config = 2;
 }
 
-// Statistics :ref:`architecture overview <arch_overview_statistics>`.
+// Statistics configuration such as tagging.
 message StatsConfig {
   // Each stat name is iteratively processed through these tag specifiers.
   // When a tag is matched, the first capture group is removed from the name so
