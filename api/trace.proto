@@ -1,5 +1,5 @@
 // [#protodoc-title: Tracing]
-// * Tracing :ref:`architecture overview <arch_overview_tracing>`.
+// Tracing :ref:`architecture overview <arch_overview_tracing>`.
 
 syntax = "proto3";
 
