@@ -29,6 +29,7 @@ api_proto_library(
         ":lds",
         ":sds",
         ":stats",
+        ":trace",
     ],
 )
 
@@ -142,6 +143,11 @@ api_proto_library(
     deps = [
         ":address",
     ],
+)
+
+api_proto_library(
+    name = "trace",
+    srcs = ["trace.proto"],
 )
 
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke

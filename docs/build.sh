@@ -38,6 +38,7 @@ PROTO_RST="
   /api/rls/api/rls.proto.rst
   /api/sds/api/sds.proto.rst
   /api/stats/api/stats.proto.rst
+  /api/trace/api/trace.proto.rst
   /api/filter/accesslog/accesslog/api/filter/accesslog/accesslog.proto.rst
   /api/filter/fault/api/filter/fault.proto.rst
   /api/filter/http/buffer/api/filter/http/buffer.proto.rst
