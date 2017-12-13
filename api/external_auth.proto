@@ -9,21 +9,18 @@ import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
 // Authorization service.
-// Primarily responds with OK or NOT OK.
+// Primarily responds with `OK` or `NOT OK`.
 service Authorization {
   rpc Check(CheckRequest) returns (CheckResponse);
 }
 
 message CheckRequest {
-  // The name of the tenant for multi-tenant support.
-  string tenant_name = 1;
-
   // The request attributes.
-  AttributeContext attributes = 2;
+  AttributeContext attributes = 1;
 }
 
 message CheckResponse {
-  // Status OK allows the request. Any other response indicates the request should be denied.
+  // Status `OK` allows the request. Any other status indicates the request should be denied.
   google.rpc.Status status = 1;
 }
 
@@ -31,10 +28,7 @@ message CheckResponse {
 // For example, the size of an HTTP request, or the status code of an HTTP response.
 //
 // Each attribute has a type and a name, which is logically defined as a proto message field.
-// The fields follow the Istio attribute vocabulary.
-// https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html
-// The field type becomes the attribute type, and the field path becomes the attribute name.
-// For example, the attribute `source.ip` maps to field `AttributeContext.source.ip`.
+// AttributeContext is a collection of individual attributes.
 message AttributeContext {
   // This message defines attributes for a node that handles a network request.
   // The node can be either a service or an application that sends, forwards,
@@ -48,6 +42,8 @@ message AttributeContext {
     int64 port = 2;
 
     // The canonical service name of the peer.
+    // It should be set to `x-envoy-downstream-service-cluster <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/headers#x-envoy-downstream-service-cluster>`
+    // If a more trusted source of the service name is available through mTLS/secure naming, it should be used.
     string service = 3;
 
     // The labels associated with the peer.
@@ -55,19 +51,19 @@ message AttributeContext {
     // The source of the labels could be an X.509 certificate or other configuration.
     map<string, string> labels = 4;
 
-    // The validated identity of this peer.
+    // The authenticated identity of this peer.
     // For example, the identity associated with the workload such as a service account.
     // If an X.509 certificate is used to assert the identity this field should be sourced from
-    // `Subject` and `Subject Alternative Names`.
-    repeated string principals = 5;
+    // `Subject` or `Subject Alternative Names`. The primary identity should be the principal.
+    // Aliases should be placed claims.
+    // The principal format is issuer specific.
+    // For example
+    // SPIFFE format is `spiffe://trust-domain/path`
+    // Google account format is `https://accounts.google.com/{userid}`
+    string principal = 5;
 
-    // Other claims about the peer that are not captured in labels and principals.
+    // Other claims about the peer that are not captured in labels and principal.
     google.protobuf.Struct claims = 6;
-
-    // The CLDR country/region code associated with the above IP address.
-    // If the IP address is private, the `region_code` should reflect the
-    // physical location where this peer is running.
-    string region_code = 7;
   }
 
   // This message defines attributes for an HTTP request. If the actual
@@ -114,7 +110,7 @@ message AttributeContext {
 
     // The network protocol used with the request, such as "http/1.1",
     // "spdy/3", "h2", "h2c", "webrtc", "tcp", "udp", "quic". See
-    // https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
+    // `protocol ids <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>`
     // for details.
     string protocol = 11;
   }
