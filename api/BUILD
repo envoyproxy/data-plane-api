@@ -13,7 +13,10 @@ api_proto_library(
         "auth.proto",
         "external_auth.proto",
     ],
-    deps = [":sds"],
+    deps = [
+        ":sds",
+        ":address",
+    ],
 )
 
 api_proto_library(

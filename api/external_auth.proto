@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
+import "api/address.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
@@ -35,21 +36,21 @@ message AttributeContext {
   // or receives the request. Service peers should fill in the `service`,
   // `principal`, and `labels` as appropriate.
   message Peer {
-    // The IP address of the peer.
-    string ip = 1;
-
-    // The network port of the peer.
-    int64 port = 2;
+    // The address of the peer, this is typically the IP address.
+    // It can also be UDS, or others.
+    Address address = 1;
 
     // The canonical service name of the peer.
-    // It should be set to :ref:`x-envoy-downstream-service-cluster <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/headers#x-envoy-downstream-service-cluster>`
-    // If a more trusted source of the service name is available through mTLS/secure naming, it should be used.
-    string service = 3;
+    // It should be set to :ref:`x-envoy-downstream-service-cluster
+    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/headers#x-envoy-downstream-service-cluster>`
+    // If a more trusted source of the service name is available through mTLS/secure naming, it
+    // should be used.
+    string service = 2;
 
     // The labels associated with the peer.
     // These could be pod labels for Kubernetes or tags for VMs.
     // The source of the labels could be an X.509 certificate or other configuration.
-    map<string, string> labels = 4;
+    map<string, string> labels = 3;
 
     // The authenticated identity of this peer.
     // For example, the identity associated with the workload such as a service account.
@@ -60,20 +61,29 @@ message AttributeContext {
     // For example
     // SPIFFE format is `spiffe://trust-domain/path`
     // Google account format is `https://accounts.google.com/{userid}`
-    string principal = 5;
+    string principal = 4;
 
     // Other claims about the peer that are not captured in labels and principal.
-    google.protobuf.Struct claims = 6;
+    google.protobuf.Struct claims = 5;
   }
 
-  // This message defines attributes for an HTTP request. If the actual
-  // request is not an HTTP request, the runtime system should try to map
-  // the actual request to an equivalent HTTP request.
+  // Represents a network request, such as an HTTP request.
   message Request {
+    oneof request {
+      HTTPRequest http_request = 1;
+    }
+    // The timestamp when the `destination` service receives the first byte of
+    // the request.
+    google.protobuf.Timestamp time = 2;
+  }
+
+  // This message defines attributes for an HTTP request.
+  // HTTP, H2, grpc are all considered http requests.
+  message HTTPRequest {
     // The unique ID for a request, which can be propagated to downstream
     // systems. The ID should have low probability of collision
     // within a single day for a specific service.
-    // For http it will be X-Request-ID or equivalent.
+    // For http it should be X-Request-ID or equivalent.
     // For tcp is should be a connection id.
     string id = 1;
 
@@ -101,18 +111,12 @@ message AttributeContext {
     // The HTTP URL fragment. No URL decoding is performed.
     string fragment = 8;
 
-    // The timestamp when the `destination` service receives the first byte of
-    // the request.
-    google.protobuf.Timestamp time = 9;
-
     // The HTTP request size in bytes. If unknown, it must be -1.
-    int64 size = 10;
+    int64 size = 9;
 
-    // The network protocol used with the request, such as "http/1.1",
-    // "spdy/3", "h2", "h2c", "webrtc", "tcp", "udp", "quic". See
-    // :ref: `protocol ids <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>`
-    // for details.
-    string protocol = 11;
+    // The network protocol used with the request, such as
+    // "http/1.1", "spdy/3", "h2", "h2c"
+    string protocol = 10;
   }
 
   // The source of a network activity, such as starting a TCP connection.
@@ -128,11 +132,11 @@ message AttributeContext {
   // Represents a network request, such as an HTTP request.
   Request request = 4;
 
-  // This is analogous to request.headers, however these contents will not be sent to the upstream
-  // server. request_context provides an extension mechanism for sending additional information to
-  // the auth server without adding it to request.headers. request_context may map to the internal
+  // This is analogous to http_request.headers, however these contents will not be sent to the
+  // upstream server. Context_extensions provide an extension mechanism for sending additional
+  // information to the auth server without modifying the proto definition. It maps to the internal
   // opaque context in the filter chain.
-  map<string, string> request_context = 10;
+  map<string, string> context_extensions = 10;
 }
 
 // The following items are left out of this proto
