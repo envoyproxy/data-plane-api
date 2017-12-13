@@ -42,7 +42,7 @@ message AttributeContext {
     int64 port = 2;
 
     // The canonical service name of the peer.
-    // It should be set to `x-envoy-downstream-service-cluster <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/headers#x-envoy-downstream-service-cluster>`
+    // It should be set to :ref:`x-envoy-downstream-service-cluster <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/headers#x-envoy-downstream-service-cluster>`
     // If a more trusted source of the service name is available through mTLS/secure naming, it should be used.
     string service = 3;
 
@@ -110,7 +110,7 @@ message AttributeContext {
 
     // The network protocol used with the request, such as "http/1.1",
     // "spdy/3", "h2", "h2c", "webrtc", "tcp", "udp", "quic". See
-    // `protocol ids <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>`
+    // :ref: `protocol ids <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>`
     // for details.
     string protocol = 11;
   }
