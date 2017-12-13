@@ -32,36 +32,44 @@ message AccessLogCommon {
   // Valid range is (0.0, 1.0].
   double sample_rate = 1 [(validate.rules).double.gt = 0.0, (validate.rules).double.lte = 1.0];
 
-  // This field is the IP and port on which the request from the user was
-  // received.
-  SocketAddress destination_host = 2;
+  // This field is the remote/origin address on which the request from the user was received.
+  // Note: This may not be the physical peer. E.g, if the remote address is inferred from for
+  //       example the x-forwarder-for header, proxy protocol, etc.
+  Address downstream_remote_address = 2;
+
+  // This field is the local/destination address on which the request from the user was received.
+  Address downstream_local_address = 3;
 
   // If the connection is secure, this field will contain TLS properties.
-  TLSProperties tls_properties = 3;
+  TLSProperties tls_properties = 4;
 
   // The time that Envoy started servicing this request
-  google.protobuf.Timestamp start_time = 4;
+  google.protobuf.Timestamp start_time = 5;
 
   // Interval between the first downstream byte received and the last
   // downstream byte received (i.e. time it takes to receive a request).
-  google.protobuf.Duration time_to_last_rx_byte = 5;
+  google.protobuf.Duration time_to_last_rx_byte = 6;
 
   // Interval between the first downstream byte received and the first upstream
   // byte received (i.e. time it takes to start receiving a response).
-  google.protobuf.Duration time_to_first_upstream_rx_byte = 6;
+  google.protobuf.Duration time_to_first_upstream_rx_byte = 7;
 
   // Interval between the first downstream byte received and the last upstream
   // byte received (i.e. time it takes to receive a complete response).
-  google.protobuf.Duration time_to_last_upstream_rx_byte = 7;
+  google.protobuf.Duration time_to_last_upstream_rx_byte = 8;
 
-  // The (primary) upstream host that handles this exchange.
-  SocketAddress upstream_host = 8;
+  // The upstream remote/destination address that handles this exchange. This does not include
+  // retries.
+  Address upstream_remote_address = 9;
 
-  // The upstream cluster that ``upstream_host`` belongs to.
-  string upstream_cluster = 9;
+  // The upstream local/origin address that handles this exchange. This does not include retries.
+  Address upstream_local_address = 10;
+
+  // The upstream cluster that *upstream_remote_address* belongs to.
+  string upstream_cluster = 11;
 
   // Flags indicating occurences during request/response processing.
-  ResponseFlags response_flags = 10;
+  ResponseFlags response_flags = 12;
 
   // All metadata encountered during request processing, including endpoint
   // selection.
@@ -71,7 +79,7 @@ message AccessLogCommon {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  Metadata metadata = 11;
+  Metadata metadata = 13;
 }
 
 // [#proto-status: draft]
