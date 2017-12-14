@@ -56,7 +56,6 @@ message AttributeContext {
     // For example, the identity associated with the workload such as a service account.
     // If an X.509 certificate is used to assert the identity this field should be sourced from
     // `Subject` or `Subject Alternative Names`. The primary identity should be the principal.
-    // Aliases should be placed claims.
     // The principal format is issuer specific.
     // For example
     // SPIFFE format is `spiffe://trust-domain/path`
