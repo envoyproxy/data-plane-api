@@ -29,6 +29,58 @@ Underlying implementation
 Currently Envoy is written to use `BoringSSL <https://boringssl.googlesource.com/boringssl>`_ as the
 TLS provider.
 
+.. _arch_overview_ssl_enabling_verification:
+
+Enabling certificate verification
+---------------------------------
+
+Certificate verification of both upstream and downstream connections is not enabled unless the
+validation context specifies one or more trusted authority certificates.
+
+Example configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: yaml
+
+  static_resources:
+    listeners:
+    - name: listener_0
+      address: { socket_address: { address: 127.0.0.1, port_value: 10000 } }
+      filter_chains:
+      - filters:
+        - name: envoy.http_connection_manager
+          # ...
+        tls_context:
+          common_tls_context:
+            validation_context:
+              trusted_ca:
+                filename: /usr/local/my-client-ca.crt
+    clusters:
+    - name: some_service
+      connect_timeout: 0.25s
+      type: STATIC
+      lb_policy: ROUND_ROBIN
+      hosts: [{ socket_address: { address: 127.0.0.2, port_value: 1234 }}]
+      tls_context:
+        common_tls_context:
+          validation_context:
+            trusted_ca:
+              filename: /etc/ssl/certs/ca-certificates.crt
+
+*/etc/ssl/certs/ca-certificates.crt* is the default path for the system CA bundle on Debian systems.
+This makes Envoy verify the server identity of *127.0.0.2:1234* in the same way as e.g. cURL does on
+standard Debian installations. Common paths for system CA bundles on Linux and BSD are
+
+* /etc/ssl/certs/ca-certificates.crt (Debian/Ubuntu/Gentoo etc.)
+* /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem (CentOS/RHEL 7)
+* /etc/pki/tls/certs/ca-bundle.crt (Fedora/RHEL 6)
+* /etc/ssl/ca-bundle.pem (OpenSUSE)
+* /usr/local/etc/ssl/cert.pem (FreeBSD)
+* /etc/ssl/cert.pem (OpenBSD)
+
+See the reference for :ref:`UpstreamTlsContexts <envoy_api_msg_UpstreamTlsContext>` and
+:ref:`DownstreamTlsContexts <envoy_api_msg_DownstreamTlsContext>` for other TLS options.
+
 .. _arch_overview_ssl_auth_filter:
 
 Authentication filter
