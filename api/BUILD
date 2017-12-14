@@ -67,6 +67,11 @@ api_proto_library(
 )
 
 api_proto_library(
+    name = "grpc_cluster",
+    srcs = ["grpc_cluster.proto"],
+)
+
+api_proto_library(
     name = "hds",
     srcs = ["hds.proto"],
     has_services = 1,
@@ -166,6 +171,7 @@ proto_library(
         ":rls",
         "//api/filter/accesslog",
         "//api/filter/http:buffer",
+        "//api/filter/http:ext_authz",
         "//api/filter/http:fault",
         "//api/filter/http:health_check",
         "//api/filter/http:lua",
@@ -174,6 +180,7 @@ proto_library(
         "//api/filter/http:squash",
         "//api/filter/http:transcoder",
         "//api/filter/network:client_ssl_auth",
+        "//api/filter/network:ext_authz",
         "//api/filter/network:http_connection_manager",
         "//api/filter/network:mongo_proxy",
         "//api/filter/network:rate_limit",
