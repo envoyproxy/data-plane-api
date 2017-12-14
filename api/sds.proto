@@ -148,6 +148,9 @@ message CertificateValidationContext {
   // <envoy_api_field_CertificateValidationContext.verify_certificate_hash>`, or
   // :ref:`verify_subject_alt_name
   // <envoy_api_field_CertificateValidationContext.verify_subject_alt_name>`) is also specified.
+  //
+  // See :ref:`the TLS overview <arch_overview_ssl_enabling_verification>` for a list of common
+  // system CA locations.
   DataSource trusted_ca = 1;
 
   // If specified, Envoy will verify (pin) the hex-encoded SHA-256 hash of
