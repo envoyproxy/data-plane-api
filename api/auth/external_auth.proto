@@ -62,9 +62,6 @@ message AttributeContext {
     // SPIFFE format is `spiffe://trust-domain/path`
     // Google account format is `https://accounts.google.com/{userid}`
     string principal = 4;
-
-    // Other claims about the peer that are not captured in labels and principal.
-    google.protobuf.Struct claims = 5;
   }
 
   // Represents a network request, such as an HTTP request.
@@ -72,8 +69,7 @@ message AttributeContext {
     oneof request {
       HTTPRequest http_request = 1;
     }
-    // The timestamp when the `destination` service receives the first byte of
-    // the request.
+    // The timestamp when the proxy receives the first byte of the request.
     google.protobuf.Timestamp time = 2;
   }
 
@@ -145,6 +141,7 @@ message AttributeContext {
 // Origin peer that originated the request
 // Caching Protocol
 // request_context return values to inject back into the filter chain
+// peer.claims -- from X.509 extensions
 // Configuration
 // - field mask to send
 // - which return values from request_context are copied back
