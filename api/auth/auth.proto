@@ -2,7 +2,7 @@ syntax = "proto3";
 
 // [#proto-status: draft]
 
-package envoy.api.v2;
+package envoy.api.v2.auth;
 
 import "api/sds.proto";
 
