@@ -57,7 +57,42 @@ py_proto_library(
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf_python"],
 )
-        """,
+filegroup(
+     name = "rpc_status_protos_src",
+     srcs = [
+         "google/rpc/status.proto",
+     ],
+     visibility = ["//visibility:public"],
+)
+
+proto_library(
+     name = "rpc_status_protos_lib",
+     srcs = [":rpc_status_protos_src"],
+     deps = ["@com_google_protobuf//:any_proto"],
+     visibility = ["//visibility:public"],
+)
+cc_proto_library(
+     name = "rpc_status_protos",
+     srcs = ["google/rpc/status.proto"],
+     default_runtime = "@com_google_protobuf//:protobuf",
+     protoc = "@com_google_protobuf//:protoc",
+     deps = [
+         "@com_google_protobuf//:cc_wkt_protos"
+     ],
+     visibility = ["//visibility:public"],
+)
+py_proto_library(
+     name = "rpc_status_protos_py",
+     srcs = [
+         "google/rpc/status.proto",
+     ],
+     include = ".",
+     default_runtime = "@com_google_protobuf//:protobuf_python",
+     protoc = "@com_google_protobuf//:protoc",
+     visibility = ["//visibility:public"],
+     deps = ["@com_google_protobuf//:protobuf_python"],
+)
+""",
     )
 
     native.new_http_archive(

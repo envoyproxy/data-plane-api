@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "api/auth.proto";
+import "api/auth/auth.proto";
 import "api/base.proto";
 import "api/discovery.proto";
 
@@ -156,7 +156,7 @@ message VirtualHost {
 
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
-  AuthAction auth = 9;
+  auth.AuthAction auth = 9;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -192,7 +192,7 @@ message Route {
 
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
-  AuthAction auth = 6;
+  auth.AuthAction auth = 6;
 }
 
 // Compared to the :ref:`cluster <envoy_api_field_RouteAction.cluster>` field that specifies a
