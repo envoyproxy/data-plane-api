@@ -813,7 +813,7 @@ message QueryArgMatcher {
   // *path*'s query string.
   string name = 1 [(validate.rules).string.min_bytes = 1];
 
-  // Specifies the value of the key.  If the value is absent, a request
+  // Specifies the value of the key. If the value is absent, a request
   // that contains the key in its query string will match, whether the
   // key appears with a value (e.g., "?debug=true") or not (e.g., "?debug")
   string value = 3;
