@@ -63,15 +63,6 @@ message AttributeContext {
     string principal = 4;
   }
 
-  // Represents a network request, such as an HTTP request.
-  message Request {
-    oneof request {
-      HTTPRequest http_request = 1;
-    }
-    // The timestamp when the proxy receives the first byte of the request.
-    google.protobuf.Timestamp time = 2;
-  }
-
   // This message defines attributes for an HTTP request.
   // HTTP, H2, grpc are all considered http requests.
   message HTTPRequest {
@@ -112,6 +103,9 @@ message AttributeContext {
     // The network protocol used with the request, such as
     // "http/1.1", "spdy/3", "h2", "h2c"
     string protocol = 10;
+
+    // The timestamp when the proxy receives the first byte of the request.
+    google.protobuf.Timestamp time = 11;
   }
 
   // The source of a network activity, such as starting a TCP connection.
@@ -125,7 +119,11 @@ message AttributeContext {
   Peer destination = 2;
 
   // Represents a network request, such as an HTTP request.
-  Request request = 4;
+  oneof req {
+    // HTTPRequest represents the most common form of network request.
+    HTTPRequest request = 3;
+    // Other request types will be defined here as needed.
+  }
 
   // This is analogous to http_request.headers, however these contents will not be sent to the
   // upstream server. Context_extensions provide an extension mechanism for sending additional
