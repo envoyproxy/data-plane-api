@@ -43,7 +43,8 @@ message AccessLogCommon {
   // If the connection is secure, this field will contain TLS properties.
   TLSProperties tls_properties = 4;
 
-  // The time that Envoy started servicing this request
+  // The time that Envoy started servicing this request. This is effectively the time that the first
+  // downstream byte is received.
   google.protobuf.Timestamp start_time = 5;
 
   // Interval between the first downstream byte received and the last
@@ -71,7 +72,7 @@ message AccessLogCommon {
   google.protobuf.Duration time_to_last_upstream_rx_byte = 10;
 
   // Interval between the first downstream byte received and the first downstream byte sent.
-  // There may be a considerable delta between the *time_to_last_upstream_rx_byte* and this field
+  // There may be a considerable delta between the *time_to_first_upstream_rx_byte* and this field
   // due to filters. Additionally, the same caveats apply as documented in
   // *time_to_last_downstream_tx_byte* about not accounting for kernel socket buffer time, etc.
   google.protobuf.Duration time_to_first_downstream_tx_byte = 11;
