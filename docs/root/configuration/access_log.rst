@@ -98,10 +98,40 @@ The following command operators are supported:
   Upstream cluster to which the upstream host belongs to.
 
 %UPSTREAM_LOCAL_ADDRESS%
-  Local address of the upstream connection.
+  Local address of the upstream connection. If the address is an IP address it includes both
+  address and port.
 
 %DOWNSTREAM_ADDRESS%
-  Remote address of the downstream connection.
+  Remote address of the downstream connection *without IP port if the address is an IP address*.
+
+  .. attention::
+
+    This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS** or
+    **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
+
+%DOWNSTREAM_REMOTE_ADDRESS%
+  Remote address of the downstream connection. If the address is an IP address it includes both
+  address and port.
+
+  .. note::
+
+    This may not be the physical remote address of the peer if the address has been inferred from
+    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>`, :ref:`x-forwarded-for
+    <config_http_conn_man_headers_x-forwarded-for>`, etc.
+
+%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
+  Remote address of the downstream connection. If the address is an IP address does *not* include
+  port.
+
+  .. note::
+
+    This may not be the physical remote address of the peer if the address has been inferred from
+    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>`, :ref:`x-forwarded-for
+    <config_http_conn_man_headers_x-forwarded-for>`, etc.
+
+%DOWNSTREAM_LOCAL_ADDRESS%
+  Remote address of the downstream connection. If the address is an IP address it includes both
+  address and port.
 
 %REQ(X?Y):Z%
   HTTP

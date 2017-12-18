@@ -296,6 +296,20 @@ Supported dynamic values are:
    The original client IP which is already added by Envoy as a
    :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
 
+   .. attention::
+
+     This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
+
+ %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
+   Remote address of the downstream connection. If the address is an IP address does *not* include
+   port.
+
+   .. note::
+
+     This may not be the physical remote address of the peer if the address has been inferred from
+     :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>`, :ref:`x-forwarded-for
+     <config_http_conn_man_headers_x-forwarded-for>`, etc.
+
 %PROTOCOL%
     The original protocol which is already added by Envoy as a
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.
