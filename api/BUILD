@@ -115,9 +115,9 @@ api_proto_library(
     srcs = ["rds.proto"],
     has_services = 1,
     deps = [
+        ":auth",
         ":base",
         ":discovery",
-        "//api/auth",
     ],
 )
 
@@ -142,6 +142,14 @@ api_proto_library(
 api_proto_library(
     name = "trace",
     srcs = ["trace.proto"],
+)
+
+api_proto_library(
+    name = "auth",
+    srcs = ["auth.proto"],
+    deps = [
+        ":sds",
+    ],
 )
 
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
