@@ -5,11 +5,9 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "auth",
     srcs = [
-        "auth.proto",
         "external_auth.proto",
     ],
     deps = [
         "//api:address",
-        "//api:sds",
     ],
 )
