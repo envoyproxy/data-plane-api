@@ -8,31 +8,33 @@ import "google/protobuf/duration.proto";
 import "validate/validate.proto";
 
 // Squash is an HTTP filter which enables Envoy to integrate with squash microservices debugger.
-// (https://github.com/solo-io/squash). When the squash filter encounters a request containing the 
+// (https://github.com/solo-io/squash). When the squash filter encounters a request containing the
 // header 'x-squash-debug' it will:
 // 1. delay the incoming request.
 // 2. contact the squash server and request the creation of a debug attachment
-//    - On the squash server side, squash will attempt to attach a debugger to the services envoy  
+//    - On the squash server side, squash will attempt to attach a debugger to the services envoy
 //      proxies to. if it succeeds in doings so, it will changes the state of the debug attachment
 //      to attached.
-// 3. wait until the squash server updates the debug attachment object's state to attached (or error)
+// 3. wait until the squash server updates the debug attachment object's state to attached (or
+// error)
 // 4. resume the incoming request
 message SquashConfig {
   // The name of the cluster that hosts the squash server.
   string squash_cluster = 1 [(validate.rules).string.min_bytes = 1];
-  // When the filter determines that a request needs debugging, it will try to create a debug 
+  // When the filter determines that a request needs debugging, it will try to create a debug
   // attachment with the squash server. This is the template of the body of the create request.
   // It can container reference to environment variable in the form of '{{ ENV_VAR_NAME }}'.
-  // These can be used to provide the squash server with information on the location to attach the 
-  // debugger to. 
+  // These can be used to provide the squash server with information on the location to attach the
+  // debugger to.
   // For example, in a istio\kubernetes environment, this will contain information on the pod:
-  // `{"spec" : {"attachment" : {"pod": "{{ POD_NAME }}", "namespace": "{{ POD_NAMESPACE }}"}, "match_request":true }}`
+  // `{"spec" : {"attachment" : {"pod": "{{ POD_NAME }}", "namespace": "{{ POD_NAMESPACE }}"},
+  // "match_request":true }}`
   string attachment_template = 2;
 
   // The timeout for individual requests sent to the squash cluster. defaults to 1 second.
   google.protobuf.Duration squash_request_timeout = 3;
 
-  // The total timeout squash will delay a request and wait for it to be attached. defaults to 60 
+  // The total timeout squash will delay a request and wait for it to be attached. defaults to 60
   // seconds.
   google.protobuf.Duration attachment_timeout = 4;
 
