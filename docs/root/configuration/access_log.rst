@@ -116,18 +116,18 @@ The following command operators are supported:
   .. note::
 
     This may not be the physical remote address of the peer if the address has been inferred from
-    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>`, :ref:`x-forwarded-for
-    <config_http_conn_man_headers_x-forwarded-for>`, etc.
+    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
+    <config_http_conn_man_headers_x-forwarded-for>`.
 
 %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
-  Remote address of the downstream connection. If the address is an IP address does *not* include
-  port.
+  Remote address of the downstream connection. If the address is an IP address the output does 
+  *not* include port.
 
   .. note::
 
     This may not be the physical remote address of the peer if the address has been inferred from
-    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>`, :ref:`x-forwarded-for
-    <config_http_conn_man_headers_x-forwarded-for>`, etc.
+    :ref:`proxy proto <envoy_api_field_FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
+    <config_http_conn_man_headers_x-forwarded-for>`.
 
 %DOWNSTREAM_LOCAL_ADDRESS%
   Remote address of the downstream connection. If the address is an IP address it includes both
