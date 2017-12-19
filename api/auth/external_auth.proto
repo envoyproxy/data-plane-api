@@ -3,6 +3,7 @@ syntax = "proto3";
 // [#proto-status: draft]
 
 package envoy.api.v2.auth;
+option go_package = "auth";
 
 import "api/address.proto";
 import "google/protobuf/struct.proto";

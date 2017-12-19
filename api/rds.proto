@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "api/auth/auth.proto";
+import "api/auth.proto";
 import "api/base.proto";
 import "api/discovery.proto";
 
