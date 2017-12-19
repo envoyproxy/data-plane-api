@@ -115,9 +115,9 @@ api_proto_library(
     srcs = ["rds.proto"],
     has_services = 1,
     deps = [
+        ":auth",
         ":base",
         ":discovery",
-        ":auth",
     ],
 )
 
