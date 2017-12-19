@@ -71,7 +71,7 @@ message AttributeContext {
     // HTTP and related requests.
     HTTPRequest http = 2;
 
-    // More requests types are added here as necessary.
+    // More request types are added here as necessary.
   }
 
   // This message defines attributes for an HTTP request.
