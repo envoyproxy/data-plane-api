@@ -75,11 +75,11 @@ message Gzip {
   // header. Default is false.
   google.protobuf.BoolValue disable_on_last_modified = 8;
 
-  // Value from 9 to 15 that represents the base two logarithm of the sliding window size
-  // of the compression algorithm. Larger values result in better compression at the expense of
-  // memory usage; e.g. 12 will produce a 4096b window. Default is 15.
+  // Value from 9 to 15 that represents the base two logarithm of the compression window size.
+  // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
+  // a 4096b window. Default is 15.
   // Note that due to a known bug in the underlying zlib library, widow bits with value 8 does not
-  // work as expected. This issue might be solved in future releases of the library, but meanwhile
-  // 9 has to be used instead.
+  // work as expected, therefore 9 is the smallest window size supported by this filter at the
+  // moment. This issue might be solved in future releases of the library.
   google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
 }
