@@ -66,11 +66,13 @@ message AttributeContext {
 
   // Represents a network request, such as an HTTP request.
   message Request {
-    oneof request {
-      HTTPRequest http_request = 1;
-    }
     // The timestamp when the proxy receives the first byte of the request.
-    google.protobuf.Timestamp time = 2;
+    google.protobuf.Timestamp time = 1;
+
+    // HTTP and related requests.
+    HTTPRequest http = 2;
+
+    // More request types are added here as necessary.
   }
 
   // This message defines attributes for an HTTP request.
