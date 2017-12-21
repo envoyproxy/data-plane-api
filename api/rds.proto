@@ -283,10 +283,10 @@ message RouteMatch {
   // [#not-implemented-hide:]
   // Specifies a set of URL query parameters on which the route should
   // match. The router will check the query string from the *path* header
-  // against all the specified query args. If the number of specified query
-  // args is nonzero, they all must match the *path* header's query string
-  // for a match to occur.
-  repeated QueryArgMatcher query_args = 7;
+  // against all the specified query parameters. If the number of specified
+  // query parameters is nonzero, they all must match the *path* header's
+  // query string for a match to occur.
+  repeated QueryParameterMatcher query_parameters = 7;
 }
 
 message CorsPolicy {
@@ -806,9 +806,9 @@ message HeaderMatcher {
   google.protobuf.BoolValue regex = 3;
 }
 
-// Query arg matching treats the query string of a request's :path header
+// Query parameter matching treats the query string of a request's :path header
 // as an ampersand-separated list of keys and/or key=value elements.
-message QueryArgMatcher {
+message QueryParameterMatcher {
   // Specifies the name of a key that must be present in the requested
   // *path*'s query string.
   string name = 1 [(validate.rules).string.min_bytes = 1];
@@ -818,8 +818,8 @@ message QueryArgMatcher {
   // key appears with a value (e.g., "?debug=true") or not (e.g., "?debug")
   string value = 3;
 
-  // Specifies whether the query arg value is a regular expression.
-  // Defaults to false. The entire query arg value (i.e., the part to
+  // Specifies whether the query parameter value is a regular expression.
+  // Defaults to false. The entire query parameter value (i.e., the part to
   // the right of the equals sign in "key=value") must match the regex.
   // E.g., the regex "\d+$" will match "123" but not "a123" or "123a".
   google.protobuf.BoolValue regex = 4;
