@@ -5,40 +5,59 @@ syntax = "proto3";
 package envoy.api.v2.filter.http;
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "validate/validate.proto";
 
-// Squash is an HTTP filter which enables Envoy to integrate with squash microservices debugger.
-// (https://github.com/solo-io/squash). When the squash filter encounters a request containing the
-// header 'x-squash-debug' it will:
-// 1. delay the incoming request.
-// 2. contact the squash server and request the creation of a debug attachment
-//    - On the squash server side, squash will attempt to attach a debugger to the services envoy
-//      proxies to. if it succeeds in doings so, it will changes the state of the debug attachment
+// [#protodoc-title: Squash]
+// Squash :ref:`configuration overview <config_http_filters_squash>`.
+
+// Squash is an HTTP filter which enables Envoy to integrate with Squash microservices debugger.
+// (https://github.com/solo-io/squash, API Docs:  https://squash.solo.io/). When the Squash filter
+// encounters a request containing the header 'x-squash-debug' it will:
+//
+// 1. Delay the incoming request.
+// 2. Contact the Squash server and request the creation of a DebugAttachment
+//
+//    - On the Squash server side, Squash will attempt to attach a debugger to the application envoy
+//      proxies to. On succees, it changes the state of the DebugAttachment
 //      to attached.
-// 3. wait until the squash server updates the debug attachment object's state to attached (or
-// error)
-// 4. resume the incoming request
+//
+// 3. Wait until the Squash server updates the DebugAttachment object's state to attached (or
+//    error state)
+// 4. Resume the incoming request
 message SquashConfig {
-  // The name of the cluster that hosts the squash server.
-  string squash_cluster = 1 [(validate.rules).string.min_bytes = 1];
-  // When the filter determines that a request needs debugging, it will try to create a debug
-  // attachment with the squash server. This is the template of the body of the create request.
-  // It can container reference to environment variable in the form of '{{ ENV_VAR_NAME }}'.
-  // These can be used to provide the squash server with information on the location to attach the
-  // debugger to.
-  // For example, in a istio\kubernetes environment, this will contain information on the pod:
-  // `{"spec" : {"attachment" : {"pod": "{{ POD_NAME }}", "namespace": "{{ POD_NAMESPACE }}"},
-  // "match_request":true }}`
-  string attachment_template = 2;
+  // The name of the cluster that hosts the Squash server.
+  string cluster = 1 [(validate.rules).string.min_bytes = 1];
 
-  // The timeout for individual requests sent to the squash cluster. defaults to 1 second.
-  google.protobuf.Duration squash_request_timeout = 3;
+  // When the filter requests the Squash server to create a DebugAttachment, it will use this
+  // structure as template for the body of the request. It can contain reference to environment
+  // variables in the form of '{{ ENV_VAR_NAME }}'. These can be used to provide the Squash server
+  // with more information to find the process to attach the debugger to. For example, in a
+  // Istio/k8s environment, this will contain information on the pod:
+  //
+  // .. code-block:: json
+  //
+  //  {
+  //    "spec": {
+  //      "attachment": {
+  //        "pod": "{{ POD_NAME }}",
+  //        "namespace": "{{ POD_NAMESPACE }}"
+  //      },
+  //      "match_request": true
+  //    }
+  //  }
+  //
+  // (where POD_NAME, POD_NAMESPACE are configured in the pod via the Downward API)
+  google.protobuf.Struct attachment_template = 2;
 
-  // The total timeout squash will delay a request and wait for it to be attached. defaults to 60
+  // The timeout for individual requests sent to the Squash cluster. Defaults to 1 second.
+  google.protobuf.Duration request_timeout = 3;
+
+  // The total timeout Squash will delay a request and wait for it to be attached. Defaults to 60
   // seconds.
   google.protobuf.Duration attachment_timeout = 4;
 
-  // Amount of time to poll for the status of the attachment object in the squash server.
-  // (to check if has been attached). defaults to 1 second.
-  google.protobuf.Duration attachment_poll_every = 5;
+  // Amount of time to poll for the status of the attachment object in the Squash server.
+  // (to check if has been attached). Defaults to 1 second.
+  google.protobuf.Duration attachment_poll_period = 5;
 }
