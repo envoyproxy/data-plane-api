@@ -32,7 +32,7 @@ message DataSource {
     string filename = 1 [(validate.rules).string.min_bytes = 1];
 
     // Bytes inlined in the configuration.
-    bytes inline = 2 [(validate.rules).string.min_bytes = 1];
+    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
   }
 }
 
