@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-// [#proto-status: experimental]
-
 package envoy.api.v2.filter.http;
 
 import "google/protobuf/duration.proto";
@@ -11,21 +9,8 @@ import "validate/validate.proto";
 // [#protodoc-title: Squash]
 // Squash :ref:`configuration overview <config_http_filters_squash>`.
 
-// Squash is an HTTP filter which enables Envoy to integrate with Squash microservices debugger.
-// (https://github.com/solo-io/squash, API Docs:  https://squash.solo.io/). When the Squash filter
-// encounters a request containing the header 'x-squash-debug' it will:
-//
-// 1. Delay the incoming request.
-// 2. Contact the Squash server and request the creation of a DebugAttachment
-//
-//    - On the Squash server side, Squash will attempt to attach a debugger to the application envoy
-//      proxies to. On succees, it changes the state of the DebugAttachment
-//      to attached.
-//
-// 3. Wait until the Squash server updates the DebugAttachment object's state to attached (or
-//    error state)
-// 4. Resume the incoming request
-message SquashConfig {
+// [#proto-status: experimental]
+message Squash {
   // The name of the cluster that hosts the Squash server.
   string cluster = 1 [(validate.rules).string.min_bytes = 1];
 
@@ -57,7 +42,7 @@ message SquashConfig {
   // seconds.
   google.protobuf.Duration attachment_timeout = 4;
 
-  // Amount of time to poll for the status of the attachment object in the Squash server.
+  // Amount of time to poll for the status of the attachment object in the Squash server
   // (to check if has been attached). Defaults to 1 second.
   google.protobuf.Duration attachment_poll_period = 5;
 }
