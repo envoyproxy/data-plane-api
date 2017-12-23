@@ -178,7 +178,7 @@ verify_subject_alt_name
 crl_file
   *(optional, string)* An optional `certificate revocation list
   <http://https://en.wikipedia.org/wiki/Certificate_revocation_list>`_ (in PEM format).
-  If specified, Envoy will verify that the presented client certificate has not been revoked by
+  If specified, Envoy will verify that the presented peer certificate has not been revoked by
   this CRL. If this file contains multiple CRLs, all of them will be used.
 
 cipher_suites
