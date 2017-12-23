@@ -16,6 +16,7 @@
 #include "api/filter/http/health_check.pb.validate.h"
 #include "api/filter/http/lua.pb.validate.h"
 #include "api/filter/http/router.pb.validate.h"
+#include "api/filter/http/squash.pb.validate.h"
 #include "api/filter/http/transcoder.pb.validate.h"
 #include "api/filter/network/http_connection_manager.pb.validate.h"
 #include "api/filter/network/mongo_proxy.pb.validate.h"

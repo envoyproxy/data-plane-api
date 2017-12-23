@@ -52,3 +52,8 @@ api_proto_library(
     name = "gzip",
     srcs = ["gzip.proto"],
 )
+
+api_proto_library(
+    name = "squash",
+    srcs = ["squash.proto"],
+)

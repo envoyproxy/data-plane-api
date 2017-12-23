@@ -17,3 +17,4 @@ HTTP filters
   rate_limit_filter
   router_filter
   lua_filter
+  squash_filter
