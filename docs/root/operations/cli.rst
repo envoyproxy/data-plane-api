@@ -132,6 +132,14 @@ following are the command line options that Envoy supports.
   on AWS, `Zone <https://cloud.google.com/compute/docs/regions-zones/>`_ on GCP,
   etc.
 
+.. option:: --stats-tag <string>
+
+  *(optional)* Defines :ref:`stats <arch_overview_statistics>` tags which will
+  be added to all metrics as tags. To add multiple tags, specify this option
+  multiple times. The tag string must have a semicolon separated format like
+  `name:value`. The tags will be only available with :ref:`stats sinks
+  <envoy_api_msg_StatsSink>` which support tagged metrics: e.g.
+  :ref:`envoy.dog_statsd <envoy_api_msg_DogStatsdSink>`.
 
 .. option:: --file-flush-interval-msec <integer>
 
