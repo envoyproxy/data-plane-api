@@ -6,7 +6,6 @@ package envoy.api.v2.auth;
 option go_package = "auth";
 
 import "api/address.proto";
-import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
