@@ -119,6 +119,7 @@ TLS :ref:`architecture overview <arch_overview_ssl>`.
     "ca_cert_file": "...",
     "verify_certificate_hash": "...",
     "verify_subject_alt_name": [],
+    "crl_file": "...",
     "cipher_suites": "...",
     "ecdh_curves": "...",
     "session_ticket_key_paths": []
@@ -171,6 +172,14 @@ verify_certificate_hash
 verify_subject_alt_name
   *(optional, array)* An optional list of subject alt names. If specified, Envoy will verify
   that the client certificate's subject alt name matches one of the specified values.
+
+.. _config_listener_ssl_context_crl_file:
+
+crl_file
+  *(optional, string)* An optional `certificate revocation list
+  <http://https://en.wikipedia.org/wiki/Certificate_revocation_list>`_ (in PEM format).
+  If specified, Envoy will verify that the presented peer certificate has not been revoked by
+  this CRL. If this file contains multiple CRLs, all of them will be used.
 
 cipher_suites
   *(optional, string)* If specified, the TLS listener will only support the specified `cipher list
