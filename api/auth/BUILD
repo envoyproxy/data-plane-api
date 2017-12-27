@@ -7,8 +7,8 @@ api_proto_library(
     srcs = [
         "external_auth.proto",
     ],
+    has_services = 1,
     deps = [
         "//api:address",
     ],
-    has_services = 1,
 )
