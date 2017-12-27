@@ -10,4 +10,5 @@ api_proto_library(
     deps = [
         "//api:address",
     ],
+    has_services = 1,
 )
