@@ -11,7 +11,11 @@ modify different aspects of the server:
 
 .. http:get:: /
 
-  Print a menu of all available options.
+  Render an HTML home page with a table of links to all available options.
+
+.. http:get:: /help
+
+  Print a textual table of all available options.
 
 .. http:get:: /certs
 
