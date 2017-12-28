@@ -1,50 +1,13 @@
 load("//bazel:api_build_system.bzl", "api_proto_library")
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library", "go_grpc_library")
 
 licenses(["notice"])  # Apache 2
-
-go_proto_library(
-    name = "any_go_proto",
-    importpath = "github.com/golang/protobuf/ptypes/any",
-    proto = "@com_google_protobuf//:any_proto",
-    visibility = ["//visibility:public"],
-)
-
-go_proto_library(
-    name = "duration_go_proto",
-    importpath = "github.com/golang/protobuf/ptypes/duration",
-    proto = "@com_google_protobuf//:duration_proto",
-    visibility = ["//visibility:public"],
-)
-
-go_proto_library(
-    name = "struct_go_proto",
-    importpath = "github.com/golang/protobuf/ptypes/struct",
-    proto = "@com_google_protobuf//:struct_proto",
-    visibility = ["//visibility:public"],
-)
-
-go_proto_library(
-    name = "timestamp_go_proto",
-    importpath = "github.com/golang/protobuf/ptypes/timestamp",
-    proto = "@com_google_protobuf//:timestamp_proto",
-    visibility = ["//visibility:public"],
-)
-
-go_proto_library(
-    name = "wrappers_go_proto",
-    importpath = "github.com/golang/protobuf/ptypes/wrappers",
-    proto = "@com_google_protobuf//:wrappers_proto",
-    visibility = ["//visibility:public"],
-)
 
 api_proto_library(
     name = "address",
     srcs = ["address.proto"],
 )
 
-<<<<<<< HEAD
 go_proto_library(
     name = "address_go_proto",
     importpath = "github.com/envoyproxy/data-plane-api/api/address",
@@ -57,8 +20,6 @@ go_proto_library(
     ],
 )
 
-=======
->>>>>>> upstream/master
 api_proto_library(
     name = "base",
     srcs = ["base.proto"],
@@ -91,7 +52,6 @@ api_proto_library(
         ":sds",
         ":stats",
         ":trace",
-<<<<<<< HEAD
     ],
 )
 
@@ -111,8 +71,6 @@ go_proto_library(
         "@com_github_gogo_protobuf//:gogo_proto_go",
         "@com_github_golang_protobuf//ptypes/duration:go_default_library",
         "@com_lyft_protoc_gen_validate//validate:go_default_library",
-=======
->>>>>>> upstream/master
     ],
 )
 

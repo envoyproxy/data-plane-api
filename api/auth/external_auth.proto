@@ -6,10 +6,6 @@ package envoy.api.v2.auth;
 option go_package = "auth";
 
 import "api/address.proto";
-<<<<<<< HEAD
-import "google/protobuf/struct.proto";
-=======
->>>>>>> upstream/master
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 
