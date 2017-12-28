@@ -178,7 +178,7 @@ message ApiConfigSource {
   //
   // .. note::
   //
-  //  The cluster with name ``cluster_name`` must be statically defined, or an 
+  //  The cluster with name ``cluster_name`` must be statically defined, or an
   //  EnvoyException will be thrown.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
