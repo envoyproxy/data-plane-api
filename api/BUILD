@@ -334,23 +334,6 @@ go_grpc_library(
     ],
 )
 
-go_grpc_library(
-    name = "rds_go_grpc",
-    importpath = "github.com/envoyproxy/data-plane-api/api/rds",
-    proto = ":rds",
-    visibility = ["//visibility:public"],
-    deps = [
-        ":auth_go_proto",
-        ":base_go_proto",
-        ":discovery_go_grpc",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
-    ],
-)
-
 api_proto_library(
     name = "sds",
     srcs = ["sds.proto"],

@@ -66,7 +66,6 @@ message AttributeContext {
 
   // Represents a network request, such as an HTTP request.
   message Request {
-<<<<<<< HEAD
     // The timestamp when the proxy receives the first byte of the request.
     google.protobuf.Timestamp time = 1;
 
@@ -74,15 +73,6 @@ message AttributeContext {
     HTTPRequest http = 2;
 
     // More request types are added here as necessary.
-=======
-    // The timestamp when the proxy receives the first byte of the request.
-    google.protobuf.Timestamp time = 1;
-
-    // HTTP and related requests.
-    HTTPRequest http = 2;
-
-    // More request types are added here as necessary.
->>>>>>> b4a648f... Move request.http_request to ac.request in envoy.api.v2.auth package. (#349)
   }
 
   // This message defines attributes for an HTTP request.
