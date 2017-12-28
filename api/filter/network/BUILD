@@ -44,3 +44,9 @@ api_proto_library(
     srcs = ["rate_limit.proto"],
     deps = ["//api:rls"],
 )
+
+api_proto_library(
+    name = "ext_authz",
+    srcs = ["ext_authz.proto"],
+    deps = ["//api:grpc_cluster"],
+)

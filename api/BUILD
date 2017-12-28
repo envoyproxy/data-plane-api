@@ -44,6 +44,7 @@ api_proto_library(
     srcs = ["address.proto"],
 )
 
+<<<<<<< HEAD
 go_proto_library(
     name = "address_go_proto",
     importpath = "github.com/envoyproxy/data-plane-api/api/address",
@@ -56,6 +57,8 @@ go_proto_library(
     ],
 )
 
+=======
+>>>>>>> upstream/master
 api_proto_library(
     name = "base",
     srcs = ["base.proto"],
@@ -88,6 +91,7 @@ api_proto_library(
         ":sds",
         ":stats",
         ":trace",
+<<<<<<< HEAD
     ],
 )
 
@@ -107,6 +111,8 @@ go_proto_library(
         "@com_github_gogo_protobuf//:gogo_proto_go",
         "@com_github_golang_protobuf//ptypes/duration:go_default_library",
         "@com_lyft_protoc_gen_validate//validate:go_default_library",
+=======
+>>>>>>> upstream/master
     ],
 )
 
@@ -209,6 +215,11 @@ go_grpc_library(
         "@com_lyft_protoc_gen_validate//validate:go_default_library",
         "@googleapis//:http_api_go_proto",
     ],
+)
+
+api_proto_library(
+    name = "grpc_cluster",
+    srcs = ["grpc_cluster.proto"],
 )
 
 api_proto_library(
@@ -431,6 +442,7 @@ proto_library(
         ":rls",
         "//api/filter/accesslog",
         "//api/filter/http:buffer",
+        "//api/filter/http:ext_authz",
         "//api/filter/http:fault",
         "//api/filter/http:health_check",
         "//api/filter/http:lua",
@@ -439,6 +451,7 @@ proto_library(
         "//api/filter/http:squash",
         "//api/filter/http:transcoder",
         "//api/filter/network:client_ssl_auth",
+        "//api/filter/network:ext_authz",
         "//api/filter/network:http_connection_manager",
         "//api/filter/network:mongo_proxy",
         "//api/filter/network:rate_limit",

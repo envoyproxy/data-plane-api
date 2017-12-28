@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "google/protobuf/duration.proto";
+
+import "validate/validate.proto";
+
+// [#not-implemented-hide:]
+// GrpcCluster is used to expose generic gRPC cluster configuration that may
+// be used by filters to interface with a gRPC service.
+message GrpcCluster {
+  // The name of the upstream gRPC cluster.
+  string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // The timeout for the gRPC request. This is the timeout for a specific
+  // request.
+  google.protobuf.Duration timeout = 2;
+}
