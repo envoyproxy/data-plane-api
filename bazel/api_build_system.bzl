@@ -36,6 +36,8 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
+# TODO(htuch): Automatically generate go_proto_library and go_grpc_library
+# from api_proto_library.
 def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py = 1):
     # This is now vestigial, since there are no direct consumers in
     # data-plane-api. However, we want to maintain native proto_library support
