@@ -175,6 +175,11 @@ message ApiConfigSource {
   ApiType api_type = 1 [(validate.rules).enum.defined_only = true];
   // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
   // will be cycled through if any kind of failure occurs.
+  //
+  // .. note::
+  //
+  //  The cluster with name ``cluster_name`` must be statically defined, or an
+  //  EnvoyException will be thrown.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
   google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
@@ -196,6 +201,11 @@ message ConfigSource {
   oneof config_source_specifier {
     option (validate.required) = true;
     // Path on the filesystem to source and watch for configuration updates.
+    //
+    // .. note::
+    //
+    //  The path to the source must exist at config load time, or an
+    //  EnvoyException will be thrown.
     string path = 1;
     // API configuration source.
     ApiConfigSource api_config_source = 2;
