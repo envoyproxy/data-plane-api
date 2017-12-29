@@ -177,8 +177,7 @@ message ApiConfigSource {
   //
   // .. note::
   //
-  //  The cluster with name ``cluster_name`` must be statically defined, or an
-  //  EnvoyException will be thrown.
+  //  The cluster with name ``cluster_name`` must be statically defined.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
   google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
@@ -203,8 +202,7 @@ message ConfigSource {
     //
     // .. note::
     //
-    //  The path to the source must exist at config load time, or an
-    //  EnvoyException will be thrown.
+    //  The path to the source must exist at config load time.
     string path = 1;
     // API configuration source.
     ApiConfigSource api_config_source = 2;
