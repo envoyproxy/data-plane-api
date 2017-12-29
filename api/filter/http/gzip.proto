@@ -83,4 +83,9 @@ message Gzip {
   // with value 8 does not work as expected, therefore 9 is the smallest window size supported by
   // this filter at the moment. This issue might be solved in future releases of the library.
   google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
+
+  // Boolean value that allows including “Vary: Accept-Encoding” response header field whenever gzip
+  // filter is enabled. This is useful for instructing proxies to store both compressed and uncompressed
+  // versions of the content. Default is false.
+  google.protobuf.BoolValue vary = 10;
 }
