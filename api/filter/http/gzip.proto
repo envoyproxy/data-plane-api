@@ -85,7 +85,7 @@ message Gzip {
   google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
 
   // Boolean value that allows including “Vary: Accept-Encoding” response header field whenever gzip
-  // filter is enabled. This is useful for instructing proxies to store both compressed and uncompressed
-  // versions of the content. Default is false.
+  // filter is enabled. This is useful for instructing proxies to store both compressed and
+  // uncompressed versions of the content. Default is false.
   google.protobuf.BoolValue vary = 10;
 }
