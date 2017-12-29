@@ -29,6 +29,22 @@ message Tracing {
   }
   // Provides configuration for the HTTP tracer.
   Http http = 1;
+
+  // Global target percentage of requests that will be force traced if the
+  // x-client-trace-id header is set. Must be an integer number between 0 and
+  // 100.
+  uint32 client_enabled = 2 [(validate.rules).uint32.lte = 100];
+
+  // Global target percentage of requests that will be traced after all other
+  // checks have been applied (force tracing, sampling, etc.). Must be a number
+  // between 0 and
+  // 100.
+  uint32 global_enabled = 3 [(validate.rules).uint32.lte = 100];
+
+  // Global target percentage of requests that will be randomly traced.
+  // Specified as ten-thousandths of a percent (i.e., in 0.01% increments),
+  // using integer numbers in the range 0-10000.
+  uint32 random_sampling = 4 [(validate.rules).uint32.lte = 10000];
 }
 
 // Configuration for the LightStep tracer.
