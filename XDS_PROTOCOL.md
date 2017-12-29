@@ -123,6 +123,10 @@ server provides the same set of resources rather than waiting for a change to
 occur, it will cause Envoy and the management server to spin and have a severe
 performance impact.
 
+Within a stream, new `DiscoveryRequest`s supersede any prior `DiscoveryRequest`s 
+having the same resource type. This means that the management server only needs 
+to respond to the latest `DiscoveryRequest` on each stream for any given resource
+type. 
 
 #### Resource hints
 
