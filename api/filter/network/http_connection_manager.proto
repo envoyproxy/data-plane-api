@@ -80,6 +80,22 @@ message HttpConnectionManager {
     // populate the tag name, and the header value is used to populate the tag value. The tag is
     // created if the specified header name is present in the request's headers.
     repeated string request_headers_for_tags = 2;
+
+    // Global target percentage of requests that will be force traced if the
+    // x-client-trace-id header is set. Must be an integer number between 0 and
+    // 100.
+    uint32 client_enabled = 3 [(validate.rules).uint32.lte = 100];
+
+    // Global target percentage of requests that will be traced after all other
+    // checks have been applied (force tracing, sampling, etc.). Must be a
+    // number between 0 and
+    // 100.
+    uint32 global_enabled = 4 [(validate.rules).uint32.lte = 100];
+
+    // Global target percentage of requests that will be randomly traced.
+    // Specified as ten-thousandths of a percent (i.e., in 0.01% increments),
+    // using integer numbers in the range 0-10000.
+    uint32 random_sampling = 5 [(validate.rules).uint32.lte = 10000];
   }
 
   // Presence of the object defines whether the connection manager
