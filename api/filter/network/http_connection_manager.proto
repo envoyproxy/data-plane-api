@@ -82,20 +82,21 @@ message HttpConnectionManager {
     repeated string request_headers_for_tags = 2;
 
     // Global target percentage of requests that will be force traced if the *x-client-trace-id*
-    // header is set. Percent is resolved to the nearest 1% (rounded down). Defaults to 1 (i.e., 100%). This
-    // variable is a direct analog for the variable of the same name in the :ref:`HTTP Connection
-    // Manager <config_http_conn_man_runtime>`.
+    // header is set. Percent is resolved to the nearest 1% (rounded down). Defaults to 1 (i.e.,
+    // 100%). This variable is a direct analog for the variable of the same name in the :ref:`HTTP
+    // Connection Manager <config_http_conn_man_runtime>`.
     Percent client_enabled = 3;
 
     // Global target percentage of requests that will be traced after all other checks have been
     // applied (force tracing, sampling, etc.). Percent is resolved to the nearest 1% (rounded
-    // down). Defaults to 1 (i.e., 100%). This variable is a direct analog for the variable of the same name in
-    // the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // down). Defaults to 1 (i.e., 100%). This variable is a direct analog for the variable of the
+    // same name in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     Percent global_enabled = 4;
 
     // Global target percentage of requests that will be randomly traced. Percent is resolved to the
     // nearest 0.01%, rounded down. Defaults to 1 (i.e., 100%). This variable is a direct analog for
-    // the variable of the same name in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // the variable of the same name in the :ref:`HTTP Connection Manager
+    // <config_http_conn_man_runtime>`.
     Percent random_sampling = 5;
   }
 
