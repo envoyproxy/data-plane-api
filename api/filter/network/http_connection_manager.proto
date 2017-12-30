@@ -82,23 +82,20 @@ message HttpConnectionManager {
     repeated string request_headers_for_tags = 2;
 
     // Global target percentage of requests that will be force traced if the *x-client-trace-id*
-    // header is set. Must be an number between 0 and 100; resolution is to the nearest 1% (rounded
-    // down). Defaults to 100. This variable is a direct analog for the variable of the same name in
-    // the `HTTP Connection Manager
-    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    // header is set. Percent is resolved to the nearest 1% (rounded down). Defaults to 1 (i.e., 100%). This
+    // variable is a direct analog for the variable of the same name in the :ref:`HTTP Connection
+    // Manager <config_http_conn_man_runtime>`.
     Percent client_enabled = 3;
 
     // Global target percentage of requests that will be traced after all other checks have been
-    // applied (force tracing, sampling, etc.). Must be a number between 0 and 100; resolution is to
-    // the nearest 1% (rounded down). Defaults to 100. This variable is a direct analog for the
-    // variable of the same name in the `HTTP Connection Manager
-    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    // applied (force tracing, sampling, etc.). Percent is resolved to the nearest 1% (rounded
+    // down). Defaults to 1 (i.e., 100%). This variable is a direct analog for the variable of the same name in
+    // the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     Percent global_enabled = 4;
 
-    // Global target percentage of requests that will be randomly traced. Must be a number between 0
-    // and 100; resolution is to the nearest 0.01%, rounded down. Defaults to 100. This variable is
-    // a direct analog for the variable of the same name in the `HTTP Connection Manager
-    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    // Global target percentage of requests that will be randomly traced. Percent is resolved to the
+    // nearest 0.01%, rounded down. Defaults to 1 (i.e., 100%). This variable is a direct analog for
+    // the variable of the same name in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     Percent random_sampling = 5;
   }
 
