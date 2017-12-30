@@ -81,21 +81,25 @@ message HttpConnectionManager {
     // created if the specified header name is present in the request's headers.
     repeated string request_headers_for_tags = 2;
 
-    // Global target percentage of requests that will be force traced if the
-    // x-client-trace-id header is set. Must be an integer number between 0 and
-    // 100.
-    uint32 client_enabled = 3 [(validate.rules).uint32.lte = 100];
+    // Global target percentage of requests that will be force traced if the *x-client-trace-id*
+    // header is set. Must be an number between 0 and 100; resolution is to the nearest 1% (rounded
+    // down). Defaults to 100. This variable is a direct analog for the variable of the same name in
+    // the `HTTP Connection Manager
+    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    Percent client_enabled = 3;
 
-    // Global target percentage of requests that will be traced after all other
-    // checks have been applied (force tracing, sampling, etc.). Must be a
-    // number between 0 and
-    // 100.
-    uint32 global_enabled = 4 [(validate.rules).uint32.lte = 100];
+    // Global target percentage of requests that will be traced after all other checks have been
+    // applied (force tracing, sampling, etc.). Must be a number between 0 and 100; resolution is to
+    // the nearest 1% (rounded down). Defaults to 100. This variable is a direct analog for the
+    // variable of the same name in the `HTTP Connection Manager
+    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    Percent global_enabled = 4;
 
-    // Global target percentage of requests that will be randomly traced.
-    // Specified as ten-thousandths of a percent (i.e., in 0.01% increments),
-    // using integer numbers in the range 0-10000.
-    uint32 random_sampling = 5 [(validate.rules).uint32.lte = 10000];
+    // Global target percentage of requests that will be randomly traced. Must be a number between 0
+    // and 100; resolution is to the nearest 0.01%, rounded down. Defaults to 100. This variable is
+    // a direct analog for the variable of the same name in the `HTTP Connection Manager
+    // <https://www.envoyproxy.io/docs/envoy/latest/configuration/http_conn_man/runtime.html?highlight=sample>`_.
+    Percent random_sampling = 5;
   }
 
   // Presence of the object defines whether the connection manager
