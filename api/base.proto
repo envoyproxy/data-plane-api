@@ -177,7 +177,8 @@ message ApiConfigSource {
   //
   // .. note::
   //
-  //  The cluster with name ``cluster_name`` must be statically defined.
+  //  The cluster with name ``cluster_name`` must be statically defined and its
+  //  type must not be ``EDS``.
   repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
   // For REST APIs, the delay between successive polls.
   google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
