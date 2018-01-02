@@ -208,6 +208,7 @@ message HttpFilter {
   // * :ref:`envoy.lua <config_http_filters_lua>`
   // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
   // * :ref:`envoy.router <config_http_filters_router>`
+  // * :ref:`envoy.squash <config_http_filters_squash>`
   string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Filter specific configuration which depends on the filter being

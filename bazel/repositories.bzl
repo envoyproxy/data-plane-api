@@ -2,7 +2,7 @@ GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
 GOGOPROTO_SHA = "342cbe0a04158f6dcb03ca0079991a51a4248c02" # Oct 7, 2017
 PROMETHEUS_SHA = "6f3806018612930941127f2a7c6c453ba2c527d2" # Nov 02, 2017
 
-PGV_GIT_SHA = "8e6aaf55f4954f1ef9d3ee2e8f5a50e79cc04f8f"
+PGV_GIT_SHA = "bd6d057e957fe184dfe76805951803af153be497"
 
 def api_dependencies():
     native.git_repository(
@@ -16,6 +16,7 @@ def api_dependencies():
         url = "https://github.com/googleapis/googleapis/archive/" + GOOGLEAPIS_SHA + ".tar.gz",
         build_file_content = """
 load("@com_google_protobuf//:protobuf.bzl", "cc_proto_library", "py_proto_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 filegroup(
     name = "http_api_protos_src",
@@ -25,6 +26,13 @@ filegroup(
     ],
     visibility = ["//visibility:public"],
  )
+
+go_proto_library(
+    name = "descriptor_go_proto",
+    importpath = "github.com/golang/protobuf/protoc-gen-go/descriptor",
+    proto = "@com_google_protobuf//:descriptor_proto",
+    visibility = ["//visibility:public"],
+)
 
 proto_library(
     name = "http_api_protos_proto",
@@ -57,6 +65,17 @@ py_proto_library(
     visibility = ["//visibility:public"],
     deps = ["@com_google_protobuf//:protobuf_python"],
 )
+
+go_proto_library(
+    name = "http_api_go_proto",
+    importpath = "google.golang.org/genproto/googleapis/api/annotations",
+    proto = ":http_api_protos_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+      ":descriptor_go_proto",
+    ],
+)
+
 filegroup(
      name = "rpc_status_protos_src",
      srcs = [
@@ -81,6 +100,17 @@ cc_proto_library(
      ],
      visibility = ["//visibility:public"],
 )
+
+go_proto_library(
+    name = "rpc_status_go_proto",
+    importpath = "google.golang.org/genproto/googleapis/rpc/status",
+    proto = ":rpc_status_protos_lib",
+    visibility = ["//visibility:public"],
+    deps = [
+      "@com_github_golang_protobuf//ptypes/any:go_default_library",
+    ],
+)
+
 py_proto_library(
      name = "rpc_status_protos_py",
      srcs = [
@@ -101,6 +131,7 @@ py_proto_library(
         url = "https://github.com/gogo/protobuf/archive/" + GOGOPROTO_SHA + ".tar.gz",
         build_file_content = """
 load("@com_google_protobuf//:protobuf.bzl", "cc_proto_library", "py_proto_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "gogo_proto",
@@ -113,6 +144,13 @@ proto_library(
     visibility = ["//visibility:public"],
 )
 
+go_proto_library(
+    name = "descriptor_go_proto",
+    importpath = "github.com/golang/protobuf/protoc-gen-go/descriptor",
+    proto = "@com_google_protobuf//:descriptor_proto",
+    visibility = ["//visibility:public"],
+)
+
 cc_proto_library(
     name = "gogo_proto_cc",
     srcs = [
@@ -122,6 +160,16 @@ cc_proto_library(
     protoc = "@com_google_protobuf//:protoc",
     deps = ["@com_google_protobuf//:cc_wkt_protos"],
     visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "gogo_proto_go",
+    importpath = "gogoproto",
+    proto = ":gogo_proto",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":descriptor_go_proto",
+    ],
 )
 
 py_proto_library(

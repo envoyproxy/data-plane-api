@@ -210,7 +210,7 @@ message Cluster {
 
   // The DNS IP address resolution policy. If this setting is not specified, the
   // value defaults to
-  // :ref:`V4_ONLY<envoy_api_enum_value_Cluster.DnsLookupFamily.V4_ONLY>`.
+  // :ref:`AUTO<envoy_api_enum_value_Cluster.DnsLookupFamily.AUTO>`.
   DnsLookupFamily dns_lookup_family = 17 [(validate.rules).enum.defined_only = true];
 
   // If DNS resolvers are specified and the cluster type is either

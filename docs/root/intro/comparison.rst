@@ -35,11 +35,8 @@ features. Envoy provides the following main advantages over haproxy as a load ba
 
 * HTTP/2 support.
 * Pluggable architecture.
-* Multi-threaded architecture. It is substantially easier to operate and configure circuit breaking
-  settings when a single process is deployed per machine versus potentially multiple processes.
 * Integration with a remote service discovery service.
 * Integration with a remote global rate limiting service.
-* Ability to hot restart.
 * Substantially more detailed statistics.
 
 `AWS ELB <https://aws.amazon.com/elasticloadbalancing/>`_

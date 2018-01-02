@@ -2,7 +2,7 @@ version: 2
 jobs:
    test:
      docker:
-       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+       - image: envoyproxy/envoy-build:52f6880ffbf761c9b809fc3ac208900956ff16b4
      resource_class: xlarge
      working_directory: /source
      steps:

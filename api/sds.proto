@@ -31,8 +31,8 @@ message DataSource {
     // Local filesystem data source.
     string filename = 1 [(validate.rules).string.min_bytes = 1];
 
-    // [#not-implemented-hide:]
-    bytes inline = 2;
+    // Bytes inlined in the configuration.
+    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
   }
 }
 
@@ -172,6 +172,13 @@ message CertificateValidationContext {
 
   // [#not-implemented-hide:] Must present signed certificate time-stamp.
   google.protobuf.BoolValue require_signed_certificate_timestamp = 6;
+
+  // An optional `certificate revocation list
+  // <http://https://en.wikipedia.org/wiki/Certificate_revocation_list>`_
+  // (in PEM format). If specified, Envoy will verify that the presented peer
+  // certificate has not been revoked by this CRL. If this file contains
+  // multiple CRLs, all of them will be used.
+  DataSource crl = 7;
 }
 
 // TLS context shared by both client and server TLS contexts.
