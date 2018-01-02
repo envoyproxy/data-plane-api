@@ -95,13 +95,13 @@ Priority levels
 
 During load balancing, Envoy will generally only consider hosts configured at the highest priority
 level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional
-priority may also be specified.  When endpoints at the highest priority level (P=0) are healthy, all
-traffic will land on endpoints in that priority level.  As endpoints for the highest priority level
+priority may also be specifie. When endpoints at the highest priority level (P=0) are healthy, all
+traffic will land on endpoints in that priority leve. As endpoints for the highest priority level
 become unhealthy, traffic will begin to trickle to lower priority levels.
 
 Currently, it is assumed that each priority level is over-provisioned by a (hard-coded) factor of
-1.4x.  So if 80% of the endpoints are healthy, the priority level is still considered healthy because
-80*1.4 > 100.  As the number of healthy endpoints dips below 72%, the health of the priority level
+1.4. So if 80% of the endpoints are healthy, the priority level is still considered healthy because
+80*1.4 > 10. As the number of healthy endpoints dips below 72%, the health of the priority level
 goes below 100, and any residual traffic will flow to the next priority level.
 
 Assume a simple set-up with 2 priority levels, P=1 100% healthy.
@@ -123,7 +123,7 @@ Assume a simple set-up with 2 priority levels, P=1 100% healthy.
 +----------------------------+---------------------------+----------------------------+
 
 If P=1 becomes unhealthy, it will continue to take spilled load from P=0 until the sum of the health
-P=0 + P=1 goes below 100%.  At this point the healths will be scaled up to an "effective" health of
+P=0 + P=1 goes below 100. At this point the healths will be scaled up to an "effective" health of
 100%.
 
 +-------------+--------------+-----------------+-----------------+
