@@ -1,28 +1,24 @@
 syntax = "proto3";
 
-// [#proto-status: experimental]
-
 package envoy.api.v2.filter.http;
 
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
-// Gzip is an HTTP filter which enables Envoy to compress dispatched data from an upstream
-// service upon client request. This is useful in situations where large payloads need to
-// be transmitted without compromising the response time. Note that when compression is applied,
-// this filter will set "content-encoding" and "transfer-encoding" headers to gzip and chunked,
-// respectively.
-// TODO(gsagula): elaborate the last part in the final documentation.
+// [#protodoc-title: Gzip]
+// Gzip :ref:`configuration overview <config_http_filters_gzip>`.
+
 message Gzip {
-  // Value from 1 to 9 that controls the amount of internal memory
-  // used by zlib. Higher values use more memory, but are faster and produce better compression
-  // results. Default value is 8.
+  // Value from 1 to 9 that controls the amount of internal memory used by zlib. Higher values
+  // use more memory, but are faster and produce better compression results. Default value is 8.
   google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
 
-  // Minimum response length, in bytes, which will trigger
-  // compression. Default value is 30.
-  google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
+  // Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
+  // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
+  // a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
+  // manual > deflateInit2.
+  google.protobuf.UInt32Value window_bits = 2 [(validate.rules).uint32 = {gte: 9, lte: 15}];
 
   message CompressionLevel {
     enum Enum {
@@ -32,7 +28,7 @@ message Gzip {
     }
   }
 
-  // Allows selecting Zlib's compression level. This setting will affect
+  // Allows adjusting zlib's compression level. This setting will affect
   // speed and amount of compression applied to the content. "BEST" option provides higher
   // compression at cost of higher latency, "SPEED" provides lower compression with minimum impact
   // on response time. "DEFAULT" provides an optimal result between speed and compression. This
@@ -46,7 +42,7 @@ message Gzip {
     RLE = 3;
   }
 
-  // Allows selecting zlib's compression strategy. Strategy is directly
+  // Allows adjusting zlib's compression strategy. Strategy is directly
   // related to the characteristics of the content which is being compressed. Most of the time
   // "DEFAULT" will be the best choice, however there are situations which changing the strategy
   // might produce better results. For example, Run-length encoding (RLE) is normally used when the
@@ -55,37 +51,25 @@ message Gzip {
   // "DEFAULT" if not specified.
   CompressionStrategy compression_strategy = 4 [(validate.rules).enum.defined_only = true];
 
-  // Array of strings that allows specifying which "cache-control" header
-  // values yield compression. Normally, if "cache-control" is present in the response headers,
-  // compression should only occur if directives indicate that the content should not be cached;
-  // e.g. no-cache or no-store.
-  repeated string cache_control = 5
-      [(validate.rules).repeated = {min_items: 0, max_items: 10, unique: true}];
+  // Minimum response length, in bytes, which will trigger compression. Default value is 30.
+  google.protobuf.UInt32Value content_length = 5 [(validate.rules).uint32.gte = 30];
 
-  // Array of strings that allows specifying which mime-types yield compression; e.g.
+  // Set of strings that allows specifying which mime-types yield compression; e.g.
   // application/json, text/html, etc. When this field is not specified, compression will be applied
   // to any "content-type".
   repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 30}];
 
-  // Allows disabling compression if response contains "etag" (entity tag)
-  // header. Default is false.
-  google.protobuf.BoolValue disable_on_etag = 7;
+  // Value that allows disabling proxied requests by looking for the presence of Via request
+  // header. Default is false which means proxied requests will be allowed.
+  google.protobuf.BoolValue no_proxied_request = 7;
 
-  // Allows disabling compression if response contains "last-modified"
-  // header. Default is false.
-  google.protobuf.BoolValue disable_on_last_modified = 8;
+  // Value that allows disabling the insertion of “Vary: Accept-Encoding” in response header.
+  // Vary is useful for instructing proxies to store both compressed and uncompressed versions of
+  // the content. Default is false which means Vary http header will be inserted in every response.
+  google.protobuf.BoolValue no_vary = 8;
 
-  // Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
-  // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
-  // a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
-  // manual > deflateInit2.
-  // Note that due to a known bug in the underlying zlib library, window bits
-  // with value 8 does not work as expected, therefore 9 is the smallest window size supported by
-  // this filter at the moment. This issue might be solved in future releases of the library.
-  google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
-
-  // Boolean value that allows including “Vary: Accept-Encoding” response header field whenever gzip
-  // filter is enabled. This is useful for instructing proxies to store both compressed and
-  // uncompressed versions of the content. Default is false.
-  google.protobuf.BoolValue vary = 10;
+  // Value that allows offloading compression from an upstream service by stripping off
+  // Accept-Encoding from request header. Default is false which means that Accept-Encoding will not
+  // be removed.
+  google.protobuf.BoolValue take_ownership = 9;
 }

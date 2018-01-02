@@ -9,6 +9,7 @@ HTTP filters
   buffer_filter
   cors_filter
   fault_filter
+  gzip_filter
   dynamodb_filter
   grpc_http1_bridge_filter
   grpc_json_transcoder_filter

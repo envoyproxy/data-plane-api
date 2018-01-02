@@ -200,6 +200,7 @@ message HttpFilter {
   // * :ref:`envoy.buffer <config_http_filters_buffer>`
   // * :ref:`envoy.cors <config_http_filters_cors>`
   // * :ref:`envoy.fault <config_http_filters_fault_injection>`
+  // * :ref:`envoy.gzip <config_http_filters_gzip>`
   // * :ref:`envoy.http_dynamo_filter <config_http_filters_dynamo>`
   // * :ref:`envoy.grpc_http1_bridge <config_http_filters_grpc_bridge>`
   // * :ref:`envoy.grpc_json_transcoder <config_http_filters_grpc_json_transcoder>`
