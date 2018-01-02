@@ -32,6 +32,6 @@ elif [[ "$1" == "check_format" ]]; then
   ./tools/check_format.py check
   exit 0
 else
-  echo "Invalid do_ci.sh target. The only valid targets are bazel.{docs,test}."
+  echo "Invalid do_ci.sh target. The valid targets are bazel.{docs,test} and {check,fix}_format."
   exit 1
 fi

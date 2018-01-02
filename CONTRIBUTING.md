@@ -7,6 +7,20 @@ The following high level procedure is used to make Envoy changes that require AP
 1. Create a PR in this repo for the API/configuration changes. (If it helps to discuss the
    configuration changes in the context of a code change, it is acceptable to point a code
    change at a temporary fork of this repo so it passes tests).
+
+   Run the automated formatting checks on your change before submitting the PR:
+
+   ```
+   ./ci/run_envoy_docker.sh './ci/do_ci.sh check_format'
+   ```
+
+   If the `check_format` script reports any problems, you can fix them manually or run
+   the companion `fix_format` script:
+
+   ```
+   ./ci/run_envoy_docker.sh './ci/do_ci.sh fix_format'
+   ```
+
 2. Bazel can be used to build/test locally.
    1. Directly on Linux:
 
