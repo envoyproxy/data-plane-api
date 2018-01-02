@@ -301,7 +301,7 @@ Supported dynamic values are:
      This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
 
  %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
-   Remote address of the downstream connection. If the address is an IP address the output does 
+   Remote address of the downstream connection. If the address is an IP address the output does
    *not* include port.
 
    .. note::

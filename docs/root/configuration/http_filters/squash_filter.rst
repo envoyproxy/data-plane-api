@@ -14,7 +14,7 @@ Once a request marked for debugging enters the mesh, the Squash Envoy filter rep
 in the cluster to the Squash server - as there is a 1-1 mapping between Envoy sidecars and
 application containers, the Squash server can find and attach a debugger to the application container.
 The Squash filter also holds the request until a debugger is attached (or a timeout occurs). This
-enables developers (via Squash) to attach a native debugger to the container that will handle the 
+enables developers (via Squash) to attach a native debugger to the container that will handle the
 request, before the request arrive to the application code, without any changes to the cluster.
 
 Configuration
