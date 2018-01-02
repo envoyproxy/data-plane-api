@@ -33,17 +33,19 @@ def isBuildFile(file_path):
 def checkFileContents(file_path):
   with open(file_path) as f:
     text = f.read()
-    if re.search('[^.]\.  ', text, re.MULTILINE):
+    if (re.search('[^.]\.  ', text, re.MULTILINE) or
+        re.search(' $', text, re.MULTILINE)):
       printError("%s has over-enthusiastic spaces" % file_path)
       return False
   return True
 
 
 def fixFileContents(file_path):
+  regex = re.compile('([^.])\.  ')
   for line in fileinput.input(file_path, inplace=True):
     # Strip double space after '.'  This may prove overenthusiastic and need to
     # be restricted to comments and metadata files but works for now.
-    print "%s" % (line.replace('[^.].  ', '. ').rstrip())
+    print "%s" % regex.sub(r'\1. ', line).rstrip()
 
 
 def checkFilePath(file_path):
