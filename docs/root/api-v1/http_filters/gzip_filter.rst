@@ -11,20 +11,24 @@ Gzip :ref:`configuration overview <config_http_filters_gzip>`.
     "name": "gzip",
     "config": {
       "memory_level": "...",
+      "content_length": "...",
       "compression_level": "...",
       "compression_strategy": "...",
-      "window_bits": "...",
-      "content_length": "...",
       "content_type": "...",
-      "no_proxied_request": "...",
-      "no_vary": "...",
-      "take_ownership": "..."
+      "disable_on_etag": "...",
+      "disable_on_last_modified": "...",
+      "window_bits": "...",
+      "disable_vary": "...",
     }
   }
 
 memory_level
   *(optional, integer)* Value from 1 to 9 that controls the amount of internal memory used by zlib.
-  Higher values use more memory, but are faster and produce better compression results. Default value is 8.
+  Higher values use more memory, but are faster and produce better compression results. Default value is 5.
+
+content_length
+  *(optional, integer)* Minimum response length, in bytes, which will trigger compression.
+  Default value is 30.
 
 compression_level
   *(optional, string)* Allows adjusting zlib's compression level. This setting will affect
@@ -42,34 +46,26 @@ compression_strategy
   information about each strategy, please refer to Zlib manual. This field will be set to
   "DEFAULT" if not specified.
 
-window_bits
-  *(optional, integer)* Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
-  Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
-  a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
-  manual > deflateInit2.
-  Note that due to a known bug in the underlying zlib library, window bits
-  with value 8 does not work as expected, therefore 9 is the smallest window size supported by
-  this filter at the moment. This issue might be solved in future releases of the library.
-
-content_length
-  *(optional, integer)* Minimum response length, in bytes, which will trigger compression.
-  Default value is 30.
-
 content_type
   *(optional, string)* Set of strings that allows specifying which mime-types yield compression; e.g.
   application/json, text/html, etc. When this field is not specified, compression will be applied
   to any "content-type".
 
-no_proxied_request
-  *(optional, boolean)* Value that allows disabling proxied requests by looking for the presence of Via request
-  header. Default is false which means proxied requests will be allowed.
+disable_on_etag
+  *(optional, boolean)* Value that disables compression if response contains "etag" (entity tag) header.
+  Default is false.
 
-no_vary
+disable_on_last_modified
+  *(optional, boolean)* Value that disables compression if response contains "last-modified" header.
+  Default is false.
+
+window_bits
+  *(optional, integer)* Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
+  Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
+  a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
+  manual > deflateInit2.
+
+disable_vary
   *(optional, boolean)* Value that allows disabling the insertion of “Vary: Accept-Encoding” in response header.
   Vary is useful for instructing proxies to store both compressed and uncompressed versions of the content.
   Default is false which means Vary http header will be inserted in every response.
-
-take_ownership
-  *(optional, boolean)* Value that allows offloading compression from an upstream service by stripping off
-  Accept-Encoding from request header. Default is false which means that Accept-Encoding will not be
-  removed.

@@ -9,7 +9,7 @@ be transmitted without compromising the response time.
 Configuration
 -------------
 * :ref:`v1 API reference <config_http_filters_gzip_v1>`
-* :ref:`v2 API reference <envoy_api_field_filter.network.HttpFilter.name>`
+* :ref:`v2 API reference <envoy_api_msg_filter.http.Gzip>`
 
 .. attention::
 
@@ -19,7 +19,7 @@ Configuration
 
 How it works
 ------------
-When gzip filter is enable, request headers are inspected and potentially processed before
+When gzip filter is enabled, request headers are inspected and potentially processed before
 being sent to an upstream service. As soon as upstream responds, the response headers are also
 analyzed. If either response and request allows, content is compressed and then sent to
 the client with the appropriate headers.
@@ -38,7 +38,4 @@ When compression is *applied*:
 
 - Content-Length will be removed from response headers.
 - Response headers will contain "Transfer-Encoding: chunked" and "Content-Encodig: gzip".
-
-When filter is *enabled*:
-
 - "Vary: Accept-Encoding" header will be inserted on every response.

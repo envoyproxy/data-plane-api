@@ -11,14 +11,11 @@ import "validate/validate.proto";
 
 message Gzip {
   // Value from 1 to 9 that controls the amount of internal memory used by zlib. Higher values
-  // use more memory, but are faster and produce better compression results. Default value is 8.
+  // use more memory, but are faster and produce better compression results. Default value is 5.
   google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
 
-  // Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
-  // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
-  // a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
-  // manual > deflateInit2.
-  google.protobuf.UInt32Value window_bits = 2 [(validate.rules).uint32 = {gte: 9, lte: 15}];
+  // Minimum response length, in bytes, which will trigger compression. Default value is 30.
+  google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
   message CompressionLevel {
     enum Enum {
@@ -51,25 +48,28 @@ message Gzip {
   // "DEFAULT" if not specified.
   CompressionStrategy compression_strategy = 4 [(validate.rules).enum.defined_only = true];
 
-  // Minimum response length, in bytes, which will trigger compression. Default value is 30.
-  google.protobuf.UInt32Value content_length = 5 [(validate.rules).uint32.gte = 30];
-
   // Set of strings that allows specifying which mime-types yield compression; e.g.
   // application/json, text/html, etc. When this field is not specified, compression will be applied
-  // to any "content-type".
-  repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 30}];
+  // to the following MIME-TYPES: html, text, css, js, json, svg, xml. xhtml".
+  repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 50}];
 
-  // Value that allows disabling proxied requests by looking for the presence of Via request
-  // header. Default is false which means proxied requests will be allowed.
-  google.protobuf.BoolValue no_proxied_request = 7;
+  // Allows disabling compression if response contains "etag" (entity tag)
+  // header. Default is false.
+  google.protobuf.BoolValue disable_on_etag = 7;
 
-  // Value that allows disabling the insertion of “Vary: Accept-Encoding” in response header.
-  // Vary is useful for instructing proxies to store both compressed and uncompressed versions of
-  // the content. Default is false which means Vary http header will be inserted in every response.
-  google.protobuf.BoolValue no_vary = 8;
+  // Allows disabling compression if response contains "last-modified"
+  // header. Default is false.
+  google.protobuf.BoolValue disable_on_last_modified = 8;
 
-  // Value that allows offloading compression from an upstream service by stripping off
-  // Accept-Encoding from request header. Default is false which means that Accept-Encoding will not
-  // be removed.
-  google.protobuf.BoolValue take_ownership = 9;
+  // Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
+  // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
+  // a 4096 bytes window. Default is 15. For more details about this parameter, please refer to Zlib
+  // manual > deflateInit2.
+  google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
+
+  // Value that disables the insertion of “Vary: Accept-Encoding” in the response header.
+  // Tipically Vary:Accept-Encoding instructs proxies to store the compressed versions of
+  // the content. Default is false which means that this header will be inserted in every compressed
+  // response.
+  google.protobuf.BoolValue disable_vary = 10;
 }
