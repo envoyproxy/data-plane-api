@@ -170,7 +170,7 @@ To sum this up in pseudo algorithms:
 ::
 
   load to P_0 = min(100, health(P_0) * 100 / total_health)
-  health(P_X) = 100, (140 * healthy_PX_backends / total_PX_backends)
+  health(P_X) = 140 * healthy_P_X_backends / total_P_X_backends
   total_health = min(100, Σ(health(P_0)...health(P_X))
   load to P_X = 100 - Σ(percent_load(P_0)..percent_load(P_X-1))
 
