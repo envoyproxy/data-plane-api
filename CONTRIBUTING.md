@@ -20,21 +20,25 @@ The following high level procedure is used to make Envoy changes that require AP
    ```
    ./ci/run_envoy_docker.sh './ci/do_ci.sh fix_format'
    ```
+   
+   Before building the docs
+
 
 2. Bazel can be used to build/test locally.
    1. Directly on Linux:
-
       ```
       bazel build //api/...
       bazel test //test/... //tools/...
       ```
-
-   2. Using docker:
-
+   2. Using docker: 
       ```
       ./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.test'
       ./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.docs'
       ```
+      *Note: New .proto files should be also included to [build.sh](https://github.com/envoyproxy/data-plane-api/blob/master/docs/build.sh#L28) and 
+      [BUILD](https://github.com/envoyproxy/data-plane-api/blob/master/api/BUILD#L389) in order to get the RSTs generated.*
+      
+
 3. All configuration changes should have temporary associated documentation. Fields should be
    hidden from the documentation via the `[#not-implemented-hide:]` comment tag. E.g.,
 
