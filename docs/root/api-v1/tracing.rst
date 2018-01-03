@@ -82,8 +82,8 @@ Dynamic driver
   }
 
 library
-  *(required, string)* A dynamic library implementing the
-  [OpenTracing API](https://github.com/opentracing/opentracing-cpp).
+  *(required, string)* Dynamic library implementing the `OpenTracing API
+  <https://github.com/opentracing/opentracing-cpp>`_.
 
 config_file
-  *(required, string)* The configuration file for the dynamically loaded tracer.
+  *(required, string)* File containing the configuration for the tracing library.

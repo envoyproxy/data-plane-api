@@ -55,8 +55,8 @@ message ZipkinConfig {
 }
 
 message DynamicConfig {
-  // Dynamic library implementing the
-  // `OpenTracing API`<https://github.com/opentracing/opentracing-cpp>.
+  // Dynamic library implementing the `OpenTracing API
+  // <https://github.com/opentracing/opentracing-cpp>`_.
   string library = 1 [(validate.rules).string.min_bytes = 1];
 
   // File containing the configuration for the tracing library.
