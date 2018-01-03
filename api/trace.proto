@@ -17,8 +17,8 @@ import "validate/validate.proto";
 message Tracing {
   message Http {
     // The name of the HTTP trace driver to instantiate. The name must match a
-    // supported HTTP trace driver. *envoy.lightstep* and *envoy.zipkin* are
-    // built-in trace drivers.
+    // supported HTTP trace driver. *envoy.lightstep*, *envoy.zipkin*, and
+    // *envoy.dynamic* are built-in trace drivers.
     string name = 1 [(validate.rules).string.min_bytes = 1];
 
     // Trace driver specific configuration which depends on the driver being
@@ -51,4 +51,13 @@ message ZipkinConfig {
   // using a standard Zipkin installation, the API endpoint is typically
   // /api/v1/spans, which is the default value.
   string collector_endpoint = 2 [(validate.rules).string.min_bytes = 1];
+}
+
+message DynamicConfig {
+  // Dynamic library implementing the
+  // `OpenTracing API`<https://github.com/opentracing/opentracing-cpp>.
+  string library = 1 [(validate.rules).string.min_bytes = 1];
+
+  // File containing the configuration for the tracing library.
+  string config_file = 2 [(validate.rules).string.min_bytes = 1];
 }
