@@ -23,6 +23,11 @@ The semantics of listener updates are as follows:
   be gracefully closed (if possible) for some period of time before the listener is removed and any
   remaining connections are closed. The drain time is set via the :option:`--drain-time-s` option.
 
+  .. note::
+
+    Any listeners that are statically defined within the Envoy configuration cannot be modified or
+    removed via the LDS API.
+
 Configuration
 -------------
 

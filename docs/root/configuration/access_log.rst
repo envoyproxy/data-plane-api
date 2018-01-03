@@ -120,7 +120,7 @@ The following command operators are supported:
     <config_http_conn_man_headers_x-forwarded-for>`.
 
 %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
-  Remote address of the downstream connection. If the address is an IP address the output does 
+  Remote address of the downstream connection. If the address is an IP address the output does
   *not* include port.
 
   .. note::
