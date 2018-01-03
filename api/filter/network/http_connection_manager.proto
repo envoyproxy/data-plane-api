@@ -81,23 +81,22 @@ message HttpConnectionManager {
     // created if the specified header name is present in the request's headers.
     repeated string request_headers_for_tags = 2;
 
-    // Global target percentage of requests that will be force traced if the *x-client-trace-id*
-    // header is set. Percent is resolved to the nearest 1% (rounded down). Defaults to 1 (i.e.,
-    // 100%). This variable is a direct analog for the variable of the same name in the :ref:`HTTP
-    // Connection Manager <config_http_conn_man_runtime>`.
-    Percent client_enabled = 3;
-
-    // Global target percentage of requests that will be traced after all other checks have been
-    // applied (force tracing, sampling, etc.). Percent is resolved to the nearest 1% (rounded
-    // down). Defaults to 1 (i.e., 100%). This variable is a direct analog for the variable of the
-    // same name in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
-    Percent global_enabled = 4;
-
-    // Global target percentage of requests that will be randomly traced. Percent is resolved to the
-    // nearest 0.01%, rounded down. Defaults to 1 (i.e., 100%). This variable is a direct analog for
-    // the variable of the same name in the :ref:`HTTP Connection Manager
+    // Target percentage of requests managed by this HTTP connectionmanager that will be force
+    // traced if the *x-client-trace-id* header is set. Defaults to 100%. This variable is a direct
+    // analog for the variable of the same name in the :ref:`HTTP Connection Manager
     // <config_http_conn_man_runtime>`.
-    Percent random_sampling = 5;
+    double client_sampling = 3 [(validate.rules).double = {gte: 0, lte: 100}];
+
+    // Target percentage of requests managed by this HTTP connection manager that will be traced
+    // after all other checks have been applied (force tracing, sampling, etc.). Defaults to 100%.
+    // This variable is a direct analog for the variable of the same name in the :ref:`HTTP
+    // Connection Manager <config_http_conn_man_runtime>`.
+    double sampling = 4 [(validate.rules).double = {gte: 0, lte: 100}];
+
+    // Target percentage of requests managed by this HTTP connection manager that will be randomly
+    // traced. Defaults to 100%. This variable is a direct analog for the variable of the same name
+    // in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    HundredthsRoundedPercent random_sampling = 5;
   }
 
   // Presence of the object defines whether the connection manager
