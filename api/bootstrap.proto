@@ -113,6 +113,10 @@ message Bootstrap {
 
   // Configuration for the local administration HTTP server.
   Admin admin = 12 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
+
+  // Configuration for Metrics Service. If specified, metrics will be streamed
+  // to this cluster.
+  MetricsServiceConfig metrics_service = 14;
 }
 
 // Administration interface :ref:`operations documentation
@@ -211,5 +215,12 @@ message RateLimitServiceConfig {
   // Specifies the cluster manager cluster name that hosts the rate limit
   // service. The client will connect to this cluster when it needs to make rate
   // limit service requests.
+  string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
+}
+
+// MetricService Configuration structure.
+message MetricsServiceConfig {
+  // The name of the upstream cluster that hosts the metrics service. The cluster must be
+  // configured in the cluster manager.
   string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
 }
