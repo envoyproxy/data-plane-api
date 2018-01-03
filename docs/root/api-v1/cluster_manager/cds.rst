@@ -42,6 +42,4 @@ JSON schema:
 clusters
   *(Required, array)* A list of :ref:`clusters <config_cluster_manager_cluster>` that will be
   dynamically added/modified within the cluster manager. Envoy will reconcile this list with the
-  clusters that are currently loaded and either add/modify/remove clusters as necessary. Note that
-  any clusters that are statically defined within the Envoy configuration cannot be modified via
-  the CDS API.
+  clusters that are currently loaded and either add/modify/remove clusters as necessary.

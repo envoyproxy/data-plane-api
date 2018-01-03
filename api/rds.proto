@@ -281,7 +281,6 @@ message RouteMatch {
   // is not in the config).
   repeated HeaderMatcher headers = 6;
 
-  // [#not-implemented-hide:]
   // Specifies a set of URL query parameters on which the route should
   // match. The router will check the query string from the *path* header
   // against all the specified query parameters. If the number of specified
