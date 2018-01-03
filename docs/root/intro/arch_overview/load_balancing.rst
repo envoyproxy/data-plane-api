@@ -105,7 +105,7 @@ become unhealthy, traffic will begin to trickle to lower priority levels.
 Currently, it is assumed that each priority level is over-provisioned by a (hard-coded) factor of
 1.4. So if 80% of the endpoints are healthy, the priority level is still considered healthy because
 80*1.4 > 100. As the number of healthy endpoints dips below 72%, the health of the priority level
-goes below 100.  At that point the percent of traffic equivalent to the health of P=0 will go to P=0
+goes below 100. At that point the percent of traffic equivalent to the health of P=0 will go to P=0
 and remaining traffic will flow to P=1.
 
 Assume a simple set-up with 2 priority levels, P=1 100% healthy.
