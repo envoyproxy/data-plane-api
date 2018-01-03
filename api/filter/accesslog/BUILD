@@ -7,5 +7,6 @@ api_proto_library(
     deps = [
         "//api:address",
         "//api:base",
+        "//api:grpc_cluster",
     ],
 )
