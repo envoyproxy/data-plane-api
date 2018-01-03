@@ -53,6 +53,9 @@ size governs the replication factor for each host in the ring. For example, if t
 size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
 balancer does not currently support weighting.
 
+When priority based load balancing is in use, the priority level is also chosen by hash, so the
+endpoint selected will still be consistent when the set of backends is stable.
+
 .. _arch_overview_load_balancing_types_random:
 
 Random
@@ -95,14 +98,15 @@ Priority levels
 
 During load balancing, Envoy will generally only consider hosts configured at the highest priority
 level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional
-priority may also be specifie. When endpoints at the highest priority level (P=0) are healthy, all
-traffic will land on endpoints in that priority leve. As endpoints for the highest priority level
+priority may also be specified. When endpoints at the highest priority level (P=0) are healthy, all
+traffic will land on endpoints in that priority level. As endpoints for the highest priority level
 become unhealthy, traffic will begin to trickle to lower priority levels.
 
 Currently, it is assumed that each priority level is over-provisioned by a (hard-coded) factor of
 1.4. So if 80% of the endpoints are healthy, the priority level is still considered healthy because
-80*1.4 > 10. As the number of healthy endpoints dips below 72%, the health of the priority level
-goes below 100, and any residual traffic will flow to the next priority level.
+80*1.4 > 100. As the number of healthy endpoints dips below 72%, the health of the priority level
+goes below 100.  At that point the percent of traffic equivalent to the health of P=0 will go to P=0
+and remaining traffic will flow to P=1.
 
 Assume a simple set-up with 2 priority levels, P=1 100% healthy.
 
@@ -162,6 +166,11 @@ P=2 would only receive traffic if the combined health of P=0 + P=1 was less than
 | 25          |  25         |  100       | 25%            |   25%          |   50%          |
 +-------------+-------------+------------+----------------+----------------+----------------+
 
+To sum this up in pseudo algorithms:
+percent load to P=0 == min(100, health(P=0) * 100 / total_health)
+health(P=X) == (1.4 * healthy_PX_backends / total_PX_backends)
+total_health == min(100, Σ(health(P=0)...health(P=x));
+percent load to P=X == 100 - Σ(percent_load(P0)..percent_load(Px-1))
 
 .. _arch_overview_load_balancing_zone_aware_routing:
 
