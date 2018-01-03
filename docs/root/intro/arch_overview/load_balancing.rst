@@ -150,7 +150,7 @@ As more priorities are added, each level consumes load equal to its "scaled" eff
 P=2 would only receive traffic if the combined health of P=0 + P=1 was less than 100.
 
 +-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
-| P=0 healthy endpoints | P=1 healthy endpoints | P=2 healthy endpoints | Traffic to P=0 | Traffic to P=1 | Traffic to P=3 |
+| P=0 healthy endpoints | P=1 healthy endpoints | P=2 healthy endpoints | Traffic to P=0 | Traffic to P=1 | Traffic to P=2 |
 +=======================+=======================+=======================+================+================+================+
 | 100%                  |  100%                 |  100%                 | 100%           |   0%           |   0%           |
 +-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
