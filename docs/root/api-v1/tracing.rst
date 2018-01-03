@@ -67,3 +67,23 @@ collector_endpoint
   *(optional, string)* The API endpoint of the Zipkin service where the
   spans will be sent. When using a standard Zipkin installation, the
   API endpoint is typically `/api/v1/spans`, which is the default value.
+
+Dynamic driver
+--------------
+
+.. code-block:: json
+
+  {
+    "type": "dynamic",
+    "config": {
+      "library": "...",
+      "config_file": "..."
+    }
+  }
+
+library
+  *(required, string)* A dynamic library implementing the
+  [OpenTracing API](https://github.com/opentracing/opentracing-cpp).
+
+config_file
+  *(required, string)* The configuration file for the dynamically loaded tracer.
