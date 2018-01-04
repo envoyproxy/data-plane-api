@@ -19,23 +19,25 @@ Configuration
 
 How it works
 ------------
-When gzip filter is enabled, request headers are inspected and potentially processed before
-being sent to an upstream service. As soon as upstream responds, the response headers are also
-analyzed. If either response and request allows, content is compressed and then sent to
+When gzip filter is enabled, request and response headers are inspected in order to determine whether or
+not the content should be compressed. If either response and request allows, content is compressed and then sent to
 the client with the appropriate headers.
 
 By *default* compression will be *skipped* when:
 
-- Request does NOT contain Accept-Encoding header.
-- Request contains Accept-Encoding header, however "gzip" is NOT one of the values.
-- Response contains a Content-Encoding header.
-- Response contains a Cache-Control header whose value is no-transform.
-- Response contains a Transfer-Encoding header whose value is gzip.
-- Neither Content-Length nor Transfer-Encoding headers are present in the response.
+- Request does NOT contain *Accept-Encoding* header.
+- Request contains *Accept-Encoding* header, however "gzip" is NOT one of the values.
+- Response contains a *Content-Encoding* header.
+- Response contains a *Cache-Control* header whose value is no-transform.
+- Response contains a *Transfer-Encoding* header whose value is gzip.
+- Response does not contain a *Content-Type* value that matches one of the following
+  MIME-TYPES: *html, text, css, js, json, svg, xml. xhtml*.
+- Neither *Content-Length* nor *Transfer-Encoding* headers are present in the response.
 - Response size is smaller than 30 bytes.
 
 When compression is *applied*:
 
-- Content-Length will be removed from response headers.
-- Response headers will contain "Transfer-Encoding: chunked" and "Content-Encodig: gzip".
-- "Vary: Accept-Encoding" header will be inserted on every response.
+- *Content-Length* is removed from response headers.
+- Response headers contain "*Transfer-Encoding: chunked*" and "*Content-Encodig: gzip*".
+- "*Vary: Accept-Encoding*" header is inserted on every response, unless disabled via configuration.
+- *Etag*, when present in the response, is re-written to its weak form, unless it is already in this format.
