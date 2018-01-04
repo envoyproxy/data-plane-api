@@ -239,6 +239,7 @@ api_proto_library(
     require_py = 0,
     deps = [
         ":base",
+        "//api:grpc_cluster",
         "@promotheus_metrics_model//:client_model",
     ],
 )

@@ -5,6 +5,7 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "api/base.proto";
+import "api/grpc_cluster.proto";
 
 import "google/api/annotations.proto";
 import "metrics.proto";
@@ -35,4 +36,10 @@ message StreamMetricsMessage {
 
   // A list of metric entries
   repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
+}
+
+// Configuration structure.
+message MetricsServiceConfig {
+  // The upstream Grpc cluster that hosts the metrics service.
+  GrpcCluster cluster = 1 [(validate.rules).message.required = true];
 }
