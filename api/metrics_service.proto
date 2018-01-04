@@ -7,7 +7,6 @@ package envoy.api.v2;
 import "api/base.proto";
 import "api/grpc_cluster.proto";
 
-import "google/api/annotations.proto";
 import "metrics.proto";
 
 import "validate/validate.proto";
