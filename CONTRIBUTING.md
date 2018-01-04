@@ -2,6 +2,8 @@
 
 ## API changes
 
+All API changes should follow the [style guide](STYLE.md).
+
 The following high level procedure is used to make Envoy changes that require API changes.
 
 1. Create a PR in this repo for the API/configuration changes. (If it helps to discuss the
