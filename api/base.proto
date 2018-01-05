@@ -157,6 +157,22 @@ message HeaderValueOption {
   google.protobuf.BoolValue append = 2;
 }
 
+// Data source consisting of either a file or an inline value.
+message DataSource {
+  oneof specifier {
+    option (validate.required) = true;
+
+    // Local filesystem data source.
+    string filename = 1 [(validate.rules).string.min_bytes = 1];
+
+    // Bytes inlined in the configuration.
+    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
+
+    // String inlined in the configuration.
+    string inline_string = 3 [(validate.rules).string.min_bytes = 1];
+  }
+}
+
 // API configuration source. This identifies the API type and cluster that Envoy
 // will use to fetch an xDS API.
 message ApiConfigSource {
