@@ -2,8 +2,9 @@
 
 Generally follow guidance at https://cloud.google.com/apis/design/, in
 particular for proto3 as described at
-https://cloud.google.com/apis/design/proto3. In addition, the following
-conventions should be followed:
+https://cloud.google.com/apis/design/proto3 and
+https://developers.google.com/protocol-buffers/docs/style. In addition, the
+following conventions should be followed:
 
 * The Envoy APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
