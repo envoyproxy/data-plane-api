@@ -37,9 +37,8 @@ message StreamMetricsMessage {
   repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
 }
 
-// Configuration structure for Metrics Service. 
-// It is a :ref: `StatsSink <envoy_api_msg_StatsSink>`opaque configuration that will be used 
-// to create Metrics Service.
+// Configuration structure for Metrics Service.It is a :ref: `StatsSink <envoy_api_msg_StatsSink>`
+// opaque configuration that will be used to create Metrics Service.
 message MetricsServiceConfig {
   // The upstream Grpc cluster that hosts the metrics service.
   GrpcCluster cluster = 1 [(validate.rules).message.required = true];
