@@ -1,10 +1,13 @@
 # API style guidelines
 
 Generally follow guidance at https://cloud.google.com/apis/design/, in
-particular for proto3 as described at
-https://cloud.google.com/apis/design/proto3 and
-https://developers.google.com/protocol-buffers/docs/style. In addition, the
-following conventions should be followed:
+particular for proto3 as described at:
+
+* https://cloud.google.com/apis/design/proto3
+* https://cloud.google.com/apis/design/naming_convention
+* https://developers.google.com/protocol-buffers/docs/style
+
+In addition, the following conventions should be followed:
 
 * The Envoy APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
@@ -20,6 +23,8 @@ following conventions should be followed:
   where the proto3 defaults make sense. All things being equal, pick appropriate
   logic, e.g.  enable vs. disable for a `bool` field, such that the proto3
   defaults work, but only where this doesn't result in API gymnastics.
+
+* Always use plural field names for `repeated` fields.
 
 * Prefer `oneof` selections to boolean overloads of fields, for example, prefer:
 
