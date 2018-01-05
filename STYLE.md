@@ -21,7 +21,7 @@ In addition, the following conventions should be followed:
   where there is a real need for the field to have a default value that does not
   match the proto3 default (0/false/""). This should not be done for fields
   where the proto3 defaults make sense. All things being equal, pick appropriate
-  logic, e.g.  enable vs. disable for a `bool` field, such that the proto3
+  logic, e.g. enable vs. disable for a `bool` field, such that the proto3
   defaults work, but only where this doesn't result in API gymnastics.
 
 * Always use plural field names for `repeated` fields.
