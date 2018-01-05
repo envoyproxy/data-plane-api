@@ -592,12 +592,14 @@ message DirectResponseAction {
   // Specifies the HTTP response status to be returned.
   uint32 status = 1 [(validate.rules).uint32 = {gte: 100, lt: 600}];
 
-  // Specifies headers to include in the HTTP response.
-  repeated HeaderValue response_headers = 2;
-
   // Specifies the content of the response body. If this setting is omitted,
   // no body is included in the generated response.
-  DataSource body = 4;
+  //
+  // .. note::
+  //
+  //   Headers can be specified using *response_headers_to_add* in
+  //   :ref:`envoy_api_msg_RouteConfiguration`.
+  DataSource body = 2;
 }
 
 message Decorator {
