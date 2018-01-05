@@ -72,11 +72,6 @@ for the v2 API change process.
 * Custom components (e.g. filters, resolvers, loggers) will use a reverse DNS naming scheme,
   e.g. `com.google.widget`, `com.lyft.widget`.
 
-* [Wrapped](https://github.com/google/protobuf/blob/master/src/google/protobuf/wrappers.proto)
-  protobuf fields should be used for all non-string [scalar
-  types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
-  where non-zero default values are needed.
-
 ## APIs
 
 Unless otherwise stated, the APIs with the same names as v1 APIs have a similar role.
