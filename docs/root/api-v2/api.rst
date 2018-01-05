@@ -8,6 +8,8 @@ v2 API reference
   :maxdepth: 2
 
   bootstrap.proto
+  config_source.proto
+  grpc_service.proto
   lds.proto
   cds.proto
   eds.proto
@@ -17,9 +19,7 @@ v2 API reference
   stats.proto
   trace.proto
   base.proto
-  data_source.proto
   address.proto
-  grpc_service.proto
   protocol.proto
   discovery.proto
   rls.proto

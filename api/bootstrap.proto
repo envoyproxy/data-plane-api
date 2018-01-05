@@ -9,6 +9,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 import "api/base.proto";
+import "api/config_source.proto";
 import "api/cds.proto";
 import "api/grpc_service.proto";
 import "api/lds.proto";

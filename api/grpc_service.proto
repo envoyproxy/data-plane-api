@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "api/data_source.proto";
+import "api/base.proto";
 
 import "google/protobuf/duration.proto";
 

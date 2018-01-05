@@ -4,6 +4,7 @@ package envoy.api.v2.filter.network;
 option go_package = "network";
 
 import "api/base.proto";
+import "api/config_source.proto";
 import "api/protocol.proto";
 import "api/rds.proto";
 import "api/filter/accesslog/accesslog.proto";
