@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "validate/validate.proto";
+
+// [#protodoc-title: Data sources]
+
+// A data source for objects such as SSL certificates.
+message DataSource {
+  oneof specifier {
+    option (validate.required) = true;
+
+    // Local filesystem data source.
+    string filename = 1 [(validate.rules).string.min_bytes = 1];
+
+    // Bytes inlined in the configuration.
+    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
+  }
+}

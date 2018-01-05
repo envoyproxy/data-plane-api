@@ -30,8 +30,10 @@ PROTO_RST="
   /api/base/api/base.proto.rst
   /api/bootstrap/api/bootstrap.proto.rst
   /api/cds/api/cds.proto.rst
+  /api/data_source/api/data_source.proto.rst
   /api/discovery/api/discovery.proto.rst
   /api/eds/api/eds.proto.rst
+  /api/grpc_service/api/grpc_service.proto.rst
   /api/health_check/api/health_check.proto.rst
   /api/lds/api/lds.proto.rst
   /api/rds/api/rds.proto.rst

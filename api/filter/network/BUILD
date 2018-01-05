@@ -48,5 +48,5 @@ api_proto_library(
 api_proto_library(
     name = "ext_authz",
     srcs = ["ext_authz.proto"],
-    deps = ["//api:grpc_cluster"],
+    deps = ["//api:grpc_service"],
 )

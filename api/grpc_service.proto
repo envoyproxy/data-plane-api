@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package envoy.api.v2;
+
+import "api/data_source.proto";
+
+import "google/protobuf/duration.proto";
+
+import "validate/validate.proto";
+
+// [#protodoc-title: gRPC service]
+// [#proto-status: draft]
+
+// gRPC service configuration. This is used by :ref:`ApiConfigSource
+// <envoy_api_msg_ApiConfigSource>` and filter configurations.
+message GrpcService {
+  oneof target_specifier {
+    // The name of the upstream gRPC cluster when using Envoy's gRPC client. SSL
+    // credentials will be supplied in the :ref:`Cluster
+    // <envoy_api_msg_Cluster>` :ref:`tls_context
+    // <envoy_api_field_Cluster.tls_context>`.
+    string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
+    // The target URI when using the `Google C++ gRPC client
+    // <https://github.com/grpc/grpc>`_. SSL credentials will be supplied in
+    // :ref:`credentials <envoy_api_field_GrpcService.credentials>`.
+    string target_uri = 2 [(validate.rules).string.min_bytes = 1];
+  }
+
+  // The timeout for the gRPC request. This is the timeout for a specific
+  // request.
+  google.protobuf.Duration timeout = 3;
+
+  // gRPC credentials as described at
+  // https://grpc.io/docs/guides/auth.html#credential-types.
+  message Credentials {
+    // SSL credentials when using the `Google C++ gRPC client
+    // <https://github.com/grpc/grpc>`_. See
+    // https://grpc.io/grpc/cpp/structgrpc_1_1_ssl_credentials_options.html.
+    // When the Envoy's gRPC client is used, the SSL credentials are sourced
+    // from the :ref:`Cluster <envoy_api_msg_Cluster>` :ref:`tls_context
+    // <envoy_api_field_Cluster.tls_context>`.
+    message SslCredentials {
+      // PEM encoded server root certificates.
+      DataSource root_certs = 1;
+
+      // PEM encoded client private key.
+      DataSource private_key = 2;
+
+      // PEM encoded client certificate chain.
+      DataSource cert_chain = 3;
+    }
+
+    oneof credential_specifier {
+      SslCredentials ssl_credentials = 1;
+      // OAuth2 access token, see
+      // https://grpc.io/grpc/cpp/namespacegrpc.html#ad3a80da696ffdaea943f0f858d7a360d.
+      string access_token = 2;
+      // [#comment: TODO(htuch): other gRPC auth types, e.g. IAM credentials, JWT, etc.]
+    }
+  }
+  // A set of credentials that will be composed to form the `channel credentials
+  // <https://grpc.io/docs/guides/auth.html#credential-types>`_.
+  repeated Credentials credentials = 4;
+}

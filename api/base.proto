@@ -3,6 +3,7 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "api/address.proto";
+import "api/grpc_service.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -172,14 +173,25 @@ message ApiConfigSource {
     GRPC = 2;
   }
   ApiType api_type = 1 [(validate.rules).enum.defined_only = true];
-  // Multiple cluster names may be provided. If > 1 cluster is defined, clusters
-  // will be cycled through if any kind of failure occurs.
+  // Multiple cluster names may be provided for REST_LEGACY/REST. If > 1
+  // cluster is defined, clusters will be cycled through if any kind of failure
+  // occurs.
   //
   // .. note::
   //
   //  The cluster with name ``cluster_name`` must be statically defined and its
   //  type must not be ``EDS``.
-  repeated string cluster_name = 2 [(validate.rules).repeated .min_items = 1];
+  repeated string cluster_names = 2;
+
+  // Multiple gRPC services be provided for GRPC. If > 1 cluster is defined,
+  // services will be cycled through if any kind of failure occurs.
+  //
+  // .. note::
+  //
+  //  If a gRPC service points to a ``cluster_name``, it must be statically
+  //  defined and its type must not be ``EDS``.
+  repeated GrpcService grpc_services = 4;
+
   // For REST APIs, the delay between successive polls.
   google.protobuf.Duration refresh_delay = 3 [(gogoproto.stdduration) = true];
 }

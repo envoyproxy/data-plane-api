@@ -17,7 +17,9 @@ v2 API reference
   stats.proto
   trace.proto
   base.proto
+  data_source.proto
   address.proto
+  grpc_service.proto
   protocol.proto
   discovery.proto
   rls.proto
