@@ -590,7 +590,7 @@ message RedirectAction {
 
 message DirectResponseAction {
   // Specifies the HTTP response status to be returned.
-  google.protobuf.UInt32Value status = 1 [(validate.rules).message.required = true];
+  uint32 status = 1 [(validate.rules).uint32 = {gte: 100, lt: 600}];
 
   // Specifies headers to include in the HTTP response.
   repeated HeaderValue response_headers = 2;
