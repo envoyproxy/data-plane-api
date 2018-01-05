@@ -178,6 +178,9 @@ message Route {
 
     // Return a redirect.
     RedirectAction redirect = 3;
+
+    // [#not-implemented-hide:] Return an arbitrary HTTP response directly, without proxying.
+    DirectResponseAction response = 7;
   }
 
   // The Metadata field can be used to provide additional information
@@ -583,6 +586,22 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+}
+
+message DirectResponseAction {
+  // Specifies the HTTP response status to be returned.
+  google.protobuf.UInt32Value status = 1 [(validate.rules).message.required = true];
+
+  // Specifies the human-readable status to be returned if
+  // the response is encoded as HTTP/1.x.
+  string reason = 2;
+
+  // Specifies the response content-type. This setting defaults to text/plain.
+  string content_type = 3;
+
+  // Specifies the content of the response body. If this setting is omitted,
+  // no body is included in the generated response.
+  string body = 4;
 }
 
 message Decorator {
