@@ -24,18 +24,6 @@ service SecretDiscoveryService {
   }
 }
 
-message DataSource {
-  oneof specifier {
-    option (validate.required) = true;
-
-    // Local filesystem data source.
-    string filename = 1 [(validate.rules).string.min_bytes = 1];
-
-    // Bytes inlined in the configuration.
-    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
-  }
-}
-
 message TlsParameters {
   enum TlsProtocol {
     // Envoy will choose the optimal TLS version.
