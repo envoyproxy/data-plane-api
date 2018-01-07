@@ -157,7 +157,7 @@ message HeaderValueOption {
   google.protobuf.BoolValue append = 2;
 }
 
-// A data source for objects such as SSL certificates.
+// Data source consisting of either a file or an inline value.
 message DataSource {
   oneof specifier {
     option (validate.required) = true;
@@ -166,7 +166,10 @@ message DataSource {
     string filename = 1 [(validate.rules).string.min_bytes = 1];
 
     // Bytes inlined in the configuration.
-    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
+    bytes inline_bytes = 2 [(validate.rules).bytes.min_len = 1];
+
+    // String inlined in the configuration.
+    string inline_string = 3 [(validate.rules).string.min_bytes = 1];
   }
 }
 

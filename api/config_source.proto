@@ -77,4 +77,3 @@ message ConfigSource {
     AggregatedConfigSource ads = 3;
   }
 }
-

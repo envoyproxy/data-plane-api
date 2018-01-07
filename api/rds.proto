@@ -178,6 +178,9 @@ message Route {
 
     // Return a redirect.
     RedirectAction redirect = 3;
+
+    // [#not-implemented-hide:] Return an arbitrary HTTP response directly, without proxying.
+    DirectResponseAction direct_response = 7;
   }
 
   // The Metadata field can be used to provide additional information
@@ -583,6 +586,20 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+}
+
+message DirectResponseAction {
+  // Specifies the HTTP response status to be returned.
+  uint32 status = 1 [(validate.rules).uint32 = {gte: 100, lt: 600}];
+
+  // Specifies the content of the response body. If this setting is omitted,
+  // no body is included in the generated response.
+  //
+  // .. note::
+  //
+  //   Headers can be specified using *response_headers_to_add* in
+  //   :ref:`envoy_api_msg_RouteConfiguration`.
+  DataSource body = 2;
 }
 
 message Decorator {
