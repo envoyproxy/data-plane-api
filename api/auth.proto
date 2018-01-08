@@ -44,5 +44,5 @@ message AuthAction {
   }
 
   // List of rules
-  repeated Rule rule = 2;
+  repeated Rule rules = 2;
 }
