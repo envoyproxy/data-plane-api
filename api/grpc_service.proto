@@ -8,7 +8,7 @@ import "google/protobuf/duration.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: gRPC service]
+// [#protodoc-title: gRPC services]
 // [#proto-status: draft]
 
 // gRPC service configuration. This is used by :ref:`ApiConfigSource
@@ -45,9 +45,13 @@ message GrpcService {
     option (validate.required) = true;
 
     // Envoy's in-built gRPC client.
+    // See the :ref:`gRPC services overview <arch_overview_grpc_services>`
+    // documentation for discussion on gRPC client selection.
     EnvoyGrpc envoy_grpc = 1;
 
     // `Google C++ gRPC client <https://github.com/grpc/grpc>`_
+    // See the :ref:`gRPC services overview <arch_overview_grpc_services>`
+    // documentation for discussion on gRPC client selection.
     GoogleGrpc google_grpc = 2;
   }
 
@@ -57,6 +61,10 @@ message GrpcService {
 
   // gRPC credentials as described at
   // https://grpc.io/docs/guides/auth.html#credential-types.
+  //
+  // .. note::
+  //
+  //   Credentials are only currently implemented for the Google gRPC client.
   message Credentials {
     oneof credential_specifier {
       option (validate.required) = true;
