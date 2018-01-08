@@ -415,6 +415,13 @@ message Cluster {
   // For instance, if the metadata is intended for the Router filter, the filter
   // name should be specified as *envoy.router*.
   Metadata metadata = 25;
+
+  enum ClusterProtocolSelection {
+    // Cluster can only operate on one of the possible upstream protocols (HTTP1.1, HTTP2).
+    // If http2_protocol_options are present, HTTP2 will be used, otherwise HTTP1.1 will be used.
+    EXCLUSIVE_AS_CONFIGURED = 0;
+  }
+  ClusterProtocolSelection protocol_selection = 26;
 }
 
 // An extensible structure containing the address Envoy should bind to when
