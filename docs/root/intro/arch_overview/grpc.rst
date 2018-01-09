@@ -24,3 +24,45 @@ application layer:
 * gRPC-JSON transcoder is supported by a :ref:`filter <config_http_filters_grpc_json_transcoder>`
   that allows a RESTful JSON API client to send requests to Envoy over HTTP and get proxied to a
   gRPC service.
+
+.. _arch_overview_grpc_services:
+
+gRPC services
+-------------
+
+In addition to proxying gRPC on the data plane, Envoy make use of gRPC for its
+control plane, where it :ref:`fetches configuration from management server(s)
+<config_overview_v2>` and also in filters, for example for :ref:`rate limiting
+<config_http_filters_rate_limit>` or authorization checks. We refer to these as
+*gRPC services*.
+
+When specifying gRPC services, it's necessary to specify the use of either the
+:ref:`Envoy gRPC client <envoy_api_field_GrpcService.envoy_grpc>` or the
+:ref:`Google C++ gRPC client <envoy_api_field_GrpcSErvice.google_grpc>`. We
+discuss the tradeoffs in this choice below.
+
+The Envoy gRPC client is a minimal custom implementation of gRPC that makes use
+of Envoy's HTTP/2 upstream connection management. Services are specified as
+regular Envoy :ref:`clusters <arch_overview_cluster_manager>`, with regular
+treatment of :ref:`timeouts, retries <arch_overview_http_conn_man>`, endpoint
+:ref:`discovery <arch_overview_dynamic_config_sds>`/:ref:`load
+balancing/failover <arch_overview_load_balancing>`/load reporting, :ref:`circuit
+breaking <arch_overview_circuit_break>`, :ref:`health checks
+<arch_overview_health_checking>`, :ref:`outlier detection
+<arch_overview_outlier_detection>`. They share the same :ref:`connection pooling
+<arch_overview_conn_pool>` mechanism as the Envoy data plane. Similarly, cluster
+:ref:`statistics <arch_overview_statistics>` are available for gRPC services.
+Since the client is minimal, it does not include advanced gRPC features such as
+`OAuth2 <https://oauth.net/2/>`_ or `gRPC-LB
+<https://grpc.io/blog/loadbalancing>`_ lookaside.
+
+The Google C++ gRPC client is based on the reference implementation of gRPC
+provided by Google at https://github.com/grpc/grpc. It provides advanced gRPC
+features that are missing in the Envoy gRPC client. The Google C++ gRPC client
+performs its own load balancing, retries, timeouts, endpoint management, etc,
+independent of Envoy's cluster management.
+
+It is recommended to use the Envoy gRPC client in most cases, where the advanced
+features in the Google C++ gRPC client are not required. This provides
+configuration and monitoring simplicity. Where necessary features are missing
+in the Envoy gRPC client, the Google G++ gRPC client should be used instead.

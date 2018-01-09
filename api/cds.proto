@@ -4,6 +4,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 import "api/base.proto";
+import "api/config_source.proto";
 import "api/discovery.proto";
 import "api/health_check.proto";
 import "api/protocol.proto";

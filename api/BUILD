@@ -48,6 +48,8 @@ api_proto_library(
         ":address",
         ":base",
         ":cds",
+        ":config_source",
+        ":grpc_service",
         ":lds",
         ":sds",
         ":stats",
@@ -64,6 +66,8 @@ go_proto_library(
         ":address_go_proto",
         ":base_go_proto",
         ":cds_go_grpc",
+        ":config_source_go_proto",
+        ":grpc_service_go_proto",
         ":lds_go_grpc",
         ":sds_go_grpc",
         ":stats_go_proto",
@@ -100,6 +104,7 @@ api_proto_library(
     deps = [
         ":address",
         ":base",
+        ":config_source",
         ":discovery",
         ":health_check",
         ":protocol",
@@ -115,6 +120,7 @@ go_grpc_library(
     deps = [
         ":address_go_proto",
         ":base_go_proto",
+        ":config_source_go_proto",
         ":discovery_go_grpc",
         ":health_check_go_proto",
         ":protocol_go_proto",
@@ -125,6 +131,29 @@ go_grpc_library(
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
         "@com_lyft_protoc_gen_validate//validate:go_default_library",
         "@googleapis//:http_api_go_proto",
+    ],
+)
+
+api_proto_library(
+    name = "config_source",
+    srcs = ["config_source.proto"],
+    deps = [
+        ":base",
+        ":grpc_service",
+    ],
+)
+
+go_proto_library(
+    name = "config_source_go_proto",
+    importpath = "github.com/envoyproxy/data-plane-api/api/config_source",
+    proto = ":config_source",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":base_go_proto",
+        ":grpc_service_go_proto",
+        "@com_github_gogo_protobuf//:gogo_proto_go",
+        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
+        "@com_lyft_protoc_gen_validate//validate:go_default_library",
     ],
 )
 
@@ -176,8 +205,21 @@ go_grpc_library(
 )
 
 api_proto_library(
-    name = "grpc_cluster",
-    srcs = ["grpc_cluster.proto"],
+    name = "grpc_service",
+    srcs = ["grpc_service.proto"],
+    deps = [":base"],
+)
+
+go_proto_library(
+    name = "grpc_service_go_proto",
+    importpath = "github.com/envoyproxy/data-plane-api/api/grpc_service",
+    proto = ":grpc_service",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":base_go_proto",
+        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
+        "@com_lyft_protoc_gen_validate//validate:go_default_library",
+    ],
 )
 
 api_proto_library(
@@ -239,7 +281,7 @@ api_proto_library(
     require_py = 0,
     deps = [
         ":base",
-        ":grpc_cluster",
+        ":grpc_service",
         "@promotheus_metrics_model//:client_model",
     ],
 )
@@ -310,6 +352,7 @@ api_proto_library(
     has_services = 1,
     deps = [
         ":base",
+        ":config_source",
         ":discovery",
     ],
 )
@@ -321,6 +364,7 @@ go_grpc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":base_go_proto",
+        ":config_source_go_proto",
         ":discovery_go_grpc",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
         "@com_lyft_protoc_gen_validate//validate:go_default_library",

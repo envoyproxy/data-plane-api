@@ -5,7 +5,7 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "api/base.proto";
-import "api/grpc_cluster.proto";
+import "api/grpc_service.proto";
 
 import "metrics.proto";
 
@@ -41,5 +41,5 @@ message StreamMetricsMessage {
 // opaque configuration that will be used to create Metrics Service.
 message MetricsServiceConfig {
   // The upstream gRPC cluster that hosts the metrics service.
-  GrpcCluster cluster = 1 [(validate.rules).message.required = true];
+  GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }
