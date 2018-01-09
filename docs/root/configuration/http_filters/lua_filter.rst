@@ -10,6 +10,12 @@ Lua
   and verification. This warning will be removed when we feel that the filter has received enough
   testing and API stability to call it generally production ready.
 
+.. attention::
+
+  By default envoy is built without exporting symbols that you may need when interacting with
+  lua modules installed as shared objects.  If may need to build envoy with support for exported symbols.
+  Please see the `bazel docs <https://github.com/envoyproxy/envoy/blob/master/bazel/README.md>` for more information.
+
 Overview
 --------
 
