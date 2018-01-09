@@ -1,8 +1,12 @@
 load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 load("@com_lyft_protoc_gen_validate//bazel:pgv_proto_library.bzl", "pgv_cc_proto_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library", "go_grpc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
 
 _PY_SUFFIX="_py"
 _CC_SUFFIX="_cc"
+_GO_PROTO_SUFFIX="_go_proto"
+_GO_GRPC_SUFFIX="_go_grpc"
 
 def _Suffix(d, suffix):
   return d + suffix
@@ -32,6 +36,24 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
             "@com_github_gogo_protobuf//:gogo_proto_py",
         ],
         visibility = ["//visibility:public"],
+    )
+
+def api_go_proto_library(proto, importpath, deps = []):
+    go_proto_library(
+        name = _Suffix(proto, _GO_PROTO_SUFFIX),
+        importpath = importpath,
+        proto = _Suffix(":", proto),
+        visibility = ["//visibility:public"],
+        deps = deps,
+    )
+
+def api_go_grpc_library(proto, importpath, deps = []):
+    go_grpc_library(
+        name = _Suffix(proto, _GO_GRPC_SUFFIX),
+        importpath = importpath,
+        proto = _Suffix(":", proto),
+        visibility = ["//visibility:public"],
+        deps = deps,
     )
 
 # TODO(htuch): has_services is currently ignored but will in future support
@@ -86,4 +108,13 @@ def api_cc_test(name, srcs, proto_deps):
         name = name,
         srcs = srcs,
         deps = [_LibrarySuffix(d, _CC_SUFFIX) for d in proto_deps],
+    )
+
+def api_go_test(name, size, importpath, srcs = [], deps = []):
+    go_test(
+        name = name,
+        size = size,
+        srcs = srcs,
+        importpath = importpath,
+        deps = deps,
     )
