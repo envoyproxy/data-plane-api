@@ -1,5 +1,4 @@
-load("//bazel:api_build_system.bzl", "api_cc_test")
-load("@io_bazel_rules_go//go:def.bzl", "go_test")
+load("//bazel:api_build_system.bzl", "api_cc_test", "api_go_test")
 
 licenses(["notice"])  # Apache 2
 
@@ -19,7 +18,7 @@ api_cc_test(
     ],
 )
 
-go_test(
+api_go_test(
     name = "go_build_test",
     size = "small",
     srcs = ["go_build_test.go"],
