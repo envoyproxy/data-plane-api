@@ -8,6 +8,8 @@ v2 API reference
   :maxdepth: 2
 
   bootstrap.proto
+  config_source.proto
+  grpc_service.proto
   lds.proto
   cds.proto
   eds.proto

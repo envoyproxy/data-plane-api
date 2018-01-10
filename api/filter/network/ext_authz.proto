@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
-import "api/grpc_cluster.proto";
+import "api/grpc_service.proto";
 
 import "validate/validate.proto";
 
@@ -15,7 +15,7 @@ message ExtAuthz {
   string stat_prefix = 1 [(validate.rules).string.min_bytes = 1];
 
   // The external authorization gRPC service configuration.
-  GrpcCluster grpc_cluster = 2;
+  GrpcService grpc_service = 2;
 
   // The filter's behaviour in case the external authorization service does
   // not respond back. If set to true then in case of failure to get a
