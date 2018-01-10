@@ -8,13 +8,8 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/address",
-    proto = "address",
-    deps = [
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "address",
+    proto = ":address",
 )
 
 api_proto_library(
@@ -24,16 +19,9 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/base",
-    proto = "base",
-    deps = [
-        ":address_go_proto",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "base",
+    proto = ":base",
+    deps = [":address_go_proto"],
 )
 
 api_proto_library(
@@ -53,8 +41,8 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/bootstrap",
-    proto = "bootstrap",
+    name = "bootstrap",
+    proto = ":bootstrap",
     deps = [
         ":address_go_proto",
         ":base_go_proto",
@@ -65,9 +53,6 @@ api_go_proto_library(
         ":sds_go_grpc",
         ":stats_go_proto",
         ":trace_go_proto",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
     ],
 )
 
@@ -78,14 +63,9 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/health_check",
-    proto = "health_check",
-    deps = [
-        ":base_go_proto",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "health_check",
+    proto = ":health_check",
+    deps = [":base_go_proto"],
 )
 
 api_proto_library(
@@ -104,8 +84,8 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/cds",
-    proto = "cds",
+    name = "cds",
+    proto = ":cds",
     deps = [
         ":address_go_proto",
         ":base_go_proto",
@@ -114,12 +94,6 @@ api_go_grpc_library(
         ":health_check_go_proto",
         ":protocol_go_proto",
         ":sds_go_grpc",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -133,14 +107,11 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/config_source",
-    proto = "config_source",
+    name = "config_source",
+    proto = ":config_source",
     deps = [
         ":base_go_proto",
         ":grpc_service_go_proto",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
     ],
 )
 
@@ -152,12 +123,9 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/discovery",
-    proto = "discovery",
-    deps = [
-        ":base_go_proto",
-        "@com_github_golang_protobuf//ptypes/any:go_default_library",
-    ],
+    name = "discovery",
+    proto = ":discovery",
+    deps = [":base_go_proto"],
 )
 
 api_proto_library(
@@ -173,17 +141,13 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/eds",
-    proto = "eds",
+    name = "eds",
+    proto = ":eds",
     deps = [
         ":address_go_proto",
         ":base_go_proto",
         ":discovery_go_grpc",
         ":health_check_go_proto",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -194,13 +158,9 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/grpc_service",
-    proto = "grpc_service",
-    deps = [
-        ":base_go_proto",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "grpc_service",
+    proto = ":grpc_service",
+    deps = [":base_go_proto"],
 )
 
 api_proto_library(
@@ -214,13 +174,11 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/hds",
-    proto = "hds",
+    name = "hds",
+    proto = ":hds",
     deps = [
         ":base_go_proto",
         ":health_check_go_proto",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -237,17 +195,13 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/lds",
-    proto = "lds",
+    name = "lds",
+    proto = ":lds",
     deps = [
         ":address_go_proto",
         ":base_go_proto",
         ":discovery_go_grpc",
         ":sds_go_grpc",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -269,12 +223,8 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/protocol",
-    proto = "protocol",
-    deps = [
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "protocol",
+    proto = ":protocol",
 )
 
 api_proto_library(
@@ -284,11 +234,8 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/rls",
-    proto = "rls",
-    deps = [
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "rls",
+    proto = ":rls",
 )
 
 api_proto_library(
@@ -303,17 +250,12 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/rds",
-    proto = "rds",
+    name = "rds",
+    proto = ":rds",
     deps = [
         ":auth_go_proto",
         ":base_go_proto",
         ":discovery_go_grpc",
-        "@com_github_gogo_protobuf//:gogo_proto_go",
-        "@com_github_golang_protobuf//ptypes/duration:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -329,15 +271,12 @@ api_proto_library(
 )
 
 api_go_grpc_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/sds",
-    proto = "sds",
+    name = "sds",
+    proto = ":sds",
     deps = [
         ":base_go_proto",
         ":config_source_go_proto",
         ":discovery_go_grpc",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-        "@googleapis//:http_api_go_proto",
     ],
 )
 
@@ -350,13 +289,10 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/stats",
-    proto = "stats",
+    name = "stats",
+    proto = ":stats",
     deps = [
         ":address_go_proto",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
     ],
 )
 
@@ -366,12 +302,8 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/api/trace",
-    proto = "trace",
-    deps = [
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_lyft_protoc_gen_validate//validate:go_default_library",
-    ],
+    name = "trace",
+    proto = ":trace",
 )
 
 api_proto_library(
@@ -383,13 +315,11 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    importpath = "github.com/envoyproxy/data-plane-api/auth",
-    proto = "auth",
+    name = "auth",
+    proto = ":auth",
     deps = [
         "//api:address_go_proto",
         "//api:sds_go_grpc",
-        "@com_github_golang_protobuf//ptypes/struct:go_default_library",
-        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@googleapis//:rpc_status_go_proto",
     ],
 )
