@@ -78,4 +78,15 @@ message GrpcService {
   // A set of credentials that will be composed to form the `channel credentials
   // <https://grpc.io/docs/guides/auth.html#credential-types>`_.
   repeated Credentials credentials = 4;
+
+  // The human readable prefix to use when emitting statistics for the gRPC
+  // service.
+  //
+  // .. csv-table::
+  //    :header: Name, Type, Description
+  //    :widths: 1, 1, 2
+  //
+  //    streams_total, Counter, Total number of streams opened
+  //    streams_closed_<gRPC status code>, Counter, Total streams closed with <gRPC status code>
+  string stat_prefix = 5 [(validate.rules).string.min_bytes = 1];
 }
