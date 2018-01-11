@@ -9,6 +9,27 @@ particular for proto3 as described at:
 
 In addition, the following conventions should be followed:
 
+* For protos that are [frozen](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#status),
+  the following guidelines are followed:
+
+  * Fields should not be renumbered or have their types changed. This is standard proto development
+    procedure.
+  * Fields should not be **renamed**. This is stricter than standard proto development procedure
+    in the sense that it does not break binary wire format. However, it **does** break loading
+    of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
+    inputs, we must not change field names.
+  * If fields are deleted, the following syntax should be put in their place:
+
+  ```proto
+  reserved <field index>;
+  ```
+
+  E.g.,
+
+  ```proto
+  reserved 15;
+  ```
+
 * The data plane APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
   level configuration concepts to concrete API concepts. Similarly, static configuration
