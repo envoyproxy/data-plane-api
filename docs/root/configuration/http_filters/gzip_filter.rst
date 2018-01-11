@@ -26,7 +26,7 @@ the client with the appropriate headers.
 By *default* compression will be *skipped* when:
 
 - Request does NOT contain *Accept-Encoding* header.
-- Request contains *Accept-Encoding* header, however "gzip" is NOT one of the values.
+- Request contains *Accept-Encoding* header, however it does not allow "gzip".
 - Response contains a *Content-Encoding* header.
 - Response contains a *Cache-Control* header whose value is no-transform.
 - Response contains a *Transfer-Encoding* header whose value is gzip.
@@ -34,10 +34,10 @@ By *default* compression will be *skipped* when:
   MIME-TYPES: *html, text, css, js, json, svg, xml. xhtml*.
 - Neither *Content-Length* nor *Transfer-Encoding* headers are present in the response.
 - Response size is smaller than 30 bytes.
+- Strong *Etag* is removed from the response if any.
 
 When compression is *applied*:
 
 - *Content-Length* is removed from response headers.
 - Response headers contain "*Transfer-Encoding: chunked*" and "*Content-Encodig: gzip*".
-- "*Vary: Accept-Encoding*" header is inserted on every response, unless disabled via configuration.
-- *Etag*, when present in the response, is re-written to its weak form, unless it is already in this format.
+- "*Vary: Accept-Encoding*" header is inserted on every response.

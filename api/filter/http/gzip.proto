@@ -50,29 +50,24 @@ message Gzip {
 
   // Set of strings that allows specifying which mime-types yield compression; e.g.
   // application/json, text/html, etc. When this field is not specified, compression will be applied
-  // to the following MIME-TYPES: html, text, css, js, json, svg, xml. xhtml".
+  // to the following MIME-TYPES: html, text, css, js, json, svg, xml, xhtml.
   repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 50}];
 
-  // Value that disables compression if response contains Etag (entity tag)
-  // header. This option is disabled by default (false), which means that strong Etags will be
-  // re-writen to its weak form before being dispatched to the client. If for some reason the client
-  // does not support weak validation, it is recommended to have this enabled.
-  google.protobuf.BoolValue disable_on_etag = 7;
+  // Value that disables compression if response contains Etag (entity tag) header. This option is
+  // not enabled by default (false), which means that weak tags will be preserved and strong Etags
+  // will be removed from the response. When this option is enabled compression will be skipped in
+  // the presence of any entity tag. Note that an alternative solution is to have etag off at the
+  // origin and use Last-Modified instead.
+  bool disable_on_etag = 7;
 
   // Value that disables compression if response contains Last-Modified
   // header. Default is false, which means that filter will not skip compression upon the presence
   // of this header.
-  google.protobuf.BoolValue disable_on_last_modified = 8;
+  bool disable_on_last_modified = 8;
 
   // Value from 9 to 15 that represents the base two logarithm of the compressor's window size.
   // Larger values result in better compression at the expense of memory usage; e.g. 12 will produce
   // a 4096 bytes window. Default is 12. For more details about this parameter, please refer to Zlib
   // manual > deflateInit2.
   google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
-
-  // Value that disables the insertion of “Vary: Accept-Encoding” in the response header.
-  // Tipically Vary:Accept-Encoding instructs proxies to store the compressed version of
-  // the content. Default is false, which means that this header will be inserted on every
-  // compressed response.
-  google.protobuf.BoolValue disable_vary = 10;
 }
