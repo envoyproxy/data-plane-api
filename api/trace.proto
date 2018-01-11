@@ -24,8 +24,8 @@ message Tracing {
     // Trace driver specific configuration which depends on the driver being
     // instantiated. See the :ref:`LightstepConfig
     // <envoy_api_msg_LightstepConfig>`, :ref:`ZipkinConfig
-    // <envoy_api_msg_ZipkinConfig>`, and :ref:`DynamicConfig
-    // <envoy_api_msg_DynamicConfig>` trace drivers for examples.
+    // <envoy_api_msg_ZipkinConfig>`, and :ref:`DynamicOtConfig
+    // <envoy_api_msg_DynamicOtConfig>` trace drivers for examples.
     google.protobuf.Struct config = 2;
   }
   // Provides configuration for the HTTP tracer.
@@ -54,7 +54,7 @@ message ZipkinConfig {
   string collector_endpoint = 2 [(validate.rules).string.min_bytes = 1];
 }
 
-message DynamicConfig {
+message DynamicOtConfig {
   // Dynamic library implementing the `OpenTracing API
   // <https://github.com/opentracing/opentracing-cpp>`_.
   string library = 1 [(validate.rules).string.min_bytes = 1];
