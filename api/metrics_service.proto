@@ -2,6 +2,8 @@ syntax = "proto3";
 
 // [#proto-status: experimental]
 
+// [#protodoc-title: Metrics Service]
+
 package envoy.api.v2;
 
 import "api/base.proto";
@@ -11,7 +13,6 @@ import "metrics.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: Metrics Service]
 // Service for streaming metrics to server that consumes the metrics data. It uses Prometheus metric
 // data model as a standard to represent metrics information.
 service MetricsService {
