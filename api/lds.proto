@@ -105,7 +105,8 @@ message Listener {
   DrainType drain_type = 8;
 
   // A list of individual listener filters that make up the filter chain for sockets accepted with
-  // the listener. These filters are run before any in the 'filter_chains', and these filters have
+  // the listener. These filters are run before any in the
+  // :ref:`filter_chains <envoy_api_field_Listener.filter_chains>`, and these filters have
   // the opportunity to manipulate and augment the connection metadata that is used in connection
   // filter chain matching. Order matters as the filters are processed sequentially right after a
   // socket has been accepted by the listener, and before a connection is created.
