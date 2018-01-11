@@ -17,6 +17,7 @@ v2 API reference
   rds.proto
   sds.proto
   stats.proto
+  metrics_service.proto
   trace.proto
   base.proto
   address.proto
