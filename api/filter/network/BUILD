@@ -7,6 +7,7 @@ api_proto_library(
     srcs = ["http_connection_manager.proto"],
     deps = [
         "//api:base",
+        "//api:config_source",
         "//api:protocol",
         "//api:rds",
         "//api/filter/accesslog",
@@ -48,5 +49,5 @@ api_proto_library(
 api_proto_library(
     name = "ext_authz",
     srcs = ["ext_authz.proto"],
-    deps = ["//api:grpc_cluster"],
+    deps = ["//api:grpc_service"],
 )

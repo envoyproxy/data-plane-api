@@ -3,6 +3,7 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "api/base.proto";
+import "api/config_source.proto";
 import "api/discovery.proto";
 
 import "google/api/annotations.proto";
@@ -21,18 +22,6 @@ service SecretDiscoveryService {
       post: "/v2/discovery:secrets"
       body: "*"
     };
-  }
-}
-
-message DataSource {
-  oneof specifier {
-    option (validate.required) = true;
-
-    // Local filesystem data source.
-    string filename = 1 [(validate.rules).string.min_bytes = 1];
-
-    // Bytes inlined in the configuration.
-    bytes inline = 2 [(validate.rules).bytes.min_len = 1];
   }
 }
 

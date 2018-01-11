@@ -1,8 +1,13 @@
 load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 load("@com_lyft_protoc_gen_validate//bazel:pgv_proto_library.bzl", "pgv_cc_proto_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library", "go_grpc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
 
 _PY_SUFFIX="_py"
 _CC_SUFFIX="_cc"
+_GO_PROTO_SUFFIX="_go_proto"
+_GO_GRPC_SUFFIX="_go_grpc"
+_GO_IMPORTPATH_PREFIX="github.com/envoyproxy/data-plane-api/api/"
 
 def _Suffix(d, suffix):
   return d + suffix
@@ -32,6 +37,39 @@ def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
             "@com_github_gogo_protobuf//:gogo_proto_py",
         ],
         visibility = ["//visibility:public"],
+    )
+
+def api_go_proto_library(name, proto, deps = []):
+    go_proto_library(
+        name = _Suffix(name, _GO_PROTO_SUFFIX),
+        importpath = _Suffix(_GO_IMPORTPATH_PREFIX, name),
+        proto = proto,
+        visibility = ["//visibility:public"],
+        deps = deps + [
+            "@com_github_gogo_protobuf//:gogo_proto_go",
+            "@com_github_golang_protobuf//ptypes/duration:go_default_library",
+            "@com_github_golang_protobuf//ptypes/struct:go_default_library",
+            "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
+            "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+            "@com_lyft_protoc_gen_validate//validate:go_default_library",
+        ]
+    )
+
+def api_go_grpc_library(name, proto, deps = []):
+    go_grpc_library(
+        name = _Suffix(name, _GO_GRPC_SUFFIX),
+        importpath = _Suffix(_GO_IMPORTPATH_PREFIX, name),
+        proto = proto,
+        visibility = ["//visibility:public"],
+        deps = deps + [
+            "@com_github_gogo_protobuf//:gogo_proto_go",
+            "@com_github_golang_protobuf//ptypes/duration:go_default_library",
+            "@com_github_golang_protobuf//ptypes/struct:go_default_library",
+            "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+            "@com_github_golang_protobuf//ptypes/any:go_default_library",
+            "@com_lyft_protoc_gen_validate//validate:go_default_library",
+            "@googleapis//:http_api_go_proto",
+        ]
     )
 
 # TODO(htuch): has_services is currently ignored but will in future support
@@ -86,4 +124,13 @@ def api_cc_test(name, srcs, proto_deps):
         name = name,
         srcs = srcs,
         deps = [_LibrarySuffix(d, _CC_SUFFIX) for d in proto_deps],
+    )
+
+def api_go_test(name, size, importpath, srcs = [], deps = []):
+    go_test(
+        name = name,
+        size = size,
+        srcs = srcs,
+        importpath = importpath,
+        deps = deps,
     )

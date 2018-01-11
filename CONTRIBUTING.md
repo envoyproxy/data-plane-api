@@ -2,25 +2,44 @@
 
 ## API changes
 
+All API changes should follow the [style guide](STYLE.md).
+
 The following high level procedure is used to make Envoy changes that require API changes.
 
 1. Create a PR in this repo for the API/configuration changes. (If it helps to discuss the
    configuration changes in the context of a code change, it is acceptable to point a code
    change at a temporary fork of this repo so it passes tests).
+
+   Run the automated formatting checks on your change before submitting the PR:
+
+   ```
+   ./ci/run_envoy_docker.sh './ci/do_ci.sh check_format'
+   ```
+
+   If the `check_format` script reports any problems, you can fix them manually or run
+   the companion `fix_format` script:
+
+   ```
+   ./ci/run_envoy_docker.sh './ci/do_ci.sh fix_format'
+   ```
+
+   Before building the docs
+
+
 2. Bazel can be used to build/test locally.
    1. Directly on Linux:
-
       ```
       bazel build //api/...
       bazel test //test/... //tools/...
       ```
-
    2. Using docker:
-
       ```
       ./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.test'
       ./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.docs'
       ```
+      *Note: New .proto files should be also included to [build.sh](https://github.com/envoyproxy/data-plane-api/blob/931aaabad939ecb1feeeaf7fbe41be15c47048d3/docs/build.sh#L28) and
+      [BUILD](https://github.com/envoyproxy/data-plane-api/blob/931aaabad939ecb1feeeaf7fbe41be15c47048d3/api/BUILD#L389) in order to get the RSTs generated.*
+
 3. All configuration changes should have temporary associated documentation. Fields should be
    hidden from the documentation via the `[#not-implemented-hide:]` comment tag. E.g.,
 

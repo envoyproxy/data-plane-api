@@ -53,6 +53,9 @@ size governs the replication factor for each host in the ring. For example, if t
 size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
 balancer does not currently support weighting.
 
+When priority based load balancing is in use, the priority level is also chosen by hash, so the
+endpoint selected will still be consistent when the set of backends is stable.
+
 .. _arch_overview_load_balancing_types_random:
 
 Random
@@ -94,10 +97,82 @@ Priority levels
 ------------------
 
 During load balancing, Envoy will generally only consider hosts configured at the highest priority
-level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional priority
-may also be specified. Currently the failover mechanics for routing from one priority level to
-another are fairly simplistic: a given priority level will be used until it has zero healthy hosts,
-at which point it will hard fail to the next highest priority level.
+level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional
+priority may also be specified. When endpoints at the highest priority level (P=0) are healthy, all
+traffic will land on endpoints in that priority level. As endpoints for the highest priority level
+become unhealthy, traffic will begin to trickle to lower priority levels.
+
+Currently, it is assumed that each priority level is over-provisioned by a (hard-coded) factor of
+1.4. So if 80% of the endpoints are healthy, the priority level is still considered healthy because
+80*1.4 > 100. As the number of healthy endpoints dips below 72%, the health of the priority level
+goes below 100. At that point the percent of traffic equivalent to the health of P=0 will go to P=0
+and remaining traffic will flow to P=1.
+
+Assume a simple set-up with 2 priority levels, P=1 100% healthy.
+
++----------------------------+---------------------------+----------------------------+
+| P=0 healthy endpoints      | Percent of traffic to P=0 |  Percent of traffic to P=1 |
++============================+===========================+============================+
+| 100%                       | 100%                      |   0%                       |
++----------------------------+---------------------------+----------------------------+
+| 72%                        | 100%                      |   0%                       |
++----------------------------+---------------------------+----------------------------+
+| 71%                        | 99%                       |   1%                       |
++----------------------------+---------------------------+----------------------------+
+| 50%                        | 70%                       |   30%                      |
++----------------------------+---------------------------+----------------------------+
+| 25%                        | 35%                       |   65%                      |
++----------------------------+---------------------------+----------------------------+
+| 0%                         | 0%                        |   100%                     |
++----------------------------+---------------------------+----------------------------+
+
+If P=1 becomes unhealthy, it will continue to take spilled load from P=0 until the sum of the health
+P=0 + P=1 goes below 100. At this point the healths will be scaled up to an "effective" health of
+100%.
+
++------------------------+-------------------------+-----------------+-----------------+
+| P=0 healthy endpoints  | P=1 healthy endpoints   | Traffic to  P=0 |  Traffic to P=1 |
++========================+=========================+=================+=================+
+| 100%                   |  100%                   | 100%            |   0%            |
++------------------------+-------------------------+-----------------+-----------------+
+| 72%                    |  72%                    | 100%            |   0%            |
++------------------------+-------------------------+-----------------+-----------------+
+| 71%                    |  71%                    | 99%             |   1%            |
++------------------------+-------------------------+-----------------+-----------------+
+| 50%                    |  50%                    | 70%             |   30%           |
++------------------------+-------------------------+-----------------+-----------------+
+| 25%                    |  100%                   | 35%             |   65%           |
++------------------------+-------------------------+-----------------+-----------------+
+| 25%                    |  25%                    | 50%             |   50%           |
++------------------------+-------------------------+-----------------+-----------------+
+
+As more priorities are added, each level consumes load equal to its "scaled" effective health, so
+P=2 would only receive traffic if the combined health of P=0 + P=1 was less than 100.
+
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| P=0 healthy endpoints | P=1 healthy endpoints | P=2 healthy endpoints | Traffic to P=0 | Traffic to P=1 | Traffic to P=2 |
++=======================+=======================+=======================+================+================+================+
+| 100%                  |  100%                 |  100%                 | 100%           |   0%           |   0%           |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| 72%                   |  72%                  |  100%                 | 100%           |   0%           |   0%           |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| 71%                   |  71%                  |  100%                 | 99%            |   1%           |   0%           |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| 50%                   |  50%                  |  100%                 | 70%            |   30%          |   0%           |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| 25%                   |  100%                 |  100%                 | 35%            |   65%          |   0%           |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+| 25%                   |  25%                  |  100%                 | 25%            |   25%          |   50%          |
++-----------------------+-----------------------+-----------------------+----------------+----------------+----------------+
+
+To sum this up in pseudo algorithms:
+
+::
+
+  load to P_0 = min(100, health(P_0) * 100 / total_health)
+  health(P_X) = 140 * healthy_P_X_backends / total_P_X_backends
+  total_health = min(100, Σ(health(P_0)...health(P_X))
+  load to P_X = 100 - Σ(percent_load(P_0)..percent_load(P_X-1))
 
 .. _arch_overview_load_balancing_zone_aware_routing:
 
@@ -147,6 +222,8 @@ with regard to percentage relations in the local zone between originating and up
   In this case the local zone of the upstream cluster can get all of the requests from the
   local zone of the originating cluster and also have some space to allow traffic from other zones
   in the originating cluster (if needed).
+
+Note that when using multiple priorities, zone aware routing is currently only supported for P=0.
 
 .. _arch_overview_load_balancer_subsets:
 

@@ -30,8 +30,10 @@ PROTO_RST="
   /api/base/api/base.proto.rst
   /api/bootstrap/api/bootstrap.proto.rst
   /api/cds/api/cds.proto.rst
+  /api/config_source/api/config_source.proto.rst
   /api/discovery/api/discovery.proto.rst
   /api/eds/api/eds.proto.rst
+  /api/grpc_service/api/grpc_service.proto.rst
   /api/health_check/api/health_check.proto.rst
   /api/lds/api/lds.proto.rst
   /api/rds/api/rds.proto.rst
@@ -74,7 +76,8 @@ done
 rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
 
 BUILD_SHA=$(git rev-parse HEAD)
-[[ -z "${ENVOY_DOCS_VERSION_STRING}" ]] && ENVOY_DOCS_VERSION_STRING=data-plane-api-"${BUILD_SHA:0:6}"
+VERSION_NUM=$(cat VERSION)
+[[ -z "${ENVOY_DOCS_VERSION_STRING}" ]] && ENVOY_DOCS_VERSION_STRING="${VERSION_NUM}"-data-plane-api-"${BUILD_SHA:0:6}"
 [[ -z "${ENVOY_DOCS_RELEASE_LEVEL}" ]] && ENVOY_DOCS_RELEASE_LEVEL=pre-release
 
 export ENVOY_DOCS_VERSION_STRING ENVOY_DOCS_RELEASE_LEVEL

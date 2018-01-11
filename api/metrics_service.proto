@@ -5,9 +5,11 @@ syntax = "proto3";
 package envoy.api.v2;
 
 import "api/base.proto";
+import "api/grpc_service.proto";
 
-import "google/api/annotations.proto";
 import "metrics.proto";
+
+import "validate/validate.proto";
 
 // Service for streaming metrics to server that consumes the metrics data. It uses Prometheus metric
 // data model as a standard to represent metrics information.
@@ -23,8 +25,8 @@ message StreamMetricsResponse {
 
 message StreamMetricsMessage {
   message Identifier {
-    // The node sending the access log messages over the stream.
-    Node node = 1;
+    // The node sending metrics over the stream.
+    Node node = 1 [(validate.rules).message.required = true];
   }
 
   // Identifier data effectively is a structured metadata.
@@ -35,9 +37,9 @@ message StreamMetricsMessage {
   repeated io.prometheus.client.MetricFamily envoy_metrics = 2;
 }
 
-// Configuration structure.
+// Configuration structure for Metrics Service. It is a :ref: `StatsSink <envoy_api_msg_StatsSink>`
+// opaque configuration that will be used to create Metrics Service.
 message MetricsServiceConfig {
-  // The name of the upstream cluster that hosts the metrics service. The cluster must be
-  // configured in the cluster manager.
-  string cluster_name = 1;
+  // The upstream gRPC cluster that hosts the metrics service.
+  GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }
