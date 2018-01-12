@@ -167,8 +167,8 @@ The fields are:
 
 .. http:get:: /runtime
 
-  Outputs all runtime values on demand in a human-readable format. See 
-  :ref:`here <config_runtime_v1>` for more information on how these values are configured 
+  Outputs all runtime values on demand in a human-readable format. See
+  :ref:`here <config_runtime_v1>` for more information on how these values are configured
   and utilized.
 
   .. http:get:: /runtime?format=json
