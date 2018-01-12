@@ -81,8 +81,8 @@ using a ',' delimited list. The supported policies are:
     request, including any retries that take place.
 
 gateway-error
-  Envoy will attempt a retry if the upstream server responds with 502, 503 or 504 response code. This policy should have
-  the same behavior with 5xx, despite the smaller number of response codes to be checked.
+  Envoy will attempt a retry if the upstream server responds with 502, 503, or 504 response code.
+  This policy is similar to the *5xx* policy but will only retry requests that result in a 502, 503, or 504.
 
 connect-failure
   Envoy will attempt a retry if a request is failed because of a connection failure to the upstream
