@@ -15,7 +15,7 @@ import "validate/validate.proto";
 // Configuration for pluggable stats sinks.
 message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
-  // stats sink. The built-in stats sinks are 
+  // stats sink. The built-in stats sinks are:
   //
   // * :ref:`envoy.statsd <envoy_api_msg_StatsdSink>`
   // * :ref:`envoy.dog_statsd <envoy_api_msg_DogStatsdSink>`
