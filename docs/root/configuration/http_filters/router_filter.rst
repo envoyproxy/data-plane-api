@@ -80,6 +80,10 @@ using a ',' delimited list. The supported policies are:
     :ref:`config_http_filters_router_x-envoy-upstream-rq-timeout-ms` is an outer time limit for a
     request, including any retries that take place.
 
+gateway-error
+  Envoy will attempt a retry if the upstream server responds with 502, 503 or 504 response code. This policy should have
+  the same behavior with 5xx, despite the smaller number of response codes to be checked.
+
 connect-failure
   Envoy will attempt a retry if a request is failed because of a connection failure to the upstream
   server (connect timeout, etc.). (Included in *5xx*)
