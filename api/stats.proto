@@ -15,11 +15,11 @@ import "validate/validate.proto";
 // Configuration for pluggable stats sinks.
 message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
-  // stats sink. *envoy.statsd* is a built-in sink suitable for emitting to
-  // `statsd <https://github.com/etsy/statsd>`_. Any other built-in stats sink
-  // can be found in `well_known_names.h
-  // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
-  // in the Envoy repository.
+  // stats sink. The built-in stats sinks are 
+  //
+  // * :ref:`envoy.statsd <envoy_api_msg_StatsdSink>`
+  // * :ref:`envoy.dog_statsd <envoy_api_msg_DogStatsdSink>`
+  // * :ref:`envoy.metrics_service <envoy_api_msg_MetricsServiceConfig>`
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being
