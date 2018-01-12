@@ -31,7 +31,7 @@ message StreamMetricsMessage {
     Node node = 1 [(validate.rules).message.required = true];
   }
 
-  // Identifier data effectively is a structured metadata.As a performance optimization this will
+  // Identifier data effectively is a structured metadata. As a performance optimization this will
   // only be sent in the first message on the stream.
   Identifier identifier = 1;
 
