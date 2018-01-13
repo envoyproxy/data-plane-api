@@ -127,8 +127,7 @@ message TagSpecifier {
     // ``connection_manager_1``.
     string regex = 2;
 
-    // Add a default tag which have a fixed value and they will be added to all stats.
-    // Typical use case is identifying Envoy instances with the tag.
+    // Specifies a fixed tag value for the ``tag_name``.
     string fixed_value = 3;
   }
 }
