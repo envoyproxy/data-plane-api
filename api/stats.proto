@@ -85,8 +85,8 @@ message TagSpecifier {
     // group is provided, the first will also be used to set the value of the tag.
     // All other capture groups will be ignored.
     //
-    // Take for example, with a stat name ``cluster.foo_cluster.upstream_rq_timeout``
-    // and
+    // Example 1. a stat name ``cluster.foo_cluster.upstream_rq_timeout`` and
+    // one tag specifier:
     //
     // .. code-block:: json
     //
@@ -100,8 +100,9 @@ message TagSpecifier {
     // ``envoy.cluster_name`` will be ``foo_cluster`` (note: there will be no
     // ``.`` character because of the second capture group).
     //
-    // An example with two regexes and stat name
-    // ``http.connection_manager_1.user_agent.ios.downstream_cx_total``:
+    // Example 2. a stat name 
+    // ``http.connection_manager_1.user_agent.ios.downstream_cx_total`` and two
+    // tag specifiers:
     //
     // .. code-block:: json
     //
@@ -115,6 +116,8 @@ message TagSpecifier {
     //       "regex": "^http\.((.*?)\.)"
     //     }
     //   ]
+    //
+    // The two regexes of the specifiers will be processed in the definition order.
     //
     // The first regex will remove ``ios.``, leaving the tag extracted name
     // ``http.connection_manager_1.user_agent.downstream_cx_total``. The tag
