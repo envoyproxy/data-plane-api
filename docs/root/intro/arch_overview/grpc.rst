@@ -65,4 +65,4 @@ independent of Envoy's cluster management.
 It is recommended to use the Envoy gRPC client in most cases, where the advanced
 features in the Google C++ gRPC client are not required. This provides
 configuration and monitoring simplicity. Where necessary features are missing
-in the Envoy gRPC client, the Google G++ gRPC client should be used instead.
+in the Envoy gRPC client, the Google C++ gRPC client should be used instead.
