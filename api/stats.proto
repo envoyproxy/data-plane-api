@@ -100,7 +100,7 @@ message TagSpecifier {
     // ``envoy.cluster_name`` will be ``foo_cluster`` (note: there will be no
     // ``.`` character because of the second capture group).
     //
-    // Example 2. a stat name 
+    // Example 2. a stat name
     // ``http.connection_manager_1.user_agent.ios.downstream_cx_total`` and two
     // tag specifiers:
     //
