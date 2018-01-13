@@ -54,9 +54,10 @@ message StatsConfig {
   google.protobuf.BoolValue use_all_default_tags = 2;
 }
 
-// Configuration for tagged metrics. Setting default tags which have fixed tag
-// value and will be added to all metrics. Or settting dynamic tag extractions
-// with regex.
+// Designates a tag name and value pair. The value may be either a fixed value
+// or a regex providing the value via capture groups. The specified tag will be
+// unconditionally set if a fixed value, otherwise it will only be set if one
+// or more capture groups in the regex match.
 message TagSpecifier {
   // Attaches an identifier to the tag values to identify the tag being in the
   // sink. Envoy has a set of default names and regexes to extract dynamic
