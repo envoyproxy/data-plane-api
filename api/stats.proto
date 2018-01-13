@@ -70,8 +70,7 @@ message TagSpecifier {
   //
   // .. note::
   //
-  //   If any tag names are specified twice, the config will be considered
-  //   invalid.
+  //   It is invalid to specify the same tag name twice in a config.
   string tag_name = 1;
 
   oneof tag_value {
