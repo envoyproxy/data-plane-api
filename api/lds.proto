@@ -109,7 +109,7 @@ message Listener {
   // :ref:`filter_chains <envoy_api_field_Listener.filter_chains>`. Order matters as the filters
   // are processed sequentially right after a socket has been accepted by the listener, and before
   // a connection is created.
-  repeated Filter listener_filters = 9;
+  repeated ListenerFilter listener_filters = 9;
 }
 
 message Filter {
@@ -211,4 +211,18 @@ message FilterChain {
 
   // [#not-implemented-hide:] See base.TransportSocket description.
   TransportSocket transport_socket = 6;
+}
+
+message ListenerFilter {
+  // The name of the filter to instantiate. The name must match a supported
+  // filter. The built-in filters are:
+  //
+  // [#comment:TODO(mattklein123): Auto generate the following list]
+  // * :ref:`envoy.original_dst <config_listener_filters_original_dst>`
+  // * :ref:`envoy.proxy_protocol <config_listener_filters_proxy_protocol>`
+  string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // Filter specific configuration which depends on the filter being
+  // instantiated. See the supported filters for further documentation.
+  google.protobuf.Struct config = 2;
 }
