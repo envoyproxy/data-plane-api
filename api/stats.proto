@@ -64,8 +64,8 @@ message TagSpecifier {
   // portions of existing stats, which can be found in `well_known_names.h
   // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
   // in the Envoy repository. If a :ref:`tag_name
-  // <envoy_api_field_TagSpecifier.tag_name>` is provided in the config and none of
-  // :ref:`regex <envoy_api_field_TagSpecifier.regex>` and
+  // <envoy_api_field_TagSpecifier.tag_name>` is provided in the config and neither
+  // :ref:`regex <envoy_api_field_TagSpecifier.regex>` or
   // :ref:`fixed_value <envoy_api_field_TagSpecifier.fixed_value>` were specified,
   // Envoy will attempt to find that name in its set of defaults and use the accompanying regex.
   //
