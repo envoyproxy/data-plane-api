@@ -21,4 +21,10 @@ message HealthCheck {
   // If operating in pass through mode, the amount of time in milliseconds
   // that the filter should cache the upstream response.
   google.protobuf.Duration cache_time = 3;
+
+  // [#not-implemented-hide:]
+  // If operating in non pass through mode, specifies a set of upstream cluster
+  // names and the minimum percentage of servers in each of those clusters that
+  //  must be healthy in order for the filter to return a 200.
+  map<string, uint32> cluster_min_percentages = 4;
 }
