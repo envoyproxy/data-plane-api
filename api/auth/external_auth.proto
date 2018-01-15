@@ -74,14 +74,14 @@ message AttributeContext {
     google.protobuf.Timestamp time = 1;
 
     // Represents an HTTP request or an HTTP-like request.
-    HTTPRequest http = 2;
+    HttpRequest http = 2;
 
     // More request types are added here as necessary.
   }
 
   // This message defines attributes for an HTTP request.
   // HTTP/1.x, HTTP/2, gRPC are all considered as HTTP requests.
-  message HTTPRequest {
+  message HttpRequest {
     // The unique ID for a request, which can be propagated to downstream
     // systems. The ID should have low probability of collision
     // within a single day for a specific service.
