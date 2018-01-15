@@ -333,6 +333,7 @@ proto_library(
         ":cds",
         ":eds",
         ":lds",
+        ":metrics",
         ":protocol",
         ":rds",
         ":rls",

@@ -36,6 +36,7 @@ PROTO_RST="
   /api/grpc_service/api/grpc_service.proto.rst
   /api/health_check/api/health_check.proto.rst
   /api/lds/api/lds.proto.rst
+  /api/metrics/api/metrics_service.proto.rst
   /api/rds/api/rds.proto.rst
   /api/rls/api/rls.proto.rst
   /api/sds/api/sds.proto.rst
