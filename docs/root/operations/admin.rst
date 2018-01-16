@@ -164,3 +164,13 @@ The fields are:
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
   gauges are outputed. Histograms will be outputed in a future update.
+
+.. http:get:: /runtime
+
+  Outputs all runtime values on demand in a human-readable format. See
+  :ref:`here <arch_overview_runtime>` for more information on how these values are configured
+  and utilized.
+
+  .. http:get:: /runtime?format=json
+
+  Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
