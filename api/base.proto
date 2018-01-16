@@ -35,6 +35,11 @@ message Locality {
   string sub_zone = 3;
 }
 
+// Identifies a percentage, in the range [0.0, 100.0].
+message Percent {
+  double value = 1 [(validate.rules).double = {gte: 0, lte: 100}];
+}
+
 // Identifies a specific Envoy instance. The node identifier is presented to the
 // management server, which may use this identifier to distinguish per Envoy
 // configuration for serving.
