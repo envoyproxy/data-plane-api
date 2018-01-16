@@ -37,6 +37,9 @@ api_proto_library(
 api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
+    deps = [
+        "//api:base",
+    ],
 )
 
 api_proto_library(

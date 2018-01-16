@@ -5,6 +5,7 @@ package envoy.api.v2.filter.http;
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
+import "api/base.proto";
 import "validate/validate.proto";
 
 // [#protodoc-title: Health check]
@@ -21,4 +22,10 @@ message HealthCheck {
   // If operating in pass through mode, the amount of time in milliseconds
   // that the filter should cache the upstream response.
   google.protobuf.Duration cache_time = 3;
+
+  // [#not-implemented-hide:]
+  // If operating in non-pass-through mode, specifies a set of upstream cluster
+  // names and the minimum percentage of servers in each of those clusters that
+  //  must be healthy in order for the filter to return a 200.
+  map<string, Percent> cluster_min_healthy_percentages = 4;
 }

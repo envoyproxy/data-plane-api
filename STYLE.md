@@ -67,3 +67,5 @@ In addition, the following conventions should be followed:
   ```
 
   This is more efficient, extendable and self-describing.
+
+* To represent percentage values, use the Percent message type defined in [api/base.proto](api/base.proto).
