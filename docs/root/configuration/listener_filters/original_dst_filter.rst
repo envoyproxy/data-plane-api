@@ -1,10 +1,13 @@
-.. _config_network_filters_echo:
+.. _config_listener_filters_original_dst:
 
-Echo
-====
+Original Destination
+====================
 
-The echo is a trivial network filter mainly meant to demonstrate the network filter API. If
-installed it will echo (write) all received data back to the connected downstream client.
+Original destination listener filter reads the SO_ORIGINAL_DST socket option set when a connection
+has been redirected by iptables REDIRECT. Later processing in Envoy sees the restored destination
+address as the connection's local address, rather than the address at which the listener is
+listening at. Furthermore, :ref:`an original destination cluster
+<arch_overview_service_discovery_types_original_destination>` may be used to forward HTTP requests
+or TCP connections to the restored destination address.
 
-* :ref:`v1 API reference <config_network_filters_echo_v1>`
 * :ref:`v2 API reference <envoy_api_field_Filter.name>`
