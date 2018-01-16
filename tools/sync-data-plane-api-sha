@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import re
+import subprocess
+import time
+
+import github3
+
+
+def get_last_commit_sha(repo):
+    for commit in repo.iter_commits():
+        return commit.sha
+
+
+def get_sign_off_line():
+    name = subprocess.check_output(['git', 'config', 'user.name']).decode('utf-8').strip()
+    email = subprocess.check_output(['git', 'config', 'user.email']).decode('utf-8').strip()
+    return f'Signed-off-by: {name} <{email}>'
+
+
+bazel_path = 'bazel/repository_locations.bzl'
+
+parser = argparse.ArgumentParser(description='sync the latest data-plane-api commit SHA to envoy')
+parser.add_argument('--user')
+parser.add_argument('--password')
+parser.add_argument('--branch', help='branch on fork to push changes to', default='data-plane-api-sha-updates')
+args = parser.parse_args()
+
+gh = github3.login(args.user, args.password)
+
+data_plane_repo = gh.repository('envoyproxy', 'data-plane-api')
+envoy_repo      = gh.repository('envoyproxy', 'envoy')
+envoy_repo_fork = gh.repository(args.user, 'envoy')
+
+current_data_plane_sha = get_last_commit_sha(data_plane_repo)
+
+bazel_content = envoy_repo.contents(bazel_path).decoded.decode('utf-8')
+current_sha = re.search(r'envoy_api = dict\(\s+commit = \"([a-z0-9]+)\"', bazel_content, re.MULTILINE).groups()[0]
+
+if current_sha != current_data_plane_sha:
+    print(f'current_sha: {current_sha} != current_data_plane_sha: {current_data_plane_sha}')
+
+    updated_bazel = bazel_content.replace(current_sha, current_data_plane_sha)
+
+    try:
+        envoy_repo_fork.create_ref('refs/heads/'+args.branch, get_last_commit_sha(envoy_repo))
+    except github3.models.GitHubError as e:
+        if e.code == 422:
+            envoy_repo_fork.ref('heads/'+args.branch).update(get_last_commit_sha(envoy_repo), force=True)
+
+    current_fork_commit = envoy_repo_fork.contents(bazel_path, ref=args.branch).sha
+    envoy_repo_fork.update_file(bazel_path,
+                                'build: update data-plane-api sha\n\n'+get_sign_off_line(),
+                                updated_bazel.encode('utf-8'),
+                                current_fork_commit,
+                                branch=args.branch)
+
+    print('creating new pull request')
+    pr = envoy_repo.create_pull('build: update data-plane-api sha to ' + current_data_plane_sha[:7], 'master', args.user+':'+args.branch)
+    print(pr.html_url)
+else:
+    print(f'current_sha: {current_sha} == current_data_plane_sha: {current_data_plane_sha}')
