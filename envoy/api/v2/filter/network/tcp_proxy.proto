@@ -25,10 +25,10 @@ message TcpProxy {
   //
   //  Once full filter chain matching is implemented in listeners, this field will become the only
   //  way to configure the target cluster. All other matching will be done via :ref:`filter chain
-  //  matching rules <envoy_api_msg_listener.FilterChainMatch>`. For very simple configurations, this field
-  //  can still be used to select the cluster when no other matching rules are required. Otherwise,
-  //  a :ref:`deprecated_v1 <envoy_api_field_filter.network.TcpProxy.deprecated_v1>` configuration
-  //  is required to use more complex routing in the interim.
+  //  matching rules <envoy_api_msg_listener.FilterChainMatch>`. For very simple configurations,
+  //  this field can still be used to select the cluster when no other matching rules are required.
+  //  Otherwise, a :ref:`deprecated_v1 <envoy_api_field_filter.network.TcpProxy.deprecated_v1>`
+  //  configuration is required to use more complex routing in the interim.
   //
   string cluster = 2;
 

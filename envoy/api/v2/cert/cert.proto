@@ -92,10 +92,10 @@ message TlsSessionTicketKeys {
   // All keys are candidates for decrypting received tickets. This allows for easy rotation of keys
   // by, for example, putting the new key first, and the previous key second.
   //
-  // If :ref:`session_ticket_keys <envoy_api_field_cert.DownstreamTlsContext.session_ticket_keys>` is not
-  // specified, the TLS library will still support resuming
-  // sessions via tickets, but it will use an internally-generated and managed key, so sessions
-  // cannot be resumed across hot restarts or on different hosts.
+  // If :ref:`session_ticket_keys <envoy_api_field_cert.DownstreamTlsContext.session_ticket_keys>`
+  // is not specified, the TLS library will still support resuming sessions via tickets, but it will
+  // use an internally-generated and managed key, so sessions cannot be resumed across hot restarts
+  // or on different hosts.
   //
   // Each key must contain exactly 80 bytes of cryptographically-secure random data. For
   // example, the output of ``openssl rand 80``.
@@ -123,7 +123,8 @@ message CertificateValidationContext {
   // :ref:`verify_certificate_hash
   // <envoy_api_field_cert.CertificateValidationContext.verify_certificate_hash>`, or
   // :ref:`verify_subject_alt_name
-  // <envoy_api_field_cert.CertificateValidationContext.verify_subject_alt_name>`) is also specified.
+  // <envoy_api_field_cert.CertificateValidationContext.verify_subject_alt_name>`) is also
+  // specified.
   //
   // See :ref:`the TLS overview <arch_overview_ssl_enabling_verification>` for a list of common
   // system CA locations.

@@ -119,8 +119,9 @@ message VirtualHost {
   // Specifies a list of HTTP headers that should be added to each request
   // handled by this virtual host. Headers specified at this level are applied
   // after headers from enclosed :ref:`envoy_api_msg_route.RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_route.RouteConfiguration`. For more information see the documentation
-  // on :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+  // enclosing :ref:`envoy_api_msg_route.RouteConfiguration`. For more information see the
+  // documentation on :ref:`custom request headers
+  // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 7;
 
   // Specifies a list of HTTP headers that should be added to each response
@@ -430,9 +431,9 @@ message RouteAction {
 
   // Specifies a set of headers that will be added to requests matching this
   // route. Headers specified at this level are applied before headers from the
-  // enclosing :ref:`envoy_api_msg_route.VirtualHost` and :ref:`envoy_api_msg_route.RouteConfiguration`.
-  // For more information see the documentation on :ref:`custom request headers
-  // <config_http_conn_man_headers_custom_request_headers>`.
+  // enclosing :ref:`envoy_api_msg_route.VirtualHost` and
+  // :ref:`envoy_api_msg_route.RouteConfiguration`. For more information see the documentation on
+  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 12;
 
   // Specifies a set of headers that will be added to responses to requests
@@ -451,7 +452,8 @@ message RouteAction {
 
   // Specifies if the rate limit filter should include the virtual host rate
   // limits. By default, if the route configured rate limits, the virtual host
-  // :ref:`rate_limits <envoy_api_field_route.VirtualHost.rate_limits>` are not applied to the request.
+  // :ref:`rate_limits <envoy_api_field_route.VirtualHost.rate_limits>` are not applied to the
+  // request.
   google.protobuf.BoolValue include_vh_rate_limits = 14;
 
   // Specifies the route's hashing policy if the upstream cluster uses a hashing :ref:`load balancer
