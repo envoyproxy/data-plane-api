@@ -51,3 +51,17 @@ api_proto_library(
     srcs = ["ext_authz.proto"],
     deps = ["//api:grpc_service"],
 )
+
+proto_library(
+    name = "network",
+    deps = [
+        ":client_ssl_auth",
+        ":ext_authz",
+        ":http_connection_manager",
+        ":mongo_proxy",
+        ":rate_limit",
+        ":redis_proxy",
+        ":tcp_proxy",
+    ],
+    visibility = ["//api:__pkg__"],
+)

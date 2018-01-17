@@ -66,3 +66,19 @@ api_proto_library(
     srcs = ["ext_authz.proto"],
     deps = ["//api:grpc_service"],
 )
+
+proto_library(
+    name = "http",
+    deps = [
+        ":buffer",
+        ":ext_authz",
+        ":fault",
+        ":health_check",
+        ":lua",
+        ":rate_limit",
+        ":router",
+        ":squash",
+        ":transcoder",
+    ],
+    visibility = ["//api:__pkg__"],
+)

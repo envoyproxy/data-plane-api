@@ -2,19 +2,6 @@ load("//bazel:api_build_system.bzl", "api_proto_library", "api_go_proto_library"
 
 licenses(["notice"])  # Apache 2
 
-proto_library(
-    name = "discovery",
-    deps = [
-        ":ads",
-        ":cds",
-        ":common",
-        ":eds",
-        ":lds",
-        ":rds",
-    ],
-    visibility = ["//api:__pkg__"],
-)
-
 api_proto_library(
     name = "common",
     srcs = ["common.proto"],
@@ -135,3 +122,15 @@ api_go_grpc_library(
     ],
 )
 
+proto_library(
+    name = "discovery",
+    deps = [
+        ":ads",
+        ":cds",
+        ":common",
+        ":eds",
+        ":lds",
+        ":rds",
+    ],
+    visibility = ["//api:__pkg__"],
+)
