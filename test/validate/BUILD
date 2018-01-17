@@ -6,8 +6,8 @@ api_cc_test(
     name = "pgv_test",
     srcs = ["pgv_test.cc"],
     proto_deps = [
-        "//api:bootstrap",
         "//api:protocol",
+        "//api/bootstrap",
         "//api/discovery:cds",
         "//api/discovery:eds",
         "//api/discovery:lds",

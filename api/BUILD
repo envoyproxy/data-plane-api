@@ -25,38 +25,6 @@ api_go_proto_library(
 )
 
 api_proto_library(
-    name = "bootstrap",
-    srcs = ["bootstrap.proto"],
-    deps = [
-        ":address",
-        ":base",
-        "//api/cluster:cluster",
-        ":config_source",
-        ":grpc_service",
-        "//api/listener:listener",
-        "//api/cert:cert",
-        ":stats",
-        ":trace",
-    ],
-)
-
-api_go_proto_library(
-    name = "bootstrap",
-    proto = ":bootstrap",
-    deps = [
-        ":address_go_proto",
-        ":base_go_proto",
-        "//api/cluster:cluster_go_proto",
-        ":config_source_go_proto",
-        ":grpc_service_go_proto",
-        "//api/listener:listener_go_proto",
-        "//api/cert:cert_go_proto",
-        ":stats_go_proto",
-        ":trace_go_proto",
-    ],
-)
-
-api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
     deps = [":base"],
@@ -181,10 +149,10 @@ api_go_proto_library(
 proto_library(
     name = "api",
     deps = [
-        ":bootstrap",
         ":metrics",
         ":protocol",
         ":rls",
+        "//api/bootstrap",
         "//api/cluster:circuit_breaker",
         "//api/cluster:cluster",
         "//api/cluster:outlier_detection",
@@ -209,7 +177,7 @@ proto_library(
         "//api/filter/network:rate_limit",
         "//api/filter/network:redis_proxy",
         "//api/filter/network:tcp_proxy",
-        "//api/listener:listener",
-        "//api/route:route",
+        "//api/listener",
+        "//api/route",
     ],
 )

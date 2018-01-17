@@ -3,8 +3,8 @@
 
 // We don't use all the headers in the test below, but including them anyway as
 // a cheap way to get some C++ compiler sanity checking.
-#include "api/bootstrap.pb.validate.h"
 #include "api/protocol.pb.validate.h"
+#include "api/bootstrap/bootstrap.pb.validate.h"
 #include "api/cluster/cluster.pb.validate.h"
 #include "api/discovery/eds.pb.validate.h"
 #include "api/filter/accesslog/accesslog.pb.validate.h"

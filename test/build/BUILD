@@ -24,7 +24,7 @@ api_go_test(
     srcs = ["go_build_test.go"],
     importpath = "go_build_test",
     deps = [
-        "//api:bootstrap_go_proto",
+        "//api/bootstrap:bootstrap_go_proto",
         "//api/cert:cert_go_proto",
         "//api/discovery:cds_go_grpc",
         "//api/discovery:discovery_go_grpc",
