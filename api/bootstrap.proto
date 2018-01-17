@@ -13,7 +13,7 @@ import "api/config_source.proto";
 import "api/cluster/cluster.proto";
 import "api/grpc_service.proto";
 import "api/lds.proto";
-import "api/sds.proto";
+import "api/cert/cert.proto";
 import "api/stats.proto";
 import "api/trace.proto";
 
@@ -42,7 +42,7 @@ message Bootstrap {
     repeated cluster.Cluster clusters = 2;
 
     // [#not-implemented-hide:]
-    repeated Secret secrets = 3;
+    repeated cert.Secret secrets = 3;
   }
   // Statically specified resources.
   StaticResources static_resources = 2;

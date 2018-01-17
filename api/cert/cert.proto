@@ -1,29 +1,15 @@
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.cert;
 
 import "api/base.proto";
 import "api/config_source.proto";
-import "api/discovery/discovery.proto";
 
-import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
 // [#protodoc-title: Common TLS configuration]
-
-service SecretDiscoveryService {
-  rpc StreamSecrets(stream discovery.DiscoveryRequest) returns (stream discovery.DiscoveryResponse) {
-  }
-
-  rpc FetchSecrets(discovery.DiscoveryRequest) returns (discovery.DiscoveryResponse) {
-    option (google.api.http) = {
-      post: "/v2/discovery:secrets"
-      body: "*"
-    };
-  }
-}
 
 message TlsParameters {
   enum TlsProtocol {

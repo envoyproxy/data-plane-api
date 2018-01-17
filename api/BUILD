@@ -34,7 +34,7 @@ api_proto_library(
         ":config_source",
         ":grpc_service",
         ":lds",
-        ":sds",
+        "//api/cert:cert",
         ":stats",
         ":trace",
     ],
@@ -50,7 +50,7 @@ api_go_proto_library(
         ":config_source_go_proto",
         ":grpc_service_go_proto",
         ":lds_go_grpc",
-        ":sds_go_grpc",
+        "//api/cert:cert_go_proto",
         ":stats_go_proto",
         ":trace_go_proto",
     ],
@@ -125,7 +125,7 @@ api_proto_library(
         ":address",
         ":base",
         "//api/discovery:discovery",
-        ":sds",
+        "//api/cert:cert",
     ],
 )
 
@@ -136,7 +136,7 @@ api_go_grpc_library(
         ":address_go_proto",
         ":base_go_proto",
         "//api/discovery:discovery_go_grpc",
-        ":sds_go_grpc",
+        "//api/cert:cert_go_proto",
     ],
 )
 
@@ -195,27 +195,6 @@ api_go_grpc_library(
 )
 
 api_proto_library(
-    name = "sds",
-    srcs = ["sds.proto"],
-    has_services = 1,
-    deps = [
-        ":base",
-        ":config_source",
-        "//api/discovery:discovery",
-    ],
-)
-
-api_go_grpc_library(
-    name = "sds",
-    proto = ":sds",
-    deps = [
-        ":base_go_proto",
-        ":config_source_go_proto",
-        "//api/discovery:discovery_go_grpc",
-    ],
-)
-
-api_proto_library(
     name = "stats",
     srcs = ["stats.proto"],
     deps = [
@@ -252,7 +231,9 @@ proto_library(
         ":protocol",
         ":rds",
         ":rls",
+        "//api/cluster:circuit_breaker",
         "//api/cluster:cluster",
+        "//api/cluster:outlier_detection",
         "//api/discovery:eds",
         "//api/discovery:cds",
         "//api/filter/accesslog",

@@ -55,3 +55,21 @@ api_go_grpc_library(
         ":discovery_go_grpc",
     ],
 )
+
+api_proto_library(
+    name = "sds",
+    srcs = ["sds.proto"],
+    has_services = 1,
+    deps = [
+        ":discovery",
+    ],
+)
+
+api_go_grpc_library(
+    name = "sds",
+    proto = ":sds",
+    deps = [
+        ":discovery_go_grpc",
+    ],
+)
+

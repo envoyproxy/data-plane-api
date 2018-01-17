@@ -25,13 +25,14 @@ api_go_test(
     importpath = "go_build_test",
     deps = [
         "//api:bootstrap_go_proto",
+        "//api/cert:cert_go_proto",
         "//api/discovery:cds_go_grpc",
         "//api/discovery:discovery_go_grpc",
         "//api/discovery:eds_go_grpc",
+        "//api/discovery:sds_go_grpc",
         "//api:hds_go_grpc",
         "//api:lds_go_grpc",
         "//api:rds_go_grpc",
         "//api:rls_go_grpc",
-        "//api:sds_go_grpc",
     ],
 )

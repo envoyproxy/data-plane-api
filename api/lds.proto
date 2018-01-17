@@ -5,7 +5,7 @@ package envoy.api.v2;
 import "api/address.proto";
 import "api/base.proto";
 import "api/discovery/discovery.proto";
-import "api/sds.proto";
+import "api/cert/cert.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
@@ -183,7 +183,7 @@ message FilterChain {
   FilterChainMatch filter_chain_match = 1;
 
   // The TLS context for this filter chain.
-  DownstreamTlsContext tls_context = 2;
+  cert.DownstreamTlsContext tls_context = 2;
 
   // A list of individual network filters that make up the filter chain for
   // connections established with the listener. Order matters as the filters are
