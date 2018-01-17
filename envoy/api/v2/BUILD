@@ -126,7 +126,7 @@ api_go_proto_library(
 )
 
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
-# bazel build //envoy/api/v2 --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
+# bazel build //envoy/api/v2:api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "api",
     deps = [
@@ -134,7 +134,7 @@ proto_library(
         ":protocol",
         ":rls",
         "//envoy/api/v2/bootstrap",
-        "//envoy/api/v2/cluster",
+        "//envoy/api/v2/cluster:cluster_docs",
         "//envoy/api/v2/discovery",
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/filter/http",

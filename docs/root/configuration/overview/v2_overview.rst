@@ -44,15 +44,15 @@ where the extension reflects the underlying v2 config representation. The
 to autodetect the config file version, but this option provides an enhanced
 debug experience when configuration parsing fails.
 
-The :ref:`Bootstrap <envoy_api_msg_Bootstrap>` message is the root of the
-configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_Bootstrap>`
+The :ref:`Bootstrap <envoy_api_msg_bootstrap.Bootstrap>` message is the root of the
+configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_bootstrap.Bootstrap>`
 message is the distinction between static and dynamic resouces. Resources such
-as a :ref:`Listener <envoy_api_msg_Listener>` or :ref:`Cluster
-<envoy_api_msg_Cluster>` may be supplied either statically in
-:ref:`static_resources <envoy_api_field_Bootstrap.static_resources>` or have
+as a :ref:`Listener <envoy_api_msg_listener.Listener>` or :ref:`Cluster
+<envoy_api_msg_cluster.Cluster>` may be supplied either statically in
+:ref:`static_resources <envoy_api_field_bootstrap.Bootstrap.static_resources>` or have
 an xDS service such as :ref:`LDS
 <config_listeners_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
-:ref:`dynamic_resources <envoy_api_field_Bootstrap.dynamic_resources>`.
+:ref:`dynamic_resources <envoy_api_field_bootstrap.Bootstrap.dynamic_resources>`.
 
 Example
 -------
@@ -105,7 +105,7 @@ Mostly static with dynamic EDS
 
 A bootstrap config that continues from the above example with :ref:`dynamic endpoint
 discovery <arch_overview_dynamic_config_sds>` via an
-:ref:`EDS<envoy_api_file_api/eds.proto>` gRPC management server listening
+:ref:`EDS<envoy_api_file_envoy/api/v2/discovery/eds.proto>` gRPC management server listening
 on 127.0.0.3:5678 is provided below:
 
 .. code-block:: yaml
@@ -158,7 +158,7 @@ an otherwise completely dynamic configurations, some static resources need to
 be defined to point Envoy at its xDS management server(s).
 
 In the above example, the EDS management server could then return a proto encoding of a
-:ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>`:
+:ref:`DiscoveryResponse <envoy_api_msg_discovery.DiscoveryResponse>`:
 
 .. code-block:: yaml
 
@@ -293,8 +293,8 @@ Management server
 
 A v2 xDS management server will implement the below endpoints as required for
 gRPC and/or REST serving. In both streaming gRPC and
-REST-JSON cases, a :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>` is sent and a
-:ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>` received following the
+REST-JSON cases, a :ref:`DiscoveryRequest <envoy_api_msg_discovery.DiscoveryRequest>` is sent and a
+:ref:`DiscoveryResponse <envoy_api_msg_discovery.DiscoveryResponse>` received following the
 `xDS protocol <https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md>`_.
 
 .. _v2_grpc_streaming_endpoints:
@@ -316,8 +316,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_Bootstrap>` config.
+<envoy_api_field_bootstrap.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_bootstrap.Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
@@ -333,8 +333,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`eds_cluster_config
-<envoy_api_field_Cluster.eds_cluster_config>` field of the :ref:`Cluster
-<envoy_api_msg_Cluster>` config.
+<envoy_api_field_cluster.Cluster.eds_cluster_config>` field of the :ref:`Cluster
+<envoy_api_msg_cluster.Cluster>` config.
 
 .. http:post:: /envoy.api.v2.ListenerDiscoveryService/StreamListeners
 
@@ -350,8 +350,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_Bootstrap>` config.
+<envoy_api_field_bootstrap.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_bootstrap.Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
@@ -388,8 +388,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_Bootstrap>` config.
+<envoy_api_field_bootstrap.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_bootstrap.Bootstrap>` config.
 
 .. http:post:: /v2/discovery:endpoints
 
@@ -405,8 +405,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`eds_cluster_config
-<envoy_api_field_Cluster.eds_cluster_config>` field of the :ref:`Cluster
-<envoy_api_msg_Cluster>` config.
+<envoy_api_field_cluster.Cluster.eds_cluster_config>` field of the :ref:`Cluster
+<envoy_api_msg_cluster.Cluster>` config.
 
 .. http:post:: /v2/discovery:listeners
 
@@ -422,8 +422,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_Bootstrap>` config.
+<envoy_api_field_bootstrap.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_bootstrap.Bootstrap>` config.
 
 .. http:post:: /v2/discovery:routes
 
@@ -488,8 +488,8 @@ for the service definition. This is used by Envoy as a client when
       cluster_names: [some_ads_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_Bootstrap>` config.
+<envoy_api_field_bootstrap.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_bootstrap.Bootstrap>` config.
 
 When this is set, any of the configuration sources :ref:`above <v2_grpc_streaming_endpoints>` can
 be set to use the ADS channel. For example, a LDS config could be changed from

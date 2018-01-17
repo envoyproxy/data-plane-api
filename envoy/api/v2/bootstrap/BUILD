@@ -13,7 +13,7 @@ api_proto_library(
         "//envoy/api/v2:stats",
         "//envoy/api/v2:trace",
         "//envoy/api/v2/cert",
-        "//envoy/api/v2/cluster:cluster_def",
+        "//envoy/api/v2/cluster",
         "//envoy/api/v2/listener",
     ],
 )
@@ -29,7 +29,7 @@ api_go_proto_library(
         "//envoy/api/v2:stats_go_proto",
         "//envoy/api/v2:trace_go_proto",
         "//envoy/api/v2/cert:cert_go_proto",
-        "//envoy/api/v2/cluster:cluster_def_go_proto",
+        "//envoy/api/v2/cluster:cluster_go_proto",
         "//envoy/api/v2/listener:listener_go_proto",
     ],
 )

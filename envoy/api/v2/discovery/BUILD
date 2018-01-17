@@ -151,5 +151,6 @@ proto_library(
         ":eds",
         ":lds",
         ":rds",
+        ":sds",
     ],
 )

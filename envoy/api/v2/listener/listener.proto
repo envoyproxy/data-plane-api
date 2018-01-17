@@ -12,7 +12,7 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: Listeners and LDS]
+// [#protodoc-title: Listeners]
 // Listener :ref:`configuration overview <config_listeners>`
 
 message Listener {
@@ -30,15 +30,15 @@ message Listener {
   Address address = 2 [(validate.rules).message.required = true];
 
   // A list of filter chains to consider for this listener. The
-  // :ref:`FilterChain <envoy_api_msg_FilterChain>` with the most specific :ref:`FilterChainMatch
-  // <envoy_api_msg_FilterChainMatch>` criteria is used on a connection.
+  // :ref:`FilterChain <envoy_api_msg_listener.FilterChain>` with the most specific :ref:`FilterChainMatch
+  // <envoy_api_msg_listener.FilterChainMatch>` criteria is used on a connection.
   //
   // .. attention::
   //
   //   In the current version, multiple filter chains are supported **only** so that SNI can be
   //   configured. See the :ref:`FAQ entry <faq_how_to_setup_sni>` on how to configure SNI for more
   //   information. When multiple filter chains are configured, each filter chain must have an
-  //   **identical** set of :ref:`filters <envoy_api_field_FilterChain.filters>`. If the filters
+  //   **identical** set of :ref:`filters <envoy_api_field_listener.FilterChain.filters>`. If the filters
   //   differ, the configuration will fail to load. In the future, this limitation will be relaxed
   //   such that different filters can be used depending on which filter chain matches (based on SNI
   //   or some other parameter).

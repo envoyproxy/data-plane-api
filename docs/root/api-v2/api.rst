@@ -7,21 +7,23 @@ v2 API reference
   :glob:
   :maxdepth: 2
 
-  bootstrap.proto
+  bootstrap/bootstrap.proto
   config_source.proto
   grpc_service.proto
-  lds.proto
-  cds.proto
-  eds.proto
+  listener/listener.proto
+  cluster/cluster.proto
+  cluster/outlier_detection.proto
+  cluster/circuit_breaker.proto
+  discovery/eds.proto
   health_check.proto
-  rds.proto
-  sds.proto
+  route/route.proto
+  cert/cert.proto
   stats.proto
   metrics_service.proto
   trace.proto
   base.proto
   address.proto
   protocol.proto
-  discovery.proto
+  discovery/common.proto
   rls.proto
   filter/filter

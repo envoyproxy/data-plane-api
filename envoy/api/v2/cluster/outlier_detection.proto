@@ -7,6 +7,8 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
+// [#protodoc-title: Outlier detection]
+
 // See the :ref:`architecture overview <arch_overview_outlier_detection>` for
 // more information on outlier detection.
 message OutlierDetection {

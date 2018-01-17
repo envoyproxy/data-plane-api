@@ -6,6 +6,8 @@ import "envoy/api/v2/base.proto";
 
 import "google/protobuf/wrappers.proto";
 
+// [#protodoc-title: Circuit breakers]
+
 // :ref:`Circuit breaking<arch_overview_circuit_break>` settings can be
 // specified individually for each defined priority.
 message CircuitBreakers {
@@ -36,7 +38,7 @@ message CircuitBreakers {
     google.protobuf.UInt32Value max_retries = 5;
   }
 
-  // If multiple :ref:`Thresholds<envoy_api_msg_CircuitBreakers.Thresholds>`
+  // If multiple :ref:`Thresholds<envoy_api_msg_cluster.CircuitBreakers.Thresholds>`
   // are defined with the same :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`,
   // the first one in the list is used. If no Thresholds is defined for a given
   // :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`, the default values

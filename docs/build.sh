@@ -20,46 +20,47 @@ fi
 
 source "${BUILD_DIR}"/venv/bin/activate
 
-bazel --batch build ${BAZEL_BUILD_OPTIONS} //api --aspects \
+bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy/api/v2:api --aspects \
   tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst
 
 # These are the protos we want to put in docs, this list will grow.
 # TODO(htuch): Factor this out of this script.
 PROTO_RST="
-  /api/address/api/address.proto.rst
-  /api/base/api/base.proto.rst
-  /api/bootstrap/api/bootstrap.proto.rst
-  /api/cds/api/cds.proto.rst
-  /api/config_source/api/config_source.proto.rst
-  /api/discovery/api/discovery.proto.rst
-  /api/eds/api/eds.proto.rst
-  /api/grpc_service/api/grpc_service.proto.rst
-  /api/health_check/api/health_check.proto.rst
-  /api/lds/api/lds.proto.rst
-  /api/metrics/api/metrics_service.proto.rst
-  /api/rds/api/rds.proto.rst
-  /api/rls/api/rls.proto.rst
-  /api/sds/api/sds.proto.rst
-  /api/stats/api/stats.proto.rst
-  /api/trace/api/trace.proto.rst
-  /api/filter/accesslog/accesslog/api/filter/accesslog/accesslog.proto.rst
-  /api/filter/fault/api/filter/fault.proto.rst
-  /api/filter/http/buffer/api/filter/http/buffer.proto.rst
-  /api/filter/http/fault/api/filter/http/fault.proto.rst
-  /api/filter/http/health_check/api/filter/http/health_check.proto.rst
-  /api/filter/http/lua/api/filter/http/lua.proto.rst
-  /api/filter/http/rate_limit/api/filter/http/rate_limit.proto.rst
-  /api/filter/http/router/api/filter/http/router.proto.rst
-  /api/filter/http/squash/api/filter/http/squash.proto.rst
-  /api/filter/http/transcoder/api/filter/http/transcoder.proto.rst
-  /api/filter/network/client_ssl_auth/api/filter/network/client_ssl_auth.proto.rst
-  /api/filter/network/http_connection_manager/api/filter/network/http_connection_manager.proto.rst
-  /api/filter/network/mongo_proxy/api/filter/network/mongo_proxy.proto.rst
-  /api/filter/network/rate_limit/api/filter/network/rate_limit.proto.rst
-  /api/filter/network/redis_proxy/api/filter/network/redis_proxy.proto.rst
-  /api/filter/network/tcp_proxy/api/filter/network/tcp_proxy.proto.rst
-  /api/protocol/api/protocol.proto.rst
-  /api/rds/api/rds.proto.rst
+  /envoy/api/v2/address/envoy/api/v2/address.proto.rst
+  /envoy/api/v2/base/envoy/api/v2/base.proto.rst
+  /envoy/api/v2/bootstrap/bootstrap/envoy/api/v2/bootstrap/bootstrap.proto.rst
+  /envoy/api/v2/cert/cert/envoy/api/v2/cert/cert.proto.rst
+  /envoy/api/v2/cluster/cluster/envoy/api/v2/cluster/cluster.proto.rst
+  /envoy/api/v2/cluster/outlier_detection/envoy/api/v2/cluster/outlier_detection.proto.rst
+  /envoy/api/v2/cluster/circuit_breaker/envoy/api/v2/cluster/circuit_breaker.proto.rst
+  /envoy/api/v2/route/route/envoy/api/v2/route/route.proto.rst
+  /envoy/api/v2/listener/listener/envoy/api/v2/listener/listener.proto.rst
+  /envoy/api/v2/config_source/envoy/api/v2/config_source.proto.rst
+  /envoy/api/v2/discovery/common/envoy/api/v2/discovery/common.proto.rst
+  /envoy/api/v2/discovery/eds/envoy/api/v2/discovery/eds.proto.rst
+  /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
+  /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
+  /envoy/api/v2/metrics/envoy/api/v2/metrics_service.proto.rst
+  /envoy/api/v2/rls/envoy/api/v2/rls.proto.rst
+  /envoy/api/v2/stats/envoy/api/v2/stats.proto.rst
+  /envoy/api/v2/trace/envoy/api/v2/trace.proto.rst
+  /envoy/api/v2/filter/accesslog/accesslog/envoy/api/v2/filter/accesslog/accesslog.proto.rst
+  /envoy/api/v2/filter/fault/envoy/api/v2/filter/fault.proto.rst
+  /envoy/api/v2/filter/http/buffer/envoy/api/v2/filter/http/buffer.proto.rst
+  /envoy/api/v2/filter/http/fault/envoy/api/v2/filter/http/fault.proto.rst
+  /envoy/api/v2/filter/http/health_check/envoy/api/v2/filter/http/health_check.proto.rst
+  /envoy/api/v2/filter/http/lua/envoy/api/v2/filter/http/lua.proto.rst
+  /envoy/api/v2/filter/http/rate_limit/envoy/api/v2/filter/http/rate_limit.proto.rst
+  /envoy/api/v2/filter/http/router/envoy/api/v2/filter/http/router.proto.rst
+  /envoy/api/v2/filter/http/squash/envoy/api/v2/filter/http/squash.proto.rst
+  /envoy/api/v2/filter/http/transcoder/envoy/api/v2/filter/http/transcoder.proto.rst
+  /envoy/api/v2/filter/network/client_ssl_auth/envoy/api/v2/filter/network/client_ssl_auth.proto.rst
+  /envoy/api/v2/filter/network/http_connection_manager/envoy/api/v2/filter/network/http_connection_manager.proto.rst
+  /envoy/api/v2/filter/network/mongo_proxy/envoy/api/v2/filter/network/mongo_proxy.proto.rst
+  /envoy/api/v2/filter/network/rate_limit/envoy/api/v2/filter/network/rate_limit.proto.rst
+  /envoy/api/v2/filter/network/redis_proxy/envoy/api/v2/filter/network/redis_proxy.proto.rst
+  /envoy/api/v2/filter/network/tcp_proxy/envoy/api/v2/filter/network/tcp_proxy.proto.rst
+  /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
 "
 
 # Dump all the generated RST so they can be added to PROTO_RST easily.
@@ -68,7 +69,7 @@ find -L bazel-bin -name "*.proto.rst"
 # Only copy in the protos we care about and know how to deal with in protodoc.
 for p in $PROTO_RST
 do
-  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/api.*/api/##' <<< "$p")"
+  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/envoy\/api\/v2.*/envoy\/api\/v2/##' <<< "$p")"
   mkdir -p "$(dirname "${DEST}")"
   cp -f bazel-bin/"${p}" "${DEST}"
 done

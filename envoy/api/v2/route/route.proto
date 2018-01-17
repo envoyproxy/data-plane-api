@@ -12,7 +12,7 @@ import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
-// [#protodoc-title: HTTP route management and RDS]
+// [#protodoc-title: HTTP route management]
 
 // * Routing :ref:`architecture overview <arch_overview_http_routing>`
 // * HTTP :ref:`router filter <config_http_filters_router>`
@@ -33,8 +33,8 @@ message RouteConfiguration {
 
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes. Headers specified at this level are applied
-  // after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`.
+  // after headers from any enclosed :ref:`envoy_api_msg_route.VirtualHost` or
+  // :ref:`envoy_api_msg_route.RouteAction`.
   repeated HeaderValueOption response_headers_to_add = 4;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -43,8 +43,8 @@ message RouteConfiguration {
 
   // Specifies a list of HTTP headers that should be added to each request
   // routed by the HTTP connection manager. Headers specified at this level are
-  // applied after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`. For more information see the documentation on
+  // applied after headers from any enclosed :ref:`envoy_api_msg_route.VirtualHost` or
+  // :ref:`envoy_api_msg_route.RouteAction`. For more information see the documentation on
   // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 6;
 
@@ -118,15 +118,15 @@ message VirtualHost {
 
   // Specifies a list of HTTP headers that should be added to each request
   // handled by this virtual host. Headers specified at this level are applied
-  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information see the documentation
+  // after headers from enclosed :ref:`envoy_api_msg_route.RouteAction` and before headers from the
+  // enclosing :ref:`envoy_api_msg_route.RouteConfiguration`. For more information see the documentation
   // on :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 7;
 
   // Specifies a list of HTTP headers that should be added to each response
   // handled by this virtual host. Headers specified at this level are applied
-  // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`.
+  // after headers from enclosed :ref:`envoy_api_msg_route.RouteAction` and before headers from the
+  // enclosing :ref:`envoy_api_msg_route.RouteConfiguration`.
   repeated HeaderValueOption response_headers_to_add = 10;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -147,7 +147,7 @@ message VirtualHost {
 // .. attention::
 //
 //   Envoy supports routing on HTTP method via :ref:`header matching
-//   <envoy_api_msg_HeaderMatcher>`.
+//   <envoy_api_msg_route.HeaderMatcher>`.
 message Route {
   // Route matching parameters.
   RouteMatch match = 1 [(validate.rules).message.required = true];
@@ -180,9 +180,9 @@ message Route {
   auth.AuthAction auth = 6;
 }
 
-// Compared to the :ref:`cluster <envoy_api_field_RouteAction.cluster>` field that specifies a
+// Compared to the :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` field that specifies a
 // single upstream cluster as the target of a request, the :ref:`weighted_clusters
-// <envoy_api_field_RouteAction.weighted_clusters>` option allows for specification of
+// <envoy_api_field_route.RouteAction.weighted_clusters>` option allows for specification of
 // multiple upstream clusters along with weights that indicate the percentage of
 // traffic to be forwarded to each cluster. The router selects an upstream cluster based on the
 // weights.
@@ -389,7 +389,7 @@ message RouteAction {
     // .. note::
     //
     //   If left unspecified, Envoy will use the global
-    //   :ref:`route timeout <envoy_api_field_RouteAction.timeout>` for the request.
+    //   :ref:`route timeout <envoy_api_field_route.RouteAction.timeout>` for the request.
     //   Consequently, when using a :ref:`5xx <config_http_filters_router_x-envoy-retry-on>` based
     //   retry policy, a request that times out will not be retried as the total timeout budget
     //   would have been exhausted.
@@ -430,15 +430,15 @@ message RouteAction {
 
   // Specifies a set of headers that will be added to requests matching this
   // route. Headers specified at this level are applied before headers from the
-  // enclosing :ref:`envoy_api_msg_VirtualHost` and :ref:`envoy_api_msg_RouteConfiguration`.
+  // enclosing :ref:`envoy_api_msg_route.VirtualHost` and :ref:`envoy_api_msg_route.RouteConfiguration`.
   // For more information see the documentation on :ref:`custom request headers
   // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 12;
 
   // Specifies a set of headers that will be added to responses to requests
   // matching this route. Headers specified at this level are applied before
-  // headers from the enclosing :ref:`envoy_api_msg_VirtualHost` and
-  // :ref:`envoy_api_msg_RouteConfiguration`.
+  // headers from the enclosing :ref:`envoy_api_msg_route.VirtualHost` and
+  // :ref:`envoy_api_msg_route.RouteConfiguration`.
   repeated HeaderValueOption response_headers_to_add = 18;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -451,7 +451,7 @@ message RouteAction {
 
   // Specifies if the rate limit filter should include the virtual host rate
   // limits. By default, if the route configured rate limits, the virtual host
-  // :ref:`rate_limits <envoy_api_field_VirtualHost.rate_limits>` are not applied to the request.
+  // :ref:`rate_limits <envoy_api_field_route.VirtualHost.rate_limits>` are not applied to the request.
   google.protobuf.BoolValue include_vh_rate_limits = 14;
 
   // Specifies the route's hashing policy if the upstream cluster uses a hashing :ref:`load balancer
@@ -580,7 +580,7 @@ message DirectResponseAction {
   // .. note::
   //
   //   Headers can be specified using *response_headers_to_add* in
-  //   :ref:`envoy_api_msg_RouteConfiguration`.
+  //   :ref:`envoy_api_msg_route.RouteConfiguration`.
   DataSource body = 2;
 }
 
@@ -669,14 +669,14 @@ message RateLimit {
     //   ("destination_cluster", "<routed target cluster>")
     //
     // Once a request matches against a route table rule, a routed cluster is determined by one of
-    // the following :ref:`route table configuration <envoy_api_msg_RouteConfiguration>`
+    // the following :ref:`route table configuration <envoy_api_msg_route.RouteConfiguration>`
     // settings:
     //
-    // * :ref:`cluster <envoy_api_field_RouteAction.cluster>` indicates the upstream cluster
+    // * :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` indicates the upstream cluster
     //   to route to.
-    // * :ref:`weighted_clusters <envoy_api_field_RouteAction.weighted_clusters>`
+    // * :ref:`weighted_clusters <envoy_api_field_route.RouteAction.weighted_clusters>`
     //   chooses a cluster randomly from a set of clusters with attributed weight.
-    // * :ref:`cluster_header <envoy_api_field_RouteAction.cluster_header>` indicates which
+    // * :ref:`cluster_header <envoy_api_field_route.RouteAction.cluster_header>` indicates which
     //   header in the request contains the target cluster.
     message DestinationCluster {
     }

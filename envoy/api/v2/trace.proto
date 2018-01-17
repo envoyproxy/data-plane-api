@@ -11,8 +11,8 @@ import "validate/validate.proto";
 
 // The tracing configuration specifies global
 // settings for the HTTP tracer used by Envoy. The configuration is defined by
-// the :ref:`Bootstrap <envoy_api_msg_Bootstrap>` :ref:`tracing
-// <envoy_api_field_Bootstrap.tracing>` field. Envoy may support other tracers
+// the :ref:`Bootstrap <envoy_api_msg_bootstrap.Bootstrap>` :ref:`tracing
+// <envoy_api_field_bootstrap.Bootstrap.tracing>` field. Envoy may support other tracers
 // in the future, but right now the HTTP tracer is the only one supported.
 message Tracing {
   message Http {
@@ -44,7 +44,7 @@ message LightstepConfig {
 message ZipkinConfig {
   // The cluster manager cluster that hosts the Zipkin collectors. Note that the
   // Zipkin cluster must be defined in the :ref:`Bootstrap static cluster
-  // resources <envoy_api_field_Bootstrap.StaticResources.clusters>`.
+  // resources <envoy_api_field_bootstrap.Bootstrap.StaticResources.clusters>`.
   string collector_cluster = 1 [(validate.rules).string.min_bytes = 1];
 
   // The API endpoint of the Zipkin service where the spans will be sent. When

@@ -29,7 +29,7 @@ api_go_proto_library(
 )
 
 api_proto_library(
-    name = "cluster_def",
+    name = "cluster",
     srcs = ["cluster.proto"],
     deps = [
         ":circuit_breaker",
@@ -44,8 +44,8 @@ api_proto_library(
 )
 
 api_go_proto_library(
-    name = "cluster_def",
-    proto = ":cluster_def",
+    name = "cluster",
+    proto = ":cluster",
     deps = [
         ":circuit_breaker_go_proto",
         ":outlier_detection_go_proto",
@@ -59,11 +59,11 @@ api_go_proto_library(
 )
 
 proto_library(
-    name = "cluster",
+    name = "cluster_docs",
     visibility = ["//envoy/api/v2:__pkg__"],
     deps = [
         ":circuit_breaker",
-        ":cluster_def",
+        ":cluster",
         ":outlier_detection",
     ],
 )
