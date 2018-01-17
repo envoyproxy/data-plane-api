@@ -124,6 +124,7 @@ api_go_grpc_library(
 
 proto_library(
     name = "discovery",
+    visibility = ["//api:__pkg__"],
     deps = [
         ":ads",
         ":cds",
@@ -132,5 +133,4 @@ proto_library(
         ":lds",
         ":rds",
     ],
-    visibility = ["//api:__pkg__"],
 )

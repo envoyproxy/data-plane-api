@@ -71,4 +71,3 @@ message OutlierDetection {
   google.protobuf.UInt32Value enforcing_consecutive_gateway_failure = 11
       [(validate.rules).uint32.lte = 100];
 }
-

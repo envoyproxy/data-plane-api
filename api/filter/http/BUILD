@@ -47,7 +47,7 @@ api_proto_library(
     srcs = ["fault.proto"],
     deps = [
         "//api/filter:fault",
-        "//api/route:route",
+        "//api/route",
     ],
 )
 
@@ -69,6 +69,7 @@ api_proto_library(
 
 proto_library(
     name = "http",
+    visibility = ["//api:__pkg__"],
     deps = [
         ":buffer",
         ":ext_authz",
@@ -80,5 +81,4 @@ proto_library(
         ":squash",
         ":transcoder",
     ],
-    visibility = ["//api:__pkg__"],
 )

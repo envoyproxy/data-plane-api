@@ -39,7 +39,7 @@ api_proto_library(
         "//api:config_source",
         "//api:health_check",
         "//api:protocol",
-        "//api/cert:cert",
+        "//api/cert",
     ],
 )
 
@@ -60,10 +60,10 @@ api_go_proto_library(
 
 proto_library(
     name = "cluster",
+    visibility = ["//api:__pkg__"],
     deps = [
         ":circuit_breaker",
         ":cluster_def",
         ":outlier_detection",
     ],
-    visibility = ["//api:__pkg__"],
 )

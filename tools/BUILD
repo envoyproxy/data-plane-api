@@ -6,8 +6,8 @@ py_binary(
     licenses = ["notice"],  # Apache 2
     visibility = ["//visibility:public"],
     deps = [
-        "//api/listener:listener_py",
         "//api/filter/network:http_connection_manager_py",
+        "//api/listener:listener_py",
     ],
 )
 

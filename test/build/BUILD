@@ -31,8 +31,8 @@ api_go_test(
         "//api/discovery:ads_go_grpc",
         "//api/discovery:cds_go_grpc",
         "//api/discovery:eds_go_grpc",
-        "//api/discovery:sds_go_grpc",
         "//api/discovery:lds_go_grpc",
         "//api/discovery:rds_go_grpc",
+        "//api/discovery:sds_go_grpc",
     ],
 )

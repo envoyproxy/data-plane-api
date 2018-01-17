@@ -17,7 +17,7 @@ api_proto_library(
     name = "auth",
     srcs = ["auth.proto"],
     deps = [
-        "//api/cert:cert",
+        "//api/cert",
     ],
 )
 

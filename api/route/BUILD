@@ -7,7 +7,7 @@ api_proto_library(
     srcs = ["route.proto"],
     deps = [
         "//api:base",
-        "//api/auth:auth",
+        "//api/auth",
     ],
 )
 

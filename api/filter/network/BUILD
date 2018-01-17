@@ -10,7 +10,7 @@ api_proto_library(
         "//api:config_source",
         "//api:protocol",
         "//api/filter/accesslog",
-        "//api/route:route",
+        "//api/route",
     ],
 )
 
@@ -54,6 +54,7 @@ api_proto_library(
 
 proto_library(
     name = "network",
+    visibility = ["//api:__pkg__"],
     deps = [
         ":client_ssl_auth",
         ":ext_authz",
@@ -63,5 +64,4 @@ proto_library(
         ":redis_proxy",
         ":tcp_proxy",
     ],
-    visibility = ["//api:__pkg__"],
 )

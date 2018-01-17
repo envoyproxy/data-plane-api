@@ -8,7 +8,7 @@ api_proto_library(
     deps = [
         "//api:address",
         "//api:base",
-        "//api/cert:cert",
+        "//api/cert",
     ],
 )
 

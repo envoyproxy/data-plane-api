@@ -17,4 +17,3 @@ service AggregatedDiscoveryService {
   rpc StreamAggregatedResources(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
   }
 }
-

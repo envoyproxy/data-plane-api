@@ -12,9 +12,9 @@ api_proto_library(
         "//api:grpc_service",
         "//api:stats",
         "//api:trace",
+        "//api/cert",
         "//api/cluster:cluster_def",
-        "//api/listener:listener",
-        "//api/cert:cert",
+        "//api/listener",
     ],
 )
 
@@ -28,10 +28,8 @@ api_go_proto_library(
         "//api:grpc_service_go_proto",
         "//api:stats_go_proto",
         "//api:trace_go_proto",
+        "//api/cert:cert_go_proto",
         "//api/cluster:cluster_def_go_proto",
         "//api/listener:listener_go_proto",
-        "//api/cert:cert_go_proto",
     ],
 )
-
-
