@@ -9,8 +9,8 @@ api_proto_library(
         "//api:base",
         "//api:config_source",
         "//api:protocol",
-        "//api:rds",
         "//api/filter/accesslog",
+        "//api/route:route",
     ],
 )
 

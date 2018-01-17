@@ -12,7 +12,7 @@ import "api/base.proto";
 import "api/config_source.proto";
 import "api/cluster/cluster.proto";
 import "api/grpc_service.proto";
-import "api/lds.proto";
+import "api/listener/listener.proto";
 import "api/cert/cert.proto";
 import "api/stats.proto";
 import "api/trace.proto";
@@ -31,7 +31,7 @@ message Bootstrap {
   message StaticResources {
     // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
     // available regardless of LDS configuration.
-    repeated Listener listeners = 1;
+    repeated listener.Listener listeners = 1;
 
     // If a network based configuration source is specified for :ref:`cds_config
     // <envoy_api_field_Bootstrap.DynamicResources.cds_config>`, it's necessary

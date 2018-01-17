@@ -7,9 +7,6 @@
 #include "api/protocol.pb.validate.h"
 #include "api/cluster/cluster.pb.validate.h"
 #include "api/discovery/eds.pb.validate.h"
-#include "api/lds.pb.validate.h"
-#include "api/rds.pb.validate.h"
-#include "api/rds.pb.validate.h"
 #include "api/filter/accesslog/accesslog.pb.validate.h"
 #include "api/filter/http/buffer.pb.validate.h"
 #include "api/filter/http/fault.pb.validate.h"
@@ -22,6 +19,8 @@
 #include "api/filter/network/mongo_proxy.pb.validate.h"
 #include "api/filter/network/redis_proxy.pb.validate.h"
 #include "api/filter/network/tcp_proxy.pb.validate.h"
+#include "api/listener/listener.pb.validate.h"
+#include "api/route/route.pb.validate.h"
 
 #include "google/protobuf/text_format.h"
 

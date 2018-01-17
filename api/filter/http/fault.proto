@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
-import "api/rds.proto";
 import "api/filter/fault.proto";
+import "api/route/route.proto";
 
 import "validate/validate.proto";
 
@@ -46,7 +46,7 @@ message HTTPFault {
   // config. A match will happen if all the headers in the config are present in
   // the request with the same values (or based on presence if the *value* field
   // is not in the config).
-  repeated HeaderMatcher headers = 4;
+  repeated route.HeaderMatcher headers = 4;
 
   // Faults are injected for the specified list of downstream hosts. If this
   // setting is not set, faults are injected for all downstream nodes.

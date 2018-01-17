@@ -16,7 +16,7 @@ from google.protobuf import json_format
 from google.protobuf import struct_pb2
 from google.protobuf import text_format
 
-from api import lds_pb2
+from api.listener import listener_pb2
 from api.filter.network import http_connection_manager_pb2
 
 
@@ -43,7 +43,7 @@ def ParseProto(path, filter_name):
 
 def GenerateListeners(listeners_pb_path, output_pb_path, output_json_path,
                       fragments):
-  listener = lds_pb2.Listener()
+  listener = listener_pb2.Listener()
   with open(listeners_pb_path, 'r') as f:
     text_format.Merge(f.read(), listener)
 

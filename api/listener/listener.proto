@@ -1,13 +1,11 @@
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.listener;
 
 import "api/address.proto";
 import "api/base.proto";
-import "api/discovery/discovery.proto";
 import "api/cert/cert.proto";
 
-import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -15,22 +13,6 @@ import "validate/validate.proto";
 
 // [#protodoc-title: Listeners and LDS]
 // Listener :ref:`configuration overview <config_listeners>`
-
-// The Envoy instance initiates an RPC at startup to discover a list of
-// listeners. Updates are delivered via streaming from the LDS server and
-// consist of a complete update of all listeners. Existing connections will be
-// allowed to drain from listeners that are no longer present.
-service ListenerDiscoveryService {
-  rpc StreamListeners(stream discovery.DiscoveryRequest) returns (stream discovery.DiscoveryResponse) {
-  }
-
-  rpc FetchListeners(discovery.DiscoveryRequest) returns (discovery.DiscoveryResponse) {
-    option (google.api.http) = {
-      post: "/v2/discovery:listeners"
-      body: "*"
-    };
-  }
-}
 
 message Listener {
   // The unique name by which this listener is known. If no name is provided,

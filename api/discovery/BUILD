@@ -57,6 +57,40 @@ api_go_grpc_library(
 )
 
 api_proto_library(
+    name = "lds",
+    srcs = ["lds.proto"],
+    has_services = 1,
+    deps = [
+        ":discovery",
+    ],
+)
+
+api_go_grpc_library(
+    name = "lds",
+    proto = ":lds",
+    deps = [
+        ":discovery_go_grpc",
+    ],
+)
+
+api_proto_library(
+    name = "rds",
+    srcs = ["rds.proto"],
+    has_services = 1,
+    deps = [
+        ":discovery",
+    ],
+)
+
+api_go_grpc_library(
+    name = "rds",
+    proto = ":rds",
+    deps = [
+        ":discovery_go_grpc",
+    ],
+)
+
+api_proto_library(
     name = "sds",
     srcs = ["sds.proto"],
     has_services = 1,

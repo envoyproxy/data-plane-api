@@ -46,8 +46,8 @@ api_proto_library(
     name = "fault",
     srcs = ["fault.proto"],
     deps = [
-        "//api:rds",
         "//api/filter:fault",
+        "//api/route:route",
     ],
 )
 

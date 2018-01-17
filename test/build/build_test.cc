@@ -12,13 +12,13 @@ int main(int argc, char* argv[]) {
       "envoy.api.v2.discovery.ClusterDiscoveryService.StreamClusters",
       "envoy.api.v2.discovery.EndpointDiscoveryService.FetchEndpoints",
       "envoy.api.v2.discovery.EndpointDiscoveryService.StreamEndpoints",
+      "envoy.api.v2.discovery.ListenerDiscoveryService.FetchListeners",
+      "envoy.api.v2.discovery.ListenerDiscoveryService.StreamListeners",
+      "envoy.api.v2.discovery.RouteDiscoveryService.FetchRoutes",
+      "envoy.api.v2.discovery.RouteDiscoveryService.StreamRoutes",
       "envoy.api.v2.HealthDiscoveryService.FetchHealthCheck",
       "envoy.api.v2.HealthDiscoveryService.StreamHealthCheck",
-      "envoy.api.v2.ListenerDiscoveryService.FetchListeners",
-      "envoy.api.v2.ListenerDiscoveryService.StreamListeners",
       "envoy.api.v2.MetricsService.StreamMetrics",
-      "envoy.api.v2.RouteDiscoveryService.FetchRoutes",
-      "envoy.api.v2.RouteDiscoveryService.StreamRoutes",
       "envoy.api.v2.RateLimitService.ShouldRateLimit",
   };
 

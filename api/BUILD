@@ -33,7 +33,7 @@ api_proto_library(
         "//api/cluster:cluster",
         ":config_source",
         ":grpc_service",
-        ":lds",
+        "//api/listener:listener",
         "//api/cert:cert",
         ":stats",
         ":trace",
@@ -49,7 +49,7 @@ api_go_proto_library(
         "//api/cluster:cluster_go_proto",
         ":config_source_go_proto",
         ":grpc_service_go_proto",
-        ":lds_go_grpc",
+        "//api/listener:listener_go_proto",
         "//api/cert:cert_go_proto",
         ":stats_go_proto",
         ":trace_go_proto",
@@ -118,29 +118,6 @@ api_go_grpc_library(
 )
 
 api_proto_library(
-    name = "lds",
-    srcs = ["lds.proto"],
-    has_services = 1,
-    deps = [
-        ":address",
-        ":base",
-        "//api/discovery:discovery",
-        "//api/cert:cert",
-    ],
-)
-
-api_go_grpc_library(
-    name = "lds",
-    proto = ":lds",
-    deps = [
-        ":address_go_proto",
-        ":base_go_proto",
-        "//api/discovery:discovery_go_grpc",
-        "//api/cert:cert_go_proto",
-    ],
-)
-
-api_proto_library(
     name = "metrics",
     srcs = ["metrics_service.proto"],
     has_services = 1,
@@ -171,27 +148,6 @@ api_proto_library(
 api_go_grpc_library(
     name = "rls",
     proto = ":rls",
-)
-
-api_proto_library(
-    name = "rds",
-    srcs = ["rds.proto"],
-    has_services = 1,
-    deps = [
-        "//api/auth:auth",
-        ":base",
-        "//api/discovery:discovery",
-    ],
-)
-
-api_go_grpc_library(
-    name = "rds",
-    proto = ":rds",
-    deps = [
-        "//api/auth:auth_go_proto",
-        ":base_go_proto",
-        "//api/discovery:discovery_go_grpc",
-    ],
 )
 
 api_proto_library(
@@ -226,16 +182,16 @@ proto_library(
     name = "api",
     deps = [
         ":bootstrap",
-        ":lds",
         ":metrics",
         ":protocol",
-        ":rds",
         ":rls",
         "//api/cluster:circuit_breaker",
         "//api/cluster:cluster",
         "//api/cluster:outlier_detection",
-        "//api/discovery:eds",
         "//api/discovery:cds",
+        "//api/discovery:eds",
+        "//api/discovery:lds",
+        "//api/discovery:rds",
         "//api/filter/accesslog",
         "//api/filter/http:buffer",
         "//api/filter/http:ext_authz",
@@ -253,5 +209,7 @@ proto_library(
         "//api/filter/network:rate_limit",
         "//api/filter/network:redis_proxy",
         "//api/filter/network:tcp_proxy",
+        "//api/listener:listener",
+        "//api/route:route",
     ],
 )
