@@ -67,25 +67,6 @@ api_go_proto_library(
 )
 
 api_proto_library(
-    name = "hds",
-    srcs = ["hds.proto"],
-    has_services = 1,
-    deps = [
-        ":base",
-        ":health_check",
-    ],
-)
-
-api_go_grpc_library(
-    name = "hds",
-    proto = ":hds",
-    deps = [
-        ":base_go_proto",
-        ":health_check_go_proto",
-    ],
-)
-
-api_proto_library(
     name = "metrics",
     srcs = ["metrics_service.proto"],
     has_services = 1,
