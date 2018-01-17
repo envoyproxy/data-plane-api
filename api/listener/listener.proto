@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package envoy.api.v2.listener;
+option go_package = "listener";
 
 import "api/address.proto";
 import "api/base.proto";
