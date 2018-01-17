@@ -30,7 +30,7 @@ api_proto_library(
     deps = [
         ":address",
         ":base",
-        ":cds",
+        "//api/cluster:cluster",
         ":config_source",
         ":grpc_service",
         ":lds",
@@ -46,7 +46,7 @@ api_go_proto_library(
     deps = [
         ":address_go_proto",
         ":base_go_proto",
-        ":cds_go_grpc",
+        "//api/cluster:cluster_go_proto",
         ":config_source_go_proto",
         ":grpc_service_go_proto",
         ":lds_go_grpc",
@@ -69,35 +69,6 @@ api_go_proto_library(
 )
 
 api_proto_library(
-    name = "cds",
-    srcs = ["cds.proto"],
-    has_services = 1,
-    deps = [
-        ":address",
-        ":base",
-        ":config_source",
-        ":discovery",
-        ":health_check",
-        ":protocol",
-        ":sds",
-    ],
-)
-
-api_go_grpc_library(
-    name = "cds",
-    proto = ":cds",
-    deps = [
-        ":address_go_proto",
-        ":base_go_proto",
-        ":config_source_go_proto",
-        ":discovery_go_grpc",
-        ":health_check_go_proto",
-        ":protocol_go_proto",
-        ":sds_go_grpc",
-    ],
-)
-
-api_proto_library(
     name = "config_source",
     srcs = ["config_source.proto"],
     deps = [
@@ -112,42 +83,6 @@ api_go_proto_library(
     deps = [
         ":base_go_proto",
         ":grpc_service_go_proto",
-    ],
-)
-
-api_proto_library(
-    name = "discovery",
-    srcs = ["discovery.proto"],
-    has_services = 1,
-    deps = [":base"],
-)
-
-api_go_grpc_library(
-    name = "discovery",
-    proto = ":discovery",
-    deps = [":base_go_proto"],
-)
-
-api_proto_library(
-    name = "eds",
-    srcs = ["eds.proto"],
-    has_services = 1,
-    deps = [
-        ":address",
-        ":base",
-        ":discovery",
-        ":health_check",
-    ],
-)
-
-api_go_grpc_library(
-    name = "eds",
-    proto = ":eds",
-    deps = [
-        ":address_go_proto",
-        ":base_go_proto",
-        ":discovery_go_grpc",
-        ":health_check_go_proto",
     ],
 )
 
@@ -189,7 +124,7 @@ api_proto_library(
     deps = [
         ":address",
         ":base",
-        ":discovery",
+        "//api/discovery:discovery",
         ":sds",
     ],
 )
@@ -200,7 +135,7 @@ api_go_grpc_library(
     deps = [
         ":address_go_proto",
         ":base_go_proto",
-        ":discovery_go_grpc",
+        "//api/discovery:discovery_go_grpc",
         ":sds_go_grpc",
     ],
 )
@@ -243,9 +178,9 @@ api_proto_library(
     srcs = ["rds.proto"],
     has_services = 1,
     deps = [
-        ":auth",
+        "//api/auth:auth",
         ":base",
-        ":discovery",
+        "//api/discovery:discovery",
     ],
 )
 
@@ -253,9 +188,9 @@ api_go_grpc_library(
     name = "rds",
     proto = ":rds",
     deps = [
-        ":auth_go_proto",
+        "//api/auth:auth_go_proto",
         ":base_go_proto",
-        ":discovery_go_grpc",
+        "//api/discovery:discovery_go_grpc",
     ],
 )
 
@@ -266,7 +201,7 @@ api_proto_library(
     deps = [
         ":base",
         ":config_source",
-        ":discovery",
+        "//api/discovery:discovery",
     ],
 )
 
@@ -276,7 +211,7 @@ api_go_grpc_library(
     deps = [
         ":base_go_proto",
         ":config_source_go_proto",
-        ":discovery_go_grpc",
+        "//api/discovery:discovery_go_grpc",
     ],
 )
 
@@ -306,37 +241,20 @@ api_go_proto_library(
     proto = ":trace",
 )
 
-api_proto_library(
-    name = "auth",
-    srcs = ["auth.proto"],
-    deps = [
-        ":sds",
-    ],
-)
-
-api_go_proto_library(
-    name = "auth",
-    proto = ":auth",
-    deps = [
-        "//api:address_go_proto",
-        "//api:sds_go_grpc",
-        "@googleapis//:rpc_status_go_proto",
-    ],
-)
-
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
 # bazel build //api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "api",
     deps = [
         ":bootstrap",
-        ":cds",
-        ":eds",
         ":lds",
         ":metrics",
         ":protocol",
         ":rds",
         ":rls",
+        "//api/cluster:cluster",
+        "//api/discovery:eds",
+        "//api/discovery:cds",
         "//api/filter/accesslog",
         "//api/filter/http:buffer",
         "//api/filter/http:ext_authz",

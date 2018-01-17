@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "api/auth.proto";
+import "api/auth/auth.proto";
 import "api/base.proto";
-import "api/discovery.proto";
+import "api/discovery/discovery.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
@@ -21,10 +21,10 @@ import "gogoproto/gogo.proto";
 // configurations. Each listener will bind its HTTP connection manager filter to
 // a route table via this identifier.
 service RouteDiscoveryService {
-  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  rpc StreamRoutes(stream discovery.DiscoveryRequest) returns (stream discovery.DiscoveryResponse) {
   }
 
-  rpc FetchRoutes(DiscoveryRequest) returns (DiscoveryResponse) {
+  rpc FetchRoutes(discovery.DiscoveryRequest) returns (discovery.DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:routes"
       body: "*"

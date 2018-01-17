@@ -10,7 +10,7 @@ package envoy.api.v2;
 import "api/address.proto";
 import "api/base.proto";
 import "api/config_source.proto";
-import "api/cds.proto";
+import "api/cluster/cluster.proto";
 import "api/grpc_service.proto";
 import "api/lds.proto";
 import "api/sds.proto";
@@ -39,7 +39,7 @@ message Bootstrap {
     // how to speak to the management server. These cluster definitions may not
     // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
     // IP or DNS-based).
-    repeated Cluster clusters = 2;
+    repeated cluster.Cluster clusters = 2;
 
     // [#not-implemented-hide:]
     repeated Secret secrets = 3;

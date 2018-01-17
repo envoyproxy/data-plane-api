@@ -5,8 +5,8 @@
 // a cheap way to get some C++ compiler sanity checking.
 #include "api/bootstrap.pb.validate.h"
 #include "api/protocol.pb.validate.h"
-#include "api/cds.pb.validate.h"
-#include "api/eds.pb.validate.h"
+#include "api/cluster/cluster.pb.validate.h"
+#include "api/discovery/eds.pb.validate.h"
 #include "api/lds.pb.validate.h"
 #include "api/rds.pb.validate.h"
 #include "api/rds.pb.validate.h"

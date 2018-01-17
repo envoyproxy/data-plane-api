@@ -4,7 +4,7 @@ package envoy.api.v2;
 
 import "api/address.proto";
 import "api/base.proto";
-import "api/discovery.proto";
+import "api/discovery/discovery.proto";
 import "api/sds.proto";
 
 import "google/api/annotations.proto";
@@ -21,10 +21,10 @@ import "validate/validate.proto";
 // consist of a complete update of all listeners. Existing connections will be
 // allowed to drain from listeners that are no longer present.
 service ListenerDiscoveryService {
-  rpc StreamListeners(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  rpc StreamListeners(stream discovery.DiscoveryRequest) returns (stream discovery.DiscoveryResponse) {
   }
 
-  rpc FetchListeners(DiscoveryRequest) returns (DiscoveryResponse) {
+  rpc FetchListeners(discovery.DiscoveryRequest) returns (discovery.DiscoveryResponse) {
     option (google.api.http) = {
       post: "/v2/discovery:listeners"
       body: "*"

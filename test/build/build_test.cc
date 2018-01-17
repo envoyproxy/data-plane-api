@@ -7,11 +7,11 @@
 int main(int argc, char* argv[]) {
   const auto methods = {
       "envoy.api.v2.filter.accesslog.AccessLogService.StreamAccessLogs",
-      "envoy.api.v2.AggregatedDiscoveryService.StreamAggregatedResources",
-      "envoy.api.v2.ClusterDiscoveryService.FetchClusters",
-      "envoy.api.v2.ClusterDiscoveryService.StreamClusters",
-      "envoy.api.v2.EndpointDiscoveryService.FetchEndpoints",
-      "envoy.api.v2.EndpointDiscoveryService.StreamEndpoints",
+      "envoy.api.v2.discovery.AggregatedDiscoveryService.StreamAggregatedResources",
+      "envoy.api.v2.discovery.ClusterDiscoveryService.FetchClusters",
+      "envoy.api.v2.discovery.ClusterDiscoveryService.StreamClusters",
+      "envoy.api.v2.discovery.EndpointDiscoveryService.FetchEndpoints",
+      "envoy.api.v2.discovery.EndpointDiscoveryService.StreamEndpoints",
       "envoy.api.v2.HealthDiscoveryService.FetchHealthCheck",
       "envoy.api.v2.HealthDiscoveryService.StreamHealthCheck",
       "envoy.api.v2.ListenerDiscoveryService.FetchListeners",

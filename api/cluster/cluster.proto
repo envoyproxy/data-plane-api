@@ -1,16 +1,14 @@
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.cluster;
 
 import "api/address.proto";
 import "api/base.proto";
 import "api/config_source.proto";
-import "api/discovery.proto";
 import "api/health_check.proto";
 import "api/protocol.proto";
 import "api/sds.proto";
 
-import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
@@ -19,19 +17,6 @@ import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
 // [#protodoc-title: Clusters and CDS]
-
-// Return list of all clusters this proxy will load balance to.
-service ClusterDiscoveryService {
-  rpc StreamClusters(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
-  }
-
-  rpc FetchClusters(DiscoveryRequest) returns (DiscoveryResponse) {
-    option (google.api.http) = {
-      post: "/v2/discovery:clusters"
-      body: "*"
-    };
-  }
-}
 
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
