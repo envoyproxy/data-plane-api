@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.discovery;
 
-import "api/discovery/discovery.proto";
+import "api/discovery/common.proto";
 
 import "google/api/annotations.proto";
 
