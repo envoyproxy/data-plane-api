@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package envoy.api.v2.discovery;
+
+import "envoy/api/v2/discovery/common.proto";
+
+import "google/api/annotations.proto";
+
+service SecretDiscoveryService {
+  rpc StreamSecrets(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
+
+  rpc FetchSecrets(DiscoveryRequest) returns (DiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:secrets"
+      body: "*"
+    };
+  }
+}

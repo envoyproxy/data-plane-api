@@ -16,8 +16,8 @@ from google.protobuf import json_format
 from google.protobuf import struct_pb2
 from google.protobuf import text_format
 
-from api.listener import listener_pb2
-from api.filter.network import http_connection_manager_pb2
+from envoy.api.v2.listener import listener_pb2
+from envoy.api.v2.filter.network import http_connection_manager_pb2
 
 
 # Convert an arbitrary proto object to its Struct proto representation.

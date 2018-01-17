@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package envoy.api.v2.discovery;
+
+import "envoy/api/v2/discovery/common.proto";
+
+import "google/api/annotations.proto";
+
+// The Envoy instance initiates an RPC at startup to discover a list of
+// listeners. Updates are delivered via streaming from the LDS server and
+// consist of a complete update of all listeners. Existing connections will be
+// allowed to drain from listeners that are no longer present.
+service ListenerDiscoveryService {
+  rpc StreamListeners(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
+
+  rpc FetchListeners(DiscoveryRequest) returns (DiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:listeners"
+      body: "*"
+    };
+  }
+}
