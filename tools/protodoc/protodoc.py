@@ -150,12 +150,12 @@ class SourceCodeInfo(object):
       leading comment
       otherwise ('', []).
     """
-    path_key = str(path)
-    if path_key in self._leading_comments:
+    leading_comment = self._leading_comments.get(str(path), None)
+    if leading_comment is not None:
       _, file_annotations = ExtractAnnotations(self.file_level_comment)
       return ExtractAnnotations(
-          StripLeadingSpace(self._leading_comments[path_key]) + '\n',
-          file_annotations, type_name)
+          StripLeadingSpace(leading_comment) + '\n', file_annotations,
+          type_name)
     return '', []
 
   def GithubUrl(self, path):
@@ -692,5 +692,5 @@ def Main():
   sys.stdout.write(response.SerializeToString())
 
 if __name__ == '__main__':
-    #cProfile.run('Main()',  filename='/source/a.profile')
-    Main()
+  #cProfile.run('Main()',  filename='/source/a.profile')
+  Main()
