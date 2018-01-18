@@ -3,7 +3,7 @@
 
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.monitoring;
 
 import "google/protobuf/struct.proto";
 

@@ -67,18 +67,6 @@ api_go_proto_library(
 )
 
 api_proto_library(
-    name = "metrics",
-    srcs = ["metrics_service.proto"],
-    has_services = 1,
-    require_py = 0,
-    deps = [
-        ":base",
-        ":grpc_service",
-        "@promotheus_metrics_model//:client_model",
-    ],
-)
-
-api_proto_library(
     name = "protocol",
     srcs = ["protocol.proto"],
 )
@@ -99,47 +87,23 @@ api_go_grpc_library(
     proto = ":rls",
 )
 
-api_proto_library(
-    name = "stats",
-    srcs = ["stats.proto"],
-    deps = [
-        ":address",
-    ],
-)
-
-api_go_proto_library(
-    name = "stats",
-    proto = ":stats",
-    deps = [
-        ":address_go_proto",
-    ],
-)
-
-api_proto_library(
-    name = "trace",
-    srcs = ["trace.proto"],
-)
-
-api_go_proto_library(
-    name = "trace",
-    proto = ":trace",
-)
-
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
 # bazel build //envoy/api/v2:api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "api",
     deps = [
-        ":metrics",
         ":protocol",
         ":rls",
         "//envoy/api/v2/bootstrap",
-        "//envoy/api/v2/cluster:cluster_docs",
+        "//envoy/api/v2/cluster",
+        "//envoy/api/v2/cluster:outlier_detection",
+        "//envoy/api/v2/cluster:circuit_breaker",
         "//envoy/api/v2/discovery",
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/filter/http",
         "//envoy/api/v2/filter/network",
         "//envoy/api/v2/listener",
+        "//envoy/api/v2/monitoring:metrics",
         "//envoy/api/v2/route",
     ],
 )

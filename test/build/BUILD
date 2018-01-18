@@ -6,7 +6,6 @@ api_cc_test(
     name = "build_test",
     srcs = ["build_test.cc"],
     proto_deps = [
-        "//envoy/api/v2:metrics",
         "//envoy/api/v2:rls",
         "//envoy/api/v2/discovery:ads",
         "//envoy/api/v2/discovery:cds",
@@ -15,6 +14,7 @@ api_cc_test(
         "//envoy/api/v2/discovery:lds",
         "//envoy/api/v2/discovery:rds",
         "//envoy/api/v2/filter/accesslog",
+        "//envoy/api/v2/monitoring:metrics",
     ],
 )
 

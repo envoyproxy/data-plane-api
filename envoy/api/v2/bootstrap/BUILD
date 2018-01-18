@@ -10,11 +10,11 @@ api_proto_library(
         "//envoy/api/v2:base",
         "//envoy/api/v2:config_source",
         "//envoy/api/v2:grpc_service",
-        "//envoy/api/v2:stats",
-        "//envoy/api/v2:trace",
         "//envoy/api/v2/cert",
         "//envoy/api/v2/cluster",
         "//envoy/api/v2/listener",
+        "//envoy/api/v2/monitoring:stats",
+        "//envoy/api/v2/monitoring:trace",
     ],
 )
 
@@ -26,10 +26,10 @@ api_go_proto_library(
         "//envoy/api/v2:base_go_proto",
         "//envoy/api/v2:config_source_go_proto",
         "//envoy/api/v2:grpc_service_go_proto",
-        "//envoy/api/v2:stats_go_proto",
-        "//envoy/api/v2:trace_go_proto",
         "//envoy/api/v2/cert:cert_go_proto",
         "//envoy/api/v2/cluster:cluster_go_proto",
         "//envoy/api/v2/listener:listener_go_proto",
+        "//envoy/api/v2/monitoring:stats_go_proto",
+        "//envoy/api/v2/monitoring:trace_go_proto",
     ],
 )

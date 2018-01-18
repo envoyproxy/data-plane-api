@@ -57,13 +57,3 @@ api_go_proto_library(
         "//envoy/api/v2/cert:cert_go_proto",
     ],
 )
-
-proto_library(
-    name = "cluster_docs",
-    visibility = ["//envoy/api/v2:__pkg__"],
-    deps = [
-        ":circuit_breaker",
-        ":cluster",
-        ":outlier_detection",
-    ],
-)

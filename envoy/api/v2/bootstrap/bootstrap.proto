@@ -15,8 +15,8 @@ import "envoy/api/v2/cluster/cluster.proto";
 import "envoy/api/v2/grpc_service.proto";
 import "envoy/api/v2/listener/listener.proto";
 import "envoy/api/v2/cert/cert.proto";
-import "envoy/api/v2/stats.proto";
-import "envoy/api/v2/trace.proto";
+import "envoy/api/v2/monitoring/stats.proto";
+import "envoy/api/v2/monitoring/trace.proto";
 
 import "google/protobuf/duration.proto";
 
@@ -87,10 +87,10 @@ message Bootstrap {
   string flags_path = 5;
 
   // Optional set of stats sinks.
-  repeated StatsSink stats_sinks = 6;
+  repeated monitoring.StatsSink stats_sinks = 6;
 
   // Configuration for internal processing of stats.
-  StatsConfig stats_config = 13;
+  monitoring.StatsConfig stats_config = 13;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and
@@ -103,7 +103,7 @@ message Bootstrap {
 
   // Configuration for an external tracing provider. If not specified, no
   // tracing will be performed.
-  Tracing tracing = 9;
+  monitoring.Tracing tracing = 9;
 
   // Configuration for an external rate limit service provider. If not
   // specified, any calls to the rate limit service will immediately return
