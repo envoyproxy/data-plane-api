@@ -18,9 +18,9 @@ v2 API reference
   health_check.proto
   route/route.proto
   cert/cert.proto
-  stats.proto
-  metrics_service.proto
-  trace.proto
+  monitoring/stats.proto
+  monitoring/metrics_service.proto
+  monitoring/trace.proto
   base.proto
   address.proto
   protocol.proto

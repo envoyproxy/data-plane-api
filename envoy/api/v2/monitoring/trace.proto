@@ -23,8 +23,8 @@ message Tracing {
 
     // Trace driver specific configuration which depends on the driver being
     // instantiated. See the :ref:`LightstepConfig
-    // <envoy_api_msg_LightstepConfig>` and :ref:`ZipkinConfig
-    // <envoy_api_msg_ZipkinConfig>` trace drivers for examples.
+    // <envoy_api_msg_monitoring.LightstepConfig>` and :ref:`ZipkinConfig
+    // <envoy_api_msg_monitoring.ZipkinConfig>` trace drivers for examples.
     google.protobuf.Struct config = 2;
   }
   // Provides configuration for the HTTP tracer.

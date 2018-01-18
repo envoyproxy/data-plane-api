@@ -17,13 +17,13 @@ message StatsSink {
   // The name of the stats sink to instantiate. The name must match a supported
   // stats sink. The built-in stats sinks are:
   //
-  // * :ref:`envoy.statsd <envoy_api_msg_StatsdSink>`
-  // * :ref:`envoy.dog_statsd <envoy_api_msg_DogStatsdSink>`
-  // * :ref:`envoy.metrics_service <envoy_api_msg_MetricsServiceConfig>`
+  // * :ref:`envoy.statsd <envoy_api_msg_monitoring.StatsdSink>`
+  // * :ref:`envoy.dog_statsd <envoy_api_msg_monitoring.DogStatsdSink>`
+  // * :ref:`envoy.metrics_service <envoy_api_msg_monitoring.MetricsServiceConfig>`
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being
-  // instantiated. See :ref:`StatsdSink <envoy_api_msg_StatsdSink>` for an
+  // instantiated. See :ref:`StatsdSink <envoy_api_msg_monitoring.StatsdSink>` for an
   // example.
   google.protobuf.Struct config = 2;
 }
@@ -32,13 +32,13 @@ message StatsSink {
 message StatsConfig {
   // Each stat name is iteratively processed through these tag specifiers.
   // When a tag is matched, the first capture group is removed from the name so
-  // later :ref:`TagSpecifiers <envoy_api_msg_TagSpecifier>` cannot match that
+  // later :ref:`TagSpecifiers <envoy_api_msg_monitoring.TagSpecifier>` cannot match that
   // same portion of the match.
   repeated TagSpecifier stats_tags = 1;
 
   // Use all default tag regexes specified in Envoy. These can be combined with
   // custom tags specified in :ref:`stats_tags
-  // <envoy_api_field_StatsConfig.stats_tags>`. They will be processed before
+  // <envoy_api_field_monitoring.StatsConfig.stats_tags>`. They will be processed before
   // the custom tags.
   //
   // .. note::
@@ -64,9 +64,9 @@ message TagSpecifier {
   // portions of existing stats, which can be found in `well_known_names.h
   // <https://github.com/envoyproxy/envoy/blob/master/source/common/config/well_known_names.h>`_
   // in the Envoy repository. If a :ref:`tag_name
-  // <envoy_api_field_TagSpecifier.tag_name>` is provided in the config and neither
-  // :ref:`regex <envoy_api_field_TagSpecifier.regex>` or
-  // :ref:`fixed_value <envoy_api_field_TagSpecifier.fixed_value>` were specified,
+  // <envoy_api_field_monitoring.TagSpecifier.tag_name>` is provided in the config and neither
+  // :ref:`regex <envoy_api_field_monitoring.TagSpecifier.regex>` or
+  // :ref:`fixed_value <envoy_api_field_monitoring.TagSpecifier.fixed_value>` were specified,
   // Envoy will attempt to find that name in its set of defaults and use the accompanying regex.
   //
   // .. note::
@@ -155,7 +155,8 @@ message StatsdSink {
 
 // Stats configuration proto schema for built-in *envoy.dog_statsd* sink.
 // The sink emits stats with `DogStatsD <https://docs.datadoghq.com/guides/dogstatsd/>`_
-// compatible tags. Tags are configurable via :ref:`StatsConfig <envoy_api_msg_StatsConfig>`.
+// compatible tags. Tags are configurable via :ref:`StatsConfig
+// <envoy_api_msg_monitoring.StatsConfig>`.
 message DogStatsdSink {
   oneof dog_statsd_specifier {
     option (validate.required) = true;
