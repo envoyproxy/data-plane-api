@@ -4,9 +4,11 @@
 # http://www.sphinx-doc.org/en/stable/rest.html for Sphinx RST syntax.
 
 from collections import defaultdict
-import copy
 import cProfile
 import functools
+import os
+import pstats
+import StringIO
 import sys
 import re
 
@@ -681,16 +683,26 @@ def Main():
   request = plugin_pb2.CodeGeneratorRequest()
   request.ParseFromString(sys.stdin.read())
   response = plugin_pb2.CodeGeneratorResponse()
+  cprofile_enabled = os.getenv('CPROFILE_ENABLED')
 
   for proto_file in request.proto_file:
     f = response.file.add()
     f.name = proto_file.name + '.rst'
+    if cprofile_enabled:
+      pr = cProfile.Profile()
+      pr.enable()
     # We don't actually generate any RST right now, we just string dump the
     # input proto file descriptor into the output file.
     f.content = GenerateRst(proto_file)
-
+    if cprofile_enabled:
+      pr.disable()
+      stats_stream = StringIO.StringIO()
+      ps = pstats.Stats(pr, stream=stats_stream).sort_stats(os.getenv('CPROFILE_SORTBY', 'cumulative'))
+      stats_file = response.file.add()
+      stats_file.name = proto_file.name + '.rst.profile'
+      ps.print_stats()
+      stats_file.content = stats_stream.getvalue()
   sys.stdout.write(response.SerializeToString())
 
 if __name__ == '__main__':
-  #cProfile.run('Main()',  filename='/source/a.profile')
   Main()
