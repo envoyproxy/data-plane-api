@@ -40,7 +40,7 @@ PROTO_RST="
   /envoy/api/v2/discovery/eds/envoy/api/v2/discovery/eds.proto.rst
   /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
   /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
-  /envoy/api/v2/rls/envoy/api/v2/rls.proto.rst
+  /envoy/api/v2/ratelimit/rls/envoy/api/v2/ratelimit/rls.proto.rst
   /envoy/api/v2/monitoring/metrics/envoy/api/v2/monitoring/metrics_service.proto.rst
   /envoy/api/v2/monitoring/stats/envoy/api/v2/monitoring/stats.proto.rst
   /envoy/api/v2/monitoring/trace/envoy/api/v2/monitoring/trace.proto.rst

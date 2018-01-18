@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
       "envoy.api.v2.discovery.RouteDiscoveryService.StreamRoutes",
       "envoy.api.v2.filter.accesslog.AccessLogService.StreamAccessLogs",
       "envoy.api.v2.monitoring.MetricsService.StreamMetrics",
-      "envoy.api.v2.RateLimitService.ShouldRateLimit",
+      "envoy.api.v2.ratelimit.RateLimitService.ShouldRateLimit",
   };
 
   for (const auto& method : methods) {

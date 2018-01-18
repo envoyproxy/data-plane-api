@@ -25,5 +25,5 @@ v2 API reference
   address.proto
   protocol.proto
   discovery/common.proto
-  rls.proto
+  ratelimit/rls.proto
   filter/filter

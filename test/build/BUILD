@@ -6,7 +6,6 @@ api_cc_test(
     name = "build_test",
     srcs = ["build_test.cc"],
     proto_deps = [
-        "//envoy/api/v2:rls",
         "//envoy/api/v2/discovery:ads",
         "//envoy/api/v2/discovery:cds",
         "//envoy/api/v2/discovery:eds",
@@ -15,6 +14,7 @@ api_cc_test(
         "//envoy/api/v2/discovery:rds",
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/monitoring:metrics",
+        "//envoy/api/v2/ratelimit:rls",
     ],
 )
 
@@ -24,7 +24,6 @@ api_go_test(
     srcs = ["go_build_test.go"],
     importpath = "go_build_test",
     deps = [
-        "//envoy/api/v2:rls_go_grpc",
         "//envoy/api/v2/bootstrap:bootstrap_go_proto",
         "//envoy/api/v2/cert:cert_go_proto",
         "//envoy/api/v2/discovery:ads_go_grpc",
@@ -34,5 +33,6 @@ api_go_test(
         "//envoy/api/v2/discovery:lds_go_grpc",
         "//envoy/api/v2/discovery:rds_go_grpc",
         "//envoy/api/v2/discovery:sds_go_grpc",
+        "//envoy/api/v2/ratelimit:rls_go_grpc",
     ],
 )

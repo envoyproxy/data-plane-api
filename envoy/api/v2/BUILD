@@ -76,24 +76,12 @@ api_go_proto_library(
     proto = ":protocol",
 )
 
-api_proto_library(
-    name = "rls",
-    srcs = ["rls.proto"],
-    has_services = 1,
-)
-
-api_go_grpc_library(
-    name = "rls",
-    proto = ":rls",
-)
-
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
 # bazel build //envoy/api/v2:api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "api",
     deps = [
         ":protocol",
-        ":rls",
         "//envoy/api/v2/bootstrap",
         "//envoy/api/v2/cluster",
         "//envoy/api/v2/cluster:circuit_breaker",
@@ -104,6 +92,7 @@ proto_library(
         "//envoy/api/v2/filter/network",
         "//envoy/api/v2/listener",
         "//envoy/api/v2/monitoring:metrics",
+        "//envoy/api/v2/ratelimit",
         "//envoy/api/v2/route",
     ],
 )

@@ -15,6 +15,7 @@ api_proto_library(
         "//envoy/api/v2/listener",
         "//envoy/api/v2/monitoring:stats",
         "//envoy/api/v2/monitoring:trace",
+        "//envoy/api/v2/ratelimit:rls",
     ],
 )
 
@@ -31,5 +32,6 @@ api_go_proto_library(
         "//envoy/api/v2/listener:listener_go_proto",
         "//envoy/api/v2/monitoring:stats_go_proto",
         "//envoy/api/v2/monitoring:trace_go_proto",
+        "//envoy/api/v2/ratelimit:rls_go_grpc",
     ],
 )
