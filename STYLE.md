@@ -69,3 +69,9 @@ In addition, the following conventions should be followed:
   This is more efficient, extendable and self-describing.
 
 * To represent percentage values, use the Percent message type defined in [api/base.proto](api/base.proto).
+
+* For enum types, if one of the enum values is used for most cases, make it the
+  first enum value with `0` numeric value. Otherwise, define the first enum
+  value like `TYPE_NAME_UNSPECIFIED = 0`, and treat it as an error. This design
+  pattern forces developers to explicitly choose the correct enum value for
+  their use case, and avoid misunderstanding of the default behavior.

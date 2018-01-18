@@ -21,7 +21,7 @@ fi
 source "${BUILD_DIR}"/venv/bin/activate
 
 bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy/api/v2:api --aspects \
-  tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst
+  tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst --action_env=CPROFILE_ENABLED
 
 # These are the protos we want to put in docs, this list will grow.
 # TODO(htuch): Factor this out of this script.
@@ -71,7 +71,8 @@ for p in $PROTO_RST
 do
   DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/envoy\/api\/v2.*/envoy\/api\/v2/##' <<< "$p")"
   mkdir -p "$(dirname "${DEST}")"
-  cp -f bazel-bin/"${p}" "${DEST}"
+  cp -f bazel-bin/"${p}" "$(dirname "${DEST}")"
+  [ -n "${CPROFILE_ENABLED}" ] && cp -f bazel-bin/"${p}".profile "$(dirname "${DEST}")"
 done
 
 rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"
