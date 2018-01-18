@@ -91,6 +91,7 @@ proto_library(
         "//envoy/api/v2/filter/http",
         "//envoy/api/v2/filter/network",
         "//envoy/api/v2/listener",
+        "//envoy/api/v2/load_stats",
         "//envoy/api/v2/monitoring:metrics",
         "//envoy/api/v2/ratelimit",
         "//envoy/api/v2/route",
