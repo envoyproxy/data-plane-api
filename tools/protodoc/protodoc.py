@@ -5,6 +5,7 @@
 
 from collections import defaultdict
 import copy
+import cProfile
 import functools
 import sys
 import re
@@ -118,10 +119,14 @@ class SourceCodeInfo(object):
   def __init__(self, name, source_code_info):
     self._name = name
     self._proto = source_code_info
+    self._leading_comments = {str(location.path): location.leading_comments for location in self._proto.location}
+    self._file_level_comment = None
 
   @property
   def file_level_comment(self):
     """Obtain inferred file level comment."""
+    if self._file_level_comment:
+      return self._file_level_comment
     comment = ''
     earliest_detached_comment = max(
         max(location.span) for location in self._proto.location)
@@ -130,6 +135,7 @@ class SourceCodeInfo(object):
         comment = StripLeadingSpace(''.join(
             location.leading_detached_comments)) + '\n'
         earliest_detached_comment = location.span[0]
+    self._file_level_comment = comment
     return comment
 
   def LeadingCommentPathLookup(self, path, type_name):
@@ -144,12 +150,11 @@ class SourceCodeInfo(object):
       leading comment
       otherwise ('', []).
     """
-    for location in self._proto.location:
-      if location.path == path:
-        _, file_annotations = ExtractAnnotations(self.file_level_comment)
-        return ExtractAnnotations(
-            StripLeadingSpace(location.leading_comments) + '\n',
-            file_annotations, type_name)
+    if str(path) in self._leading_comments:
+      _, file_annotations = ExtractAnnotations(self.file_level_comment)
+      return ExtractAnnotations(
+          StripLeadingSpace(self._leading_comments[str(path)]) + '\n',
+          file_annotations, type_name)
     return '', []
 
   def GithubUrl(self, path):
@@ -195,13 +200,16 @@ class TypeContext(object):
     self.type_name = 'file'
 
   def _Extend(self, path, type_name, name):
-    extended = copy.deepcopy(self)
-    extended.path.extend(path)
-    extended.type_name = type_name
     if not self.name:
-      extended.name = name
+      extended_name = name
     else:
-      extended.name = '%s.%s' % (self.name, name)
+      extended_name = '%s.%s' % (self.name, name)
+    extended = TypeContext(self.source_code_info, extended_name)
+    extended.path = self.path + path
+    extended.type_name = type_name
+    extended.map_typenames = self.map_typenames.copy()
+    extended.oneof_fields = self.oneof_fields.copy()
+    extended.oneof_required = self.oneof_required.copy()
     return extended
 
   def ExtendMessage(self, index, name):
@@ -667,8 +675,7 @@ def GenerateRst(proto_file):
   debug_proto = FormatProtoAsBlockComment(proto_file)
   return header + comment + msgs + enums  # + debug_proto
 
-
-if __name__ == '__main__':
+def Main():
   # http://www.expobrain.net/2015/09/13/create-a-plugin-for-google-protocol-buffer/
   request = plugin_pb2.CodeGeneratorRequest()
   request.ParseFromString(sys.stdin.read())
@@ -682,3 +689,7 @@ if __name__ == '__main__':
     f.content = GenerateRst(proto_file)
 
   sys.stdout.write(response.SerializeToString())
+
+if __name__ == '__main__':
+    #cProfile.run('Main()',  filename='/source/a.profile')
+    Main()
