@@ -150,10 +150,11 @@ class SourceCodeInfo(object):
       leading comment
       otherwise ('', []).
     """
-    if str(path) in self._leading_comments:
+    path_key = str(path)
+    if path_key in self._leading_comments:
       _, file_annotations = ExtractAnnotations(self.file_level_comment)
       return ExtractAnnotations(
-          StripLeadingSpace(self._leading_comments[str(path)]) + '\n',
+          StripLeadingSpace(self._leading_comments[path_key]) + '\n',
           file_annotations, type_name)
     return '', []
 
