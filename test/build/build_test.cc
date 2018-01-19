@@ -6,20 +6,20 @@
 // Basic C++ build/link validation for the v2 xDS APIs.
 int main(int argc, char* argv[]) {
   const auto methods = {
-      "envoy.api.v2.discovery.AggregatedDiscoveryService.StreamAggregatedResources",
-      "envoy.api.v2.discovery.ClusterDiscoveryService.FetchClusters",
-      "envoy.api.v2.discovery.ClusterDiscoveryService.StreamClusters",
-      "envoy.api.v2.discovery.EndpointDiscoveryService.FetchEndpoints",
-      "envoy.api.v2.discovery.EndpointDiscoveryService.StreamEndpoints",
-      "envoy.api.v2.discovery.HealthDiscoveryService.FetchHealthCheck",
-      "envoy.api.v2.discovery.HealthDiscoveryService.StreamHealthCheck",
-      "envoy.api.v2.discovery.ListenerDiscoveryService.FetchListeners",
-      "envoy.api.v2.discovery.ListenerDiscoveryService.StreamListeners",
-      "envoy.api.v2.discovery.RouteDiscoveryService.FetchRoutes",
-      "envoy.api.v2.discovery.RouteDiscoveryService.StreamRoutes",
-      "envoy.api.v2.filter.accesslog.AccessLogService.StreamAccessLogs",
+      "envoy.service.discovery.v2.AggregatedDiscoveryService.StreamAggregatedResources",
+      "envoy.service.discovery.v2.ClusterDiscoveryService.FetchClusters",
+      "envoy.service.discovery.v2.ClusterDiscoveryService.StreamClusters",
+      "envoy.service.discovery.v2.EndpointDiscoveryService.FetchEndpoints",
+      "envoy.service.discovery.v2.EndpointDiscoveryService.StreamEndpoints",
+      "envoy.service.discovery.v2.HealthDiscoveryService.FetchHealthCheck",
+      "envoy.service.discovery.v2.HealthDiscoveryService.StreamHealthCheck",
+      "envoy.service.discovery.v2.ListenerDiscoveryService.FetchListeners",
+      "envoy.service.discovery.v2.ListenerDiscoveryService.StreamListeners",
+      "envoy.service.discovery.v2.RouteDiscoveryService.FetchRoutes",
+      "envoy.service.discovery.v2.RouteDiscoveryService.StreamRoutes",
+      "envoy.service.accesslog.v2.AccessLogService.StreamAccessLogs",
       "envoy.api.v2.monitoring.MetricsService.StreamMetrics",
-      "envoy.api.v2.ratelimit.RateLimitService.ShouldRateLimit",
+      "envoy.service.ratelimit.v2.RateLimitService.ShouldRateLimit",
   };
 
   for (const auto& method : methods) {

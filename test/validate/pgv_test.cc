@@ -6,7 +6,6 @@
 #include "envoy/api/v2/protocol.pb.validate.h"
 #include "envoy/api/v2/bootstrap/bootstrap.pb.validate.h"
 #include "envoy/api/v2/cluster/cluster.pb.validate.h"
-#include "envoy/api/v2/discovery/eds.pb.validate.h"
 #include "envoy/api/v2/filter/accesslog/accesslog.pb.validate.h"
 #include "envoy/api/v2/filter/http/buffer.pb.validate.h"
 #include "envoy/api/v2/filter/http/fault.pb.validate.h"
@@ -21,6 +20,7 @@
 #include "envoy/api/v2/filter/network/tcp_proxy.pb.validate.h"
 #include "envoy/api/v2/listener/listener.pb.validate.h"
 #include "envoy/api/v2/route/route.pb.validate.h"
+#include "envoy/service/discovery/v2/eds.pb.validate.h"
 
 #include "google/protobuf/text_format.h"
 
