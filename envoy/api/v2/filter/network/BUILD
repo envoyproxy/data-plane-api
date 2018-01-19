@@ -54,7 +54,7 @@ api_proto_library(
 
 proto_library(
     name = "network",
-    visibility = ["//envoy/api/v2:__pkg__"],
+    visibility = ["//envoy:__pkg__"],
     deps = [
         ":client_ssl_auth",
         ":ext_authz",

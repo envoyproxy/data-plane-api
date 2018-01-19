@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.discovery;
+package envoy.service.discovery.v2;
 
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/health_check.proto";
@@ -78,13 +78,13 @@ message Capability {
 }
 
 message HealthCheckRequest {
-  Node node = 1;
+  envoy.api.v2.Node node = 1;
   Capability capability = 2;
 }
 
 message EndpointHealth {
-  Endpoint endpoint = 1;
-  HealthStatus health_status = 2;
+  envoy.api.v2.Endpoint endpoint = 1;
+  envoy.api.v2.HealthStatus health_status = 2;
 }
 
 message EndpointHealthResponse {
@@ -99,8 +99,8 @@ message HealthCheckRequestOrEndpointHealthResponse {
 }
 
 message LocalityEndpoints {
-  Locality locality = 1;
-  repeated Endpoint endpoints = 2;
+  envoy.api.v2.Locality locality = 1;
+  repeated envoy.api.v2.Endpoint endpoints = 2;
 }
 
 // The cluster name and locality is provided to Envoy for the endpoints that it
@@ -109,7 +109,7 @@ message LocalityEndpoints {
 // same cluster structure as that provided by EDS.
 message ClusterHealthCheck {
   string cluster_name = 1;
-  repeated HealthCheck health_checks = 2;
+  repeated envoy.api.v2.HealthCheck health_checks = 2;
   repeated LocalityEndpoints endpoints = 3;
 }
 

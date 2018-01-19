@@ -1,12 +1,11 @@
 syntax = "proto3";
 
-package envoy.api.v2.load_stats;
+package envoy.service.load_stats.v2;
 
 import "envoy/api/v2/base.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
@@ -53,7 +52,7 @@ service LoadReportingService {
 message UpstreamLocalityStats {
   // Name of zone, region and optionally endpoint group these metrics were
   // collected from. Zone and region names could be empty if unknown.
-  Locality locality = 1;
+  envoy.api.v2.Locality locality = 1;
 
   // The total number of requests sent by this Envoy since the last report. A
   // single HTTP or gRPC request or stream is counted as one request. A TCP
@@ -137,7 +136,7 @@ message ClusterStats {
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
 message LoadStatsRequest {
   // Node identifier for Envoy instance.
-  Node node = 1;
+  envoy.api.v2.Node node = 1;
 
   // A list of load stats to report.
   repeated ClusterStats cluster_stats = 2;

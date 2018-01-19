@@ -1,10 +1,8 @@
 syntax = "proto3";
 
-package envoy.api.v2.discovery;
+package envoy.service.discovery.v2;
 
-import "envoy/api/v2/discovery/common.proto";
-
-import "google/protobuf/any.proto";
+import "envoy/service/discovery/v2/common.proto";
 
 // See https://github.com/lyft/envoy-api#apis for a description of the role of
 // ADS and how it is intended to be used by a management server. ADS requests

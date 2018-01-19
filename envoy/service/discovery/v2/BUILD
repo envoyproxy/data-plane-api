@@ -140,17 +140,3 @@ api_go_grpc_library(
         ":common_go_proto",
     ],
 )
-
-proto_library(
-    name = "discovery",
-    visibility = ["//envoy/api/v2:__pkg__"],
-    deps = [
-        ":ads",
-        ":cds",
-        ":common",
-        ":eds",
-        ":lds",
-        ":rds",
-        ":sds",
-    ],
-)

@@ -20,11 +20,3 @@ api_go_grpc_library(
         "//envoy/api/v2:base_go_proto",
     ],
 )
-
-proto_library(
-    name = "load_stats",
-    visibility = ["//envoy/api/v2:__pkg__"],
-    deps = [
-        ":lrs",
-    ],
-)

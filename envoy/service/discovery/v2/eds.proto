@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package envoy.api.v2.discovery;
+package envoy.service.discovery.v2;
 
+import "envoy/service/discovery/v2/common.proto";
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/discovery/common.proto";
 import "envoy/api/v2/health_check.proto";
 
 import "google/api/annotations.proto";
@@ -31,11 +31,11 @@ service EndpointDiscoveryService {
 // An Endpoint that Envoy can route traffic to.
 message LbEndpoint {
   // Upstream host identifier
-  Endpoint endpoint = 1;
+  envoy.api.v2.Endpoint endpoint = 1;
 
   // [#not-implemented-hide:] Optional health status when known and supplied by
   // EDS server.
-  HealthStatus health_status = 2;
+  envoy.api.v2.HealthStatus health_status = 2;
 
   // The endpoint metadata specifies values that may be used by the load
   // balancer to select endpoints in a cluster for a given request. The filter
@@ -43,7 +43,7 @@ message LbEndpoint {
   // is *canary*, providing the optional canary status of the upstream host.
   // This may be matched against in a route's ForwardAction metadata_match field
   // to subset the endpoints considered in cluster load balancing.
-  Metadata metadata = 3;
+  envoy.api.v2.Metadata metadata = 3;
 
   // The optional load balancing weight of the upstream host, in the range 1 -
   // 128. Envoy uses the load balancing weight in some of the built in load
@@ -69,7 +69,7 @@ message LbEndpoint {
 // balancing weights or different priorities.
 message LocalityLbEndpoints {
   // Identifies location of where the upstream hosts run.
-  Locality locality = 1;
+  envoy.api.v2.Locality locality = 1;
 
   // The group of endpoints belonging to the locality specified.
   repeated LbEndpoint lb_endpoints = 2;

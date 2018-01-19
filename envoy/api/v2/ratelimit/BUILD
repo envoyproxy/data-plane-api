@@ -21,7 +21,7 @@ api_go_grpc_library(
 
 proto_library(
     name = "ratelimit",
-    visibility = ["//envoy/api/v2:__pkg__"],
+    visibility = ["//envoy:__pkg__"],
     deps = [
         ":rls",
     ],

@@ -69,7 +69,7 @@ api_proto_library(
 
 proto_library(
     name = "http",
-    visibility = ["//envoy/api/v2:__pkg__"],
+    visibility = ["//envoy:__pkg__"],
     deps = [
         ":buffer",
         ":ext_authz",
