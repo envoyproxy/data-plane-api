@@ -91,7 +91,7 @@ message TlsSessionTicketKeys {
   // All keys are candidates for decrypting received tickets. This allows for easy rotation of keys
   // by, for example, putting the new key first, and the previous key second.
   //
-  // If :ref:`session_ticket_keys <envoy_api_field_cert.DownstreamTlsContext.session_ticket_keys>`
+  // If :ref:`session_ticket_keys <envoy_api_field_auth.DownstreamTlsContext.session_ticket_keys>`
   // is not specified, the TLS library will still support resuming sessions via tickets, but it will
   // use an internally-generated and managed key, so sessions cannot be resumed across hot restarts
   // or on different hosts.
@@ -118,11 +118,11 @@ message CertificateValidationContext {
   // for listeners). If not specified and a peer certificate is presented it will not be
   // verified. By default, a client certificate is optional, unless one of the additional
   // options (:ref:`require_client_certificate
-  // <envoy_api_field_cert.DownstreamTlsContext.require_client_certificate>`,
+  // <envoy_api_field_auth.DownstreamTlsContext.require_client_certificate>`,
   // :ref:`verify_certificate_hash
-  // <envoy_api_field_cert.CertificateValidationContext.verify_certificate_hash>`, or
+  // <envoy_api_field_auth.CertificateValidationContext.verify_certificate_hash>`, or
   // :ref:`verify_subject_alt_name
-  // <envoy_api_field_cert.CertificateValidationContext.verify_subject_alt_name>`) is also
+  // <envoy_api_field_auth.CertificateValidationContext.verify_subject_alt_name>`) is also
   // specified.
   //
   // See :ref:`the TLS overview <arch_overview_ssl_enabling_verification>` for a list of common

@@ -20,7 +20,7 @@ fi
 
 source "${BUILD_DIR}"/venv/bin/activate
 
-bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy/api/v2:api --aspects \
+bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy --aspects \
   tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst --action_env=CPROFILE_ENABLED
 
 # These are the protos we want to put in docs, this list will grow.
@@ -28,19 +28,21 @@ bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy/api/v2:api --aspects \
 PROTO_RST="
   /envoy/api/v2/address/envoy/api/v2/address.proto.rst
   /envoy/api/v2/base/envoy/api/v2/base.proto.rst
-  /envoy/api/v2/bootstrap/bootstrap/envoy/api/v2/bootstrap/bootstrap.proto.rst
-  /envoy/api/v2/cert/cert/envoy/api/v2/cert/cert.proto.rst
+  /envoy/api/v2/auth/cert/envoy/api/v2/auth/cert.proto.rst
   /envoy/api/v2/cluster/cluster/envoy/api/v2/cluster/cluster.proto.rst
   /envoy/api/v2/cluster/outlier_detection/envoy/api/v2/cluster/outlier_detection.proto.rst
   /envoy/api/v2/cluster/circuit_breaker/envoy/api/v2/cluster/circuit_breaker.proto.rst
   /envoy/api/v2/route/route/envoy/api/v2/route/route.proto.rst
   /envoy/api/v2/listener/listener/envoy/api/v2/listener/listener.proto.rst
   /envoy/api/v2/config_source/envoy/api/v2/config_source.proto.rst
-  /envoy/api/v2/discovery/common/envoy/api/v2/discovery/common.proto.rst
-  /envoy/api/v2/discovery/eds/envoy/api/v2/discovery/eds.proto.rst
   /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
   /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
-  /envoy/api/v2/ratelimit/rls/envoy/api/v2/ratelimit/rls.proto.rst
+  /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
+  /envoy/api/v2/ratelimit/ratelimit/envoy/api/v2/ratelimit/ratelimit.proto.rst
+  /envoy/bootstrap/v2/bootstrap/envoy/bootstrap/v2/bootstrap.proto.rst
+  /envoy/service/discovery/v2/common/envoy/service/discovery/v2/common.proto.rst
+  /envoy/service/discovery/v2/eds/envoy/service/discovery/v2/eds.proto.rst
+  /envoy/service/ratelimit/v2/rls/envoy/service/ratelimit/v2/rls.proto.rst
   /envoy/api/v2/monitoring/metrics/envoy/api/v2/monitoring/metrics_service.proto.rst
   /envoy/api/v2/monitoring/stats/envoy/api/v2/monitoring/stats.proto.rst
   /envoy/api/v2/monitoring/trace/envoy/api/v2/monitoring/trace.proto.rst
@@ -60,7 +62,6 @@ PROTO_RST="
   /envoy/api/v2/filter/network/rate_limit/envoy/api/v2/filter/network/rate_limit.proto.rst
   /envoy/api/v2/filter/network/redis_proxy/envoy/api/v2/filter/network/redis_proxy.proto.rst
   /envoy/api/v2/filter/network/tcp_proxy/envoy/api/v2/filter/network/tcp_proxy.proto.rst
-  /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
 "
 
 # Dump all the generated RST so they can be added to PROTO_RST easily.
@@ -69,7 +70,7 @@ find -L bazel-bin -name "*.proto.rst"
 # Only copy in the protos we care about and know how to deal with in protodoc.
 for p in $PROTO_RST
 do
-  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/envoy\/api\/v2.*/envoy\/api\/v2/##' <<< "$p")"
+  DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/envoy\/.*/envoy/##' <<< "$p")"
   mkdir -p "$(dirname "${DEST}")"
   cp -f bazel-bin/"${p}" "$(dirname "${DEST}")"
   [ -n "${CPROFILE_ENABLED}" ] && cp -f bazel-bin/"${p}".profile "$(dirname "${DEST}")"

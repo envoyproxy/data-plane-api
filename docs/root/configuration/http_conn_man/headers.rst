@@ -315,7 +315,7 @@ Supported dynamic values are:
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.
 
 %UPSTREAM_METADATA(["namespace", "key", ...])%
-    Populates the header with ref:`EDS endpoint metadata <envoy_api_file_envoy/api/v2/discovery/eds.proto>` from the
+    Populates the header with ref:`EDS endpoint metadata <envoy_api_file_envoy/service/discovery/v2/eds.proto>` from the
     upstream host selected by the router. Metadata may be selected from any namespace. In general,
     metadata values may be strings, numbers, booleans, lists, nested structures, or null. Upstream
     metadata values may be selected from nested structs by specifying multiple keys. Otherwise,

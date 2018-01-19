@@ -60,10 +60,10 @@ Version history
 * tcp proxy: enable use of :ref:`outlier detector <arch_overview_outlier_detection>`.
 * tls: added :ref:`SNI support <faq_how_to_setup_sni>`.
 * tls: added support for specifying :ref:`TLS session ticket keys
-  <envoy_api_field_cert.DownstreamTlsContext.session_ticket_keys>`.
+  <envoy_api_field_auth.DownstreamTlsContext.session_ticket_keys>`.
 * tls: allow configuration of the :ref:`min
-  <envoy_api_field_cert.TlsParameters.tls_minimum_protocol_version>` and :ref:`max
-  <envoy_api_field_cert.TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
+  <envoy_api_field_auth.TlsParameters.tls_minimum_protocol_version>` and :ref:`max
+  <envoy_api_field_auth.TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
 * tracing: added :ref:`custom trace span decorators <envoy_api_field_route.Route.decorator>`.
 * Many small bug fixes and performance improvements not listed.
 
