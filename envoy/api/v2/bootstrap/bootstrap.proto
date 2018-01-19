@@ -10,11 +10,11 @@ option go_package = "bootstrap";
 
 import "envoy/api/v2/address.proto";
 import "envoy/api/v2/base.proto";
+import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/cluster/cluster.proto";
 import "envoy/api/v2/grpc_service.proto";
 import "envoy/api/v2/listener/listener.proto";
-import "envoy/api/v2/cert/cert.proto";
 import "envoy/api/v2/monitoring/stats.proto";
 import "envoy/api/v2/monitoring/trace.proto";
 import "envoy/api/v2/ratelimit/rls.proto";
@@ -44,7 +44,7 @@ message Bootstrap {
     repeated cluster.Cluster clusters = 2;
 
     // [#not-implemented-hide:]
-    repeated cert.Secret secrets = 3;
+    repeated auth.Secret secrets = 3;
   }
   // Statically specified resources.
   StaticResources static_resources = 2;

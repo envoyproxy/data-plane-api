@@ -39,7 +39,7 @@ api_proto_library(
         "//envoy/api/v2:config_source",
         "//envoy/api/v2:health_check",
         "//envoy/api/v2:protocol",
-        "//envoy/api/v2/cert",
+        "//envoy/api/v2/auth:cert",
     ],
 )
 
@@ -54,6 +54,6 @@ api_go_proto_library(
         "//envoy/api/v2:config_source_go_proto",
         "//envoy/api/v2:health_check_go_proto",
         "//envoy/api/v2:protocol_go_proto",
-        "//envoy/api/v2/cert:cert_go_proto",
+        "//envoy/api/v2/auth:cert_go_proto",
     ],
 )

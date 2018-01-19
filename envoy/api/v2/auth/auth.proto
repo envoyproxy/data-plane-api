@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package envoy.api.v2.auth;
 
-import "envoy/api/v2/cert/cert.proto";
+import "envoy/api/v2/auth/cert.proto";
 
 message AuthAction {
   // Should we do white-list or black-list style access control.
@@ -31,7 +31,7 @@ message AuthAction {
   // Check peer identity using X.509 certificate.
   message X509Rule {
     // How to validate peer certificates.
-    cert.CertificateValidationContext validation_context = 3;
+    CertificateValidationContext validation_context = 3;
   }
 
   // Element type of AndRule/OrRule, it chooses among different type of rule.

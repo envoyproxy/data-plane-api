@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package envoy.service.load_stats.v2;
+option go_package = "load_stats";
 
 import "envoy/api/v2/base.proto";
 

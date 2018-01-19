@@ -1,7 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.cert;
-option go_package = "cert";
+package envoy.api.v2.auth;
 
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/config_source.proto";

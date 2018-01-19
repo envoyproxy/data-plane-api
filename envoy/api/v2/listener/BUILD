@@ -8,7 +8,7 @@ api_proto_library(
     deps = [
         "//envoy/api/v2:address",
         "//envoy/api/v2:base",
-        "//envoy/api/v2/cert",
+        "//envoy/api/v2/auth:cert",
     ],
 )
 
@@ -18,6 +18,6 @@ api_go_proto_library(
     deps = [
         "//envoy/api/v2:address_go_proto",
         "//envoy/api/v2:base_go_proto",
-        "//envoy/api/v2/cert:cert_go_proto",
+        "//envoy/api/v2/auth:cert_go_proto",
     ],
 )

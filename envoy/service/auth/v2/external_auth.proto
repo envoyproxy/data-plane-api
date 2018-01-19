@@ -2,12 +2,13 @@ syntax = "proto3";
 
 // [#proto-status: draft]
 
-package envoy.api.v2.auth;
-
+package envoy.service.auth.v2;
 option go_package = "auth";
 
 import "envoy/api/v2/address.proto";
+
 import "google/protobuf/timestamp.proto";
+
 import "google/rpc/status.proto";
 
 // A generic interface for performing authorization check on incoming
@@ -42,7 +43,7 @@ message AttributeContext {
   message Peer {
     // The address of the peer, this is typically the IP address.
     // It can also be UDS path, or others.
-    Address address = 1;
+    envoy.api.v2.Address address = 1;
 
     // The canonical service name of the peer.
     // It should be set to :ref:`the HTTP x-envoy-downstream-service-cluster

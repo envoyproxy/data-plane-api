@@ -4,11 +4,11 @@ package envoy.api.v2.cluster;
 option go_package = "cluster";
 
 import "envoy/api/v2/address.proto";
+import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/health_check.proto";
 import "envoy/api/v2/protocol.proto";
-import "envoy/api/v2/cert/cert.proto";
 import "envoy/api/v2/cluster/circuit_breaker.proto";
 import "envoy/api/v2/cluster/outlier_detection.proto";
 
@@ -146,9 +146,9 @@ message Cluster {
   // .. attention::
   //
   //   Server certificate verification is not enabled by default. Configure
-  //   :ref:`trusted_ca<envoy_api_field_cert.CertificateValidationContext.trusted_ca>` to enable
+  //   :ref:`trusted_ca<envoy_api_field_auth.CertificateValidationContext.trusted_ca>` to enable
   //   verification.
-  cert.UpstreamTlsContext tls_context = 11;
+  auth.UpstreamTlsContext tls_context = 11;
 
   reserved 12;
 

@@ -4,8 +4,8 @@ package envoy.api.v2.listener;
 option go_package = "listener";
 
 import "envoy/api/v2/address.proto";
+import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/cert/cert.proto";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
@@ -167,7 +167,7 @@ message FilterChain {
   FilterChainMatch filter_chain_match = 1;
 
   // The TLS context for this filter chain.
-  cert.DownstreamTlsContext tls_context = 2;
+  auth.DownstreamTlsContext tls_context = 2;
 
   // A list of individual network filters that make up the filter chain for
   // connections established with the listener. Order matters as the filters are
