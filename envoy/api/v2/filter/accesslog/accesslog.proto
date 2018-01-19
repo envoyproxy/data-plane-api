@@ -5,7 +5,6 @@ option go_package = "accesslog";
 
 import "envoy/api/v2/address.proto";
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/grpc_service.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -400,92 +399,4 @@ message FileAccessLog {
   // <config_access_log_format>` as well as a :ref:`default format
   // <config_access_log_default_format>`.
   string format = 2;
-}
-
-// Configuration for the built-in *envoy.tcp_grpc_access_log* type. This configuration will
-// populate *StreamAccessLogsMessage.tcp_logs*.
-// [#not-implemented-hide:]
-// [#comment:TODO(mattklein123): Block type in non-tcp proxy cases?]
-message TcpGrpcAccessLogConfig {
-  CommonGrpcAccessLogConfig common_config = 1 [(validate.rules).message.required = true];
-}
-
-// Configuration for the built-in *envoy.http_grpc_access_log* type. This configuration will
-// populate *StreamAccessLogsMessage.http_logs*.
-// [#not-implemented-hide:]
-// [#comment:TODO(mattklein123): Block type in non-http/router proxy cases?]
-message HttpGrpcAccessLogConfig {
-  CommonGrpcAccessLogConfig common_config = 1 [(validate.rules).message.required = true];
-
-  // Additional request headers to log in *HTTPRequestProperties.request_headers*.
-  repeated string additional_request_headers_to_log = 2;
-
-  // Additional response headers to log in *HTTPResponseProperties.response_headers*.
-  repeated string additional_response_headers_to_log = 3;
-}
-
-// Common configuration for gRPC access logs.
-// [#not-implemented-hide:]
-message CommonGrpcAccessLogConfig {
-  // The friendly name of the access log to be returned in StreamAccessLogsMessage.Identifier. This
-  // allows the access log server to differentiate between different access logs coming from the
-  // same Envoy.
-  string log_name = 1 [(validate.rules).string.min_bytes = 1];
-
-  // The gRPC service for the access log service.
-  GrpcService grpc_service = 2 [(validate.rules).message.required = true];
-}
-
-// [#proto-status: experimental]
-// [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-// Stream message for the StreamAccessLogs API. Envoy will open a stream to the server and stream
-// access logs without ever expecting a response.
-message StreamAccessLogsMessage {
-  message Identifier {
-    // The node sending the access log messages over the stream.
-    Node node = 1 [(validate.rules).message.required = true];
-
-    // The friendly name of the log configured in AccessLogServiceConfig.
-    string log_name = 2 [(validate.rules).string.min_bytes = 1];
-  }
-
-  // Identifier data that will only be sent in the first message on the stream. This is effectively
-  // structured metadata and is a performance optimization.
-  Identifier identifier = 1;
-
-  // Wrapper for batches of HTTP access log entries.
-  message HTTPAccessLogEntries {
-    repeated HTTPAccessLogEntry log_entry = 1 [(validate.rules).repeated .min_items = 1];
-  }
-
-  // Wrapper for batches of TCP access log entries.
-  message TCPAccessLogEntries {
-    repeated TCPAccessLogEntry log_entry = 1 [(validate.rules).repeated .min_items = 1];
-  }
-
-  // Batches of log entries of a single type. Generally speaking, a given stream should only
-  // ever incude one type of log entry.
-  oneof log_entries {
-    option (validate.required) = true;
-
-    HTTPAccessLogEntries http_logs = 2;
-    TCPAccessLogEntries tcp_logs = 3;
-  }
-}
-
-// Empty response for the StreamAccessLogs API. Will never be sent. See below.
-// [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-message StreamAccessLogsResponse {
-}
-
-// Service for streaming access logs from Envoy to an access log server.
-service AccessLogService {
-  // Envoy will connect and send StreamAccessLogsMessage messages forever. It does not expect any
-  // response to be sent as nothing would be done in the case of failure. The server should
-  // disconnect if it expects Envoy to reconnect. In the future we may decide to add a different
-  // API for "critical" access logs in which Envoy will buffer access logs for some period of time
-  // until it gets an ACK so it could then retry. This API is designed for high throughput with the
-  // expectation that it might be lossy.
-  rpc StreamAccessLogs(stream StreamAccessLogsMessage) returns (StreamAccessLogsResponse) {
-  }
 }
