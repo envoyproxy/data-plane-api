@@ -218,8 +218,7 @@ message ListenerFilter {
   // filter. The built-in filters are:
   //
   // [#comment:TODO(mattklein123): Auto generate the following list]
-  // * :ref:`envoy.original_dst <config_listener_filters_original_dst>`
-  // * :ref:`envoy.proxy_protocol <config_listener_filters_proxy_protocol>`
+  // * :ref:`envoy.listener.original_dst <config_listener_filters_original_dst>`
   string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // Filter specific configuration which depends on the filter being
