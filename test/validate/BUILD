@@ -7,7 +7,6 @@ api_cc_test(
     srcs = ["pgv_test.cc"],
     proto_deps = [
         "//envoy/api/v2:protocol",
-        "//envoy/api/v2/bootstrap",
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/filter/http:buffer",
         "//envoy/api/v2/filter/http:fault",
@@ -20,6 +19,7 @@ api_cc_test(
         "//envoy/api/v2/filter/network:mongo_proxy",
         "//envoy/api/v2/filter/network:redis_proxy",
         "//envoy/api/v2/filter/network:tcp_proxy",
+        "//envoy/bootstrap/v2:bootstrap",
         "//envoy/service/discovery/v2:cds",
         "//envoy/service/discovery/v2:eds",
         "//envoy/service/discovery/v2:lds",

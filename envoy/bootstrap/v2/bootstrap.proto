@@ -5,7 +5,7 @@
 
 syntax = "proto3";
 
-package envoy.api.v2.bootstrap;
+package envoy.bootstrap.v2;
 option go_package = "bootstrap";
 
 import "envoy/api/v2/address.proto";
@@ -13,7 +13,6 @@ import "envoy/api/v2/base.proto";
 import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/cluster/cluster.proto";
-import "envoy/api/v2/grpc_service.proto";
 import "envoy/api/v2/listener/listener.proto";
 import "envoy/api/v2/monitoring/stats.proto";
 import "envoy/api/v2/monitoring/trace.proto";
@@ -28,12 +27,12 @@ import "gogoproto/gogo.proto";
 message Bootstrap {
   // Node identity to present to the management server and for instance
   // identification purposes (e.g. in generated headers).
-  Node node = 1;
+  envoy.api.v2.Node node = 1;
 
   message StaticResources {
     // Static :ref:`Listeners <envoy_api_msg_listener.Listener>`. These listeners are
     // available regardless of LDS configuration.
-    repeated listener.Listener listeners = 1;
+    repeated envoy.api.v2.listener.Listener listeners = 1;
 
     // If a network based configuration source is specified for :ref:`cds_config
     // <envoy_api_field_bootstrap.Bootstrap.DynamicResources.cds_config>`, it's necessary
@@ -41,10 +40,10 @@ message Bootstrap {
     // how to speak to the management server. These cluster definitions may not
     // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
     // IP or DNS-based).
-    repeated cluster.Cluster clusters = 2;
+    repeated envoy.api.v2.cluster.Cluster clusters = 2;
 
     // [#not-implemented-hide:]
-    repeated auth.Secret secrets = 3;
+    repeated envoy.api.v2.auth.Secret secrets = 3;
   }
   // Statically specified resources.
   StaticResources static_resources = 2;
@@ -52,12 +51,12 @@ message Bootstrap {
   message DynamicResources {
     // All :ref:`Listeners <envoy_api_msg_listener.Listener>` are provided by a single
     // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
-    ConfigSource lds_config = 1;
+    envoy.api.v2.ConfigSource lds_config = 1;
 
     // All post-bootstrap :ref:`Cluster <envoy_api_msg_cluster.Cluster>` definitions are
     // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
     // configuration source.
-    ConfigSource cds_config = 2;
+    envoy.api.v2.ConfigSource cds_config = 2;
 
     // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
     // specified. This must have :ref:`api_type
@@ -66,14 +65,14 @@ message Bootstrap {
     // :ref:`ConfigSources <envoy_api_msg_ConfigSource>` that have
     // the :ref:`ads <envoy_api_field_ConfigSource.ads>` field set will be
     // streamed on the ADS channel.
-    ApiConfigSource ads_config = 3;
+    envoy.api.v2.ApiConfigSource ads_config = 3;
 
     message DeprecatedV1 {
       // This is the global :ref:`SDS <arch_overview_dynamic_config_sds>` config
       // when using v1 REST for :ref:`CDS
       // <arch_overview_dynamic_config_cds>`/:ref:`EDS
       // <arch_overview_dynamic_config_sds>`.
-      ConfigSource sds_config = 1;
+      envoy.api.v2.ConfigSource sds_config = 1;
     }
     DeprecatedV1 deprecated_v1 = 4;
   }
@@ -88,10 +87,10 @@ message Bootstrap {
   string flags_path = 5;
 
   // Optional set of stats sinks.
-  repeated monitoring.StatsSink stats_sinks = 6;
+  repeated envoy.api.v2.monitoring.StatsSink stats_sinks = 6;
 
   // Configuration for internal processing of stats.
-  monitoring.StatsConfig stats_config = 13;
+  envoy.api.v2.monitoring.StatsConfig stats_config = 13;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and
@@ -104,7 +103,7 @@ message Bootstrap {
 
   // Configuration for an external tracing provider. If not specified, no
   // tracing will be performed.
-  monitoring.Tracing tracing = 9;
+  envoy.api.v2.monitoring.Tracing tracing = 9;
 
   // Configuration for an external rate limit service provider. If not
   // specified, any calls to the rate limit service will immediately return
@@ -131,7 +130,8 @@ message Admin {
   string profile_path = 2;
 
   // The TCP address that the administration server will listen on.
-  Address address = 3 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
+  envoy.api.v2.Address address = 3
+      [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 }
 
 // Cluster manager :ref:`architecture overview <arch_overview_cluster_manager>`.
@@ -156,12 +156,12 @@ message ClusterManager {
 
   // Optional configuration used to bind newly established upstream connections.
   // This may be overridden on a per-cluster basis by upstream_bind_config in the cds_config.
-  BindConfig upstream_bind_config = 3;
+  envoy.api.v2.BindConfig upstream_bind_config = 3;
 
   // A management server endpoint to stream load stats to via
   // *StreamLoadStats*. This must have :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>`
   // :ref:`GRPC <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
-  ApiConfigSource load_stats_config = 4;
+  envoy.api.v2.ApiConfigSource load_stats_config = 4;
 }
 
 // Envoy process watchdog configuration. When configured, this monitors for
