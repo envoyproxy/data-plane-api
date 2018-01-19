@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+// [#proto-status: draft]
+
+package envoy.api.v2;
+
+import "api/base.proto";
+import "api/grpc_service.proto";
+import "trace.proto";
+
+import "google/api/annotations.proto";
+
+import "validate/validate.proto";
+
+// Service for streaming traces to server that consumes the trace data. It
+// uses OpenCensus data model as a standard to represent trace information.
+service TraceService {
+  // Envoy will connect and send StreamTracesMessage messages forever. It does
+  // not expect any response to be sent as nothing would be done in the case
+  // of failure.
+  rpc StreamTraces(stream StreamTracesMessage) returns (StreamTracesResponse) {
+  }
+}
+
+message StreamTracesResponse {
+}
+
+message StreamTracesMessage {
+  message Identifier {
+    // The node sending the access log messages over the stream.
+    Node node = 1 [(validate.rules).message.required = true];
+  }
+
+  // Identifier data effectively is a structured metadata.
+  // As a performance optimization this will only be sent in the first message
+  // on the stream.
+  Identifier identifier = 1;
+
+  // A list of Span entries
+  repeated opencensus.proto.trace.Span spans = 2;
+}
+
+// Configuration structure.
+message TraceServiceConfig {
+  // The upstream gRPC cluster that hosts the metrics service.
+  GrpcService grpc_service = 1 [(validate.rules).message.required = true];
+}
