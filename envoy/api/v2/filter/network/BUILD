@@ -43,7 +43,7 @@ api_proto_library(
 api_proto_library(
     name = "rate_limit",
     srcs = ["rate_limit.proto"],
-    deps = ["//envoy/api/v2/ratelimit:rls"],
+    deps = ["//envoy/api/v2/ratelimit"],
 )
 
 api_proto_library(

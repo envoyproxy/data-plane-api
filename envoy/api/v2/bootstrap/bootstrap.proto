@@ -17,7 +17,7 @@ import "envoy/api/v2/grpc_service.proto";
 import "envoy/api/v2/listener/listener.proto";
 import "envoy/api/v2/monitoring/stats.proto";
 import "envoy/api/v2/monitoring/trace.proto";
-import "envoy/api/v2/ratelimit/rls.proto";
+import "envoy/service/ratelimit/v2/rls.proto";
 
 import "google/protobuf/duration.proto";
 
@@ -109,7 +109,7 @@ message Bootstrap {
   // Configuration for an external rate limit service provider. If not
   // specified, any calls to the rate limit service will immediately return
   // success.
-  ratelimit.RateLimitServiceConfig rate_limit_service = 10;
+  envoy.service.ratelimit.v2.RateLimitServiceConfig rate_limit_service = 10;
 
   // Configuration for the runtime configuration provider. If not specified, a
   // “null” provider will be used which will result in all defaults being used.

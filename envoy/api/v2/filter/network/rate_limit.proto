@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
-import "envoy/api/v2/ratelimit/rls.proto";
+import "envoy/api/v2/ratelimit/ratelimit.proto";
 import "google/protobuf/duration.proto";
 
 import "validate/validate.proto";
