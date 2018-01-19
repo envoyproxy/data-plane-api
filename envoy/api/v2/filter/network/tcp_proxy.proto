@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package envoy.api.v2.filter.network;
-option go_package = "network";
 
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
 import "envoy/api/v2/address.proto";

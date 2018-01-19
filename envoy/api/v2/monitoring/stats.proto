@@ -4,6 +4,7 @@
 syntax = "proto3";
 
 package envoy.api.v2.monitoring;
+option go_package = "monitoring";
 
 import "envoy/api/v2/address.proto";
 
