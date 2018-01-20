@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
       "envoy.service.discovery.v2.RouteDiscoveryService.FetchRoutes",
       "envoy.service.discovery.v2.RouteDiscoveryService.StreamRoutes",
       "envoy.service.accesslog.v2.AccessLogService.StreamAccessLogs",
-      "envoy.api.v2.monitoring.MetricsService.StreamMetrics",
+      "envoy.service.metrics.v2.MetricsService.StreamMetrics",
       "envoy.service.ratelimit.v2.RateLimitService.ShouldRateLimit",
   };
 

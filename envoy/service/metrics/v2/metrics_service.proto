@@ -4,7 +4,8 @@ syntax = "proto3";
 
 // [#protodoc-title: Metrics Service]
 
-package envoy.api.v2.monitoring;
+package envoy.service.metrics.v2;
+option go_package = "metrics";
 
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/grpc_service.proto";
@@ -28,7 +29,7 @@ message StreamMetricsResponse {
 message StreamMetricsMessage {
   message Identifier {
     // The node sending metrics over the stream.
-    Node node = 1 [(validate.rules).message.required = true];
+    envoy.api.v2.Node node = 1 [(validate.rules).message.required = true];
   }
 
   // Identifier data effectively is a structured metadata. As a performance optimization this will
@@ -44,5 +45,5 @@ message StreamMetricsMessage {
 // Service.
 message MetricsServiceConfig {
   // The upstream gRPC cluster that hosts the metrics service.
-  GrpcService grpc_service = 1 [(validate.rules).message.required = true];
+  envoy.api.v2.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }

@@ -7,7 +7,6 @@ import "envoy/api/v2/base.proto";
 import "envoy/api/v2/health_check.proto";
 
 import "google/api/annotations.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
