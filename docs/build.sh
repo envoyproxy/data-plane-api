@@ -43,7 +43,7 @@ PROTO_RST="
   /envoy/service/discovery/v2/common/envoy/service/discovery/v2/common.proto.rst
   /envoy/service/discovery/v2/eds/envoy/service/discovery/v2/eds.proto.rst
   /envoy/service/ratelimit/v2/rls/envoy/service/ratelimit/v2/rls.proto.rst
-  /envoy/api/v2/monitoring/metrics/envoy/api/v2/monitoring/metrics_service.proto.rst
+  /envoy/service/metrics/v2/metrics_service/envoy/service/metrics/v2/metrics_service.proto.rst
   /envoy/api/v2/monitoring/stats/envoy/api/v2/monitoring/stats.proto.rst
   /envoy/api/v2/monitoring/trace/envoy/api/v2/monitoring/trace.proto.rst
   /envoy/api/v2/filter/accesslog/accesslog/envoy/api/v2/filter/accesslog/accesslog.proto.rst

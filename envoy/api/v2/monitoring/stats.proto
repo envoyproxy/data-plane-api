@@ -20,7 +20,7 @@ message StatsSink {
   //
   // * :ref:`envoy.statsd <envoy_api_msg_monitoring.StatsdSink>`
   // * :ref:`envoy.dog_statsd <envoy_api_msg_monitoring.DogStatsdSink>`
-  // * :ref:`envoy.metrics_service <envoy_api_msg_monitoring.MetricsServiceConfig>`
+  // * :ref:`envoy.metrics_service <envoy_api_msg_.envoy.service.metrics.v2.MetricsServiceConfig>`
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being

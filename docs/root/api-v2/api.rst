@@ -19,7 +19,7 @@ v2 API reference
   api/v2/route/route.proto
   api/v2/auth/cert.proto
   api/v2/monitoring/stats.proto
-  api/v2/monitoring/metrics_service.proto
+  service/metrics/v2/metrics_service.proto
   api/v2/monitoring/trace.proto
   api/v2/base.proto
   api/v2/address.proto
