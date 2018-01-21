@@ -44,6 +44,10 @@ operation:
 
 * **No pass through**: In this mode, the health check request is never passed to the local service.
   Envoy will respond with a 200 or a 503 depending on the current draining state of the server.
+* **No pass through, computed from upstream cluster health**: In this mode, the health checking
+  filter will return a 200 or a 503 depending on whether at least a specified percentage of the
+  servers are healthy in one or more upstream clusters. (If the Envoy server is in a draining
+  state, though, it will respond with a 503 regardless of the upstream cluster health.)
 * **Pass through**: In this mode, Envoy will pass every health check request to the local service.
   The service is expected to return a 200 or a 503 depending on its health state.
 * **Pass through with caching**: In this mode, Envoy will pass health check requests to the local
