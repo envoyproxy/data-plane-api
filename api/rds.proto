@@ -566,6 +566,9 @@ message RedirectAction {
   // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
 
+  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with this value.
+  string scheme_redirect = 4;
+
   enum RedirectResponseCode {
     // Moved Permanently HTTP Status Code - 301.
     MOVED_PERMANENTLY = 0;
