@@ -2,9 +2,10 @@
 
 Gzip
 ====
-Gzip is an HTTP filter which enables Envoy to compress dispatched data from an upstream
-service upon client request. This is useful in situations where large payloads need to
-be transmitted without compromising the response time.
+Gzip is an HTTP filter which enables Envoy to compress dispatched data
+from an upstream service upon client request. Compression is useful in
+situations where large payloads need to be transmitted without
+compromising the response time.
 
 Configuration
 -------------
@@ -13,31 +14,34 @@ Configuration
 
 .. attention::
 
-  Due to a known bug in the underlying zlib library, window bits with value 8 does not work as expected,
-  therefore 9 is the smallest window size supported by gzip filter at the moment. This issue might be
-  solved in future releases of the library.
+  Due to a known bug in the underlying Zlib library, window bits with value
+  eight does not work as expected. Therefore 9 is the smallest window size
+  supported by gzip filter at the moment. This issue might be solved in
+  future releases of the library.
 
 How it works
 ------------
-When gzip filter is enabled, request and response headers are inspected in order to determine whether or
-not the content should be compressed. If either response and request allows, content is compressed and then sent to
-the client with the appropriate headers.
+When gzip filter is enabled, request and response headers are inspected to
+determine whether or not the content should be compressed. The content is
+compressed and then sent to the client with the appropriate headers if either
+response and request allow.
 
 By *default* compression will be *skipped* when:
 
-- Request does NOT contain *Accept-Encoding* header.
-- Request contains *Accept-Encoding* header, however it does not allow "gzip".
-- Response contains a *Content-Encoding* header.
-- Response contains a *Cache-Control* header whose value is no-transform.
-- Response contains a *Transfer-Encoding* header whose value is gzip.
-- Response does not contain a *Content-Type* value that matches one of the following
-  MIME-TYPES: *html, text, css, js, json, svg, xml. xhtml*.
-- Neither *Content-Length* nor *Transfer-Encoding* headers are present in the response.
+- A request does NOT contain *Accept-Encoding* header.
+- A request includes *Accept-Encoding* header, but it does not contain "gzip".
+- A response contains a *Content-Encoding* header.
+- A Response includes a *Cache-Control* header whose value is no-transform.
+- A response includes a *Transfer-Encoding* header whose value is "gzip".
+- A response does not contain a *Content-Type* value that matches one of the
+  default mime-types.
+- Neither *Content-Length* nor *Transfer-Encoding* headers are present in
+  the response.
 - Response size is smaller than 30 bytes.
-- Strong *Etag* is removed from the response if any.
 
 When compression is *applied*:
 
 - *Content-Length* is removed from response headers.
-- Response headers contain "*Transfer-Encoding: chunked*" and "*Content-Encodig: gzip*".
+- Response headers contain "*Transfer-Encoding: chunked*" and
+  "*Content-Encoding: gzip*".
 - "*Vary: Accept-Encoding*" header is inserted on every response.
