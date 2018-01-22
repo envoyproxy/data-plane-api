@@ -59,6 +59,7 @@ message DynamicOtConfig {
   // <https://github.com/opentracing/opentracing-cpp>`_.
   string library = 1 [(validate.rules).string.min_bytes = 1];
 
-  // File containing the configuration for the tracing library.
-  string config_file = 2 [(validate.rules).string.min_bytes = 1];
+  // The configuration to use when creating a tracer from the given dynamic
+  // library.
+  google.protobuf.Struct config = 2;
 }
