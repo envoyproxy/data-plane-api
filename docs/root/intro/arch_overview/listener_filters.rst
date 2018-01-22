@@ -4,12 +4,9 @@ Listener filters
 ================
 
 As discussed in the :ref:`listener <arch_overview_listeners>` section, listener filters may be
-used to manipulate connection metadata. In fact, Envoy implements :ref:`*use_original_dst* and
-*bind_to_port* listener options <config_listeners_v1>` internally by passing the newly accepted
-connection through listener filters implementing these functions. Main purpose of listener filters
-is to make adding further system integration functions easier by not requiring changes to Envoy
-core functionlity, and also makes interaction between multiple such features more explicit.
-filters:
+used to manipulate connection metadata. The main purpose of listener filters is to make adding
+further system integration functions easier by not requiring changes to Envoy core functionality,
+and also make interaction between multiple such features more explicit.
 
 The API for listener filters is relatively simple since ultimately these filters operate on newly
 accepted sockets. Filters in the chain can stop and subsequently continue iteration to
