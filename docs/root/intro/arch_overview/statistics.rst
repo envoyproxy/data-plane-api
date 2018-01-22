@@ -23,4 +23,4 @@ received. Note: what were previously referred to as timers have become histogram
 difference between the two representations was the units.
 
 * :ref:`v1 API reference <config_overview_v1>`.
-* :ref:`v2 API reference <envoy_api_field_.envoy.bootstrap.v2.Bootstrap.stats_sinks>`.
+* :ref:`v2 API reference <envoy_api_field_bootstrap.v2.Bootstrap.stats_sinks>`.

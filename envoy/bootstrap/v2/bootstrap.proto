@@ -35,7 +35,7 @@ message Bootstrap {
     repeated envoy.api.v2.listener.Listener listeners = 1;
 
     // If a network based configuration source is specified for :ref:`cds_config
-    // <envoy_api_field_.envoy.bootstrap.v2.Bootstrap.DynamicResources.cds_config>`, it's necessary
+    // <envoy_api_field_bootstrap.v2.Bootstrap.DynamicResources.cds_config>`, it's necessary
     // to have some initial cluster definitions available to allow Envoy to know
     // how to speak to the management server. These cluster definitions may not
     // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
@@ -142,7 +142,7 @@ message ClusterManager {
   // If *local_cluster_name* is defined then :ref:`clusters
   // <config_cluster_manager_clusters>` must be defined in the :ref:`Bootstrap
   // static cluster resources
-  // <envoy_api_field_.envoy.bootstrap.v2.Bootstrap.StaticResources.clusters>`. This is unrelated to
+  // <envoy_api_field_bootstrap.v2.Bootstrap.StaticResources.clusters>`. This is unrelated to
   // the :option:`--service-cluster` option which does not `affect zone aware
   // routing <https://github.com/envoyproxy/envoy/issues/774>`_.
   string local_cluster_name = 1;
