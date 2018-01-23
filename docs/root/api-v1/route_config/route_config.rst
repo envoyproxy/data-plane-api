@@ -55,6 +55,9 @@ response_headers_to_add
       {"key": "header2", "value": "value2"}
     ]
 
+  For more information, including details on header value syntax, see the documentation on
+  :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+
 response_headers_to_remove
   *(optional, array)* Optionally specifies a list of HTTP headers that should be removed from each
   response that the connection manager encodes. Headers are specified in the following form:
@@ -76,8 +79,8 @@ request_headers_to_add
       {"key": "header2", "value": "value2"}
     ]
 
-  For more information see the documentation on :ref:`custom request headers
-  <config_http_conn_man_headers_custom_request_headers>`.
+  For more information, including details on header value syntax, see the documentation on
+  :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
 
 .. toctree::
   :hidden:
