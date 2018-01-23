@@ -14,7 +14,7 @@ Lua
 
   By default Envoy is built without exporting symbols that you may need when interacting with Lua
   modules installed as shared objects. Envoy may need to be built with support for exported symbols.
-  Please see the `Bazel docs <https://github.com/envoyproxy/envoy/blob/master/bazel/README.md>` for more information.
+  Please see the :repo:`Bazel docs <bazel/README.md>` for more information.
 
 Overview
 --------
