@@ -13,6 +13,11 @@ import "validate/validate.proto";
 
 // [#protodoc-title: Endpoints and EDS]
 
+// [#not-implemented-hide:] Not configuration. Workaround c++ protobuf issue with importing
+// services.
+message EdsDummy {
+}
+
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
   // to subscribe to updates for.
