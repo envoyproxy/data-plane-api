@@ -17,14 +17,15 @@ import "validate/validate.proto";
 message Tracing {
   message Http {
     // The name of the HTTP trace driver to instantiate. The name must match a
-    // supported HTTP trace driver. *envoy.lightstep* and *envoy.zipkin* are
-    // built-in trace drivers.
+    // supported HTTP trace driver. *envoy.lightstep*, *envoy.zipkin*, and
+    // *envoy.dynamic.ot* are built-in trace drivers.
     string name = 1 [(validate.rules).string.min_bytes = 1];
 
     // Trace driver specific configuration which depends on the driver being
     // instantiated. See the :ref:`LightstepConfig
-    // <envoy_api_msg_LightstepConfig>` and :ref:`ZipkinConfig
-    // <envoy_api_msg_ZipkinConfig>` trace drivers for examples.
+    // <envoy_api_msg_LightstepConfig>`, :ref:`ZipkinConfig
+    // <envoy_api_msg_ZipkinConfig>`, and :ref:`DynamicOtConfig
+    // <envoy_api_msg_DynamicOtConfig>` trace drivers for examples.
     google.protobuf.Struct config = 2;
   }
   // Provides configuration for the HTTP tracer.
@@ -51,4 +52,17 @@ message ZipkinConfig {
   // using a standard Zipkin installation, the API endpoint is typically
   // /api/v1/spans, which is the default value.
   string collector_endpoint = 2 [(validate.rules).string.min_bytes = 1];
+}
+
+// DynamicOtConfig is used to dynamically load a tracer from a shared library
+// that implements the OpenTracing dynamic loading API
+// <https://github.com/opentracing/opentracing-cpp>`_.
+message DynamicOtConfig {
+  // Dynamic library implementing the `OpenTracing API
+  // <https://github.com/opentracing/opentracing-cpp>`_.
+  string library = 1 [(validate.rules).string.min_bytes = 1];
+
+  // The configuration to use when creating a tracer from the given dynamic
+  // library.
+  google.protobuf.Struct config = 2;
 }
