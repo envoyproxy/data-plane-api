@@ -82,7 +82,7 @@ message Listener {
   // If unspecified, an implementation defined default is applied (1MiB).
   google.protobuf.UInt32Value per_connection_buffer_limit_bytes = 5;
 
-  // [#not-implemented-hide:] Listener metadata.
+  // Listener metadata.
   Metadata metadata = 6;
 
   // [#not-implemented-hide:]
