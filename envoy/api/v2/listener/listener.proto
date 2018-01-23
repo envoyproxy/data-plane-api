@@ -54,12 +54,12 @@ message Listener {
   // .. attention::
   //
   //   This field is deprecated. Use :ref:`an original_dst <config_listener_filters_original_dst>`
-  //   :ref:`listener filter <envoy_api_field_Listener.listener_filters>` instead.
+  //   :ref:`listener filter <envoy_api_field_listener.Listener.listener_filters>` instead.
   //
   //   Note that hand off to another listener is *NOT* performed without this flag. Once
-  //   :ref:`FilterChainMatch <envoy_api_msg_FilterChainMatch>` is implemented this flag will be
-  //   removed, as filter chain matching can be used to select a filter chain based on the restored
-  //   destination address.
+  //   :ref:`FilterChainMatch <envoy_api_msg_listener.FilterChainMatch>` is implemented this flag
+  //   will be removed, as filter chain matching can be used to select a filter chain based on the
+  //   restored destination address.
   google.protobuf.BoolValue use_original_dst = 4 [deprecated = true];
 
   // Soft limit on size of the listener’s new connection read and write buffers.
