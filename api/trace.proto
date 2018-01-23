@@ -18,7 +18,7 @@ message Tracing {
   message Http {
     // The name of the HTTP trace driver to instantiate. The name must match a
     // supported HTTP trace driver. *envoy.lightstep*, *envoy.zipkin*, and
-    // *envoy.dynamic* are built-in trace drivers.
+    // *envoy.dynamic.ot* are built-in trace drivers.
     string name = 1 [(validate.rules).string.min_bytes = 1];
 
     // Trace driver specific configuration which depends on the driver being
