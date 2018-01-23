@@ -146,7 +146,7 @@ message Filter {
   }
 
   // [#not-implemented-hide:]
-  DeprecatedV1 deprecated_v1 = 3;
+  DeprecatedV1 deprecated_v1 = 3 [deprecated = true];
 }
 
 // Specifies the match criteria for selecting a specific filter chain for a

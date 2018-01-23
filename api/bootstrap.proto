@@ -75,7 +75,7 @@ message Bootstrap {
     }
 
     // [#not-implemented-hide:]
-    DeprecatedV1 deprecated_v1 = 4;
+    DeprecatedV1 deprecated_v1 = 4 [deprecated = true];
   }
   // xDS configuration sources.
   DynamicResources dynamic_resources = 3;
