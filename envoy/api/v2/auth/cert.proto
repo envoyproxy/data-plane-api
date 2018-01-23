@@ -196,7 +196,7 @@ message CommonTlsContext {
   }
 
   // [#not-implemented-hide:]
-  DeprecatedV1 deprecated_v1 = 5;
+  DeprecatedV1 deprecated_v1 = 5 [deprecated = true];
 }
 
 message UpstreamTlsContext {

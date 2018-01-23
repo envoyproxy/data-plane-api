@@ -74,7 +74,9 @@ message Bootstrap {
       // <arch_overview_dynamic_config_sds>`.
       envoy.api.v2.ConfigSource sds_config = 1;
     }
-    DeprecatedV1 deprecated_v1 = 4;
+
+    // [#not-implemented-hide:]
+    DeprecatedV1 deprecated_v1 = 4 [deprecated = true];
   }
   // xDS configuration sources.
   DynamicResources dynamic_resources = 3;

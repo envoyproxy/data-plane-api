@@ -18,7 +18,7 @@ Fully static
 ------------
 
 In a fully static configuration, the implementor provides a set of :ref:`listeners
-<config_listeners>` (and :ref:`filter chains <config_listener_filters>`), :ref:`clusters
+<config_listeners>` (and :ref:`filter chains <config_listener_network_filters>`), :ref:`clusters
 <config_cluster_manager>`, and optionally :ref:`HTTP route configurations
 <config_http_conn_man_route_table>`. Dynamic host discovery is only possible via DNS based
 :ref:`service discovery <arch_overview_service_discovery>`. Configuration reloads must take place

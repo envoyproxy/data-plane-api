@@ -286,29 +286,37 @@ the route, virtual host, and global route configuration level. See the relevant 
 <config_http_conn_man_route_table>` and :ref:`v2 <envoy_api_msg_route.RouteConfiguration>` API
 documentation.
 
-**Note:** Headers are appended to requests/responses in the following order: route level headers, virtual host
-level headers and finally global level headers.
+Headers are appended to requests/responses in the following order: route level headers,
+virtual host level headers and finally global level headers.
 
-Envoy additionally supports adding dynamic values to request and response headers.
-Supported dynamic values are:
+Envoy supports adding dynamic values to request and response headers. The percent symbol (%) is
+used to delimit variable names.
+
+.. attention::
+
+  If a literal percent symbol (%) is desired in a request/response header, it must be escaped by
+  doubling it. For example, to emit a header with the value ``100%``, the custom header value in
+  the Envoy configuration must be ``100%%``.
+
+Supported variable names are:
 
 %CLIENT_IP%
-   The original client IP which is already added by Envoy as a
-   :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
+    The original client IP which is already added by Envoy as a
+    :ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>` request header.
 
-   .. attention::
+    .. attention::
 
-     This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
+      This field is deprecated. Use **DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT** instead.
 
- %DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
-   Remote address of the downstream connection. If the address is an IP address the output does
-   *not* include port.
+%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%
+    Remote address of the downstream connection. If the address is an IP address the output does
+    *not* include port.
 
-   .. note::
+    .. note::
 
-     This may not be the physical remote address of the peer if the address has been inferred from
-     :ref:`proxy proto <envoy_api_field_listener.FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
-     <config_http_conn_man_headers_x-forwarded-for>`.
+      This may not be the physical remote address of the peer if the address has been inferred from
+      :ref:`proxy proto <envoy_api_field_listener.FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
+      <config_http_conn_man_headers_x-forwarded-for>`.
 
 %PROTOCOL%
     The original protocol which is already added by Envoy as a
@@ -321,4 +329,5 @@ Supported dynamic values are:
     metadata values may be selected from nested structs by specifying multiple keys. Otherwise,
     only string, boolean, and numeric values are supported. If the namespace or key(s) are not
     found, or if the selected value is not a supported type, then no header is emitted. The
-    namespace and key(s) are specified as a JSON array of strings.
+    namespace and key(s) are specified as a JSON array of strings. Finally, percent symbols in the
+    parameters **do not** need to be escaped by doubling them.

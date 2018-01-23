@@ -312,7 +312,7 @@ message Cluster {
       google.protobuf.BoolValue use_std_hash = 1;
     }
     // Deprecated settings from v1 config.
-    DeprecatedV1 deprecated_v1 = 2;
+    DeprecatedV1 deprecated_v1 = 2 [deprecated = true];
   }
 
   // Optional configuration for the load balancing algorithm selected by

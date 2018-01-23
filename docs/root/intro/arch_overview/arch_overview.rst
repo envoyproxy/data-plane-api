@@ -7,6 +7,7 @@ Architecture overview
   terminology
   threading_model
   listeners
+  listener_filters
   network_filters
   http_connection_management
   http_filters
