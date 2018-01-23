@@ -73,6 +73,8 @@ message Bootstrap {
       // <arch_overview_dynamic_config_sds>`.
       ConfigSource sds_config = 1;
     }
+
+    // [#not-implemented-hide:]
     DeprecatedV1 deprecated_v1 = 4;
   }
   // xDS configuration sources.
