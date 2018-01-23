@@ -566,9 +566,6 @@ message RedirectAction {
   // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
 
-  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with this value.
-  string scheme_redirect = 4;
-
   enum RedirectResponseCode {
     // Moved Permanently HTTP Status Code - 301.
     MOVED_PERMANENTLY = 0;
@@ -589,6 +586,9 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+
+  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with this value.
+  string scheme_redirect = 4;
 }
 
 message DirectResponseAction {
