@@ -17,6 +17,11 @@ used for (e.g., :ref:`rate limiting <arch_overview_rate_limit>`, :ref:`TLS clien
 MongoDB :ref:`sniffing <arch_overview_mongo>`, raw :ref:`TCP proxy <arch_overview_tcp_proxy>`,
 etc.).
 
+Listeners are optionally also configured with some number of :ref:`listener filters
+<arch_overview_listener_filters>`. These filters are processed before the network level filters,
+and have the opportunity to manipulate the connection metadata, usually to influence how the
+connection is processed later filters or clusters.
+
 Listeners can also be fetched dynamically via the :ref:`listener discovery service (LDS)
 <config_listeners_lds>`.
 

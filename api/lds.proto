@@ -66,7 +66,17 @@ message Listener {
   // true, the listener hands off redirected connections to the listener associated with the
   // original destination address. If there is no listener associated with the original destination
   // address, the connection is handled by the listener that receives it. Defaults to false.
-  google.protobuf.BoolValue use_original_dst = 4;
+  //
+  // .. attention::
+  //
+  //   This field is deprecated. Use :ref:`an original_dst <config_listener_filters_original_dst>`
+  //   :ref:`listener filter <envoy_api_field_Listener.listener_filters>` instead.
+  //
+  //   Note that hand off to another listener is *NOT* performed without this flag. Once
+  //   :ref:`FilterChainMatch <envoy_api_msg_FilterChainMatch>` is implemented this flag will be
+  //   removed, as filter chain matching can be used to select a filter chain based on the restored
+  //   destination address.
+  google.protobuf.BoolValue use_original_dst = 4 [deprecated = true];
 
   // Soft limit on size of the listener’s new connection read and write buffers.
   // If unspecified, an implementation defined default is applied (1MiB).
@@ -103,6 +113,13 @@ message Listener {
 
   // The type of draining to perform at a listener-wide level.
   DrainType drain_type = 8;
+
+  // Listener filters have the opportunity to manipulate and augment the connection metadata that
+  // is used in connection filter chain matching, for example. These filters are run before any in
+  // :ref:`filter_chains <envoy_api_field_Listener.filter_chains>`. Order matters as the filters
+  // are processed sequentially right after a socket has been accepted by the listener, and before
+  // a connection is created.
+  repeated ListenerFilter listener_filters = 9;
 }
 
 message Filter {
@@ -204,4 +221,17 @@ message FilterChain {
 
   // [#not-implemented-hide:] See base.TransportSocket description.
   TransportSocket transport_socket = 6;
+}
+
+message ListenerFilter {
+  // The name of the filter to instantiate. The name must match a supported
+  // filter. The built-in filters are:
+  //
+  // [#comment:TODO(mattklein123): Auto generate the following list]
+  // * :ref:`envoy.listener.original_dst <config_listener_filters_original_dst>`
+  string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // Filter specific configuration which depends on the filter being
+  // instantiated. See the supported filters for further documentation.
+  google.protobuf.Struct config = 2;
 }
