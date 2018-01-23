@@ -55,6 +55,8 @@ Lines starting with ``#`` as the first character are treated as comments.
 Comments can be used to provide context on an existing value. Comments are also useful in an
 otherwise empty file to keep a placeholder for deployment in a time of need.
 
+.. _config_runtime_symbolic_link_swap:
+
 Updating runtime values via symbolic link swap
 ----------------------------------------------
 
