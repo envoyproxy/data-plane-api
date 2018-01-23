@@ -588,7 +588,7 @@ message RedirectAction {
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
 
   // [#not-implemented-hide:] The scheme portion of the URL will be swapped with "https".
-  google.protobuf.BoolValue https_redirect = 4;
+  bool https_redirect = 4;
 }
 
 message DirectResponseAction {
