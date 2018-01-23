@@ -54,6 +54,9 @@ message ZipkinConfig {
   string collector_endpoint = 2 [(validate.rules).string.min_bytes = 1];
 }
 
+// DynamicOtConfig is used to dynamically load a tracer from a shared library
+// that implements the OpenTracing dynamic loading API
+// <https://github.com/opentracing/opentracing-cpp>`_.
 message DynamicOtConfig {
   // Dynamic library implementing the `OpenTracing API
   // <https://github.com/opentracing/opentracing-cpp>`_.
