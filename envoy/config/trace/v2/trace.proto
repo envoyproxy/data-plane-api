@@ -3,7 +3,8 @@
 
 syntax = "proto3";
 
-package envoy.api.v2.monitoring;
+package envoy.config.trace.v2;
+option go_package = "trace";
 
 import "google/protobuf/struct.proto";
 
@@ -65,4 +66,10 @@ message DynamicOtConfig {
   // The configuration to use when creating a tracer from the given dynamic
   // library.
   google.protobuf.Struct config = 2;
+}
+
+// Configuration structure.
+message TraceServiceConfig {
+  // The upstream gRPC cluster that hosts the metrics service.
+  envoy.api.v2.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }

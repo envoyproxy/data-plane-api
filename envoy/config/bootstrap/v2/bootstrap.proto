@@ -14,9 +14,8 @@ import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/cluster/cluster.proto";
 import "envoy/api/v2/listener/listener.proto";
-import "envoy/api/v2/monitoring/trace.proto";
+import "envoy/config/trace/v2/trace.proto";
 import "envoy/config/metrics/v2/stats.proto";
-import "envoy/config/metrics/v2/metrics_service.proto";
 import "envoy/config/ratelimit/v2/rls.proto";
 
 import "google/protobuf/duration.proto";
@@ -106,7 +105,7 @@ message Bootstrap {
 
   // Configuration for an external tracing provider. If not specified, no
   // tracing will be performed.
-  envoy.api.v2.monitoring.Tracing tracing = 9;
+  envoy.config.trace.v2.Tracing tracing = 9;
 
   // Configuration for an external rate limit service provider. If not
   // specified, any calls to the rate limit service will immediately return
