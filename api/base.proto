@@ -192,3 +192,11 @@ message TransportSocket {
   // See the supported transport socket implementations for further documentation.
   google.protobuf.Struct config = 2;
 }
+
+// A percent, rounded down to the nearest 0.01%. Typically used to specify things like target
+// sampling percentages among tracing requests (as in, e.g., :ref:`HTTP Connection Manager tracing
+// <envoy_api_field_filter.network.HttpConnectionManager.tracing>`).
+message HundredthsRoundedPercent {
+  // The percent, a float between 0 and 100. Rounded to the nearest 0.01%.
+  double value = 1 [(validate.rules).double = {gte: 0, lte: 100}];
+}
