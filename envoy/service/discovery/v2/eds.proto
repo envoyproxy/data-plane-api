@@ -12,7 +12,7 @@ import "validate/validate.proto";
 // [#protodoc-title: EDS]
 
 // [#not-implemented-hide:] Not configuration. Workaround c++ protobuf issue with importing
-// services.
+// services: https://github.com/google/protobuf/issues/4221
 message EdsDummy {
 }
 
