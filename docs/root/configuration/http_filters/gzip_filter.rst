@@ -15,9 +15,9 @@ Configuration
 .. attention::
 
   Due to a known bug in the underlying Zlib library, window bits with value
-  eight does not work as expected. Therefore 9 is the smallest window size
-  supported by gzip filter at the moment. This issue might be solved in
-  future releases of the library.
+  eight does not work as expected. Therefore any number below that will be
+  automatically set to 9. This issue might be solved in future releases of
+  the library.
 
 How it works
 ------------
@@ -31,13 +31,14 @@ By *default* compression will be *skipped* when:
 - A request does NOT contain *Accept-Encoding* header.
 - A request includes *Accept-Encoding* header, but it does not contain "gzip".
 - A response contains a *Content-Encoding* header.
-- A Response includes a *Cache-Control* header whose value is no-transform.
+- A Response includes a *Cache-Control* header whose value is "no-transform".
 - A response includes a *Transfer-Encoding* header whose value is "gzip".
 - A response does not contain a *Content-Type* value that matches one of the
   default mime-types.
 - Neither *Content-Length* nor *Transfer-Encoding* headers are present in
   the response.
-- Response size is smaller than 30 bytes.
+- Response size is smaller than 30 bytes (only applicable when transfer-encoding
+  is not chuncked).
 
 When compression is *applied*:
 
