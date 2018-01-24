@@ -76,11 +76,6 @@ message Node {
   string build_version = 5;
 }
 
-// Upstream host identifier.
-message Endpoint {
-  Address address = 1;
-}
-
 // Metadata provides additional inputs to filters based on matched listeners,
 // filter chains, routes and endpoints. It is structured as a map from filter
 // name (in reverse DNS format) to metadata specific to the filter. Metadata

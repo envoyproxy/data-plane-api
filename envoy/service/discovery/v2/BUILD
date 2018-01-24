@@ -40,6 +40,7 @@ api_proto_library(
         "//envoy/api/v2:address",
         "//envoy/api/v2:base",
         "//envoy/api/v2:health_check",
+        "//envoy/api/v2/endpoint:endpoint",
     ],
 )
 
@@ -51,6 +52,7 @@ api_go_grpc_library(
         "//envoy/api/v2:address_go_proto",
         "//envoy/api/v2:base_go_proto",
         "//envoy/api/v2:health_check_go_proto",
+        "//envoy/api/v2/endpoint:endpoint_go_proto",
     ],
 )
 
@@ -95,6 +97,7 @@ api_proto_library(
     deps = [
         "//envoy/api/v2:base",
         "//envoy/api/v2:health_check",
+        "//envoy/api/v2/endpoint:endpoint",
     ],
 )
 
@@ -104,6 +107,7 @@ api_go_grpc_library(
     deps = [
         "//envoy/api/v2:base_go_proto",
         "//envoy/api/v2:health_check_go_proto",
+        "//envoy/api/v2/endpoint:endpoint_go_proto",
     ],
 )
 

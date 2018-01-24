@@ -6,7 +6,6 @@ package envoy.service.metrics.v2;
 option go_package = "metrics";
 
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/grpc_service.proto";
 
 import "metrics.proto";
 

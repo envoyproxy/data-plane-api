@@ -4,6 +4,7 @@ package envoy.service.discovery.v2;
 
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/health_check.proto";
+import "envoy/api/v2/endpoint/endpoint.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
@@ -88,7 +89,7 @@ message HealthCheckRequest {
 }
 
 message EndpointHealth {
-  envoy.api.v2.Endpoint endpoint = 1;
+  envoy.api.v2.endpoint.Endpoint endpoint = 1;
   envoy.api.v2.HealthStatus health_status = 2;
 }
 
@@ -105,7 +106,7 @@ message HealthCheckRequestOrEndpointHealthResponse {
 
 message LocalityEndpoints {
   envoy.api.v2.Locality locality = 1;
-  repeated envoy.api.v2.Endpoint endpoints = 2;
+  repeated envoy.api.v2.endpoint.Endpoint endpoints = 2;
 }
 
 // The cluster name and locality is provided to Envoy for the endpoints that it
