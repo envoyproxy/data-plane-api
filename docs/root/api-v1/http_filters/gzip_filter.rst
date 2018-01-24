@@ -49,7 +49,7 @@ compression_strategy
 content_type
   *(optional, string)* Set of strings that allows specifying which mime-types yield compression; e.g.,
   application/JSON, text/HTML, etc. When this field is not defined, compression will be applied to
-  the following MIME-TYPES: "application/javascript", "application/json", "application/xhtml+xml",
+  the following mime-types: "application/javascript", "application/json", "application/xhtml+xml",
   "image/svg+xml", "text/css", "text/html", "text/plain", "text/xml".
 
 disable_on_etag_header
