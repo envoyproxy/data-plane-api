@@ -12,10 +12,10 @@ api_proto_library(
         "//envoy/api/v2/auth:cert",
         "//envoy/api/v2/cluster",
         "//envoy/api/v2/listener",
-        "//envoy/config/metrics/v2:stats",
         "//envoy/config/metrics/v2:metrics_service",
-        "//envoy/config/trace/v2:trace",
+        "//envoy/config/metrics/v2:stats",
         "//envoy/config/ratelimit/v2:rls",
+        "//envoy/config/trace/v2:trace",
     ],
 )
 
@@ -29,9 +29,9 @@ api_go_proto_library(
         "//envoy/api/v2/auth:cert_go_proto",
         "//envoy/api/v2/cluster:cluster_go_proto",
         "//envoy/api/v2/listener:listener_go_proto",
-        "//envoy/config/metrics/v2:stats_go_proto",
         "//envoy/config/metrics/v2:metrics_service_go_proto",
-        "//envoy/config/trace/v2:trace_go_proto",
+        "//envoy/config/metrics/v2:stats_go_proto",
         "//envoy/config/ratelimit/v2:rls_go_grpc",
+        "//envoy/config/trace/v2:trace_go_proto",
     ],
 )
