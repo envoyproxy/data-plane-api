@@ -33,8 +33,10 @@ By *default* compression will be *skipped* when:
 - A response contains a *Content-Encoding* header.
 - A Response contains a *Cache-Control* header whose value includes "no-transform".
 - A response contains a *Transfer-Encoding* header whose value includes "gzip".
-- A response does not contain a *Content-Type* value that matches one of the
-  default mime-types.
+- A response does not contain a Content-Type value that matches one of the selected
+  mime-types, which default to *application/javascript*, *application/json*,
+  *application/xhtml+xml*, *image/svg+xml*, *text/css*, *text/html*, *text/plain*,
+  *text/xml*.
 - Neither *Content-Length* nor *Transfer-Encoding* headers are present in
   the response.
 - Response size is smaller than 30 bytes (only applicable when transfer-encoding
