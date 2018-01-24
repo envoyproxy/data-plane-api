@@ -6,6 +6,8 @@ syntax = "proto3";
 package envoy.config.trace.v2;
 option go_package = "trace";
 
+import "envoy/api/v2/grpc_service.proto";
+
 import "google/protobuf/struct.proto";
 
 import "validate/validate.proto";

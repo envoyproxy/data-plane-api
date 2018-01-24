@@ -6,7 +6,6 @@ package envoy.service.trace.v2;
 option go_package = "trace";
 
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/grpc_service.proto";
 import "trace.proto";
 
 import "google/api/annotations.proto";

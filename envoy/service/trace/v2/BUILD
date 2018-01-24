@@ -9,7 +9,6 @@ api_proto_library(
     require_py = 0,
     deps = [
         "//envoy/api/v2:base",
-        "//envoy/api/v2:grpc_service",
         "@io_opencensus_trace//:trace_model",
     ],
 )
