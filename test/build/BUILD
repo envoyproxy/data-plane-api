@@ -25,7 +25,7 @@ api_go_test(
     importpath = "go_build_test",
     deps = [
         "//envoy/api/v2/auth:cert_go_proto",
-        "//envoy/bootstrap/v2:bootstrap_go_proto",
+        "//envoy/config/bootstrap/v2:bootstrap_go_proto",
         "//envoy/service/discovery/v2:ads_go_grpc",
         "//envoy/service/discovery/v2:cds_go_grpc",
         "//envoy/service/discovery/v2:eds_go_grpc",

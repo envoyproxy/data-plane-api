@@ -17,7 +17,7 @@ proto_library(
         "//envoy/api/v2/monitoring:trace",
         "//envoy/api/v2/ratelimit",
         "//envoy/api/v2/route",
-        "//envoy/bootstrap/v2:bootstrap",
+        "//envoy/config/bootstrap/v2:bootstrap",
         "//envoy/service/discovery",
         "//envoy/service/load_stats",
         "//envoy/service/metrics",

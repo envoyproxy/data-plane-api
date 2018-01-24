@@ -5,7 +5,7 @@
 
 syntax = "proto3";
 
-package envoy.bootstrap.v2;
+package envoy.config.bootstrap.v2;
 option go_package = "bootstrap";
 
 import "envoy/api/v2/address.proto";

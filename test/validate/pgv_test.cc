@@ -19,7 +19,7 @@
 #include "envoy/api/v2/filter/network/tcp_proxy.pb.validate.h"
 #include "envoy/api/v2/listener/listener.pb.validate.h"
 #include "envoy/api/v2/route/route.pb.validate.h"
-#include "envoy/bootstrap/v2/bootstrap.pb.validate.h"
+#include "envoy/config/bootstrap/v2/bootstrap.pb.validate.h"
 #include "envoy/service/discovery/v2/eds.pb.validate.h"
 
 #include "google/protobuf/text_format.h"
@@ -46,7 +46,7 @@ template <class Proto> struct TestCase {
 // Basic protoc-gen-validate C++ validation header inclusion and Validate calls
 // from data-plane-api.
 int main(int argc, char* argv[]) {
-  envoy::bootstrap::v2::Bootstrap invalid_bootstrap;
+  envoy::config::bootstrap::v2::Bootstrap invalid_bootstrap;
   // This is a baseline test of the validation features we care about. It's
   // probably not worth adding in every filter and field that we want to valid
   // in the API upfront, but as regressions occur, this is the place to add the
@@ -59,12 +59,12 @@ int main(int argc, char* argv[]) {
     address {}
   }
   )EOF";
-  envoy::bootstrap::v2::Bootstrap valid_bootstrap;
+  envoy::config::bootstrap::v2::Bootstrap valid_bootstrap;
   if (!google::protobuf::TextFormat::ParseFromString(valid_bootstrap_text, &valid_bootstrap)) {
     std::cerr << "Unable to parse text proto: " << valid_bootstrap_text << std::endl;
     exit(EXIT_FAILURE);
   }
-  TestCase<envoy::bootstrap::v2::Bootstrap>{invalid_bootstrap, valid_bootstrap}.run();
+  TestCase<envoy::config::bootstrap::v2::Bootstrap>{invalid_bootstrap, valid_bootstrap}.run();
 
   exit(EXIT_SUCCESS);
 }
