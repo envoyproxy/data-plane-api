@@ -14,8 +14,9 @@ import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/cluster/cluster.proto";
 import "envoy/api/v2/listener/listener.proto";
-import "envoy/api/v2/monitoring/stats.proto";
 import "envoy/api/v2/monitoring/trace.proto";
+import "envoy/config/metrics/v2/stats.proto";
+import "envoy/config/metrics/v2/metrics_service.proto";
 import "envoy/service/ratelimit/v2/rls.proto";
 
 import "google/protobuf/duration.proto";
@@ -89,10 +90,10 @@ message Bootstrap {
   string flags_path = 5;
 
   // Optional set of stats sinks.
-  repeated envoy.api.v2.monitoring.StatsSink stats_sinks = 6;
+  repeated envoy.config.metrics.v2.StatsSink stats_sinks = 6;
 
   // Configuration for internal processing of stats.
-  envoy.api.v2.monitoring.StatsConfig stats_config = 13;
+  envoy.config.metrics.v2.StatsConfig stats_config = 13;
 
   // Optional duration between flushes to configured stats sinks. For
   // performance reasons Envoy latches counters and only flushes counters and

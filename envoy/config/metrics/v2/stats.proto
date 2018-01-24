@@ -3,8 +3,8 @@
 
 syntax = "proto3";
 
-package envoy.api.v2.monitoring;
-option go_package = "monitoring";
+package envoy.config.metrics.v2;
+option go_package = "metrics";
 
 import "envoy/api/v2/address.proto";
 
@@ -145,7 +145,7 @@ message StatsdSink {
     // The UDP address of a running `statsd <https://github.com/etsy/statsd>`_
     // compliant listener. If specified, statistics will be flushed to this
     // address.
-    Address address = 1;
+    envoy.api.v2.Address address = 1;
 
     // The name of a cluster that is running a TCP `statsd
     // <https://github.com/etsy/statsd>`_ compliant listener. If specified,
@@ -164,7 +164,7 @@ message DogStatsdSink {
 
     // The UDP address of a running DogStatsD compliant listener. If specified,
     // statistics will be flushed to this address.
-    Address address = 1;
+    envoy.api.v2.Address address = 1;
 
     // The name of a cluster that is DogStatsD compliant TCP listener. If specified,
     // Envoy will connect to this cluster to flush statistics.
