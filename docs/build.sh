@@ -29,6 +29,7 @@ PROTO_RST="
   /envoy/api/v2/address/envoy/api/v2/address.proto.rst
   /envoy/api/v2/base/envoy/api/v2/base.proto.rst
   /envoy/api/v2/auth/cert/envoy/api/v2/auth/cert.proto.rst
+  /envoy/api/v2/endpoint/endpoint/envoy/api/v2/endpoint/endpoint.proto.rst
   /envoy/api/v2/cluster/cluster/envoy/api/v2/cluster/cluster.proto.rst
   /envoy/api/v2/cluster/outlier_detection/envoy/api/v2/cluster/outlier_detection.proto.rst
   /envoy/api/v2/cluster/circuit_breaker/envoy/api/v2/cluster/circuit_breaker.proto.rst

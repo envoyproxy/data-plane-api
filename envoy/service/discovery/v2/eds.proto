@@ -9,7 +9,7 @@ import "google/api/annotations.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: Endpoints and EDS]
+// [#protodoc-title: EDS]
 
 // [#not-implemented-hide:] Not configuration. Workaround c++ protobuf issue with importing
 // services.

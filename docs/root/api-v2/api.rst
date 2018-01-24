@@ -14,6 +14,7 @@ v2 API reference
   api/v2/cluster/cluster.proto
   api/v2/cluster/outlier_detection.proto
   api/v2/cluster/circuit_breaker.proto
+  api/v2/endpoint/endpoint.proto
   service/discovery/v2/eds.proto
   api/v2/health_check.proto
   api/v2/route/route.proto

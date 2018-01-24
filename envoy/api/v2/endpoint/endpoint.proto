@@ -95,4 +95,3 @@ message LocalityLbEndpoints {
   // Priorities should range from 0 (highest) to N (lowest) without skipping.
   uint32 priority = 5;
 }
-

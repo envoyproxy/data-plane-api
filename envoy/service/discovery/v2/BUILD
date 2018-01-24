@@ -40,7 +40,7 @@ api_proto_library(
         "//envoy/api/v2:address",
         "//envoy/api/v2:base",
         "//envoy/api/v2:health_check",
-        "//envoy/api/v2/endpoint:endpoint",
+        "//envoy/api/v2/endpoint",
     ],
 )
 
@@ -97,7 +97,7 @@ api_proto_library(
     deps = [
         "//envoy/api/v2:base",
         "//envoy/api/v2:health_check",
-        "//envoy/api/v2/endpoint:endpoint",
+        "//envoy/api/v2/endpoint",
     ],
 )
 
