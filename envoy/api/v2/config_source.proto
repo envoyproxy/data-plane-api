@@ -69,6 +69,12 @@ message ConfigSource {
     // .. note::
     //
     //  The path to the source must exist at config load time.
+    //
+    // .. note::
+    //
+    //   Envoy will only watch the file path for *moves.* This is because in general only moves
+    //   are atomic. The same method of swapping files as is demonstrated in the
+    //   :ref:`runtime documentation <config_runtime_symbolic_link_swap>` can be used here also.
     string path = 1;
     // API configuration source.
     ApiConfigSource api_config_source = 2;
