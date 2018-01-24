@@ -44,15 +44,15 @@ where the extension reflects the underlying v2 config representation. The
 to autodetect the config file version, but this option provides an enhanced
 debug experience when configuration parsing fails.
 
-The :ref:`Bootstrap <envoy_api_msg_bootstrap.v2.Bootstrap>` message is the root of the
-configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_bootstrap.v2.Bootstrap>`
+The :ref:`Bootstrap <envoy_api_msg_config.bootstrap.v2.Bootstrap>` message is the root of the
+configuration. A key concept in the :ref:`Bootstrap <envoy_api_msg_config.bootstrap.v2.Bootstrap>`
 message is the distinction between static and dynamic resouces. Resources such
 as a :ref:`Listener <envoy_api_msg_listener.Listener>` or :ref:`Cluster
 <envoy_api_msg_cluster.Cluster>` may be supplied either statically in
-:ref:`static_resources <envoy_api_field_bootstrap.v2.Bootstrap.static_resources>` or have
+:ref:`static_resources <envoy_api_field_config.bootstrap.v2.Bootstrap.static_resources>` or have
 an xDS service such as :ref:`LDS
 <config_listeners_lds>` or :ref:`CDS <config_cluster_manager_cds>` configured in
-:ref:`dynamic_resources <envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>`.
+:ref:`dynamic_resources <envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>`.
 
 Example
 -------
@@ -316,8 +316,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_bootstrap.v2.Bootstrap>` config.
+<envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_config.bootstrap.v2.Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
@@ -350,8 +350,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_bootstrap.v2.Bootstrap>` config.
+<envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_config.bootstrap.v2.Bootstrap>` config.
 
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
@@ -388,8 +388,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_bootstrap.v2.Bootstrap>` config.
+<envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_config.bootstrap.v2.Bootstrap>` config.
 
 .. http:post:: /v2/discovery:endpoints
 
@@ -422,8 +422,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_bootstrap.v2.Bootstrap>` config.
+<envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_config.bootstrap.v2.Bootstrap>` config.
 
 .. http:post:: /v2/discovery:routes
 
@@ -488,8 +488,8 @@ for the service definition. This is used by Envoy as a client when
       cluster_names: [some_ads_cluster]
 
 is set in the :ref:`dynamic_resources
-<envoy_api_field_bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
-<envoy_api_msg_bootstrap.v2.Bootstrap>` config.
+<envoy_api_field_config.bootstrap.v2.Bootstrap.dynamic_resources>` of the :ref:`Bootstrap
+<envoy_api_msg_config.bootstrap.v2.Bootstrap>` config.
 
 When this is set, any of the configuration sources :ref:`above <v2_grpc_streaming_endpoints>` can
 be set to use the ADS channel. For example, a LDS config could be changed from

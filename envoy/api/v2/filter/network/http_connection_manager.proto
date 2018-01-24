@@ -84,7 +84,7 @@ message HttpConnectionManager {
 
   // Presence of the object defines whether the connection manager
   // emits :ref:`tracing <arch_overview_tracing>` data to the :ref:`configured tracing provider
-  // <envoy_api_msg_monitoring.Tracing>`.
+  // <envoy_api_msg_config.trace.v2.Tracing>`.
   Tracing tracing = 7;
 
   // Additional HTTP/1 settings that are passed to the HTTP/1 codec.

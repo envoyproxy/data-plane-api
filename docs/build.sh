@@ -39,13 +39,13 @@ PROTO_RST="
   /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
   /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
   /envoy/api/v2/ratelimit/ratelimit/envoy/api/v2/ratelimit/ratelimit.proto.rst
-  /envoy/bootstrap/v2/bootstrap/envoy/bootstrap/v2/bootstrap.proto.rst
+  /envoy/config/bootstrap/v2/bootstrap/envoy/config/bootstrap/v2/bootstrap.proto.rst
   /envoy/service/discovery/v2/common/envoy/service/discovery/v2/common.proto.rst
   /envoy/service/discovery/v2/eds/envoy/service/discovery/v2/eds.proto.rst
-  /envoy/service/ratelimit/v2/rls/envoy/service/ratelimit/v2/rls.proto.rst
-  /envoy/service/metrics/v2/metrics_service/envoy/service/metrics/v2/metrics_service.proto.rst
-  /envoy/api/v2/monitoring/stats/envoy/api/v2/monitoring/stats.proto.rst
-  /envoy/api/v2/monitoring/trace/envoy/api/v2/monitoring/trace.proto.rst
+  /envoy/config/ratelimit/v2/rls/envoy/config/ratelimit/v2/rls.proto.rst
+  /envoy/config/metrics/v2/metrics_service/envoy/config/metrics/v2/metrics_service.proto.rst
+  /envoy/config/metrics/v2/stats/envoy/config/metrics/v2/stats.proto.rst
+  /envoy/config/trace/v2/trace/envoy/config/trace/v2/trace.proto.rst
   /envoy/api/v2/filter/accesslog/accesslog/envoy/api/v2/filter/accesslog/accesslog.proto.rst
   /envoy/api/v2/filter/fault/envoy/api/v2/filter/fault.proto.rst
   /envoy/api/v2/filter/http/buffer/envoy/api/v2/filter/http/buffer.proto.rst
