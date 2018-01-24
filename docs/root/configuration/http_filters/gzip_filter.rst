@@ -31,8 +31,8 @@ By *default* compression will be *skipped* when:
 - A request does NOT contain *Accept-Encoding* header.
 - A request includes *Accept-Encoding* header, but it does not contain "gzip".
 - A response contains a *Content-Encoding* header.
-- A Response includes a *Cache-Control* header whose value is "no-transform".
-- A response includes a *Transfer-Encoding* header whose value is "gzip".
+- A Response contains a *Cache-Control* header whose value includes "no-transform".
+- A response contains a *Transfer-Encoding* header whose value includes "gzip".
 - A response does not contain a *Content-Type* value that matches one of the
   default mime-types.
 - Neither *Content-Length* nor *Transfer-Encoding* headers are present in
