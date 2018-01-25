@@ -46,6 +46,7 @@ PROTO_RST="
   /api/filter/fault/api/filter/fault.proto.rst
   /api/filter/http/buffer/api/filter/http/buffer.proto.rst
   /api/filter/http/fault/api/filter/http/fault.proto.rst
+  /api/filter/http/gzip/api/filter/http/gzip.proto.rst
   /api/filter/http/health_check/api/filter/http/health_check.proto.rst
   /api/filter/http/lua/api/filter/http/lua.proto.rst
   /api/filter/http/rate_limit/api/filter/http/rate_limit.proto.rst

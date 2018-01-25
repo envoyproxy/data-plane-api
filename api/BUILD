@@ -353,6 +353,7 @@ proto_library(
         "//api/filter/http:buffer",
         "//api/filter/http:ext_authz",
         "//api/filter/http:fault",
+        "//api/filter/http:gzip",
         "//api/filter/http:health_check",
         "//api/filter/http:lua",
         "//api/filter/http:rate_limit",
