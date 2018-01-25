@@ -201,7 +201,7 @@ message WeightedCluster {
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
-    google.protobuf.UInt32Value weight = 2 [(validate.rules).uint32.lte = 100];
+    google.protobuf.UInt32Value weight = 2;
 
     // Optional endpoint metadata match criteria. Only endpoints in the upstream
     // cluster with metadata matching that set in metadata_match will be
@@ -211,6 +211,11 @@ message WeightedCluster {
 
   // Specifies one or more upstream clusters associated with the route.
   repeated ClusterWeight clusters = 1 [(validate.rules).repeated .min_items = 1];
+
+  // [#not-implemented-hide:] Specifies the total weight across all clusters. The sum of all
+  // cluster weights must equal this value, which must be greater than 0. Defaults to 100.
+  // [#comment:TODO(zuercher): when visible update ClusterWeight.weight and traffic splitting.
+  google.protobuf.UInt32Value total_weight = 3 [(validate.rules).uint32.gte = 1];
 
   // Specifies the runtime key prefix that should be used to construct the
   // runtime keys associated with each cluster. When the *runtime_key_prefix* is
@@ -324,7 +329,7 @@ message RouteAction {
 
     // Multiple upstream clusters can be specified for a given route. The
     // request is routed to one of the upstream clusters based on weights
-    // assigned to each cluster. See the
+    // assigned to each cluster. See
     // :ref:`traffic splitting <config_http_conn_man_route_table_traffic_splitting_split>`
     // for additional documentation.
     WeightedCluster weighted_clusters = 3;
@@ -578,6 +583,9 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+
+  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with "https".
+  bool https_redirect = 4;
 }
 
 message DirectResponseAction {
