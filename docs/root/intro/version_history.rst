@@ -20,11 +20,11 @@ Version history
 * http: end-to-end HTTP flow control is now complete across both connections, streams, and filters.
 * load balancer: added :ref:`subset load balancer <arch_overview_load_balancer_subsets>`.
 * load balancer: added ring size and hash :ref:`configuration options
-  <envoy_api_msg_Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
+  <envoy_api_msg_cluster.Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
   configuration was deleted without deprecation as we are fairly certain no one is using it.
 * log: added the ability to optionally log to a file instead of stderr via the
   :option:`--log-path` option.
-* listeners: added :ref:`drain_type <envoy_api_field_Listener.drain_type>` option.
+* listeners: added :ref:`drain_type <envoy_api_field_listener.Listener.drain_type>` option.
 * lua: added experimental :ref:`Lua filter <config_http_filters_lua>`.
 * mongo filter: added :ref:`fault injection <config_network_filters_mongo_proxy_fault_injection>`.
 * mongo filter: added :ref:`"drain close" <arch_overview_draining>` support.
@@ -35,20 +35,20 @@ Version history
   production ready.
 * redis: added :ref:`"drain close" <arch_overview_draining>` functionality.
 * router: added :ref:`x-envoy-overloaded <config_http_filters_router_x-envoy-overloaded>` support.
-* router: added :ref:`regex <envoy_api_field_RouteMatch.regex>` route matching.
+* router: added :ref:`regex <envoy_api_field_route.RouteMatch.regex>` route matching.
 * router: added :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`
   for upstream requests.
 * router: added :ref:`downstream IP hashing
-  <envoy_api_field_RouteAction.HashPolicy.connection_properties>` for HTTP ketama routing.
-* router: added :ref:`cookie hashing <envoy_api_field_RouteAction.HashPolicy.cookie>`.
+  <envoy_api_field_route.RouteAction.HashPolicy.connection_properties>` for HTTP ketama routing.
+* router: added :ref:`cookie hashing <envoy_api_field_route.RouteAction.HashPolicy.cookie>`.
 * router: added :ref:`start_child_span <envoy_api_field_filter.http.Router.start_child_span>` option
   to create child span for egress calls.
 * router: added optional :ref:`upstream logs <envoy_api_field_filter.http.Router.upstream_log>`.
 * router: added complete :ref:`custom append/override/remove support
   <config_http_conn_man_headers_custom_request_headers>` of request/response headers.
 * router: added support to :ref:`specify response code during redirect
-  <envoy_api_field_RedirectAction.response_code>`.
-* router: added :ref:`configuration <envoy_api_field_RouteAction.cluster_not_found_response_code>`
+  <envoy_api_field_route.RedirectAction.response_code>`.
+* router: added :ref:`configuration <envoy_api_field_route.RouteAction.cluster_not_found_response_code>`
   to return either a 404 or 503 if the upstream cluster does not exist.
 * runtime: added :ref:`comment capability <config_runtime_comments>`.
 * server: change default log level (:option:`-l`) to `info`.
@@ -60,11 +60,11 @@ Version history
 * tcp proxy: enable use of :ref:`outlier detector <arch_overview_outlier_detection>`.
 * tls: added :ref:`SNI support <faq_how_to_setup_sni>`.
 * tls: added support for specifying :ref:`TLS session ticket keys
-  <envoy_api_field_DownstreamTlsContext.session_ticket_keys>`.
+  <envoy_api_field_auth.DownstreamTlsContext.session_ticket_keys>`.
 * tls: allow configuration of the :ref:`min
-  <envoy_api_field_TlsParameters.tls_minimum_protocol_version>` and :ref:`max
-  <envoy_api_field_TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
-* tracing: added :ref:`custom trace span decorators <envoy_api_field_Route.decorator>`.
+  <envoy_api_field_auth.TlsParameters.tls_minimum_protocol_version>` and :ref:`max
+  <envoy_api_field_auth.TlsParameters.tls_maximum_protocol_version>` TLS protocol versions.
+* tracing: added :ref:`custom trace span decorators <envoy_api_field_route.Route.decorator>`.
 * Many small bug fixes and performance improvements not listed.
 
 1.4.0

@@ -78,8 +78,8 @@ standard Debian installations. Common paths for system CA bundles on Linux and B
 * /usr/local/etc/ssl/cert.pem (FreeBSD)
 * /etc/ssl/cert.pem (OpenBSD)
 
-See the reference for :ref:`UpstreamTlsContexts <envoy_api_msg_UpstreamTlsContext>` and
-:ref:`DownstreamTlsContexts <envoy_api_msg_DownstreamTlsContext>` for other TLS options.
+See the reference for :ref:`UpstreamTlsContexts <envoy_api_msg_auth.UpstreamTlsContext>` and
+:ref:`DownstreamTlsContexts <envoy_api_msg_auth.DownstreamTlsContext>` for other TLS options.
 
 .. _arch_overview_ssl_auth_filter:
 

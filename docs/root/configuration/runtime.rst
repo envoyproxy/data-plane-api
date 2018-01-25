@@ -8,7 +8,7 @@ system tree that contains re-loadable configuration elements. If runtime is not 
 provider is used which has the effect of using all defaults built into the code.
 
 * :ref:`v1 API reference <config_runtime_v1>`
-* :ref:`v2 API reference <envoy_api_msg_Runtime>`
+* :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Runtime>`
 
 File system layout
 ------------------
