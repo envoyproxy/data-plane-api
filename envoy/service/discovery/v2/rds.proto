@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package envoy.service.discovery.v2;
+
+import "envoy/service/discovery/v2/common.proto";
+
+import "google/api/annotations.proto";
+
+// [#not-implemented-hide:] Not configuration. Workaround c++ protobuf issue with importing
+// services: https://github.com/google/protobuf/issues/4221
+message RdsDummy {
+}
+
+// The resource_names field in DiscoveryRequest specifies a route configuration.
+// This allows an Envoy configuration with multiple HTTP listeners (and
+// associated HTTP connection manager filters) to use different route
+// configurations. Each listener will bind its HTTP connection manager filter to
+// a route table via this identifier.
+service RouteDiscoveryService {
+  rpc StreamRoutes(stream DiscoveryRequest) returns (stream DiscoveryResponse) {
+  }
+
+  rpc FetchRoutes(DiscoveryRequest) returns (DiscoveryResponse) {
+    option (google.api.http) = {
+      post: "/v2/discovery:routes"
+      body: "*"
+    };
+  }
+}

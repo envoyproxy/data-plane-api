@@ -97,7 +97,7 @@ Priority levels
 ------------------
 
 During load balancing, Envoy will generally only consider hosts configured at the highest priority
-level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_LocalityLbEndpoints>` an optional
+level. For each EDS :ref:`LocalityLbEndpoints<envoy_api_msg_endpoint.LocalityLbEndpoints>` an optional
 priority may also be specified. When endpoints at the highest priority level (P=0) are healthy, all
 traffic will land on endpoints in that priority level. As endpoints for the highest priority level
 become unhealthy, traffic will begin to trickle to lower priority levels.
@@ -240,7 +240,7 @@ not be used with subsets because the upstream hosts are not known in advance. Su
 with zone aware routing, but be aware that the use of subsets may easily violate the minimum hosts
 condition described above.
 
-If subsets are :ref:`configured <envoy_api_field_Cluster.lb_subset_config>` and a route
+If subsets are :ref:`configured <envoy_api_field_cluster.Cluster.lb_subset_config>` and a route
 specifies no metadata or no subset matching the metadata exists, the subset load balancer initiates
 its fallback policy. The default policy is ``NO_ENDPOINT``, in which case the request fails as if
 the cluster had no hosts. Conversely, the ``ANY_ENDPOINT`` fallback policy load balances across all

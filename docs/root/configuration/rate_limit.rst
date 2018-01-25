@@ -8,7 +8,7 @@ limit service Envoy should talk to when it needs to make global rate limit decis
 limit service is configured, a "null" service will be used which will always return OK if called.
 
 * :ref:`v1 API reference <config_rate_limit_service_v1>`
-* :ref:`v2 API reference <envoy_api_msg_RateLimitServiceConfig>`
+* :ref:`v2 API reference <envoy_api_msg_config.ratelimit.v2.RateLimitServiceConfig>`
 
 gRPC service IDL
 ----------------

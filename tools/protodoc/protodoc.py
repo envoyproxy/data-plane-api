@@ -15,8 +15,11 @@ import re
 from google.protobuf.compiler import plugin_pb2
 from validate import validate_pb2
 
-# Namespace prefix for Envoy APIs.
+# Namespace prefix for Envoy core APIs.
 ENVOY_API_NAMESPACE_PREFIX = '.envoy.api.v2.'
+
+# Namespace prefix for Envoy top-level APIs.
+ENVOY_PREFIX = '.envoy.'
 
 # Namespace prefix for WKTs.
 WKT_NAMESPACE_PREFIX = '.google.protobuf.'
@@ -385,7 +388,7 @@ def FormatMessageAsJson(type_context, msg):
 def NormalizeFQN(fqn):
   """Normalize a fully qualified field type name.
 
-  Strips leading ENVOY_API_NAMESPACE_PREFIX and makes pretty wrapped type names.
+  Strips leading ENVOY_API_NAMESPACE_PREFIX and ENVOY_PREFIX and makes pretty wrapped type names.
 
   Args:
     fqn: a fully qualified type name from FieldDescriptorProto.type_name.
@@ -394,6 +397,8 @@ def NormalizeFQN(fqn):
   """
   if fqn.startswith(ENVOY_API_NAMESPACE_PREFIX):
     return fqn[len(ENVOY_API_NAMESPACE_PREFIX):]
+  if fqn.startswith(ENVOY_PREFIX):
+    return fqn[len(ENVOY_PREFIX):]
   return fqn
 
 
@@ -414,7 +419,7 @@ def FormatFieldType(type_context, field):
   Return:
     RST formatted field type.
   """
-  if field.type_name.startswith(ENVOY_API_NAMESPACE_PREFIX):
+  if field.type_name.startswith(ENVOY_API_NAMESPACE_PREFIX) or field.type_name.startswith(ENVOY_PREFIX):
     type_name = NormalizeFQN(field.type_name)
     if field.type == field.TYPE_MESSAGE:
       if type_context.map_typenames and type_name in type_context.map_typenames:
