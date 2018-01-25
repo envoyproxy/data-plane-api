@@ -74,6 +74,7 @@ proto_library(
         ":buffer",
         ":ext_authz",
         ":fault",
+        ":gzip",
         ":health_check",
         ":lua",
         ":rate_limit",
