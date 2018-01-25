@@ -9,12 +9,13 @@ compromising the response time.
 
 Configuration
 -------------
-* :ref:`v1 API reference <config_http_filters_gzip_v1>`
 * :ref:`v2 API reference <envoy_api_msg_filter.http.Gzip>`
 
 .. attention::
 
-  Due to a known bug in the underlying Zlib library, window bits with value
+  The *window bits* is a number that tells the compressor how far ahead in the
+  text the algorithm should be looking for repeated sequence of characters.
+  Due to a known bug in the underlying zlib library, *window bits* with value
   eight does not work as expected. Therefore any number below that will be
   automatically set to 9. This issue might be solved in future releases of
   the library.
@@ -28,23 +29,23 @@ response and request allow.
 
 By *default* compression will be *skipped* when:
 
-- A request does NOT contain *Accept-Encoding* header.
-- A request includes *Accept-Encoding* header, but it does not contain "gzip".
-- A response contains a *Content-Encoding* header.
-- A Response contains a *Cache-Control* header whose value includes "no-transform".
-- A response contains a *Transfer-Encoding* header whose value includes "gzip".
-- A response does not contain a Content-Type value that matches one of the selected
+- A request does NOT contain *accept-encoding* header.
+- A request includes *accept-encoding* header, but it does not contain "gzip".
+- A response contains a *content-encoding* header.
+- A Response contains a *cache-control* header whose value includes "no-transform".
+- A response contains a *transfer-encoding* header whose value includes "gzip".
+- A response does not contain a *content-type* value that matches one of the selected
   mime-types, which default to *application/javascript*, *application/json*,
   *application/xhtml+xml*, *image/svg+xml*, *text/css*, *text/html*, *text/plain*,
   *text/xml*.
-- Neither *Content-Length* nor *Transfer-Encoding* headers are present in
+- Neither *content-length* nor *transfer-encoding* headers are present in
   the response.
-- Response size is smaller than 30 bytes (only applicable when transfer-encoding
+- Response size is smaller than 30 bytes (only applicable when *transfer-encoding*
   is not chuncked).
 
 When compression is *applied*:
 
-- *Content-Length* is removed from response headers.
-- Response headers contain "*Transfer-Encoding: chunked*" and
-  "*Content-Encoding: gzip*".
-- "*Vary: Accept-Encoding*" header is inserted on every response.
+- The *content-length* is removed from response headers.
+- Response headers contain "*transfer-encoding: chunked*" and
+  "*content-encoding: gzip*".
+- The "*vary: accept-encoding*" header is inserted on every response.

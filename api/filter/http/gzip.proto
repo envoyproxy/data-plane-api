@@ -25,7 +25,7 @@ message Gzip {
     }
   }
 
-  // A value used for selecting Zlib's compression level. This setting will affect speed and amount
+  // A value used for selecting zlib's compression level. This setting will affect speed and amount
   // of compression applied to the content. "BEST" provides higher compression at the cost of higher
   // latency, "SPEED" provides lower compression with minimum impact on response time. "DEFAULT"
   // provides an optimal result between speed and compression. This field will be set to "DEFAULT"
@@ -39,33 +39,33 @@ message Gzip {
     RLE = 3;
   }
 
-  // A value used for selecting Zlib's compression strategy which is directly related to the
+  // A value used for selecting zlib's compression strategy which is directly related to the
   // characteristics of the content. Most of the time "DEFAULT" will be the best choice, though
   // there are situations which changing this parameter might produce better results. For example,
-  // Run-length encoding (RLE) is typically used when the content is known for having sequences
+  // run-length encoding (RLE) is typically used when the content is known for having sequences
   // which same data occurs many consecutive times. For more information about each strategy, please
-  // refer to Zlib manual.
+  // refer to zlib manual.
   CompressionStrategy compression_strategy = 4 [(validate.rules).enum.defined_only = true];
 
   // Set of strings that allows specifying which mime-types yield compression; e.g.,
-  // application/JSON, text/HTML, etc. When this field is not defined, compression will be applied
+  // application/json, text/html, etc. When this field is not defined, compression will be applied
   // to the following mime-types: "application/javascript", "application/json",
   // "application/xhtml+xml", "image/svg+xml", "text/css", "text/html", "text/plain", "text/xml".
-  repeated string content_type = 6 [(validate.rules).repeated = {min_items: 0, max_items: 50}];
+  repeated string content_type = 6 [(validate.rules).repeated = {max_items: 50}];
 
   // If true, disables compression when the response contains Etag header. When it is false, the
   // filter will preserve weak Etags and remove the ones that require strong validation. Note that
   // if any of these options fit the specific scenario, an alternative solution is to disabled Etag
-  // at the origin and use Last-Modified header instead.
+  // at the origin and use *last-modified* header instead.
   bool disable_on_etag_header = 7;
 
-  // If true, disables compression when response contains Last-Modified
+  // If true, disables compression when response contains *last-modified*
   // header.
   bool disable_on_last_modified_header = 8;
 
   // Value from 9 to 15 that represents the base two logarithmic of the compressor's window size.
   // Larger window results in better compression at the expense of memory usage. The default is 12
   // which will produce a 4096 bytes window. For more details about this parameter, please refer to
-  // Zlib manual > deflateInit2.
+  // zlib manual > deflateInit2.
   google.protobuf.UInt32Value window_bits = 9 [(validate.rules).uint32 = {gte: 9, lte: 15}];
 }
