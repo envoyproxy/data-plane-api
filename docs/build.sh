@@ -51,6 +51,7 @@ PROTO_RST="
   /envoy/api/v2/filter/fault/envoy/api/v2/filter/fault.proto.rst
   /envoy/api/v2/filter/http/buffer/envoy/api/v2/filter/http/buffer.proto.rst
   /envoy/api/v2/filter/http/fault/envoy/api/v2/filter/http/fault.proto.rst
+  /envoy/api/v2/filter/http/gzip/envoy/api/v2/filter/http/gzip.proto.rst
   /envoy/api/v2/filter/http/health_check/envoy/api/v2/filter/http/health_check.proto.rst
   /envoy/api/v2/filter/http/lua/envoy/api/v2/filter/http/lua.proto.rst
   /envoy/api/v2/filter/http/rate_limit/envoy/api/v2/filter/http/rate_limit.proto.rst

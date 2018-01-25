@@ -10,6 +10,7 @@ api_cc_test(
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/filter/http:buffer",
         "//envoy/api/v2/filter/http:fault",
+        "//envoy/api/v2/filter/http:gzip",
         "//envoy/api/v2/filter/http:health_check",
         "//envoy/api/v2/filter/http:lua",
         "//envoy/api/v2/filter/http:router",
