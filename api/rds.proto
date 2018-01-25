@@ -594,6 +594,9 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+
+  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with "https".
+  bool https_redirect = 4;
 }
 
 message DirectResponseAction {
