@@ -183,6 +183,13 @@ message HttpConnectionManager {
   // :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header, *Hash* is always set, and
   // *By* is always set when the client certificate presents the SAN value.
   SetCurrentClientCertDetails set_current_client_cert_details = 17;
+
+  // [#not-implemented-hide:]
+  // If proxy_100_continue is true, Envoy will proxy incoming "Expect:
+  // 100-continue" headers upstream, and forward "100 Continue" responses
+  // downstream. If this is false or not set, Envoy will instead strip the
+  // "Expect: 100-continue" header, and send a "100 Continue" response itself.
+  bool proxy_100_continue = 18;
 }
 
 message Rds {
