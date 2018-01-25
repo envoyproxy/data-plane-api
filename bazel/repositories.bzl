@@ -1,6 +1,7 @@
 GOOGLEAPIS_SHA = "5c6df0cd18c6a429eab739fb711c27f6e1393366" # May 14, 2017
 GOGOPROTO_SHA = "342cbe0a04158f6dcb03ca0079991a51a4248c02" # Oct 7, 2017
 PROMETHEUS_SHA = "6f3806018612930941127f2a7c6c453ba2c527d2" # Nov 02, 2017
+OPENCENSUS_SHA = "993c711ba22a5f08c1d4de58a3c07466995ed962" # Dec 13, 2017
 
 PGV_GIT_SHA = "bd6d057e957fe184dfe76805951803af153be497"
 
@@ -200,3 +201,21 @@ api_proto_library(
 )
         """,
     )
+
+    native.new_http_archive(
+        name = "io_opencensus_trace",
+        strip_prefix = "opencensus-proto-" + OPENCENSUS_SHA + "/opencensus/proto/trace",
+        url = "https://github.com/census-instrumentation/opencensus-proto/archive/" + OPENCENSUS_SHA + ".tar.gz",
+        build_file_content = """
+load("@envoy_api//bazel:api_build_system.bzl", "api_proto_library")
+
+api_proto_library(
+    name = "trace_model",
+    srcs = [
+        "trace.proto",
+    ],
+)
+        """,
+    )
+
+

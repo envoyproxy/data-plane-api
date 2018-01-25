@@ -21,7 +21,7 @@ fi
 source "${BUILD_DIR}"/venv/bin/activate
 
 bazel --batch build ${BAZEL_BUILD_OPTIONS} //api --aspects \
-  tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst
+  tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst --action_env=CPROFILE_ENABLED
 
 # These are the protos we want to put in docs, this list will grow.
 # TODO(htuch): Factor this out of this script.
@@ -46,6 +46,7 @@ PROTO_RST="
   /api/filter/fault/api/filter/fault.proto.rst
   /api/filter/http/buffer/api/filter/http/buffer.proto.rst
   /api/filter/http/fault/api/filter/http/fault.proto.rst
+  /api/filter/http/gzip/api/filter/http/gzip.proto.rst
   /api/filter/http/health_check/api/filter/http/health_check.proto.rst
   /api/filter/http/lua/api/filter/http/lua.proto.rst
   /api/filter/http/rate_limit/api/filter/http/rate_limit.proto.rst
@@ -70,7 +71,8 @@ for p in $PROTO_RST
 do
   DEST="${GENERATED_RST_DIR}/api-v2/$(sed -e 's#/api.*/api/##' <<< "$p")"
   mkdir -p "$(dirname "${DEST}")"
-  cp -f bazel-bin/"${p}" "${DEST}"
+  cp -f bazel-bin/"${p}" "$(dirname "${DEST}")"
+  [ -n "${CPROFILE_ENABLED}" ] && cp -f bazel-bin/"${p}".profile "$(dirname "${DEST}")"
 done
 
 rsync -av "${SCRIPT_DIR}"/root/ "${SCRIPT_DIR}"/conf.py "${GENERATED_RST_DIR}"

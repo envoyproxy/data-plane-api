@@ -52,7 +52,9 @@ message RouteConfiguration {
   // Specifies a list of HTTP headers that should be added to each response that
   // the connection manager encodes. Headers specified at this level are applied
   // after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`.
+  // :ref:`envoy_api_msg_RouteAction`. For more information, including details on
+  // header value syntax, see the documentation on :ref:`custom request headers
+  // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption response_headers_to_add = 4;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -62,8 +64,9 @@ message RouteConfiguration {
   // Specifies a list of HTTP headers that should be added to each request
   // routed by the HTTP connection manager. Headers specified at this level are
   // applied after headers from any enclosed :ref:`envoy_api_msg_VirtualHost` or
-  // :ref:`envoy_api_msg_RouteAction`. For more information see the documentation on
-  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+  // :ref:`envoy_api_msg_RouteAction`. For more information, including details on
+  // header value syntax, see the documentation on :ref:`custom request headers
+  // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 6;
 
   // An optional boolean that specifies whether the clusters that the route
@@ -137,14 +140,17 @@ message VirtualHost {
   // Specifies a list of HTTP headers that should be added to each request
   // handled by this virtual host. Headers specified at this level are applied
   // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information see the documentation
-  // on :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
+  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information, including details on
+  // header value syntax, see the documentation on :ref:`custom request headers
+  // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 7;
 
   // Specifies a list of HTTP headers that should be added to each response
   // handled by this virtual host. Headers specified at this level are applied
   // after headers from enclosed :ref:`envoy_api_msg_RouteAction` and before headers from the
-  // enclosing :ref:`envoy_api_msg_RouteConfiguration`.
+  // enclosing :ref:`envoy_api_msg_RouteConfiguration`. For more information, including details on
+  // header value syntax, see the documentation on :ref:`custom request headers
+  // <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption response_headers_to_add = 10;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -213,7 +219,7 @@ message WeightedCluster {
     // An integer between 0-100. When a request matches the route, the choice of
     // an upstream cluster is determined by its weight. The sum of weights
     // across all entries in the clusters array must add up to 100.
-    google.protobuf.UInt32Value weight = 2 [(validate.rules).uint32.lte = 100];
+    google.protobuf.UInt32Value weight = 2;
 
     // Optional endpoint metadata match criteria. Only endpoints in the upstream
     // cluster with metadata matching that set in metadata_match will be
@@ -223,6 +229,11 @@ message WeightedCluster {
 
   // Specifies one or more upstream clusters associated with the route.
   repeated ClusterWeight clusters = 1 [(validate.rules).repeated .min_items = 1];
+
+  // [#not-implemented-hide:] Specifies the total weight across all clusters. The sum of all
+  // cluster weights must equal this value, which must be greater than 0. Defaults to 100.
+  // [#comment:TODO(zuercher): when visible update ClusterWeight.weight and traffic splitting.
+  google.protobuf.UInt32Value total_weight = 3 [(validate.rules).uint32.gte = 1];
 
   // Specifies the runtime key prefix that should be used to construct the
   // runtime keys associated with each cluster. When the *runtime_key_prefix* is
@@ -336,7 +347,7 @@ message RouteAction {
 
     // Multiple upstream clusters can be specified for a given route. The
     // request is routed to one of the upstream clusters based on weights
-    // assigned to each cluster. See the
+    // assigned to each cluster. See
     // :ref:`traffic splitting <config_http_conn_man_route_table_traffic_splitting_split>`
     // for additional documentation.
     WeightedCluster weighted_clusters = 3;
@@ -449,14 +460,16 @@ message RouteAction {
   // Specifies a set of headers that will be added to requests matching this
   // route. Headers specified at this level are applied before headers from the
   // enclosing :ref:`envoy_api_msg_VirtualHost` and :ref:`envoy_api_msg_RouteConfiguration`.
-  // For more information see the documentation on :ref:`custom request headers
-  // <config_http_conn_man_headers_custom_request_headers>`.
+  // For more information, including details on header value syntax, see the documentation on
+  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption request_headers_to_add = 12;
 
   // Specifies a set of headers that will be added to responses to requests
   // matching this route. Headers specified at this level are applied before
   // headers from the enclosing :ref:`envoy_api_msg_VirtualHost` and
-  // :ref:`envoy_api_msg_RouteConfiguration`.
+  // :ref:`envoy_api_msg_RouteConfiguration`. For more information, including
+  // details on header value syntax, see the documentation on
+  // :ref:`custom request headers <config_http_conn_man_headers_custom_request_headers>`.
   repeated HeaderValueOption response_headers_to_add = 18;
 
   // Specifies a list of HTTP headers that should be removed from each response
@@ -586,6 +599,9 @@ message RedirectAction {
   // The HTTP status code to use in the redirect response. The default response
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
+
+  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with "https".
+  bool https_redirect = 4;
 }
 
 message DirectResponseAction {

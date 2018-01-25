@@ -324,6 +324,18 @@ api_go_proto_library(
     ],
 )
 
+api_proto_library(
+    name = "trace_service",
+    srcs = ["trace_service.proto"],
+    has_services = 1,
+    require_py = 0,
+    deps = [
+        ":base",
+        ":grpc_service",
+        "@io_opencensus_trace//:trace_model",
+    ],
+)
+
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
 # bazel build //api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
@@ -341,6 +353,7 @@ proto_library(
         "//api/filter/http:buffer",
         "//api/filter/http:ext_authz",
         "//api/filter/http:fault",
+        "//api/filter/http:gzip",
         "//api/filter/http:health_check",
         "//api/filter/http:lua",
         "//api/filter/http:rate_limit",

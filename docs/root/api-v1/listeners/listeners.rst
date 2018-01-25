@@ -36,7 +36,7 @@ address
   listeners are supported, e.g., "tcp://127.0.0.1:80". Note, "tcp://0.0.0.0:80" is the wild card
   match for any IPv4 address with port 80.
 
-:ref:`filters <config_listener_filters>`
+:ref:`filters <config_listener_network_filters>`
   *(required, array)* A list of individual :ref:`network filters <arch_overview_network_filters>`
   that make up the filter chain for connections established with the listener. Order matters as the
   filters are processed sequentially as connection events happen.
@@ -80,7 +80,7 @@ drain_type
   and *modify_only*. See the :ref:`draining <arch_overview_draining>` architecture overview for
   more information.
 
-.. _config_listener_filters:
+.. _config_listener_network_filters:
 
 Filters
 -------
