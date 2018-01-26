@@ -24,6 +24,8 @@ request. The router filter supports the following features:
   level.
 * :ref:`Path <config_http_conn_man_route_table_route_path_redirect>`/:ref:`host
   <config_http_conn_man_route_table_route_host_redirect>` redirection at the route level.
+* :ref:`Direct (non-proxied) HTTP responses <arch_overview_http_routing_direct_response>`
+  at the route level.
 * :ref:`Explicit host rewriting <config_http_conn_man_route_table_route_host_rewrite>`.
 * :ref:`Automatic host rewriting <config_http_conn_man_route_table_route_auto_host_rewrite>` based on
   the DNS name of the selected upstream host.
@@ -92,3 +94,33 @@ an upstream host. In the future Envoy will likely support true HTTP/2 priority o
 connection.
 
 The currently supported priorities are *default* and *high*.
+
+.. _arch_overview_http_routing_direct_response:
+
+Direct responses
+----------------
+
+Envoy supports the sending of "direct" responses. These are preconfigured HTTP responses
+that do not require proxying to an upstream server.
+
+There are two ways to specify a direct response in a Route:
+
+* Set the :ref:`direct_response <envoy_api_field_route.Route.direct_response>` field.
+  This works for all HTTP response statuses.
+* Set the :ref:`redirect <envoy_api_field_route.Route.redirect>` field. This works for
+  redirect response statuses only, but it simplifies the setting of the *Location* header.
+
+A direct response has an HTTP status code and an optional body. The Route configuration
+can specify the response body inline or specify the pathname of a file containing the
+body. If the Route configuration specifies a file pathname, Envoy will read the file
+upon configuration load and cache the contents.
+
+.. attention::
+
+   If a response body is specified, it must be no more than 4KB in size, regardless of
+   whether it is provided inline or in a file. Envoy currently holds the entirety of the
+   body in memory, so the 4KB limit is intended to keep the proxy's memory footprint
+   from growing too large.
+
+If **response_headers_to_add** has been set for the Route or the enclosing Virtual Host,
+Envoy will include the specified headers in the direct HTTP response.

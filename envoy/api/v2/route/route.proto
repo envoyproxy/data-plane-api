@@ -167,7 +167,7 @@ message Route {
     // Return a redirect.
     RedirectAction redirect = 3;
 
-    // [#not-implemented-hide:] Return an arbitrary HTTP response directly, without proxying.
+    // Return an arbitrary HTTP response directly, without proxying.
     DirectResponseAction direct_response = 7;
   }
 
