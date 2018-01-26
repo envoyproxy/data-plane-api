@@ -198,9 +198,10 @@ message WeightedCluster {
     // :ref:`cluster manager configuration <config_cluster_manager>`.
     string name = 1 [(validate.rules).string.min_bytes = 1];
 
-    // An integer between 0-100. When a request matches the route, the choice of
-    // an upstream cluster is determined by its weight. The sum of weights
-    // across all entries in the clusters array must add up to 100.
+    // An integer between 0 and :ref:`total_weight
+    // <envoy_api_field_route.WeightedCluster.total_weight>`. When a request matches the route,
+    // the choice of an upstream cluster is determined by its weight. The sum of weights across all
+    // entries in the clusters array must add up to the total_weight, which defaults to 100.
     google.protobuf.UInt32Value weight = 2;
 
     // Optional endpoint metadata match criteria. Only endpoints in the upstream
@@ -212,9 +213,8 @@ message WeightedCluster {
   // Specifies one or more upstream clusters associated with the route.
   repeated ClusterWeight clusters = 1 [(validate.rules).repeated .min_items = 1];
 
-  // [#not-implemented-hide:] Specifies the total weight across all clusters. The sum of all
-  // cluster weights must equal this value, which must be greater than 0. Defaults to 100.
-  // [#comment:TODO(zuercher): when visible update ClusterWeight.weight and traffic splitting.
+  // Specifies the total weight across all clusters. The sum of all cluster weights must equal this
+  // value, which must be greater than 0. Defaults to 100.
   google.protobuf.UInt32Value total_weight = 3 [(validate.rules).uint32.gte = 1];
 
   // Specifies the runtime key prefix that should be used to construct the
