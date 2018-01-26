@@ -135,6 +135,10 @@ to each upstream cluster.
       }
     }
 
+By default, the weights must sum to exactly 100. In the V2 API, the
+:ref:`total weight <envoy_api_field_WeightedCluster.total_weight>` defaults to 100, but can be
+modified to allow finer granularity.
+
 The weights assigned to each cluster can be dynamically adjusted using the
 following runtime variables: ``routing.traffic_split.helloworld.helloworld_v1``,
 ``routing.traffic_split.helloworld.helloworld_v2`` and
