@@ -113,8 +113,14 @@ There are two ways to specify a direct response in a Route:
 A direct response has an HTTP status code and an optional body. The Route configuration
 can specify the response body inline or specify the pathname of a file containing the
 body. If the Route configuration specifies a file pathname, Envoy will read the file
-upon configuration load and cache the contents. Regardless of whether the body is
-provided inline or in a file, the body length must be less than or equal to 4KB.
+upon configuration load and cache the contents.
+
+.. attention::
+
+   If a response body is specified, it must be no more than 4KB in size, regardless of
+   whether it is provided inline or in a file. Envoy currently holds the entirety of the
+   body in memory, so the 4KB limit is intended to keep the proxy's memory footprint
+   from growing too large.
 
 If **response_headers_to_add** has been set for the Route or the enclosing Virtual Host,
 Envoy will include the specified headers in the direct HTTP response.
