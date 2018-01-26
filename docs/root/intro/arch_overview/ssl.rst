@@ -14,6 +14,8 @@ requirements (TLS1.2, SNI, etc.). Envoy supports the following TLS features:
   to server certificate verification.
 * **Certificate verification and pinning**: Certificate verification options include basic chain
   verification, subject name verification, and hash pinning.
+* **Certificate revocation**: Envoy can check peer certificates against a certificate revocation list
+  (CRL) if one is :ref:`provided <envoy_api_field_auth.CertificateValidationContext.crl>`.
 * **ALPN**: TLS listeners support ALPN. The HTTP connection manager uses this information (in
   addition to protocol inference) to determine whether a client is speaking HTTP/1.1 or HTTP/2.
 * **SNI**: SNI is currently supported for client connections. Listener support is likely to be added
