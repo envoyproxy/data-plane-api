@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package envoy.service.discovery.v2;
+package envoy.api.v2;
 
-import "envoy/service/discovery/v2/common.proto";
+import "envoy/api/v2/discovery.proto";
 
 import "google/api/annotations.proto";
 
