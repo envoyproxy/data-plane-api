@@ -208,6 +208,26 @@ message WeightedCluster {
     // cluster with metadata matching that set in metadata_match will be
     // considered. The filter name should be specified as *envoy.lb*.
     Metadata metadata_match = 3;
+
+    // Specifies a list of headers to be added to requests when this cluster is selected
+    // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
+    // Headers specified at this level are applied before headers from the enclosing
+    // :ref:`envoy_api_msg_route.RouteAction`,
+    // :ref:`envoy_api_msg_route.VirtualHost`, and
+    // :ref:`envoy_api_msg_route.RouteConfiguration`. For more information, including details on
+    // header value syntax, see the documentation on :ref:`custom request headers
+    // <config_http_conn_man_headers_custom_request_headers>`.
+    repeated HeaderValueOption request_headers_to_add = 4;
+
+    // Specifies a list of headers to be added to responses when this cluster is selected
+    // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
+    // Headers specified at this level are applied before headers from the enclosing
+    // :ref:`envoy_api_msg_route.RouteAction`,
+    // :ref:`envoy_api_msg_route.VirtualHost`, and
+    // :ref:`envoy_api_msg_route.RouteConfiguration`. For more information, including details on
+    // header value syntax, see the documentation on :ref:`custom request headers
+    // <config_http_conn_man_headers_custom_request_headers>`.
+    repeated HeaderValueOption response_headers_to_add = 5;
   }
 
   // Specifies one or more upstream clusters associated with the route.
