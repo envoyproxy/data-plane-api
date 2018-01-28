@@ -30,6 +30,20 @@ In addition, the following conventions should be followed:
   reserved 15;
   ```
 
+* Once established, service definitions should not be moved between packages.
+  The gRPC endpoint URL is inferred from package namespace, so this will break
+  client/server communication.
+
+* Any resource directly embedded in an `Any` object should not be moved between
+  packages. The type URL, which the package namespace is a part of, may be used
+  by Envoy or other API consuming code. Currently, this applies to the top-level
+  resources embedded in `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`,
+  etc.
+
+* Place new service definitions in the `envoy.service` package namespace. Place
+  bootstrap configuration in the `envoy.config` package namespace. All other
+  protos belong in `envoy.api`.
+
 * The data plane APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
   level configuration concepts to concrete API concepts. Similarly, static configuration
