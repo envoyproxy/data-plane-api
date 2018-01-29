@@ -1,3 +1,5 @@
+Protocol buffer definitions for filters.
+
 ## NOTE
 
 If a filter configuration is not captured in the proto specification, you

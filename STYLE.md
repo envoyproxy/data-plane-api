@@ -30,15 +30,17 @@ In addition, the following conventions should be followed:
   reserved 15;
   ```
 
-* Once established, service definitions should not be moved between packages.
-  The gRPC endpoint URL is inferred from package namespace, so this will break
-  client/server communication.
+* Once frozen, no renaming of fields or package namespaces for a proto must
+  occur. This is inherently dangerous, since:
+  * For service definitions, the gRPC endpoint URL is inferred from package
+    namespace, so this will break client/server communication.
 
-* Any resource directly embedded in an `Any` object should not be moved between
-  packages. The type URL, which the package namespace is a part of, may be used
-  by Envoy or other API consuming code. Currently, this applies to the top-level
-  resources embedded in `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`,
-  etc.
+  * For a message embedded in an `Any` object, the type URL, which the package
+    namespace is a part of, may be used by Envoy or other API consuming code.
+    Currently, this applies to the top-level resources embedded in
+    `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`, etc.
+
+  * Consuming code will break and require source change to match the changes.
 
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
