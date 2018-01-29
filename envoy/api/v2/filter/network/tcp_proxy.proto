@@ -116,7 +116,7 @@ message TcpProxy {
   //   <https://github.com/envoyproxy/envoy/issues/2441>`_. If you
   //   want to configure the filter using v1 config structure, please make this
   //   field a boolean with value ``true`` and configure via the opaque ``value`` field
-  //   like it is suggested in the filter `README
+  //   like is suggested in the filter `README
   //   <https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/filter/README.md>`_.
   DeprecatedV1 deprecated_v1 = 6;
 
