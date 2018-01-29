@@ -42,6 +42,8 @@ In addition, the following conventions should be followed:
 
     * Consuming code will break and require source change to match the changes.
 
+* Non-frozen fields should be tagged with `[#not-implemented-hide:]`, `[#not-implemented-warn:]`,  `[#proto-status: draft]` or `[#proto-status: experimental]`.
+
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
 
