@@ -14,10 +14,6 @@ In addition, the following conventions should be followed:
 
   * Fields should not be renumbered or have their types changed. This is standard proto development
     procedure.
-  * Fields should not be **renamed**. This is stricter than standard proto development procedure
-    in the sense that it does not break binary wire format. However, it **does** break loading
-    of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
-    inputs, we must not change field names.
   * If fields are deleted, the following syntax should be put in their place:
 
   ```proto
@@ -29,6 +25,27 @@ In addition, the following conventions should be followed:
   ```proto
   reserved 15;
   ```
+
+  * Renaming of fields or package namespaces for a proto must not occur. This is inherently dangerous, since:
+    * Fields renames break wire compatibility. This is stricter than standard proto development procedure
+      in the sense that it does not break binary wire format. However, it **does** break loading
+      of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
+      inputs, we must not change field names.
+
+    * For service definitions, the gRPC endpoint URL is inferred from package
+      namespace, so this will break client/server communication.
+
+    * For a message embedded in an `Any` object, the type URL, which the package
+      namespace is a part of, may be used by Envoy or other API consuming code.
+      Currently, this applies to the top-level resources embedded in
+      `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`, etc.
+
+    * Consuming code will break and require source change to match the changes.
+
+* Non-frozen fields should be tagged with `[#not-implemented-hide:]`, `[#not-implemented-warn:]`,  `[#proto-status: draft]` or `[#proto-status: experimental]`.
+
+* Every proto directory should have a `README.md` describing its content. See
+  for example [envoy.service](envoy/service/README.md).
 
 * The data plane APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
