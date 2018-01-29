@@ -283,7 +283,7 @@ Custom request/response headers
 
 Custom request/response headers can be added to a request/response that matches a specific route at
 the route, virtual host, and global route configuration level. See the relevant :ref:`v1
-<config_http_conn_man_route_table>` and :ref:`v2 <envoy_api_msg_route.RouteConfiguration>` API
+<config_http_conn_man_route_table>` and :ref:`v2 <envoy_api_msg_RouteConfiguration>` API
 documentation.
 
 Headers are appended to requests/responses in the following order: route level headers,

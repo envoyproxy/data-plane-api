@@ -6,8 +6,8 @@ py_binary(
     licenses = ["notice"],  # Apache 2
     visibility = ["//visibility:public"],
     deps = [
+        "//envoy/api/v2:lds_py",
         "//envoy/api/v2/filter/network:http_connection_manager_py",
-        "//envoy/api/v2/listener:listener_py",
     ],
 )
 

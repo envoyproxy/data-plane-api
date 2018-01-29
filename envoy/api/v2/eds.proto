@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package envoy.service.discovery.v2;
+package envoy.api.v2;
 
-import "envoy/service/discovery/v2/common.proto";
+import "envoy/api/v2/discovery.proto";
 import "envoy/api/v2/endpoint/endpoint.proto";
 
 import "google/api/annotations.proto";
@@ -10,11 +10,6 @@ import "google/api/annotations.proto";
 import "validate/validate.proto";
 
 // [#protodoc-title: EDS]
-
-// [#not-implemented-hide:] Not configuration. Workaround c++ protobuf issue with importing
-// services: https://github.com/google/protobuf/issues/4221
-message EdsDummy {
-}
 
 service EndpointDiscoveryService {
   // The resource_names field in DiscoveryRequest specifies a list of clusters
@@ -40,13 +35,13 @@ service EndpointDiscoveryService {
 // load_balancing_weight of its Locality.
 message ClusterLoadAssignment {
   // Name of the cluster. This will be the :ref:`service_name
-  // <envoy_api_field_cluster.Cluster.EdsClusterConfig.service_name>` value if specified
+  // <envoy_api_field_Cluster.EdsClusterConfig.service_name>` value if specified
   // in the cluster :ref:`EdsClusterConfig
-  // <envoy_api_msg_cluster.Cluster.EdsClusterConfig>`.
+  // <envoy_api_msg_Cluster.EdsClusterConfig>`.
   string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
 
   // List of endpoints to load balance to.
-  repeated envoy.api.v2.endpoint.LocalityLbEndpoints endpoints = 2;
+  repeated endpoint.LocalityLbEndpoints endpoints = 2;
 
   // Load balancing policy settings.
   message Policy {

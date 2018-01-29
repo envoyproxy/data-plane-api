@@ -20,11 +20,11 @@ Version history
 * http: end-to-end HTTP flow control is now complete across both connections, streams, and filters.
 * load balancer: added :ref:`subset load balancer <arch_overview_load_balancer_subsets>`.
 * load balancer: added ring size and hash :ref:`configuration options
-  <envoy_api_msg_cluster.Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
+  <envoy_api_msg_Cluster.RingHashLbConfig>`. This used to be configurable via runtime. The runtime
   configuration was deleted without deprecation as we are fairly certain no one is using it.
 * log: added the ability to optionally log to a file instead of stderr via the
   :option:`--log-path` option.
-* listeners: added :ref:`drain_type <envoy_api_field_listener.Listener.drain_type>` option.
+* listeners: added :ref:`drain_type <envoy_api_field_Listener.drain_type>` option.
 * lua: added experimental :ref:`Lua filter <config_http_filters_lua>`.
 * mongo filter: added :ref:`fault injection <config_network_filters_mongo_proxy_fault_injection>`.
 * mongo filter: added :ref:`"drain close" <arch_overview_draining>` support.

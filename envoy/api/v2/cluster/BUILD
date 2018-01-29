@@ -27,33 +27,3 @@ api_go_proto_library(
     name = "outlier_detection",
     proto = ":outlier_detection",
 )
-
-api_proto_library(
-    name = "cluster",
-    srcs = ["cluster.proto"],
-    deps = [
-        ":circuit_breaker",
-        ":outlier_detection",
-        "//envoy/api/v2:address",
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:config_source",
-        "//envoy/api/v2:health_check",
-        "//envoy/api/v2:protocol",
-        "//envoy/api/v2/auth:cert",
-    ],
-)
-
-api_go_proto_library(
-    name = "cluster",
-    proto = ":cluster",
-    deps = [
-        ":circuit_breaker_go_proto",
-        ":outlier_detection_go_proto",
-        "//envoy/api/v2:address_go_proto",
-        "//envoy/api/v2:base_go_proto",
-        "//envoy/api/v2:config_source_go_proto",
-        "//envoy/api/v2:health_check_go_proto",
-        "//envoy/api/v2:protocol_go_proto",
-        "//envoy/api/v2/auth:cert_go_proto",
-    ],
-)

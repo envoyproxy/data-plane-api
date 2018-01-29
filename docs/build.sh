@@ -29,11 +29,14 @@ PROTO_RST="
   /envoy/api/v2/address/envoy/api/v2/address.proto.rst
   /envoy/api/v2/base/envoy/api/v2/base.proto.rst
   /envoy/api/v2/auth/cert/envoy/api/v2/auth/cert.proto.rst
+  /envoy/api/v2/eds/envoy/api/v2/eds.proto.rst
   /envoy/api/v2/endpoint/endpoint/envoy/api/v2/endpoint/endpoint.proto.rst
-  /envoy/api/v2/cluster/cluster/envoy/api/v2/cluster/cluster.proto.rst
+  /envoy/api/v2/cds/envoy/api/v2/cds.proto.rst
   /envoy/api/v2/cluster/outlier_detection/envoy/api/v2/cluster/outlier_detection.proto.rst
   /envoy/api/v2/cluster/circuit_breaker/envoy/api/v2/cluster/circuit_breaker.proto.rst
+  /envoy/api/v2/rds/envoy/api/v2/rds.proto.rst
   /envoy/api/v2/route/route/envoy/api/v2/route/route.proto.rst
+  /envoy/api/v2/lds/envoy/api/v2/lds.proto.rst
   /envoy/api/v2/listener/listener/envoy/api/v2/listener/listener.proto.rst
   /envoy/api/v2/config_source/envoy/api/v2/config_source.proto.rst
   /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
@@ -41,8 +44,7 @@ PROTO_RST="
   /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
   /envoy/api/v2/ratelimit/ratelimit/envoy/api/v2/ratelimit/ratelimit.proto.rst
   /envoy/config/bootstrap/v2/bootstrap/envoy/config/bootstrap/v2/bootstrap.proto.rst
-  /envoy/service/discovery/v2/common/envoy/service/discovery/v2/common.proto.rst
-  /envoy/service/discovery/v2/eds/envoy/service/discovery/v2/eds.proto.rst
+  /envoy/api/v2/discovery/envoy/api/v2/discovery.proto.rst
   /envoy/config/ratelimit/v2/rls/envoy/config/ratelimit/v2/rls.proto.rst
   /envoy/config/metrics/v2/metrics_service/envoy/config/metrics/v2/metrics_service.proto.rst
   /envoy/config/metrics/v2/stats/envoy/config/metrics/v2/stats.proto.rst

@@ -6,7 +6,7 @@ proto_library(
     name = "envoy",
     deps = [
         "//envoy/api/v2",
-        "//envoy/api/v2/cluster",
+        "//envoy/api/v2:cds",
         "//envoy/api/v2/cluster:circuit_breaker",
         "//envoy/api/v2/cluster:outlier_detection",
         "//envoy/api/v2/filter/accesslog",
@@ -20,7 +20,7 @@ proto_library(
         "//envoy/config/metrics/v2:stats",
         "//envoy/config/ratelimit/v2:rls",
         "//envoy/config/trace/v2:trace",
-        "//envoy/service/discovery",
+        "//envoy/service/discovery/v2:ads",
         "//envoy/service/load_stats",
         "//envoy/service/metrics",
     ],
