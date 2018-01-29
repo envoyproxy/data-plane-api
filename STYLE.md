@@ -26,7 +26,7 @@ In addition, the following conventions should be followed:
   reserved 15;
   ```
 
-  * No renaming of fields or package namespaces for a proto must occur. This is inherently dangerous, since:
+  * Renaming of fields or package namespaces for a proto must not occur. This is inherently dangerous, since:
     * Fields renames break wire compatibility. This is stricter than standard proto development procedure
       in the sense that it does not break binary wire format. However, it **does** break loading
       of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
