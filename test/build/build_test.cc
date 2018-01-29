@@ -6,9 +6,6 @@
 // Basic C++ build/link validation for the v2 xDS APIs.
 int main(int argc, char* argv[]) {
   const auto methods = {
-      "envoy.service.discovery.v2.AggregatedDiscoveryService.StreamAggregatedResources",
-      "envoy.service.discovery.v2.HealthDiscoveryService.FetchHealthCheck",
-      "envoy.service.discovery.v2.HealthDiscoveryService.StreamHealthCheck",
       "envoy.api.v2.ClusterDiscoveryService.FetchClusters",
       "envoy.api.v2.ClusterDiscoveryService.StreamClusters",
       "envoy.api.v2.EndpointDiscoveryService.FetchEndpoints",
@@ -17,6 +14,9 @@ int main(int argc, char* argv[]) {
       "envoy.api.v2.ListenerDiscoveryService.StreamListeners",
       "envoy.api.v2.RouteDiscoveryService.FetchRoutes",
       "envoy.api.v2.RouteDiscoveryService.StreamRoutes",
+      "envoy.service.discovery.v2.AggregatedDiscoveryService.StreamAggregatedResources",
+      "envoy.service.discovery.v2.HealthDiscoveryService.FetchHealthCheck",
+      "envoy.service.discovery.v2.HealthDiscoveryService.StreamHealthCheck",
       "envoy.service.accesslog.v2.AccessLogService.StreamAccessLogs",
       "envoy.service.metrics.v2.MetricsService.StreamMetrics",
       "envoy.service.ratelimit.v2.RateLimitService.ShouldRateLimit",

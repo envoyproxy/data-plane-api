@@ -4,7 +4,7 @@
 // We don't use all the headers in the test below, but including them anyway as
 // a cheap way to get some C++ compiler sanity checking.
 #include "envoy/api/v2/protocol.pb.validate.h"
-#include "envoy/api/v2/cluster/cluster.pb.validate.h"
+#include "envoy/api/v2/cds.pb.validate.h"
 #include "envoy/api/v2/filter/accesslog/accesslog.pb.validate.h"
 #include "envoy/api/v2/filter/http/buffer.pb.validate.h"
 #include "envoy/api/v2/filter/http/fault.pb.validate.h"

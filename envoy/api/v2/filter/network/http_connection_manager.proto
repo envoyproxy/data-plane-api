@@ -6,7 +6,7 @@ option go_package = "network";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/protocol.proto";
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
-import "envoy/api/v2/route/route.proto";
+import "envoy/api/v2/rds.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -51,7 +51,7 @@ message HttpConnectionManager {
     Rds rds = 3;
 
     // The route table for the connection manager is static and is specified in this property.
-    route.RouteConfiguration route_config = 4;
+    RouteConfiguration route_config = 4;
   }
 
   // A list of individual HTTP filters that make up the filter chain for

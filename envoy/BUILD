@@ -6,7 +6,7 @@ proto_library(
     name = "envoy",
     deps = [
         "//envoy/api/v2",
-        "//envoy/api/v2/cluster",
+        "//envoy/api/v2:cds",
         "//envoy/api/v2/cluster:circuit_breaker",
         "//envoy/api/v2/cluster:outlier_detection",
         "//envoy/api/v2/filter/accesslog",

@@ -9,8 +9,8 @@ api_proto_library(
         "//envoy/api/v2:base",
         "//envoy/api/v2:config_source",
         "//envoy/api/v2:protocol",
+        "//envoy/api/v2:rds",
         "//envoy/api/v2/filter/accesslog",
-        "//envoy/api/v2/route",
     ],
 )
 

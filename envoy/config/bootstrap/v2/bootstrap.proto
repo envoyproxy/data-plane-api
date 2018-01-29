@@ -12,8 +12,8 @@ import "envoy/api/v2/address.proto";
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/auth/cert.proto";
 import "envoy/api/v2/config_source.proto";
-import "envoy/api/v2/cluster/cluster.proto";
-import "envoy/api/v2/listener/listener.proto";
+import "envoy/api/v2/cds.proto";
+import "envoy/api/v2/lds.proto";
 import "envoy/config/trace/v2/trace.proto";
 import "envoy/config/metrics/v2/stats.proto";
 import "envoy/config/ratelimit/v2/rls.proto";
@@ -30,9 +30,9 @@ message Bootstrap {
   envoy.api.v2.Node node = 1;
 
   message StaticResources {
-    // Static :ref:`Listeners <envoy_api_msg_listener.Listener>`. These listeners are
+    // Static :ref:`Listeners <envoy_api_msg_Listener>`. These listeners are
     // available regardless of LDS configuration.
-    repeated envoy.api.v2.listener.Listener listeners = 1;
+    repeated envoy.api.v2.Listener listeners = 1;
 
     // If a network based configuration source is specified for :ref:`cds_config
     // <envoy_api_field_config.bootstrap.v2.Bootstrap.DynamicResources.cds_config>`, it's necessary
@@ -40,7 +40,7 @@ message Bootstrap {
     // how to speak to the management server. These cluster definitions may not
     // use :ref:`EDS <arch_overview_dynamic_config_sds>` (i.e. they should be static
     // IP or DNS-based).
-    repeated envoy.api.v2.cluster.Cluster clusters = 2;
+    repeated envoy.api.v2.Cluster clusters = 2;
 
     // [#not-implemented-hide:]
     repeated envoy.api.v2.auth.Secret secrets = 3;
@@ -49,11 +49,11 @@ message Bootstrap {
   StaticResources static_resources = 2;
 
   message DynamicResources {
-    // All :ref:`Listeners <envoy_api_msg_listener.Listener>` are provided by a single
+    // All :ref:`Listeners <envoy_api_msg_Listener>` are provided by a single
     // :ref:`LDS <arch_overview_dynamic_config_lds>` configuration source.
     envoy.api.v2.ConfigSource lds_config = 1;
 
-    // All post-bootstrap :ref:`Cluster <envoy_api_msg_cluster.Cluster>` definitions are
+    // All post-bootstrap :ref:`Cluster <envoy_api_msg_Cluster>` definitions are
     // provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
     // configuration source.
     envoy.api.v2.ConfigSource cds_config = 2;
