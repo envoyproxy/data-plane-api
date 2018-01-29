@@ -209,6 +209,7 @@ message WeightedCluster {
     // considered. The filter name should be specified as *envoy.lb*.
     Metadata metadata_match = 3;
 
+    // [#not-implemented-hide:]
     // Specifies a list of headers to be added to requests when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     // Headers specified at this level are applied before headers from the enclosing
@@ -219,6 +220,7 @@ message WeightedCluster {
     // <config_http_conn_man_headers_custom_request_headers>`.
     repeated HeaderValueOption request_headers_to_add = 4;
 
+    // [#not-implemented-hide:]
     // Specifies a list of headers to be added to responses when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     // Headers specified at this level are applied before headers from the enclosing
