@@ -40,9 +40,8 @@ In addition, the following conventions should be followed:
   resources embedded in `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`,
   etc.
 
-* Place new service definitions in the `envoy.service` package namespace. Place
-  bootstrap configuration in the `envoy.config` package namespace. All other
-  protos belong in `envoy.api`.
+* Every proto directory should have a `README.md` describing its content. See
+  for example [envoy.service](envoy/service/README.md).
 
 * The data plane APIs are primarily intended for machine generation and consumption.
   It is expected that the management server is responsible for mapping higher
