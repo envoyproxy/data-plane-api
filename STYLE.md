@@ -14,10 +14,6 @@ In addition, the following conventions should be followed:
 
   * Fields should not be renumbered or have their types changed. This is standard proto development
     procedure.
-  * Fields should not be **renamed**. This is stricter than standard proto development procedure
-    in the sense that it does not break binary wire format. However, it **does** break loading
-    of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
-    inputs, we must not change field names.
   * If fields are deleted, the following syntax should be put in their place:
 
   ```proto
@@ -30,17 +26,21 @@ In addition, the following conventions should be followed:
   reserved 15;
   ```
 
-* Once frozen, no renaming of fields or package namespaces for a proto must
-  occur. This is inherently dangerous, since:
-  * For service definitions, the gRPC endpoint URL is inferred from package
-    namespace, so this will break client/server communication.
+  * No renaming of fields or package namespaces for a proto must occur. This is inherently dangerous, since:
+    * Fields renames break wire compatibility. This is stricter than standard proto development procedure
+      in the sense that it does not break binary wire format. However, it **does** break loading
+      of YAML/JSON into protos as well as text protos. Since we consider YAML/JSON to be first class
+      inputs, we must not change field names.
 
-  * For a message embedded in an `Any` object, the type URL, which the package
-    namespace is a part of, may be used by Envoy or other API consuming code.
-    Currently, this applies to the top-level resources embedded in
-    `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`, etc.
+    * For service definitions, the gRPC endpoint URL is inferred from package
+      namespace, so this will break client/server communication.
 
-  * Consuming code will break and require source change to match the changes.
+    * For a message embedded in an `Any` object, the type URL, which the package
+      namespace is a part of, may be used by Envoy or other API consuming code.
+      Currently, this applies to the top-level resources embedded in
+      `DiscoveryResponse` objects, e.g. `Cluster`, `Listener`, etc.
+
+    * Consuming code will break and require source change to match the changes.
 
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
