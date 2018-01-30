@@ -4,7 +4,7 @@ package envoy.service.accesslog.v2;
 option go_package = "accesslog";
 
 import "envoy/api/v2/base.proto";
-import "envoy/api/v2/filter/accesslog/accesslog.proto";
+import "envoy/config/filter/v2/accesslog/accesslog.proto";
 
 import "validate/validate.proto";
 

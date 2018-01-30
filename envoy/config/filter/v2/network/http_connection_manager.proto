@@ -5,7 +5,7 @@ option go_package = "network";
 
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/protocol.proto";
-import "envoy/api/v2/filter/accesslog/accesslog.proto";
+import "envoy/config/filter/v2/accesslog/accesslog.proto";
 import "envoy/api/v2/rds.proto";
 
 import "google/protobuf/duration.proto";
