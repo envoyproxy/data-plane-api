@@ -82,16 +82,29 @@ message HttpConnectionManager {
     // created if the specified header name is present in the request's headers.
     repeated string request_headers_for_tags = 2;
 
-    // Target percentage of requests managed by this HTTP connection manager that will be traced
-    // after all other checks have been applied (force tracing, sampling, etc.). Defaults to 100%.
-    // This variable is a direct analog for the variable named 'global_enabled' in the :ref:`HTTP
-    // Connection Manager <config_http_conn_man_runtime>`.
-    Percent sampling = 3;
+    // Target percentage of requests managed by this HTTP connection manager that will be force
+    // traced if the *x-client-trace-id* header is set. This field is a direct analog for the
+    // runtime variable 'tracing.client_sampling' in the
+    // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // Default: 100%
+    Percent client_sampling = 3;
 
     // Target percentage of requests managed by this HTTP connection manager that will be randomly
-    // traced. Defaults to 100%. This variable is a direct analog for the variable of the same name
-    // in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // selected for trace generation, if not requested by the client or not forced. This field is
+    // a direct analog for the runtime variable 'tracing.random_sampling' in the
+    // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // Default: 100%
     Percent random_sampling = 4;
+
+    // Target percentage of requests managed by this HTTP connection manager that will be traced
+    // after all other sampling checks have been applied (client-directed, force tracing, random
+    // sampling). This field functions as an upper limit on the total configured sampling rate. For
+    // instance, setting client_sampling to 100% but overall_sampling to 1% will result in only 1%
+    // of client requests with the appropriate headers to be force traced. This field is a direct
+    // analog for the runtime variable 'tracing.global_enabled' in the
+    // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    // Default: 100%
+    Percent overall_sampling = 5;
   }
 
   // Presence of the object defines whether the connection manager
