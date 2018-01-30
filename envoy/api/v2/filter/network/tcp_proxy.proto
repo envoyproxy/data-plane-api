@@ -118,7 +118,7 @@ message TcpProxy {
   //   field a boolean with value ``true`` and configure via the opaque ``value`` field
   //   like is suggested in the filter `README
   //   <https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/filter/README.md>`_.
-  DeprecatedV1 deprecated_v1 = 6;
+  DeprecatedV1 deprecated_v1 = 6 [deprecated = true];
 
   // The maximum number of unsuccessful connection attempts that will be made before
   // giving up. If the parameter is not specified, 1 connection attempt will be made.
