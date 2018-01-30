@@ -109,7 +109,16 @@ message TcpProxy {
 
   // TCP Proxy filter configuration using deprecated V1 format. This is required for complex
   // routing until filter chain matching in the listener is implemented.
-  DeprecatedV1 deprecated_v1 = 6;
+  //
+  // .. attention::
+  //
+  //   Using this field will lead to `problems loading the configuration
+  //   <https://github.com/envoyproxy/envoy/issues/2441>`_. If you
+  //   want to configure the filter using v1 config structure, please make this
+  //   field a boolean with value ``true`` and configure via the opaque ``value`` field
+  //   like is suggested in the filter `README
+  //   <https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/filter/README.md>`_.
+  DeprecatedV1 deprecated_v1 = 6 [deprecated = true];
 
   // The maximum number of unsuccessful connection attempts that will be made before
   // giving up. If the parameter is not specified, 1 connection attempt will be made.
