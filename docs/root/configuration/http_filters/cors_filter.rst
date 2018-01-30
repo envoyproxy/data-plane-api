@@ -1,7 +1,7 @@
 .. _config_http_filters_cors:
 
-CORS filter
-===========
+CORS
+====
 
 This is a filter which handles Cross-Origin Resource Sharing requests based on route or virtual host settings.
 For the meaning of the headers please refer to the pages below.

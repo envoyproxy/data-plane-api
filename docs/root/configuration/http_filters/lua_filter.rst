@@ -284,6 +284,16 @@ add()
 Adds a header. *key* is a string that supplies the header key. *value* is a string that supplies
 the header value.
 
+.. attention::
+
+  Envoy treats certain headers specially. These are known as the O(1) or *inline* headers. The
+  list of inline headers can be found `here <https://github.com/envoyproxy/envoy/blob/6b6ce85a24094146c5c225f19b6ecc47b2ca84bf/include/envoy/http/header_map.h#L228>`_.
+  If an inline header is already present in the header map, *add()* will have no effect. If
+  attempting to *add()* a non-inline header, the additional header will be added so that the
+  resultant headers contains multiple header entries with the same name. Consider using the
+  *replace* function if want to replace a header with another value. Note also that we
+  understand this behavior is confusing and we may change it in a future release.
+
 get()
 ^^^^^
 
@@ -319,6 +329,16 @@ remove()
   headers:remove(key)
 
 Removes a header. *key* supplies the header key to remove.
+
+replace()
+^^^^^^^^^
+
+.. code-block:: lua
+
+  headers:add(key, value)
+
+Replaces a header. *key* is a string that supplies the header key. *value* is a string that supplies
+the header value. If the header does not exist, it is added as per the *add()* function.
 
 .. _config_http_filters_lua_buffer_wrapper:
 
