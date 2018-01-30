@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
-import "envoy/api/v2/filter/fault.proto";
+import "envoy/config/filter/v2/fault.proto";
 
 import "validate/validate.proto";
 

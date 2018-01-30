@@ -10,14 +10,14 @@ api_proto_library(
         "//envoy/api/v2:config_source",
         "//envoy/api/v2:protocol",
         "//envoy/api/v2:rds",
-        "//envoy/api/v2/filter/accesslog",
+        "//envoy/config/filter/v2/accesslog",
     ],
 )
 
 api_proto_library(
     name = "mongo_proxy",
     srcs = ["mongo_proxy.proto"],
-    deps = ["//envoy/api/v2/filter:fault"],
+    deps = ["//envoy/config/filter/v2:fault"],
 )
 
 api_proto_library(
@@ -25,7 +25,7 @@ api_proto_library(
     srcs = ["tcp_proxy.proto"],
     deps = [
         "//envoy/api/v2:address",
-        "//envoy/api/v2/filter/accesslog",
+        "//envoy/config/filter/v2/accesslog",
     ],
 )
 

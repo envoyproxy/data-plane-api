@@ -7,6 +7,6 @@ api_proto_library(
     deps = [
         "//envoy/api/v2:base",
         "//envoy/api/v2:grpc_service",
-        "//envoy/api/v2/filter/accesslog",
+        "//envoy/config/filter/v2/accesslog",
     ],
 )

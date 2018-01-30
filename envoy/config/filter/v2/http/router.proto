@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.api.v2.filter.http;
 option go_package = "http";
 
-import "envoy/api/v2/filter/accesslog/accesslog.proto";
+import "envoy/config/filter/v2/accesslog/accesslog.proto";
 
 import "google/protobuf/wrappers.proto";
 

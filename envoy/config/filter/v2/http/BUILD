@@ -5,7 +5,7 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "router",
     srcs = ["router.proto"],
-    deps = ["//envoy/api/v2/filter/accesslog"],
+    deps = ["//envoy/config/filter/v2/accesslog"],
 )
 
 api_proto_library(
@@ -46,8 +46,8 @@ api_proto_library(
     name = "fault",
     srcs = ["fault.proto"],
     deps = [
-        "//envoy/api/v2/filter:fault",
         "//envoy/api/v2/route",
+        "//envoy/config/filter/v2:fault",
     ],
 )
 
