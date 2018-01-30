@@ -3,6 +3,7 @@ syntax = "proto3";
 package envoy.api.v2.filter.network;
 option go_package = "network";
 
+import "envoy/api/v2/base.proto";
 import "envoy/api/v2/config_source.proto";
 import "envoy/api/v2/protocol.proto";
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
@@ -80,6 +81,17 @@ message HttpConnectionManager {
     // populate the tag name, and the header value is used to populate the tag value. The tag is
     // created if the specified header name is present in the request's headers.
     repeated string request_headers_for_tags = 2;
+
+    // Target percentage of requests managed by this HTTP connection manager that will be traced
+    // after all other checks have been applied (force tracing, sampling, etc.). Defaults to 100%.
+    // This variable is a direct analog for the variable named 'global_enabled' in the :ref:`HTTP
+    // Connection Manager <config_http_conn_man_runtime>`.
+    Percent sampling = 3;
+
+    // Target percentage of requests managed by this HTTP connection manager that will be randomly
+    // traced. Defaults to 100%. This variable is a direct analog for the variable of the same name
+    // in the :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
+    Percent random_sampling = 4;
   }
 
   // Presence of the object defines whether the connection manager
