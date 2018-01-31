@@ -5,7 +5,7 @@ syntax = "proto3";
 package envoy.service.auth.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/address.proto";
+import "envoy/api/v2/core/address.proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -43,7 +43,7 @@ message AttributeContext {
   message Peer {
     // The address of the peer, this is typically the IP address.
     // It can also be UDS path, or others.
-    envoy.api.v2.Address address = 1;
+    envoy.api.v2.core.Address address = 1;
 
     // The canonical service name of the peer.
     // It should be set to :ref:`the HTTP x-envoy-downstream-service-cluster

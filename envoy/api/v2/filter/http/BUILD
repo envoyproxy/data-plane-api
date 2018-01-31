@@ -31,14 +31,14 @@ api_proto_library(
 api_proto_library(
     name = "ip_tagging",
     srcs = ["ip_tagging.proto"],
-    deps = ["//envoy/api/v2:address"],
+    deps = ["//envoy/api/v2/core:address"],
 )
 
 api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
     deps = [
-        "//envoy/api/v2:base",
+        "//envoy/api/v2/core:base",
     ],
 )
 
@@ -64,7 +64,7 @@ api_proto_library(
 api_proto_library(
     name = "ext_authz",
     srcs = ["ext_authz.proto"],
-    deps = ["//envoy/api/v2:grpc_service"],
+    deps = ["//envoy/api/v2/core:grpc_service"],
 )
 
 proto_library(

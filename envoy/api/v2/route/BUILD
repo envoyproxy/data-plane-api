@@ -6,7 +6,7 @@ api_proto_library(
     name = "route",
     srcs = ["route.proto"],
     deps = [
-        "//envoy/api/v2:base",
+        "//envoy/api/v2/core:base",
         "//envoy/api/v2/auth",
     ],
 )
@@ -15,7 +15,7 @@ api_go_proto_library(
     name = "route",
     proto = ":route",
     deps = [
-        "//envoy/api/v2:base_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
         "//envoy/api/v2/auth:auth_go_proto",
     ],
 )

@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.config.accesslog.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/grpc_service.proto";
+import "envoy/api/v2/core/grpc_service.proto";
 
 import "validate/validate.proto";
 
@@ -38,5 +38,5 @@ message CommonGrpcAccessLogConfig {
   string log_name = 1 [(validate.rules).string.min_bytes = 1];
 
   // The gRPC service for the access log service.
-  envoy.api.v2.GrpcService grpc_service = 2 [(validate.rules).message.required = true];
+  envoy.api.v2.core.GrpcService grpc_service = 2 [(validate.rules).message.required = true];
 }

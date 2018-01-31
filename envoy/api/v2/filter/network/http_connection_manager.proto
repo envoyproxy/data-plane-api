@@ -3,8 +3,8 @@ syntax = "proto3";
 package envoy.api.v2.filter.network;
 option go_package = "network";
 
-import "envoy/api/v2/config_source.proto";
-import "envoy/api/v2/protocol.proto";
+import "envoy/api/v2/core/config_source.proto";
+import "envoy/api/v2/core/protocol.proto";
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
 import "envoy/api/v2/rds.proto";
 
@@ -88,10 +88,10 @@ message HttpConnectionManager {
   Tracing tracing = 7;
 
   // Additional HTTP/1 settings that are passed to the HTTP/1 codec.
-  Http1ProtocolOptions http_protocol_options = 8;
+  envoy.api.v2.core.Http1ProtocolOptions http_protocol_options = 8;
 
   // Additional HTTP/2 settings that are passed directly to the HTTP/2 codec.
-  Http2ProtocolOptions http2_protocol_options = 9;
+  envoy.api.v2.core.Http2ProtocolOptions http2_protocol_options = 9;
 
   // An optional override that the connection manager will write to the server
   // header in responses. If not set, the default is *envoy*.
@@ -193,7 +193,7 @@ message HttpConnectionManager {
 
 message Rds {
   // Configuration source specifier for RDS.
-  ConfigSource config_source = 1
+  envoy.api.v2.core.ConfigSource config_source = 1
       [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 
   // The name of the route configuration. This name will be passed to the RDS

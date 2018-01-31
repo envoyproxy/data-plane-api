@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.service.accesslog.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
 
 import "validate/validate.proto";
@@ -32,7 +32,7 @@ message StreamAccessLogsResponse {
 message StreamAccessLogsMessage {
   message Identifier {
     // The node sending the access log messages over the stream.
-    envoy.api.v2.Node node = 1 [(validate.rules).message.required = true];
+    envoy.api.v2.core.Node node = 1 [(validate.rules).message.required = true];
 
     // The friendly name of the log configured in AccessLogServiceConfig.
     string log_name = 2 [(validate.rules).string.min_bytes = 1];

@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.service.load_stats.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/endpoint/load_report.proto";
 
 import "google/protobuf/duration.proto";
@@ -49,7 +49,7 @@ service LoadReportingService {
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
 message LoadStatsRequest {
   // Node identifier for Envoy instance.
-  envoy.api.v2.Node node = 1;
+  envoy.api.v2.core.Node node = 1;
 
   // A list of load stats to report.
   repeated envoy.api.v2.endpoint.ClusterStats cluster_stats = 2;

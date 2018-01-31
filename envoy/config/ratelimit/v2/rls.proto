@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.config.ratelimit.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/grpc_service.proto";
+import "envoy/api/v2/core/grpc_service.proto";
 
 import "validate/validate.proto";
 
@@ -25,6 +25,6 @@ message RateLimitServiceConfig {
     // Specifies the gRPC service that hosts the rate limit service. The client
     // will connect to this cluster when it needs to make rate limit service
     // requests.
-    envoy.api.v2.GrpcService grpc_service = 2;
+    envoy.api.v2.core.GrpcService grpc_service = 2;
   }
 }

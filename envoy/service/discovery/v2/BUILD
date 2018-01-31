@@ -24,8 +24,8 @@ api_proto_library(
     srcs = ["hds.proto"],
     has_services = 1,
     deps = [
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:health_check",
+        "//envoy/api/v2/core:base",
+        "//envoy/api/v2/core:health_check",
         "//envoy/api/v2/endpoint",
     ],
 )
@@ -34,8 +34,8 @@ api_go_grpc_library(
     name = "hds",
     proto = ":hds",
     deps = [
-        "//envoy/api/v2:base_go_proto",
-        "//envoy/api/v2:health_check_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
+        "//envoy/api/v2/core:health_check_go_proto",
         "//envoy/api/v2/endpoint:endpoint_go_proto",
     ],
 )

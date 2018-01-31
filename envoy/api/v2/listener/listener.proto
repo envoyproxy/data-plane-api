@@ -3,9 +3,9 @@ syntax = "proto3";
 package envoy.api.v2.listener;
 option go_package = "listener";
 
-import "envoy/api/v2/address.proto";
+import "envoy/api/v2/core/address.proto";
 import "envoy/api/v2/auth/cert.proto";
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
@@ -57,7 +57,7 @@ message FilterChainMatch {
   // If non-empty, an IP address and prefix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
   // [#not-implemented-hide:]
-  repeated CidrRange prefix_ranges = 3;
+  repeated envoy.api.v2.core.CidrRange prefix_ranges = 3;
 
   // If non-empty, an IP address and suffix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
@@ -72,7 +72,7 @@ message FilterChainMatch {
   // parameter is not specified or the list is empty, the source IP address is
   // ignored.
   // [#not-implemented-hide:]
-  repeated CidrRange source_prefix_ranges = 6;
+  repeated envoy.api.v2.core.CidrRange source_prefix_ranges = 6;
 
   // The criteria is satisfied if the source port of the downstream connection
   // is contained in at least one of the specified ports. If the parameter is
@@ -110,10 +110,10 @@ message FilterChain {
   google.protobuf.BoolValue use_proxy_proto = 4;
 
   // [#not-implemented-hide:] filter chain metadata.
-  Metadata metadata = 5;
+  envoy.api.v2.core.Metadata metadata = 5;
 
   // [#not-implemented-hide:] See base.TransportSocket description.
-  TransportSocket transport_socket = 6;
+  envoy.api.v2.core.TransportSocket transport_socket = 6;
 }
 
 message ListenerFilter {

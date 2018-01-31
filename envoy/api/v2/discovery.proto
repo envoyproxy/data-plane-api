@@ -1,8 +1,9 @@
 syntax = "proto3";
 
 package envoy.api.v2;
+option go_package = "v2";
 
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/any.proto";
 
@@ -21,7 +22,7 @@ message DiscoveryRequest {
   string version_info = 1;
 
   // The node making the request.
-  Node node = 2;
+  core.Node node = 2;
 
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are

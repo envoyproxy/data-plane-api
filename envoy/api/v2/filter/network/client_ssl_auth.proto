@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.network;
 
-import "envoy/api/v2/address.proto";
+import "envoy/api/v2/core/address.proto";
 import "google/protobuf/duration.proto";
 
 import "validate/validate.proto";
@@ -31,5 +31,5 @@ message ClientSSLAuth {
   // An optional list of IP address and subnet masks that should be white
   // listed for access by the filter. If no list is provided, there is no
   // IP white list.
-  repeated CidrRange ip_white_list = 4;
+  repeated envoy.api.v2.core.CidrRange ip_white_list = 4;
 }

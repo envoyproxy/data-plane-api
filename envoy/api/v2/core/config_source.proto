@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.core;
 
-import "envoy/api/v2/grpc_service.proto";
+import "envoy/api/v2/core/grpc_service.proto";
 
 import "google/protobuf/duration.proto";
 

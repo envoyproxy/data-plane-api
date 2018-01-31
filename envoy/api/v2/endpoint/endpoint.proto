@@ -3,9 +3,9 @@ syntax = "proto3";
 package envoy.api.v2.endpoint;
 option go_package = "endpoint";
 
-import "envoy/api/v2/address.proto";
-import "envoy/api/v2/base.proto";
-import "envoy/api/v2/health_check.proto";
+import "envoy/api/v2/core/address.proto";
+import "envoy/api/v2/core/base.proto";
+import "envoy/api/v2/core/health_check.proto";
 
 import "google/protobuf/wrappers.proto";
 
@@ -16,7 +16,7 @@ import "gogoproto/gogo.proto";
 
 // Upstream host identifier.
 message Endpoint {
-  Address address = 1;
+  core.Address address = 1;
 }
 
 // An Endpoint that Envoy can route traffic to.
@@ -26,7 +26,7 @@ message LbEndpoint {
 
   // [#not-implemented-hide:] Optional health status when known and supplied by
   // EDS server.
-  HealthStatus health_status = 2;
+  core.HealthStatus health_status = 2;
 
   // The endpoint metadata specifies values that may be used by the load
   // balancer to select endpoints in a cluster for a given request. The filter
@@ -34,7 +34,7 @@ message LbEndpoint {
   // is *canary*, providing the optional canary status of the upstream host.
   // This may be matched against in a route's ForwardAction metadata_match field
   // to subset the endpoints considered in cluster load balancing.
-  Metadata metadata = 3;
+  core.Metadata metadata = 3;
 
   // The optional load balancing weight of the upstream host, in the range 1 -
   // 128. Envoy uses the load balancing weight in some of the built in load
@@ -60,7 +60,7 @@ message LbEndpoint {
 // balancing weights or different priorities.
 message LocalityLbEndpoints {
   // Identifies location of where the upstream hosts run.
-  Locality locality = 1;
+  core.Locality locality = 1;
 
   // The group of endpoints belonging to the locality specified.
   repeated LbEndpoint lb_endpoints = 2;

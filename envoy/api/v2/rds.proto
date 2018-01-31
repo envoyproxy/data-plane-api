@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package envoy.api.v2;
 
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/discovery.proto";
 import "envoy/api/v2/route/route.proto";
 
@@ -49,7 +49,7 @@ message RouteConfiguration {
   // :ref:`envoy_api_msg_route.RouteAction`. For more information, including details on
   // header value syntax, see the documentation on :ref:`custom request headers
   // <config_http_conn_man_headers_custom_request_headers>`.
-  repeated HeaderValueOption response_headers_to_add = 4;
+  repeated core.HeaderValueOption response_headers_to_add = 4;
 
   // Specifies a list of HTTP headers that should be removed from each response
   // that the connection manager encodes.
@@ -61,7 +61,7 @@ message RouteConfiguration {
   // :ref:`envoy_api_msg_route.RouteAction`. For more information, including details on
   // header value syntax, see the documentation on :ref:`custom request headers
   // <config_http_conn_man_headers_custom_request_headers>`.
-  repeated HeaderValueOption request_headers_to_add = 6;
+  repeated core.HeaderValueOption request_headers_to_add = 6;
 
   // An optional boolean that specifies whether the clusters that the route
   // table refers to will be validated by the cluster manager. If set to true

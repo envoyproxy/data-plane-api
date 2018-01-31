@@ -7,7 +7,7 @@ api_proto_library(
     srcs = ["lrs.proto"],
     has_services = 1,
     deps = [
-        "//envoy/api/v2:base",
+        "//envoy/api/v2/core:base",
         "//envoy/api/v2/endpoint:load_report",
     ],
 )
@@ -16,7 +16,7 @@ api_go_grpc_library(
     name = "lrs",
     proto = ":lrs",
     deps = [
-        "//envoy/api/v2:base_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
         "//envoy/api/v2/endpoint:load_report_go_proto",
     ],
 )

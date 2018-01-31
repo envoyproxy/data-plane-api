@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package envoy.api.v2.filter.http;
 
-import "envoy/api/v2/address.proto";
+import "envoy/api/v2/core/address.proto";
 
 // This is an HTTP filter which enables Envoy to tag requests with extra
 // information such as location, cloud source, and any extra data. This is
@@ -31,6 +31,6 @@ message IPTagging {
 
     // A list of IP address and subnet masks that will be tagged with the
     // ip_tag_name. Both IPv4 and IPv6 CIDR addresses are allowed here.
-    repeated CidrRange ip_list = 2;
+    repeated envoy.api.v2.core.CidrRange ip_list = 2;
   }
 }

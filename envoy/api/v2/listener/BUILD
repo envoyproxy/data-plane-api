@@ -6,8 +6,8 @@ api_proto_library(
     name = "listener",
     srcs = ["listener.proto"],
     deps = [
-        "//envoy/api/v2:address",
-        "//envoy/api/v2:base",
+        "//envoy/api/v2/core:address",
+        "//envoy/api/v2/core:base",
         "//envoy/api/v2/auth:cert",
     ],
 )
@@ -16,8 +16,8 @@ api_go_proto_library(
     name = "listener",
     proto = ":listener",
     deps = [
-        "//envoy/api/v2:address_go_proto",
-        "//envoy/api/v2:base_go_proto",
+        "//envoy/api/v2/core:address_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
         "//envoy/api/v2/auth:cert_go_proto",
     ],
 )

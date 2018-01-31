@@ -6,7 +6,7 @@ api_proto_library(
     name = "trace",
     srcs = ["trace.proto"],
     deps = [
-        "//envoy/api/v2:grpc_service",
+        "//envoy/api/v2/core:grpc_service",
     ],
 )
 
@@ -14,6 +14,6 @@ api_go_proto_library(
     name = "trace",
     proto = ":trace",
     deps = [
-        "//envoy/api/v2:grpc_service_go_proto",
+        "//envoy/api/v2/core:grpc_service_go_proto",
     ],
 )

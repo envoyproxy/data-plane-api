@@ -9,6 +9,6 @@ api_proto_library(
     ],
     has_services = 1,
     deps = [
-        "//envoy/api/v2:address",
+        "//envoy/api/v2/core:address",
     ],
 )

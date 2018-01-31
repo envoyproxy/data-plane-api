@@ -3,7 +3,7 @@ syntax = "proto3";
 package envoy.api.v2.filter.network;
 
 import "envoy/api/v2/filter/accesslog/accesslog.proto";
-import "envoy/api/v2/address.proto";
+import "envoy/api/v2/core/address.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
@@ -76,7 +76,7 @@ message TcpProxy {
       // address of the downstream connection might be different from the
       // addresses on which the proxy is listening if the connection has been
       // redirected.
-      repeated CidrRange destination_ip_list = 2;
+      repeated envoy.api.v2.core.CidrRange destination_ip_list = 2;
 
       // An optional string containing a comma-separated list of port numbers
       // or ranges. The criteria is satisfied if the destination port of the
@@ -92,7 +92,7 @@ message TcpProxy {
       // of the downstream connection is contained in at least one of the
       // specified subnets. If the parameter is not specified or the list is
       // empty, the source IP address is ignored.
-      repeated CidrRange source_ip_list = 4;
+      repeated envoy.api.v2.core.CidrRange source_ip_list = 4;
 
       // An optional string containing a comma-separated list of port numbers
       // or ranges. The criteria is satisfied if the source port of the

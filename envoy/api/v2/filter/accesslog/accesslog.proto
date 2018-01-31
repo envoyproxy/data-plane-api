@@ -3,8 +3,8 @@ syntax = "proto3";
 package envoy.api.v2.filter.accesslog;
 option go_package = "accesslog";
 
-import "envoy/api/v2/address.proto";
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/address.proto";
+import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -35,10 +35,10 @@ message AccessLogCommon {
   // This field is the remote/origin address on which the request from the user was received.
   // Note: This may not be the physical peer. E.g, if the remote address is inferred from for
   //       example the x-forwarder-for header, proxy protocol, etc.
-  Address downstream_remote_address = 2;
+  envoy.api.v2.core.Address downstream_remote_address = 2;
 
   // This field is the local/destination address on which the request from the user was received.
-  Address downstream_local_address = 3;
+  envoy.api.v2.core.Address downstream_local_address = 3;
 
   // If the connection is secure, this field will contain TLS properties.
   TLSProperties tls_properties = 4;
@@ -87,10 +87,10 @@ message AccessLogCommon {
 
   // The upstream remote/destination address that handles this exchange. This does not include
   // retries.
-  Address upstream_remote_address = 13;
+  envoy.api.v2.core.Address upstream_remote_address = 13;
 
   // The upstream local/origin address that handles this exchange. This does not include retries.
-  Address upstream_local_address = 14;
+  envoy.api.v2.core.Address upstream_local_address = 14;
 
   // The upstream cluster that *upstream_remote_address* belongs to.
   string upstream_cluster = 15;
@@ -106,7 +106,7 @@ message AccessLogCommon {
   // route created from a higher level forwarding rule with some ID can place
   // that ID in this field and cross reference later. It can also be used to
   // determine if a canary endpoint was used or not.
-  Metadata metadata = 17;
+  envoy.api.v2.core.Metadata metadata = 17;
 }
 
 // [#proto-status: draft]
@@ -188,7 +188,7 @@ message HTTPRequestProperties {
   // The request method (RFC 7231/2616).
   // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once
   // https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
-  RequestMethod request_method = 1;
+  envoy.api.v2.core.RequestMethod request_method = 1;
 
   // The scheme portion of the incoming request URI.
   string scheme = 2;
@@ -338,7 +338,7 @@ message ComparisonFilter {
   Op op = 1 [(validate.rules).enum.defined_only = true];
 
   // Value to compare against.
-  RuntimeUInt32 value = 2;
+  envoy.api.v2.core.RuntimeUInt32 value = 2;
 }
 
 // Filters on HTTP response/status code.

@@ -8,8 +8,8 @@ api_proto_library(
     has_services = 1,
     require_py = 0,
     deps = [
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:grpc_service",
+        "//envoy/api/v2/core:base",
+        "//envoy/api/v2/core:grpc_service",
         "@promotheus_metrics_model//:client_model",
     ],
 )

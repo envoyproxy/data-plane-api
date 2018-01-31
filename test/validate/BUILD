@@ -9,7 +9,7 @@ api_cc_test(
         "//envoy/api/v2:cds",
         "//envoy/api/v2:eds",
         "//envoy/api/v2:lds",
-        "//envoy/api/v2:protocol",
+        "//envoy/api/v2/core:protocol",
         "//envoy/api/v2:rds",
         "//envoy/api/v2/filter/accesslog",
         "//envoy/api/v2/filter/http:buffer",

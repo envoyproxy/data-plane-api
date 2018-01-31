@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-package envoy.api.v2;
+package envoy.api.v2.core;
 
 import "google/protobuf/wrappers.proto";
 

@@ -6,9 +6,9 @@ api_proto_library(
     name = "http_connection_manager",
     srcs = ["http_connection_manager.proto"],
     deps = [
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:config_source",
-        "//envoy/api/v2:protocol",
+        "//envoy/api/v2/core:base",
+        "//envoy/api/v2/core:config_source",
+        "//envoy/api/v2/core:protocol",
         "//envoy/api/v2:rds",
         "//envoy/api/v2/filter/accesslog",
     ],
@@ -24,7 +24,7 @@ api_proto_library(
     name = "tcp_proxy",
     srcs = ["tcp_proxy.proto"],
     deps = [
-        "//envoy/api/v2:address",
+        "//envoy/api/v2/core:address",
         "//envoy/api/v2/filter/accesslog",
     ],
 )
@@ -37,7 +37,7 @@ api_proto_library(
 api_proto_library(
     name = "client_ssl_auth",
     srcs = ["client_ssl_auth.proto"],
-    deps = ["//envoy/api/v2:address"],
+    deps = ["//envoy/api/v2/core:address"],
 )
 
 api_proto_library(
@@ -49,7 +49,7 @@ api_proto_library(
 api_proto_library(
     name = "ext_authz",
     srcs = ["ext_authz.proto"],
-    deps = ["//envoy/api/v2:grpc_service"],
+    deps = ["//envoy/api/v2/core:grpc_service"],
 )
 
 proto_library(

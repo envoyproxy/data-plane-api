@@ -6,6 +6,6 @@ api_proto_library(
     name = "als",
     srcs = ["als.proto"],
     deps = [
-        "//envoy/api/v2:grpc_service",
+        "//envoy/api/v2/core:grpc_service",
     ],
 )

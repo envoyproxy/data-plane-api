@@ -22,8 +22,8 @@ api_proto_library(
     name = "cert",
     srcs = ["cert.proto"],
     deps = [
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:config_source",
+        "//envoy/api/v2/core:base",
+        "//envoy/api/v2/core:config_source",
     ],
 )
 
@@ -31,7 +31,7 @@ api_go_proto_library(
     name = "cert",
     proto = ":cert",
     deps = [
-        "//envoy/api/v2:base_go_proto",
-        "//envoy/api/v2:config_source_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
+        "//envoy/api/v2/core:config_source_go_proto",
     ],
 )
