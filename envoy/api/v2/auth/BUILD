@@ -15,7 +15,6 @@ api_go_proto_library(
     proto = ":auth",
     deps = [
         ":cert_go_proto",
-        "@googleapis//:rpc_status_go_proto",
     ],
 )
 

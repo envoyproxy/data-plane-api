@@ -76,24 +76,24 @@ for the v2 API change process.
 
 Unless otherwise stated, the APIs with the same names as v1 APIs have a similar role.
 
-* [Cluster Discovery Service (CDS)](api/cds.proto).
-* [Endpoint Discovery Service (EDS)](api/eds.proto). This has the same role as SDS in the [v1 API](https://www.envoyproxy.io/docs/envoy/latest/configuration/cluster_manager/sds_api.html),
+* [Cluster Discovery Service (CDS)](envoy/api/v2/cds.proto).
+* [Endpoint Discovery Service (EDS)](envoy/api/v2/eds.proto). This has the same role as SDS in the [v1 API](https://www.envoyproxy.io/docs/envoy/latest/api-v1/cluster_manager/sds),
   the new name better describes what the API does in practice. Advanced global load balancing capable of utilizing N-dimensional upstream metrics is now supported.
-* [Health Discovery Service (HDS)](api/hds.proto). This new API supports efficient endpoint health discovery by the management server via the Envoy instances it manages. Individual Envoy instances
+* [Health Discovery Service (HDS)](envoy/service/discovery/v2/hds.proto). This new API supports efficient endpoint health discovery by the management server via the Envoy instances it manages. Individual Envoy instances
   will typically receive HDS instructions to health check a subset of all
   endpoints. The health check subset may not be a subset of the Envoy instance's
   EDS endpoints.
-* [Listener Discovery Service (LDS)](api/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
-* [Metric Service (MS)](api/metrics_service.proto). This new API allows Envoy to push (stream) metrics forever for servers to consume.
-* [Rate Limit Service (RLS)](api/rls.proto)
-* [Route Discovery Service (RDS)](api/rds.proto).
-* [Secret Discovery Service (SDS)](api/sds.proto).
+* [Listener Discovery Service (LDS)](envoy/api/v2/lds.proto). This new API supports dynamic discovery of the listener configuration (which ports to bind to, TLS details, filter chains, etc.).
+* [Metric Service (MS)](envoy/service/metrics/v2/metrics_service.proto). This new API allows Envoy to push (stream) metrics forever for servers to consume.
+* [Rate Limit Service (RLS)](envoy/service/ratelimit/v2/rls.proto)
+* [Route Discovery Service (RDS)](envoy/api/v2/rds.proto).
+* [Secret Discovery Service (SDS)](envoy/service/discovery/v2/sds.proto).
 
 In addition to the above APIs, an aggregation API will be provided to allow for
 fine grained control over the sequencing of API updates across discovery
 services:
 
-* [Aggregated Discovery Service (ADS)](api/discovery.proto). See
+* [Aggregated Discovery Service (ADS)](envoy/api/v2/discovery.proto). See
   the [ADS overview](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service).
 
 A protocol description for the xDS APIs is provided [here](XDS_PROTOCOL.md).

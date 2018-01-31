@@ -1,7 +1,7 @@
 .. _config_http_filters_grpc_json_transcoder:
 
-gRPC-JSON transcoder filter
-===========================
+gRPC-JSON transcoder
+====================
 
 * gRPC :ref:`architecture overview <arch_overview_grpc>`
 * :ref:`v1 API reference <config_http_filters_grpc_json_transcoder_v1>`

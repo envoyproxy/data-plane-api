@@ -1,7 +1,7 @@
 .. _config_http_filters_grpc_web:
 
-gRPC-Web filter
-====================
+gRPC-Web
+========
 
 * gRPC :ref:`architecture overview <arch_overview_grpc>`
 * :ref:`v1 API reference <config_http_filters_grpc_web_v1>`
