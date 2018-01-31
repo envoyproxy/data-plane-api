@@ -130,8 +130,14 @@ The following command operators are supported:
     <config_http_conn_man_headers_x-forwarded-for>`.
 
 %DOWNSTREAM_LOCAL_ADDRESS%
-  Remote address of the downstream connection. If the address is an IP address it includes both
+  Local address of the downstream connection. If the address is an IP address it includes both
   address and port.
+  If the original connection was redirected by iptables REDIRECT, this represents
+  the original destination address restored by the
+  :ref:`Original Destination Filter <config_listener_filters_original_dst>` using SO_ORIGINAL_DST socket option.
+
+%DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%
+    Same as **%DOWNSTREAM_LOCAL_ADDRESS%** excluding port if the address is an IP address.
 
 %REQ(X?Y):Z%
   HTTP
