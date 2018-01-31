@@ -3,7 +3,7 @@ syntax = "proto3";
 // [#proto-status: draft]
 
 package envoy.service.trace.v2;
-option go_package = "trace";
+option go_package = "v2";
 
 import "envoy/api/v2/base.proto";
 import "trace.proto";

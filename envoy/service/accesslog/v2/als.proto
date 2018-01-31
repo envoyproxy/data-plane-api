@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package envoy.service.accesslog.v2;
-option go_package = "accesslog";
+option go_package = "v2";
 
 import "envoy/api/v2/base.proto";
 import "envoy/api/v2/filter/accesslog/accesslog.proto";

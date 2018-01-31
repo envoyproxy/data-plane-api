@@ -4,7 +4,7 @@
 syntax = "proto3";
 
 package envoy.config.metrics.v2;
-option go_package = "metrics";
+option go_package = "v2";
 
 import "envoy/api/v2/address.proto";
 

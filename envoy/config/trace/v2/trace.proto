@@ -4,7 +4,7 @@
 syntax = "proto3";
 
 package envoy.config.trace.v2;
-option go_package = "trace";
+option go_package = "v2";
 
 import "envoy/api/v2/grpc_service.proto";
 

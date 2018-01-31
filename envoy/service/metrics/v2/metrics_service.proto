@@ -3,7 +3,7 @@ syntax = "proto3";
 // [#proto-status: draft]
 
 package envoy.service.metrics.v2;
-option go_package = "metrics";
+option go_package = "v2";
 
 import "envoy/api/v2/base.proto";
 
