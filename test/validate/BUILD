@@ -24,6 +24,8 @@ api_cc_test(
         "//envoy/api/v2/filter/network:mongo_proxy",
         "//envoy/api/v2/filter/network:redis_proxy",
         "//envoy/api/v2/filter/network:tcp_proxy",
+        "//envoy/api/v2/listener",
+        "//envoy/api/v2/route",
         "//envoy/config/bootstrap/v2:bootstrap",
     ],
 )

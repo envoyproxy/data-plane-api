@@ -3,13 +3,16 @@
 
 // We don't use all the headers in the test below, but including them anyway as
 // a cheap way to get some C++ compiler sanity checking.
-#include "envoy/api/v2/protocol.pb.validate.h"
 #include "envoy/api/v2/cds.pb.validate.h"
+#include "envoy/api/v2/eds.pb.validate.h"
+#include "envoy/api/v2/lds.pb.validate.h"
+#include "envoy/api/v2/protocol.pb.validate.h"
+#include "envoy/api/v2/rds.pb.validate.h"
 #include "envoy/api/v2/filter/accesslog/accesslog.pb.validate.h"
 #include "envoy/api/v2/filter/http/buffer.pb.validate.h"
 #include "envoy/api/v2/filter/http/fault.pb.validate.h"
-#include "envoy/api/v2/filter/http/health_check.pb.validate.h"
 #include "envoy/api/v2/filter/http/gzip.pb.validate.h"
+#include "envoy/api/v2/filter/http/health_check.pb.validate.h"
 #include "envoy/api/v2/filter/http/lua.pb.validate.h"
 #include "envoy/api/v2/filter/http/router.pb.validate.h"
 #include "envoy/api/v2/filter/http/squash.pb.validate.h"
@@ -21,10 +24,6 @@
 #include "envoy/api/v2/listener/listener.pb.validate.h"
 #include "envoy/api/v2/route/route.pb.validate.h"
 #include "envoy/config/bootstrap/v2/bootstrap.pb.validate.h"
-#include "envoy/api/v2/cds.pb.validate.h"
-#include "envoy/api/v2/eds.pb.validate.h"
-#include "envoy/api/v2/lds.pb.validate.h"
-#include "envoy/api/v2/rds.pb.validate.h"
 
 #include "google/protobuf/text_format.h"
 
