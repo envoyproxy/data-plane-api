@@ -1,3 +1,5 @@
+licenses(["notice"])  # Apache 2
+
 proto_library(
     name = "ratelimit",
     visibility = ["//envoy:__pkg__"],
