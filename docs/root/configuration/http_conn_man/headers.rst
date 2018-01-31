@@ -318,6 +318,14 @@ Supported variable names are:
       :ref:`proxy proto <envoy_api_field_listener.FilterChain.use_proxy_proto>` or :ref:`x-forwarded-for
       <config_http_conn_man_headers_x-forwarded-for>`.
 
+%DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%
+    Local address of the downstream connection. If the address is an IP address the output does
+    *not* include port. If the original connection is redirected by iptables REDIRECT, this represents
+    the original destination address restored using SO_ORIGINAL_DST socket option.
+
+%ORIGINAL_DST%
+    An alias for %DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%.
+
 %PROTOCOL%
     The original protocol which is already added by Envoy as a
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.
