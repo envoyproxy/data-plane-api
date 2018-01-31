@@ -320,11 +320,9 @@ Supported variable names are:
 
 %DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%
     Local address of the downstream connection. If the address is an IP address the output does
-    *not* include port. If the original connection is redirected by iptables REDIRECT, this represents
-    the original destination address restored using SO_ORIGINAL_DST socket option.
-
-%ORIGINAL_DST%
-    An alias for %DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%.
+    *not* include port. If the original connection was redirected by iptables REDIRECT, this represents
+    the original destination address restored by the
+    :ref:`Original Destination Filter <config_listener_filters_original_dst>` using SO_ORIGINAL_DST socket option.
 
 %PROTOCOL%
     The original protocol which is already added by Envoy as a
