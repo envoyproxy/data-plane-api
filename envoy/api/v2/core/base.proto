@@ -13,7 +13,7 @@ import "gogoproto/gogo.proto";
 
 // Identifies location of where either Envoy runs or where upstream hosts run.
 message Locality {
-  // Region this :ref:`zone <envoy_api_field_Locality.zone>` belongs to.
+  // Region this :ref:`zone <envoy_api_field_core.Locality.zone>` belongs to.
   string region = 1;
 
   // Defines the local service zone where Envoy is running. Though optional, it

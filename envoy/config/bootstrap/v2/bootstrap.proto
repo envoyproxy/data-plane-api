@@ -60,10 +60,10 @@ message Bootstrap {
 
     // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
     // specified. This must have :ref:`api_type
-    // <envoy_api_field_ApiConfigSource.api_type>` :ref:`GRPC
-    // <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`. Only
-    // :ref:`ConfigSources <envoy_api_msg_ConfigSource>` that have
-    // the :ref:`ads <envoy_api_field_ConfigSource.ads>` field set will be
+    // <envoy_api_field_core.ApiConfigSource.api_type>` :ref:`GRPC
+    // <envoy_api_enum_value_core.ApiConfigSource.ApiType.GRPC>`. Only
+    // :ref:`ConfigSources <envoy_api_msg_core.ConfigSource>` that have
+    // the :ref:`ads <envoy_api_field_core.ConfigSource.ads>` field set will be
     // streamed on the ADS channel.
     envoy.api.v2.core.ApiConfigSource ads_config = 3;
 
@@ -161,8 +161,9 @@ message ClusterManager {
   envoy.api.v2.core.BindConfig upstream_bind_config = 3;
 
   // A management server endpoint to stream load stats to via
-  // *StreamLoadStats*. This must have :ref:`api_type <envoy_api_field_ApiConfigSource.api_type>`
-  // :ref:`GRPC <envoy_api_enum_value_ApiConfigSource.ApiType.GRPC>`.
+  // *StreamLoadStats*. This must have :ref:`api_type
+  // <envoy_api_field_core.ApiConfigSource.api_type>` :ref:`GRPC
+  // <envoy_api_enum_value_core.ApiConfigSource.ApiType.GRPC>`.
   envoy.api.v2.core.ApiConfigSource load_stats_config = 4;
 }
 

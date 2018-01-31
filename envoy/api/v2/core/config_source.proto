@@ -50,7 +50,7 @@ message ApiConfigSource {
 }
 
 // Aggregated Discovery Service (ADS) options. This is currently empty, but when
-// set in :ref:`ConfigSource <envoy_api_msg_ConfigSource>` can be used to
+// set in :ref:`ConfigSource <envoy_api_msg_core.ConfigSource>` can be used to
 // specify that ADS is to be used.
 message AggregatedConfigSource {
 }

@@ -91,7 +91,7 @@ following are the command line options that Envoy supports.
   *(optional)* Defines the local service cluster name where Envoy is running. The
   local service cluster name is first sourced from the :ref:`Bootstrap node
   <envoy_api_field_config.bootstrap.v2.Bootstrap.node>` message's :ref:`cluster
-  <envoy_api_field_Node.cluster>` field. This CLI option provides an alternative
+  <envoy_api_field_core.Node.cluster>` field. This CLI option provides an alternative
   method for specifying this value and will override any value set in bootstrap
   configuration. It should be set if any of the following features are used:
   :ref:`statsd <arch_overview_statistics>`, :ref:`health check cluster
@@ -108,7 +108,7 @@ following are the command line options that Envoy supports.
   *(optional)* Defines the local service node name where Envoy is running. The
   local service node name is first sourced from the :ref:`Bootstrap node
   <envoy_api_field_config.bootstrap.v2.Bootstrap.node>` message's :ref:`id
-  <envoy_api_field_Node.id>` field. This CLI option provides an alternative
+  <envoy_api_field_core.Node.id>` field. This CLI option provides an alternative
   method for specifying this value and will override any value set in bootstrap
   configuration. It should be set if any of the following features are used:
   :ref:`statsd <arch_overview_statistics>`, :ref:`CDS
@@ -121,7 +121,7 @@ following are the command line options that Envoy supports.
   *(optional)* Defines the local service zone where Envoy is running. The local
   service zone is first sourced from the :ref:`Bootstrap node
   <envoy_api_field_config.bootstrap.v2.Bootstrap.node>` message's :ref:`locality.zone
-  <envoy_api_field_Locality.zone>` field. This CLI option provides an
+  <envoy_api_field_core.Locality.zone>` field. This CLI option provides an
   alternative method for specifying this value and will override any value set
   in bootstrap configuration. It should be set if discovery service routing is
   used and the discovery service exposes :ref:`zone data

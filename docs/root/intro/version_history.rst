@@ -15,7 +15,7 @@ Version history
 * cors: added :ref:`CORS filter <config_http_filters_cors>`.
 * health check: added :ref:`x-envoy-immediate-health-check-fail
   <config_http_filters_router_x-envoy-immediate-health-check-fail>` header support.
-* health check: added :ref:`reuse_connection <envoy_api_field_HealthCheck.reuse_connection>` option.
+* health check: added :ref:`reuse_connection <envoy_api_field_core.HealthCheck.reuse_connection>` option.
 * http: added :ref:`per-listener stats <config_http_conn_man_stats_per_listener>`.
 * http: end-to-end HTTP flow control is now complete across both connections, streams, and filters.
 * load balancer: added :ref:`subset load balancer <arch_overview_load_balancer_subsets>`.

@@ -14,9 +14,9 @@ import "google/protobuf/wrappers.proto";
 message CircuitBreakers {
 
   // A Thresholds defines CircuitBreaker settings for a
-  // :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`.
+  // :ref:`RoutingPriority<envoy_api_enum_core.RoutingPriority>`.
   message Thresholds {
-    // The :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`
+    // The :ref:`RoutingPriority<envoy_api_enum_core.RoutingPriority>`
     // the specified CircuitBreaker settings apply to.
     // [#comment:TODO(htuch): add (validate.rules).enum.defined_only = true once
     // https://github.com/lyft/protoc-gen-validate/issues/42 is resolved.]
@@ -40,9 +40,9 @@ message CircuitBreakers {
   }
 
   // If multiple :ref:`Thresholds<envoy_api_msg_cluster.CircuitBreakers.Thresholds>`
-  // are defined with the same :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`,
+  // are defined with the same :ref:`RoutingPriority<envoy_api_enum_core.RoutingPriority>`,
   // the first one in the list is used. If no Thresholds is defined for a given
-  // :ref:`RoutingPriority<envoy_api_enum_RoutingPriority>`, the default values
+  // :ref:`RoutingPriority<envoy_api_enum_core.RoutingPriority>`, the default values
   // are used.
   repeated Thresholds thresholds = 1;
 }

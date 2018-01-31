@@ -26,8 +26,12 @@ bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy --aspects \
 # These are the protos we want to put in docs, this list will grow.
 # TODO(htuch): Factor this out of this script.
 PROTO_RST="
-  /envoy/api/v2/address/envoy/api/v2/address.proto.rst
-  /envoy/api/v2/base/envoy/api/v2/base.proto.rst
+  /envoy/api/v2/core/address/envoy/api/v2/core/address.proto.rst
+  /envoy/api/v2/core/base/envoy/api/v2/core/base.proto.rst
+  /envoy/api/v2/core/config_source/envoy/api/v2/core/config_source.proto.rst
+  /envoy/api/v2/core/grpc_service/envoy/api/v2/core/grpc_service.proto.rst
+  /envoy/api/v2/core/health_check/envoy/api/v2/core/health_check.proto.rst
+  /envoy/api/v2/core/protocol/envoy/api/v2/core/protocol.proto.rst
   /envoy/api/v2/auth/cert/envoy/api/v2/auth/cert.proto.rst
   /envoy/api/v2/eds/envoy/api/v2/eds.proto.rst
   /envoy/api/v2/endpoint/endpoint/envoy/api/v2/endpoint/endpoint.proto.rst
@@ -38,10 +42,6 @@ PROTO_RST="
   /envoy/api/v2/route/route/envoy/api/v2/route/route.proto.rst
   /envoy/api/v2/lds/envoy/api/v2/lds.proto.rst
   /envoy/api/v2/listener/listener/envoy/api/v2/listener/listener.proto.rst
-  /envoy/api/v2/config_source/envoy/api/v2/config_source.proto.rst
-  /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
-  /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
-  /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
   /envoy/api/v2/ratelimit/ratelimit/envoy/api/v2/ratelimit/ratelimit.proto.rst
   /envoy/config/bootstrap/v2/bootstrap/envoy/config/bootstrap/v2/bootstrap.proto.rst
   /envoy/api/v2/discovery/envoy/api/v2/discovery.proto.rst

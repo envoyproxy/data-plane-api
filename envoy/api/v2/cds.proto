@@ -341,7 +341,7 @@ message Cluster {
     RingHashLbConfig ring_hash_lb_config = 23;
   }
 
-  // See :ref:`base.TransportSocket<envoy_api_msg_TransportSocket>` description.
+  // See :ref:`base.TransportSocket<envoy_api_msg_core.TransportSocket>` description.
   core.TransportSocket transport_socket = 24;
 
   // The Metadata field can be used to provide additional information about the

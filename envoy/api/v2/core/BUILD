@@ -74,4 +74,3 @@ api_go_proto_library(
     name = "protocol",
     proto = ":protocol",
 )
-
