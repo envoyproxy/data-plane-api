@@ -3,8 +3,6 @@ syntax = "proto3";
 package envoy.api.v2;
 option go_package = "api";
 
-import "envoy/api/v2/address.proto";
-
 import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
