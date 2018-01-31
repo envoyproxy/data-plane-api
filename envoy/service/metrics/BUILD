@@ -1,3 +1,5 @@
+licenses(["notice"])  # Apache 2
+
 proto_library(
     name = "metrics",
     visibility = ["//envoy:__pkg__"],
