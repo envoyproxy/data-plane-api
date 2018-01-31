@@ -15,7 +15,6 @@ api_go_proto_library(
 api_proto_library(
     name = "base",
     srcs = ["base.proto"],
-    deps = [":address"],
 )
 
 api_go_proto_library(
