@@ -15,7 +15,7 @@ import "gogoproto/gogo.proto";
 message UpstreamLocalityStats {
   // Name of zone, region and optionally endpoint group these metrics were
   // collected from. Zone and region names could be empty if unknown.
-  envoy.api.v2.core.Locality locality = 1;
+  core.Locality locality = 1;
 
   // The total number of requests sent by this Envoy since the last report. A
   // single HTTP or gRPC request or stream is counted as one request. A TCP

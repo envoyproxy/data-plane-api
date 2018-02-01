@@ -70,19 +70,19 @@ message TlsParameters {
 
 message TlsCertificate {
   // The TLS certificate chain.
-  envoy.api.v2.core.DataSource certificate_chain = 1;
+  core.DataSource certificate_chain = 1;
 
   // The TLS private key.
-  envoy.api.v2.core.DataSource private_key = 2;
+  core.DataSource private_key = 2;
 
   // [#not-implemented-hide:]
-  envoy.api.v2.core.DataSource password = 3;
+  core.DataSource password = 3;
 
   // [#not-implemented-hide:]
-  envoy.api.v2.core.DataSource ocsp_staple = 4;
+  core.DataSource ocsp_staple = 4;
 
   // [#not-implemented-hide:]
-  repeated envoy.api.v2.core.DataSource signed_certificate_timestamp = 5;
+  repeated core.DataSource signed_certificate_timestamp = 5;
 }
 
 message TlsSessionTicketKeys {
@@ -109,7 +109,7 @@ message TlsSessionTicketKeys {
   //   * Keep the session ticket keys at least as secure as your TLS certificate private keys
   //   * Rotate session ticket keys at least daily, and preferably hourly
   //   * Always generate keys using a cryptographically-secure random data source
-  repeated envoy.api.v2.core.DataSource keys = 1 [(validate.rules).repeated .min_items = 1];
+  repeated core.DataSource keys = 1 [(validate.rules).repeated .min_items = 1];
 }
 
 message CertificateValidationContext {
@@ -127,7 +127,7 @@ message CertificateValidationContext {
   //
   // See :ref:`the TLS overview <arch_overview_ssl_enabling_verification>` for a list of common
   // system CA locations.
-  envoy.api.v2.core.DataSource trusted_ca = 1;
+  core.DataSource trusted_ca = 1;
 
   // If specified, Envoy will verify (pin) the hex-encoded SHA-256 hash of
   // the presented certificate.
@@ -154,7 +154,7 @@ message CertificateValidationContext {
   // (in PEM format). If specified, Envoy will verify that the presented peer
   // certificate has not been revoked by this CRL. If this DataSource contains
   // multiple CRLs, all of them will be used.
-  envoy.api.v2.core.DataSource crl = 7;
+  core.DataSource crl = 7;
 }
 
 // TLS context shared by both client and server TLS contexts.
@@ -235,7 +235,7 @@ message SdsSecretConfig {
   // When both name and config are specified, then secret can be fetched and/or reloaded via SDS.
   // When only name is specified, then secret will be loaded from static resources [V2-API-DIFF].
   string name = 1;
-  envoy.api.v2.core.ConfigSource sds_config = 2;
+  core.ConfigSource sds_config = 2;
 }
 
 // [#proto-status: experimental]

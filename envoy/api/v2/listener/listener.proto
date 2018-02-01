@@ -59,7 +59,7 @@ message FilterChainMatch {
   // If non-empty, an IP address and prefix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
   // [#not-implemented-hide:]
-  repeated envoy.api.v2.core.CidrRange prefix_ranges = 3;
+  repeated core.CidrRange prefix_ranges = 3;
 
   // If non-empty, an IP address and suffix length to match addresses when the
   // listener is bound to 0.0.0.0/:: or when use_original_dst is specified.
@@ -74,7 +74,7 @@ message FilterChainMatch {
   // parameter is not specified or the list is empty, the source IP address is
   // ignored.
   // [#not-implemented-hide:]
-  repeated envoy.api.v2.core.CidrRange source_prefix_ranges = 6;
+  repeated core.CidrRange source_prefix_ranges = 6;
 
   // The criteria is satisfied if the source port of the downstream connection
   // is contained in at least one of the specified ports. If the parameter is
@@ -112,10 +112,10 @@ message FilterChain {
   google.protobuf.BoolValue use_proxy_proto = 4;
 
   // [#not-implemented-hide:] filter chain metadata.
-  envoy.api.v2.core.Metadata metadata = 5;
+  core.Metadata metadata = 5;
 
   // [#not-implemented-hide:] See base.TransportSocket description.
-  envoy.api.v2.core.TransportSocket transport_socket = 6;
+  core.TransportSocket transport_socket = 6;
 }
 
 message ListenerFilter {
