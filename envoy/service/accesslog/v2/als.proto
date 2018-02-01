@@ -4,7 +4,7 @@ package envoy.service.accesslog.v2;
 option go_package = "v2";
 
 import "envoy/api/v2/core/base.proto";
-import "envoy/api/v2/filter/accesslog/accesslog.proto";
+import "envoy/config/filter/accesslog/v2/accesslog.proto";
 
 import "validate/validate.proto";
 
@@ -44,13 +44,13 @@ message StreamAccessLogsMessage {
 
   // Wrapper for batches of HTTP access log entries.
   message HTTPAccessLogEntries {
-    repeated envoy.api.v2.filter.accesslog.HTTPAccessLogEntry log_entry = 1
+    repeated envoy.config.filter.accesslog.v2.HTTPAccessLogEntry log_entry = 1
         [(validate.rules).repeated .min_items = 1];
   }
 
   // Wrapper for batches of TCP access log entries.
   message TCPAccessLogEntries {
-    repeated envoy.api.v2.filter.accesslog.TCPAccessLogEntry log_entry = 1
+    repeated envoy.config.filter.accesslog.v2.TCPAccessLogEntry log_entry = 1
         [(validate.rules).repeated .min_items = 1];
   }
 

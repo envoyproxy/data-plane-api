@@ -7,7 +7,7 @@ py_binary(
     visibility = ["//visibility:public"],
     deps = [
         "//envoy/api/v2:lds_py",
-        "//envoy/api/v2/filter/network:http_connection_manager_py",
+        "//envoy/config/filter/network/http_connection_manager/v2:http_connection_manager_py",
     ],
 )
 
