@@ -11,6 +11,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
 
 // [#protodoc-title: LDS]
 
@@ -42,7 +43,7 @@ message Listener {
   // The address that the listener should listen on. In general, the address must be unique, though
   // that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
   // Linux as the actual port will be allocated by the OS.
-  core.Address address = 2 [(validate.rules).message.required = true];
+  core.Address address = 2 [(validate.rules).message.required = true, (gogoproto.nullable) = false];
 
   // A list of filter chains to consider for this listener. The
   // :ref:`FilterChain <envoy_api_msg_listener.FilterChain>` with the most specific
@@ -58,7 +59,8 @@ message Listener {
   //   filters differ, the configuration will fail to load. In the future, this limitation will be
   //   relaxed such that different filters can be used depending on which filter chain matches
   //   (based on SNI or some other parameter).
-  repeated listener.FilterChain filter_chains = 3 [(validate.rules).repeated .min_items = 1];
+  repeated listener.FilterChain filter_chains = 3
+      [(validate.rules).repeated .min_items = 1, (gogoproto.nullable) = false];
 
   // If a connection is redirected using *iptables*, the port on which the proxy
   // receives it might be different from the original destination address. When this flag is set to
@@ -118,5 +120,5 @@ message Listener {
   // :ref:`filter_chains <envoy_api_field_Listener.filter_chains>`. Order matters as the
   // filters are processed sequentially right after a socket has been accepted by the listener, and
   // before a connection is created.
-  repeated listener.ListenerFilter listener_filters = 9;
+  repeated listener.ListenerFilter listener_filters = 9 [(gogoproto.nullable) = false];
 }

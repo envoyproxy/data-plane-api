@@ -9,6 +9,8 @@ import "envoy/api/v2/route/route.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/wrappers.proto";
 
+import "gogoproto/gogo.proto";
+
 // [#protodoc-title: RDS]
 
 // The resource_names field in DiscoveryRequest specifies a route configuration.
@@ -35,7 +37,7 @@ message RouteConfiguration {
   string name = 1;
 
   // An array of virtual hosts that make up the route table.
-  repeated route.VirtualHost virtual_hosts = 2;
+  repeated route.VirtualHost virtual_hosts = 2 [(gogoproto.nullable) = false];
 
   // Optionally specifies a list of HTTP headers that the connection manager
   // will consider to be internal only. If they are found on external requests they will be cleaned

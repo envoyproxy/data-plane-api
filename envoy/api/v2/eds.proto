@@ -9,6 +9,8 @@ import "google/api/annotations.proto";
 
 import "validate/validate.proto";
 
+import "gogoproto/gogo.proto";
+
 // [#protodoc-title: EDS]
 
 service EndpointDiscoveryService {
@@ -41,7 +43,7 @@ message ClusterLoadAssignment {
   string cluster_name = 1 [(validate.rules).string.min_bytes = 1];
 
   // List of endpoints to load balance to.
-  repeated endpoint.LocalityLbEndpoints endpoints = 2;
+  repeated endpoint.LocalityLbEndpoints endpoints = 2 [(gogoproto.nullable) = false];
 
   // Load balancing policy settings.
   message Policy {

@@ -17,6 +17,7 @@ message Pipe {
 
 message SocketAddress {
   enum Protocol {
+    option (gogoproto.goproto_enum_prefix) = false;
     TCP = 0;
     // [#not-implemented-hide:]
     UDP = 1;

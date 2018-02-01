@@ -12,6 +12,8 @@ import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
 
+import "gogoproto/gogo.proto";
+
 // [#protodoc-title: Listeners]
 // Listener :ref:`configuration overview <config_listeners>`
 
@@ -99,7 +101,7 @@ message FilterChain {
   // connections established with the listener. Order matters as the filters are
   // processed sequentially as connection events happen. Note: If the filter
   // list is empty, the connection will close by default.
-  repeated Filter filters = 3;
+  repeated Filter filters = 3 [(gogoproto.nullable) = false];
 
   // Whether the listener should expect a PROXY protocol V1 header on new
   // connections. If this option is enabled, the listener will assume that that
