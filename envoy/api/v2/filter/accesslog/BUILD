@@ -5,6 +5,11 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
+    visibility = [
+        "//envoy:friends",
+        "//envoy/api/v2/filter:__subpackages__",
+        "//envoy/service/accesslog/v2:__pkg__",
+    ],
     deps = [
         "//envoy/api/v2/core:address",
         "//envoy/api/v2/core:base",

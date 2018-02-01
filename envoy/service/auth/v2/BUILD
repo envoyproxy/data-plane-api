@@ -7,6 +7,7 @@ api_proto_library(
     srcs = [
         "attribute_context.proto",
     ],
+    visibility = ["//envoy:friends"],
     deps = [
         "//envoy/api/v2/core:address",
     ],
@@ -18,6 +19,7 @@ api_proto_library(
         "external_auth.proto",
     ],
     has_services = 1,
+    visibility = ["//envoy:friends"],
     deps = [
         ":attribute_context",
     ],

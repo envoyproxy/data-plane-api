@@ -1,7 +1,15 @@
 licenses(["notice"])  # Apache 2
 
+# Friends of the API proto libraries
+package_group(
+    name = "friends",
+    packages = [
+        "//envoy",
+    ],
+)
+
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
-# bazel build //envoy/api --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
+# bazel build //envoy --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "envoy",
     deps = [
@@ -21,7 +29,7 @@ proto_library(
         "//envoy/config/ratelimit/v2:rls",
         "//envoy/config/trace/v2:trace",
         "//envoy/service/discovery/v2:ads",
-        "//envoy/service/load_stats",
-        "//envoy/service/metrics",
+        "//envoy/service/load_stats/v2:lrs",
+        "//envoy/service/metrics/v2:metrics_service",
     ],
 )

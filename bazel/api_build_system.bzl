@@ -77,7 +77,7 @@ def api_go_grpc_library(name, proto, deps = []):
 # gRPC stub generation.
 # TODO(htuch): Automatically generate go_proto_library and go_grpc_library
 # from api_proto_library.
-def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py = 1):
+def api_proto_library(name, visibility, srcs = [], deps = [], has_services = 0, require_py = 1):
     # This is now vestigial, since there are no direct consumers in
     # data-plane-api. However, we want to maintain native proto_library support
     # in the proto graph to (1) support future C++ use of native rules with
@@ -99,7 +99,7 @@ def api_proto_library(name, srcs = [], deps = [], has_services = 0, require_py =
             "@com_github_gogo_protobuf//:gogo_proto",
             "@com_lyft_protoc_gen_validate//validate:validate_proto",
         ],
-        visibility = ["//visibility:public"],
+        visibility = visibility,
     )
     # Under the hood, this is just an extension of the Protobuf library's
     # bespoke cc_proto_library. It doesn't consume proto_library as a proto

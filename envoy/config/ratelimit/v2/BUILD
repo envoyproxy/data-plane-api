@@ -5,6 +5,10 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "rls",
     srcs = ["rls.proto"],
+    visibility = [
+        "//envoy:friends",
+        "//envoy/config/bootstrap/v2:__pkg__",
+    ],
     deps = [
         "//envoy/api/v2/core:grpc_service",
     ],

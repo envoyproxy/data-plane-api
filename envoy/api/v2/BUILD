@@ -2,9 +2,24 @@ load("//bazel:api_build_system.bzl", "api_proto_library", "api_go_proto_library"
 
 licenses(["notice"])  # Apache 2
 
+# Friends of core API packages - filters, services, service configs
+package_group(
+    name = "friends",
+    includes = [
+        "//envoy:friends",
+    ],
+    packages = [
+        "//envoy/api/v2",
+        "//envoy/api/v2/filter/...",
+        "//envoy/config/...",
+        "//envoy/service/...",
+    ],
+)
+
 api_proto_library(
     name = "discovery",
     srcs = ["discovery.proto"],
+    visibility = [":friends"],
     deps = ["//envoy/api/v2/core:base"],
 )
 
@@ -18,6 +33,7 @@ api_proto_library(
     name = "eds",
     srcs = ["eds.proto"],
     has_services = 1,
+    visibility = [":friends"],
     deps = [
         ":discovery",
         "//envoy/api/v2/core:address",
@@ -43,6 +59,7 @@ api_proto_library(
     name = "cds",
     srcs = ["cds.proto"],
     has_services = 1,
+    visibility = [":friends"],
     deps = [
         ":discovery",
         "//envoy/api/v2/auth:cert",
@@ -76,6 +93,7 @@ api_proto_library(
     name = "lds",
     srcs = ["lds.proto"],
     has_services = 1,
+    visibility = [":friends"],
     deps = [
         ":discovery",
         "//envoy/api/v2/core:address",
@@ -99,6 +117,7 @@ api_proto_library(
     name = "rds",
     srcs = ["rds.proto"],
     has_services = 1,
+    visibility = [":friends"],
     deps = [
         ":discovery",
         "//envoy/api/v2/core:base",

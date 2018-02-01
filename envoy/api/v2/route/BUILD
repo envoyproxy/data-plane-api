@@ -5,6 +5,7 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "route",
     srcs = ["route.proto"],
+    visibility = ["//envoy/api/v2:friends"],
     deps = [
         "//envoy/api/v2/auth",
         "//envoy/api/v2/core:base",
