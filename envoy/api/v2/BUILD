@@ -2,7 +2,9 @@ load("//bazel:api_build_system.bzl", "api_proto_library", "api_go_proto_library"
 
 licenses(["notice"])  # Apache 2
 
-# Friends of core API packages - filters, services, service configs
+# Friends of core API packages - filters, services, service configs.
+# Package //envoy/api/v2 contains xDS and discovery definitions that should
+# be in //envoy/service/discovery, but remain here for backwards compatibility.
 package_group(
     name = "friends",
     includes = [
@@ -10,7 +12,6 @@ package_group(
     ],
     packages = [
         "//envoy/api/v2",
-        "//envoy/api/v2/filter/...",
         "//envoy/config/...",
         "//envoy/service/...",
     ],
