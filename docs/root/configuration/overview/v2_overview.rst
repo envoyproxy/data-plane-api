@@ -368,8 +368,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`rds
-<envoy_api_field_filter.network.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
-<envoy_api_msg_filter.network.HttpConnectionManager>` config.
+<envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
+<envoy_api_msg_config.filter.network.http_connection_manager.v2.HttpConnectionManager>` config.
 
 REST endpoints
 ^^^^^^^^^^^^^^
@@ -440,8 +440,8 @@ for the service definition. This is used by Envoy as a client when
         cluster_names: [some_xds_cluster]
 
 is set in the :ref:`rds
-<envoy_api_field_filter.network.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
-<envoy_api_msg_filter.network.HttpConnectionManager>` config.
+<envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.rds>` field of the :ref:`HttpConnectionManager
+<envoy_api_msg_config.filter.network.http_connection_manager.v2.HttpConnectionManager>` config.
 
 .. _config_overview_v2_ads:
 

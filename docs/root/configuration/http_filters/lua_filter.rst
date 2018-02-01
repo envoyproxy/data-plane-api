@@ -62,7 +62,7 @@ Configuration
 -------------
 
 * :ref:`v1 API reference <config_http_filters_lua_v1>`
-* :ref:`v2 API reference <envoy_api_msg_filter.http.Lua>`
+* :ref:`v2 API reference <envoy_api_msg_config.filter.http.lua.v2.Lua>`
 
 Script examples
 ---------------

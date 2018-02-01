@@ -294,7 +294,8 @@ message AccessLog {
 
   // Custom configuration that depends on the access log being instantiated. built-in configurations
   // include:
-  // 1) "envoy.file_access_log": :ref:`FileAccessLog <envoy_api_msg_filter.accesslog.FileAccessLog>`
+  // 1) "envoy.file_access_log": :ref:`FileAccessLog
+  // <envoy_api_msg_config.filter.accesslog.v2.FileAccessLog>`
   google.protobuf.Struct config = 3;
 }
 

@@ -34,7 +34,7 @@ Configuration
   including the router filter.
 
 * :ref:`v1 API reference <config_http_filters_fault_injection_v1>`
-* :ref:`v2 API reference <envoy_api_msg_filter.http.HTTPFault>`
+* :ref:`v2 API reference <envoy_api_msg_config.filter.http.fault.v2.HTTPFault>`
 
 Runtime
 -------

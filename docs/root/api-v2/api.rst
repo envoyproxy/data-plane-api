@@ -30,4 +30,4 @@ v2 API reference
   api/v2/discovery.proto
   api/v2/ratelimit/ratelimit.proto
   config/ratelimit/v2/rls.proto
-  api/v2/filter/filter
+  config/filter/filter

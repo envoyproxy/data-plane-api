@@ -32,8 +32,9 @@ service RouteDiscoveryService {
 
 message RouteConfiguration {
   // The name of the route configuration. For example, it might match
-  // :ref:`route_config_name <envoy_api_field_filter.network.Rds.route_config_name>` in
-  // :ref:`envoy_api_msg_filter.network.Rds`.
+  // :ref:`route_config_name
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.Rds.route_config_name>` in
+  // :ref:`envoy_api_msg_config.filter.network.http_connection_manager.v2.Rds`.
   string name = 1;
 
   // An array of virtual hosts that make up the route table.
@@ -72,10 +73,11 @@ message RouteConfiguration {
   // route table will load and the router filter will return a 404 if the route
   // is selected at runtime. This setting defaults to true if the route table
   // is statically defined via the :ref:`route_config
-  // <envoy_api_field_filter.network.HttpConnectionManager.route_config>` option. This setting
-  // default to false if the route table is loaded dynamically via the :ref:`rds
-  // <envoy_api_field_filter.network.HttpConnectionManager.rds>` option. Users
-  // may which to override the default behavior in certain cases (for example
-  // when using CDS with a static route table).
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.route_config>`
+  // option. This setting default to false if the route table is loaded dynamically via the
+  // :ref:`rds
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.rds>`
+  // option. Users may which to override the default behavior in certain cases (for example when
+  // using CDS with a static route table).
   google.protobuf.BoolValue validate_clusters = 7;
 }

@@ -132,7 +132,8 @@ message HttpConnectionManager {
   // requests. If not set, there is no idle timeout. When the idle timeout is
   // reached the connection will be closed. If the connection is an HTTP/2
   // connection a drain sequence will occur prior to closing the connection. See
-  // :ref:`drain_timeout <envoy_api_field_filter.network.HttpConnectionManager.drain_timeout>`.
+  // :ref:`drain_timeout
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.drain_timeout>`.
   google.protobuf.Duration idle_timeout = 11 [(gogoproto.stdduration) = true];
 
   // The time that Envoy will wait between sending an HTTP/2 “shutdown
@@ -208,8 +209,8 @@ message HttpConnectionManager {
   };
 
   // This field is valid only when :ref:`forward_client_cert_details
-  // <envoy_api_field_filter.network.HttpConnectionManager.forward_client_cert_details>` is
-  // APPEND_FORWARD or SANITIZE_SET and the client connection is mTLS. It specifies the fields in
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.forward_client_cert_details>`
+  // is APPEND_FORWARD or SANITIZE_SET and the client connection is mTLS. It specifies the fields in
   // the client certificate to be forwarded. Note that in the
   // :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header, *Hash* is always set, and
   // *By* is always set when the client certificate presents the SAN value.

@@ -42,7 +42,7 @@ message HTTPFault {
   // injection filter can be applied selectively to requests that match a set of
   // headers specified in the fault filter config. The chances of actual fault
   // injection further depend on the value of the :ref:`percent
-  // <envoy_api_field_filter.http.FaultAbort.percent>` field. The filter will
+  // <envoy_api_field_config.filter.http.fault.v2.FaultAbort.percent>` field. The filter will
   // check the request's headers against all the specified headers in the filter
   // config. A match will happen if all the headers in the config are present in
   // the request with the same values (or based on presence if the *value* field

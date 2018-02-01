@@ -7,5 +7,5 @@ Filters
 
   network/network
   http/http
-  accesslog/accesslog.proto
-  fault.proto
+  accesslog/v2/accesslog.proto
+  fault/v2/fault.proto
