@@ -2,7 +2,7 @@ version: 2
 jobs:
    test:
      docker:
-       - image: envoyproxy/envoy-build:52f6880ffbf761c9b809fc3ac208900956ff16b4
+       - image: envoyproxy/envoy-build:61b38528d7e46ced9d749d278ba185332310ca95
      resource_class: xlarge
      working_directory: /source
      steps:
@@ -10,7 +10,7 @@ jobs:
        - run: ci/do_ci.sh bazel.test
    docs:
      docker:
-       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+       - image: envoyproxy/envoy-build:61b38528d7e46ced9d749d278ba185332310ca95
      resource_class: xlarge
      working_directory: /source
      steps:
