@@ -8,7 +8,7 @@ package_group(
 )
 
 # TODO(htuch): Grow this to cover everything we want to generate docs for, so we can just invoke
-# bazel build //envoy --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
+# bazel build //docs:protos --aspects tools/protodoc/protodoc.bzl%proto_doc_aspect  --output_groups=rst
 proto_library(
     name = "protos",
     deps = [
