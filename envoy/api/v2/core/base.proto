@@ -9,6 +9,8 @@ import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
+option (gogoproto.equal_all) = true;
+
 // [#protodoc-title: Common types]
 
 // Identifies location of where either Envoy runs or where upstream hosts run.

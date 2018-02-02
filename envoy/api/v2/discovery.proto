@@ -8,6 +8,8 @@ import "envoy/api/v2/core/base.proto";
 import "google/protobuf/any.proto";
 import "gogoproto/gogo.proto";
 
+option (gogoproto.equal_all) = true;
+
 // [#protodoc-title: Common discovery API components]
 
 // A DiscoveryRequest requests a set of versioned resources of the same type for

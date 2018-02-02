@@ -7,6 +7,9 @@ import "envoy/api/v2/core/base.proto";
 import "google/protobuf/duration.proto";
 
 import "validate/validate.proto";
+import "gogoproto/gogo.proto";
+
+option (gogoproto.equal_all) = true;
 
 // [#protodoc-title: gRPC services]
 // [#proto-status: draft]

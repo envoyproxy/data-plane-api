@@ -13,6 +13,8 @@ import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
+option (gogoproto.equal_all) = true;
+
 // [#protodoc-title: LDS]
 
 // The Envoy instance initiates an RPC at startup to discover a list of

@@ -9,6 +9,8 @@ import "google/protobuf/duration.proto";
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
 
+option (gogoproto.equal_all) = true;
+
 // [#protodoc-title: Configuration sources]
 
 // API configuration source. This identifies the API type and cluster that Envoy
