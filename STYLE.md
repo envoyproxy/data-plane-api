@@ -92,3 +92,23 @@ In addition, the following conventions should be followed:
   value like `TYPE_NAME_UNSPECIFIED = 0`, and treat it as an error. This design
   pattern forces developers to explicitly choose the correct enum value for
   their use case, and avoid misunderstanding of the default behavior.
+
+## Package organization
+
+API definitions are layered hierarchically in packages from top-to-bottom:
+
+- `envoy.service` contains gRPC definitions of supporting services;
+- `envoy.config` contains definitions for service configuration, filter
+configuration, and bootstrap;
+- `envoy.api.v2` contains definitions for EDS, CDS, RDS, LDS, and top-level
+resources such as `Cluster`;
+- `envoy.api.v2.endpoint`, `envoy.api.v2.cluster`, `envoy.api.v2.route`,
+`envoy.api.v2.listener`, `envoy.api.v2.ratelimit` define sub-messages of the top-level resources;
+- `envoy.api.v2.core` and `envoy.api.v2.auth` hold core definitions consumed
+throughout the API.
+
+Dependencies are enforced from top-to-bottom using visibility constraints in
+the build system to prevent circular dependency formation. Package group
+`//envoy/api/v2:friends` selects consumers of the core API package (services and configs)
+and is the default visibility for the core API packages. The default visibility
+for services and configs should be `//docs` (proto documentation tool).
