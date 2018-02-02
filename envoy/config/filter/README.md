@@ -1,5 +1,8 @@
 Protocol buffer definitions for filters.
 
+Visilibility of the definitions should be constrained to `//docs` except for
+shared definitions between explicitly enumerated filters (e.g. accesslog and fault definitions).
+
 ## NOTE
 
 If a filter configuration is not captured in the proto specification, you
