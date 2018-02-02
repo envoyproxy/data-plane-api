@@ -114,7 +114,7 @@ message FilterChain {
   // [#not-implemented-hide:] filter chain metadata.
   core.Metadata metadata = 5;
 
-  // [#not-implemented-hide:] See base.TransportSocket description.
+  // See :ref:`base.TransportSocket<envoy_api_msg_core.TransportSocket>` description.
   core.TransportSocket transport_socket = 6;
 }
 
