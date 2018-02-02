@@ -1,10 +1,14 @@
 syntax = "proto3";
 
 package envoy.api.v2;
+option go_package = "v2";
 
-import "envoy/api/v2/base.proto";
+import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/any.proto";
+import "gogoproto/gogo.proto";
+
+option (gogoproto.equal_all) = true;
 
 // [#protodoc-title: Common discovery API components]
 
@@ -21,7 +25,7 @@ message DiscoveryRequest {
   string version_info = 1;
 
   // The node making the request.
-  Node node = 2;
+  core.Node node = 2;
 
   // List of resources to subscribe to, e.g. list of cluster names or a route
   // configuration name. If this is empty, all resources for the API are
@@ -49,7 +53,7 @@ message DiscoveryResponse {
   string version_info = 1;
 
   // The response resources. These resources are typed and depend on the API being called.
-  repeated google.protobuf.Any resources = 2;
+  repeated google.protobuf.Any resources = 2 [(gogoproto.nullable) = false];
 
   // [#not-implemented-hide:]
   // Canary is used to support two Envoy command line flags:

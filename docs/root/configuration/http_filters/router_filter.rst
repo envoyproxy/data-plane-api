@@ -9,7 +9,7 @@ configured :ref:`route table <config_http_conn_man_route_table>`. In addition to
 redirection, the filter also handles retry, statistics, etc.
 
 * :ref:`v1 API reference <config_http_filters_router_v1>`
-* :ref:`v2 API reference <envoy_api_msg_filter.http.Router>`
+* :ref:`v2 API reference <envoy_api_msg_config.filter.http.router.v2.Router>`
 
 .. _config_http_filters_router_headers:
 

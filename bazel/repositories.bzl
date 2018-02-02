@@ -198,6 +198,7 @@ api_proto_library(
     srcs = [
         "metrics.proto",
     ],
+    visibility = ["//visibility:public"],
 )
         """,
     )
@@ -214,6 +215,7 @@ api_proto_library(
     srcs = [
         "trace.proto",
     ],
+    visibility = ["//visibility:public"],
 )
         """,
     )

@@ -7,8 +7,8 @@ api_proto_library(
     srcs = ["als.proto"],
     has_services = 1,
     deps = [
-        "//envoy/api/v2:base",
-        "//envoy/api/v2:grpc_service",
-        "//envoy/api/v2/filter/accesslog",
+        "//envoy/api/v2/core:base",
+        "//envoy/api/v2/core:grpc_service",
+        "//envoy/config/filter/accesslog/v2:accesslog",
     ],
 )

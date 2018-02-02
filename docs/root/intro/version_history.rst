@@ -15,7 +15,7 @@ Version history
 * cors: added :ref:`CORS filter <config_http_filters_cors>`.
 * health check: added :ref:`x-envoy-immediate-health-check-fail
   <config_http_filters_router_x-envoy-immediate-health-check-fail>` header support.
-* health check: added :ref:`reuse_connection <envoy_api_field_HealthCheck.reuse_connection>` option.
+* health check: added :ref:`reuse_connection <envoy_api_field_core.HealthCheck.reuse_connection>` option.
 * http: added :ref:`per-listener stats <config_http_conn_man_stats_per_listener>`.
 * http: end-to-end HTTP flow control is now complete across both connections, streams, and filters.
 * load balancer: added :ref:`subset load balancer <arch_overview_load_balancer_subsets>`.
@@ -41,9 +41,9 @@ Version history
 * router: added :ref:`downstream IP hashing
   <envoy_api_field_route.RouteAction.HashPolicy.connection_properties>` for HTTP ketama routing.
 * router: added :ref:`cookie hashing <envoy_api_field_route.RouteAction.HashPolicy.cookie>`.
-* router: added :ref:`start_child_span <envoy_api_field_filter.http.Router.start_child_span>` option
+* router: added :ref:`start_child_span <envoy_api_field_config.filter.http.router.v2.Router.start_child_span>` option
   to create child span for egress calls.
-* router: added optional :ref:`upstream logs <envoy_api_field_filter.http.Router.upstream_log>`.
+* router: added optional :ref:`upstream logs <envoy_api_field_config.filter.http.router.v2.Router.upstream_log>`.
 * router: added complete :ref:`custom append/override/remove support
   <config_http_conn_man_headers_custom_request_headers>` of request/response headers.
 * router: added support to :ref:`specify response code during redirect
@@ -54,9 +54,9 @@ Version history
 * server: change default log level (:option:`-l`) to `info`.
 * stats: maximum stat/name sizes and maximum number of stats are now variable via the
   :option:`--max-obj-name-len` and :option:`--max-stats` options.
-* tcp proxy: added :ref:`access logging <envoy_api_field_filter.network.TcpProxy.access_log>`.
+* tcp proxy: added :ref:`access logging <envoy_api_field_config.filter.network.tcp_proxy.v2.TcpProxy.access_log>`.
 * tcp proxy: added :ref:`configurable connect retries
-  <envoy_api_field_filter.network.TcpProxy.max_connect_attempts>`.
+  <envoy_api_field_config.filter.network.tcp_proxy.v2.TcpProxy.max_connect_attempts>`.
 * tcp proxy: enable use of :ref:`outlier detector <arch_overview_outlier_detection>`.
 * tls: added :ref:`SNI support <faq_how_to_setup_sni>`.
 * tls: added support for specifying :ref:`TLS session ticket keys

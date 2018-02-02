@@ -5,7 +5,7 @@ gRPC HTTP/1.1 bridge
 
 * gRPC :ref:`architecture overview <arch_overview_grpc>`
 * :ref:`v1 API reference <config_http_filters_grpc_bridge_v1>`
-* :ref:`v2 API reference <envoy_api_field_filter.network.HttpFilter.name>`
+* :ref:`v2 API reference <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpFilter.name>`
 
 This is a simple filter which enables the bridging of an HTTP/1.1 client which does not support
 response trailers to a compliant gRPC server. It works by doing the following:

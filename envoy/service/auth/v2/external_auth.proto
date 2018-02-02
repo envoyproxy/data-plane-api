@@ -3,7 +3,7 @@ syntax = "proto3";
 // [#proto-status: draft]
 
 package envoy.service.auth.v2;
-option go_package = "auth";
+option go_package = "v2";
 
 import "envoy/service/auth/v2/attribute_context.proto";
 

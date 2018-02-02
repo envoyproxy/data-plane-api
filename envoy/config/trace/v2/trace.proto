@@ -4,9 +4,9 @@
 syntax = "proto3";
 
 package envoy.config.trace.v2;
-option go_package = "trace";
+option go_package = "v2";
 
-import "envoy/api/v2/grpc_service.proto";
+import "envoy/api/v2/core/grpc_service.proto";
 
 import "google/protobuf/struct.proto";
 
@@ -73,5 +73,5 @@ message DynamicOtConfig {
 // Configuration structure.
 message TraceServiceConfig {
   // The upstream gRPC cluster that hosts the metrics service.
-  envoy.api.v2.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
+  envoy.api.v2.core.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }

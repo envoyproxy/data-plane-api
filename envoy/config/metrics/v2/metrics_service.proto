@@ -6,7 +6,7 @@ syntax = "proto3";
 
 package envoy.config.metrics.v2;
 
-import "envoy/api/v2/grpc_service.proto";
+import "envoy/api/v2/core/grpc_service.proto";
 
 import "validate/validate.proto";
 
@@ -15,5 +15,5 @@ import "validate/validate.proto";
 // Metrics Service.
 message MetricsServiceConfig {
   // The upstream gRPC cluster that hosts the metrics service.
-  envoy.api.v2.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
+  envoy.api.v2.core.GrpcService grpc_service = 1 [(validate.rules).message.required = true];
 }

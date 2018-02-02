@@ -5,7 +5,7 @@ Mongo proxy
 
 - MongoDB :ref:`architecture overview <arch_overview_mongo>`
 - :ref:`v1 API reference <config_network_filters_mongo_proxy_v1>`
-- :ref:`v2 API reference <envoy_api_msg_filter.network.MongoProxy>`
+- :ref:`v2 API reference <envoy_api_msg_config.filter.network.mongo_proxy.v2.MongoProxy>`
 
 .. _config_network_filters_mongo_proxy_fault_injection:
 

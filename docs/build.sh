@@ -20,14 +20,18 @@ fi
 
 source "${BUILD_DIR}"/venv/bin/activate
 
-bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy --aspects \
+bazel --batch build ${BAZEL_BUILD_OPTIONS} //docs:protos --aspects \
   tools/protodoc/protodoc.bzl%proto_doc_aspect --output_groups=rst --action_env=CPROFILE_ENABLED
 
 # These are the protos we want to put in docs, this list will grow.
 # TODO(htuch): Factor this out of this script.
 PROTO_RST="
-  /envoy/api/v2/address/envoy/api/v2/address.proto.rst
-  /envoy/api/v2/base/envoy/api/v2/base.proto.rst
+  /envoy/api/v2/core/address/envoy/api/v2/core/address.proto.rst
+  /envoy/api/v2/core/base/envoy/api/v2/core/base.proto.rst
+  /envoy/api/v2/core/config_source/envoy/api/v2/core/config_source.proto.rst
+  /envoy/api/v2/core/grpc_service/envoy/api/v2/core/grpc_service.proto.rst
+  /envoy/api/v2/core/health_check/envoy/api/v2/core/health_check.proto.rst
+  /envoy/api/v2/core/protocol/envoy/api/v2/core/protocol.proto.rst
   /envoy/api/v2/auth/cert/envoy/api/v2/auth/cert.proto.rst
   /envoy/api/v2/eds/envoy/api/v2/eds.proto.rst
   /envoy/api/v2/endpoint/endpoint/envoy/api/v2/endpoint/endpoint.proto.rst
@@ -38,10 +42,6 @@ PROTO_RST="
   /envoy/api/v2/route/route/envoy/api/v2/route/route.proto.rst
   /envoy/api/v2/lds/envoy/api/v2/lds.proto.rst
   /envoy/api/v2/listener/listener/envoy/api/v2/listener/listener.proto.rst
-  /envoy/api/v2/config_source/envoy/api/v2/config_source.proto.rst
-  /envoy/api/v2/grpc_service/envoy/api/v2/grpc_service.proto.rst
-  /envoy/api/v2/health_check/envoy/api/v2/health_check.proto.rst
-  /envoy/api/v2/protocol/envoy/api/v2/protocol.proto.rst
   /envoy/api/v2/ratelimit/ratelimit/envoy/api/v2/ratelimit/ratelimit.proto.rst
   /envoy/config/bootstrap/v2/bootstrap/envoy/config/bootstrap/v2/bootstrap.proto.rst
   /envoy/api/v2/discovery/envoy/api/v2/discovery.proto.rst
@@ -49,23 +49,23 @@ PROTO_RST="
   /envoy/config/metrics/v2/metrics_service/envoy/config/metrics/v2/metrics_service.proto.rst
   /envoy/config/metrics/v2/stats/envoy/config/metrics/v2/stats.proto.rst
   /envoy/config/trace/v2/trace/envoy/config/trace/v2/trace.proto.rst
-  /envoy/api/v2/filter/accesslog/accesslog/envoy/api/v2/filter/accesslog/accesslog.proto.rst
-  /envoy/api/v2/filter/fault/envoy/api/v2/filter/fault.proto.rst
-  /envoy/api/v2/filter/http/buffer/envoy/api/v2/filter/http/buffer.proto.rst
-  /envoy/api/v2/filter/http/fault/envoy/api/v2/filter/http/fault.proto.rst
-  /envoy/api/v2/filter/http/gzip/envoy/api/v2/filter/http/gzip.proto.rst
-  /envoy/api/v2/filter/http/health_check/envoy/api/v2/filter/http/health_check.proto.rst
-  /envoy/api/v2/filter/http/lua/envoy/api/v2/filter/http/lua.proto.rst
-  /envoy/api/v2/filter/http/rate_limit/envoy/api/v2/filter/http/rate_limit.proto.rst
-  /envoy/api/v2/filter/http/router/envoy/api/v2/filter/http/router.proto.rst
-  /envoy/api/v2/filter/http/squash/envoy/api/v2/filter/http/squash.proto.rst
-  /envoy/api/v2/filter/http/transcoder/envoy/api/v2/filter/http/transcoder.proto.rst
-  /envoy/api/v2/filter/network/client_ssl_auth/envoy/api/v2/filter/network/client_ssl_auth.proto.rst
-  /envoy/api/v2/filter/network/http_connection_manager/envoy/api/v2/filter/network/http_connection_manager.proto.rst
-  /envoy/api/v2/filter/network/mongo_proxy/envoy/api/v2/filter/network/mongo_proxy.proto.rst
-  /envoy/api/v2/filter/network/rate_limit/envoy/api/v2/filter/network/rate_limit.proto.rst
-  /envoy/api/v2/filter/network/redis_proxy/envoy/api/v2/filter/network/redis_proxy.proto.rst
-  /envoy/api/v2/filter/network/tcp_proxy/envoy/api/v2/filter/network/tcp_proxy.proto.rst
+  /envoy/config/filter/accesslog/v2/accesslog/envoy/config/filter/accesslog/v2/accesslog.proto.rst
+  /envoy/config/filter/fault/v2/fault/envoy/config/filter/fault/v2/fault.proto.rst
+  /envoy/config/filter/http/buffer/v2/buffer/envoy/config/filter/http/buffer/v2/buffer.proto.rst
+  /envoy/config/filter/http/fault/v2/fault/envoy/config/filter/http/fault/v2/fault.proto.rst
+  /envoy/config/filter/http/gzip/v2/gzip/envoy/config/filter/http/gzip/v2/gzip.proto.rst
+  /envoy/config/filter/http/health_check/v2/health_check/envoy/config/filter/http/health_check/v2/health_check.proto.rst
+  /envoy/config/filter/http/lua/v2/lua/envoy/config/filter/http/lua/v2/lua.proto.rst
+  /envoy/config/filter/http/rate_limit/v2/rate_limit/envoy/config/filter/http/rate_limit/v2/rate_limit.proto.rst
+  /envoy/config/filter/http/router/v2/router/envoy/config/filter/http/router/v2/router.proto.rst
+  /envoy/config/filter/http/squash/v2/squash/envoy/config/filter/http/squash/v2/squash.proto.rst
+  /envoy/config/filter/http/transcoder/v2/transcoder/envoy/config/filter/http/transcoder/v2/transcoder.proto.rst
+  /envoy/config/filter/network/client_ssl_auth/v2/client_ssl_auth/envoy/config/filter/network/client_ssl_auth/v2/client_ssl_auth.proto.rst
+  /envoy/config/filter/network/http_connection_manager/v2/http_connection_manager/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto.rst
+  /envoy/config/filter/network/mongo_proxy/v2/mongo_proxy/envoy/config/filter/network/mongo_proxy/v2/mongo_proxy.proto.rst
+  /envoy/config/filter/network/rate_limit/v2/rate_limit/envoy/config/filter/network/rate_limit/v2/rate_limit.proto.rst
+  /envoy/config/filter/network/redis_proxy/v2/redis_proxy/envoy/config/filter/network/redis_proxy/v2/redis_proxy.proto.rst
+  /envoy/config/filter/network/tcp_proxy/v2/tcp_proxy/envoy/config/filter/network/tcp_proxy/v2/tcp_proxy.proto.rst
 "
 
 # Dump all the generated RST so they can be added to PROTO_RST easily.

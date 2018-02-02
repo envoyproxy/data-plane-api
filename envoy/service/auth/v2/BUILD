@@ -8,7 +8,7 @@ api_proto_library(
         "attribute_context.proto",
     ],
     deps = [
-        "//envoy/api/v2:address",
+        "//envoy/api/v2/core:address",
     ],
 )
 

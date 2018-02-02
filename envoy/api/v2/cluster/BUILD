@@ -5,8 +5,11 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "circuit_breaker",
     srcs = ["circuit_breaker.proto"],
+    visibility = [
+        "//envoy/api/v2:__pkg__",
+    ],
     deps = [
-        "//envoy/api/v2:base",
+        "//envoy/api/v2/core:base",
     ],
 )
 
@@ -14,13 +17,16 @@ api_go_proto_library(
     name = "circuit_breaker",
     proto = ":circuit_breaker",
     deps = [
-        "//envoy/api/v2:base_go_proto",
+        "//envoy/api/v2/core:base_go_proto",
     ],
 )
 
 api_proto_library(
     name = "outlier_detection",
     srcs = ["outlier_detection.proto"],
+    visibility = [
+        "//envoy/api/v2:__pkg__",
+    ],
 )
 
 api_go_proto_library(
