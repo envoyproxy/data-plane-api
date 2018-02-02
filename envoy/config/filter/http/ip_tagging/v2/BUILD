@@ -5,6 +5,5 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "ip_tagging",
     srcs = ["ip_tagging.proto"],
-    visibility = ["//docs"],
     deps = ["//envoy/api/v2/core:address"],
 )

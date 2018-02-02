@@ -6,7 +6,6 @@ api_proto_library(
     name = "rls",
     srcs = ["rls.proto"],
     visibility = [
-        "//docs",
         "//envoy/config/bootstrap/v2:__pkg__",
     ],
     deps = [

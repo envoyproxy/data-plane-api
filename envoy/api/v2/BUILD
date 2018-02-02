@@ -7,9 +7,6 @@ licenses(["notice"])  # Apache 2
 # be in //envoy/service/discovery, but remain here for backwards compatibility.
 package_group(
     name = "friends",
-    includes = [
-        "//docs",
-    ],
     packages = [
         "//envoy/api/v2",
         "//envoy/config/...",

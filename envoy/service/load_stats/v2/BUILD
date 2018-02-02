@@ -6,7 +6,6 @@ api_proto_library(
     name = "lrs",
     srcs = ["lrs.proto"],
     has_services = 1,
-    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/endpoint:load_report",

@@ -5,7 +5,6 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "http_connection_manager",
     srcs = ["http_connection_manager.proto"],
-    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2:rds",
         "//envoy/api/v2/core:base",

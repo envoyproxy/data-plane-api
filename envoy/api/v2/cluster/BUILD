@@ -6,7 +6,6 @@ api_proto_library(
     name = "circuit_breaker",
     srcs = ["circuit_breaker.proto"],
     visibility = [
-        "//docs",
         "//envoy/api/v2:__pkg__",
     ],
     deps = [
@@ -26,7 +25,6 @@ api_proto_library(
     name = "outlier_detection",
     srcs = ["outlier_detection.proto"],
     visibility = [
-        "//docs",
         "//envoy/api/v2:__pkg__",
     ],
 )

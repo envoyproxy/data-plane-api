@@ -5,6 +5,5 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "ext_authz",
     srcs = ["ext_authz.proto"],
-    visibility = ["//docs"],
     deps = ["//envoy/api/v2/core:grpc_service"],
 )

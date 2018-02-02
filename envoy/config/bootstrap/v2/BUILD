@@ -5,7 +5,6 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "bootstrap",
     srcs = ["bootstrap.proto"],
-    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2:cds",
         "//envoy/api/v2:lds",

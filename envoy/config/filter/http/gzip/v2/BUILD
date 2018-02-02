@@ -5,5 +5,4 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "gzip",
     srcs = ["gzip.proto"],
-    visibility = ["//docs"],
 )

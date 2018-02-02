@@ -6,7 +6,6 @@ api_proto_library(
     name = "rls",
     srcs = ["rls.proto"],
     has_services = 1,
-    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2/core:grpc_service",
         "//envoy/api/v2/ratelimit",

@@ -5,5 +5,4 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "transcoder",
     srcs = ["transcoder.proto"],
-    visibility = ["//docs"],
 )
