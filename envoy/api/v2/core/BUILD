@@ -9,8 +9,8 @@ package_group(
     ],
     packages = [
         "//envoy/api/v2/auth",
-        "//envoy/api/v2/endpoint",
         "//envoy/api/v2/cluster",
+        "//envoy/api/v2/endpoint",
         "//envoy/api/v2/listener",
         "//envoy/api/v2/route",
     ],

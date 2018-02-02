@@ -8,8 +8,8 @@ package_group(
         "//envoy/api/v2:friends",
     ],
     packages = [
-        "//envoy/api/v2/endpoint",
         "//envoy/api/v2/cluster",
+        "//envoy/api/v2/endpoint",
         "//envoy/api/v2/listener",
         "//envoy/api/v2/route",
     ],
