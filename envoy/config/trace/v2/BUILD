@@ -6,7 +6,7 @@ api_proto_library(
     name = "trace",
     srcs = ["trace.proto"],
     visibility = [
-        "//envoy:friends",
+        "//docs",
         "//envoy/config/bootstrap/v2:__pkg__",
     ],
     deps = [

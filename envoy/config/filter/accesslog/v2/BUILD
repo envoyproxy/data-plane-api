@@ -6,7 +6,7 @@ api_proto_library(
     name = "accesslog",
     srcs = ["accesslog.proto"],
     visibility = [
-        "//envoy:friends",
+        "//docs",
         "//envoy/config/filter/http/router/v2:__pkg__",
         "//envoy/config/filter/network/http_connection_manager/v2:__pkg__",
         "//envoy/config/filter/network/tcp_proxy/v2:__pkg__",

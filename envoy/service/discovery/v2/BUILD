@@ -6,7 +6,7 @@ api_proto_library(
     name = "ads",
     srcs = ["ads.proto"],
     has_services = 1,
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2:discovery",
     ],
@@ -24,7 +24,7 @@ api_proto_library(
     name = "hds",
     srcs = ["hds.proto"],
     has_services = 1,
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:health_check",
@@ -46,7 +46,7 @@ api_proto_library(
     name = "sds",
     srcs = ["sds.proto"],
     has_services = 1,
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2:discovery",
     ],

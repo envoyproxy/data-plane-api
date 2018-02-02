@@ -5,5 +5,5 @@ licenses(["notice"])  # Apache 2
 api_proto_library(
     name = "lua",
     srcs = ["lua.proto"],
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
 )

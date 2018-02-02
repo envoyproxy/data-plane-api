@@ -6,7 +6,7 @@ api_proto_library(
     name = "metrics_service",
     srcs = ["metrics_service.proto"],
     visibility = [
-        "//envoy:friends",
+        "//docs",
         "//envoy/config/bootstrap/v2:__pkg__",
     ],
     deps = [
@@ -26,7 +26,7 @@ api_proto_library(
     name = "stats",
     srcs = ["stats.proto"],
     visibility = [
-        "//envoy:friends",
+        "//docs",
         "//envoy/config/bootstrap/v2:__pkg__",
     ],
     deps = [

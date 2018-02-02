@@ -6,7 +6,7 @@ api_proto_library(
     name = "als",
     srcs = ["als.proto"],
     has_services = 1,
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:grpc_service",

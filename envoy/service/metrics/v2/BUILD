@@ -7,7 +7,7 @@ api_proto_library(
     srcs = ["metrics_service.proto"],
     has_services = 1,
     require_py = 0,
-    visibility = ["//envoy:friends"],
+    visibility = ["//docs"],
     deps = [
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:grpc_service",

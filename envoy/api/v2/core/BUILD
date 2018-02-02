@@ -2,11 +2,25 @@ load("//bazel:api_build_system.bzl", "api_proto_library", "api_go_proto_library"
 
 licenses(["notice"])  # Apache 2
 
+package_group(
+    name = "friends",
+    includes = [
+        "//envoy/api/v2:friends",
+    ],
+    packages = [
+        "//envoy/api/v2/auth",
+        "//envoy/api/v2/endpoint",
+        "//envoy/api/v2/cluster",
+        "//envoy/api/v2/listener",
+        "//envoy/api/v2/route",
+    ],
+)
+
 api_proto_library(
     name = "address",
     srcs = ["address.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
 )
 
@@ -19,7 +33,7 @@ api_proto_library(
     name = "base",
     srcs = ["base.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
 )
 
@@ -33,7 +47,7 @@ api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
     deps = [":base"],
 )
@@ -48,7 +62,7 @@ api_proto_library(
     name = "config_source",
     srcs = ["config_source.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
     deps = [
         ":base",
@@ -69,7 +83,7 @@ api_proto_library(
     name = "grpc_service",
     srcs = ["grpc_service.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
     deps = [":base"],
 )
@@ -84,7 +98,7 @@ api_proto_library(
     name = "protocol",
     srcs = ["protocol.proto"],
     visibility = [
-        "//envoy:__subpackages__",
+        ":friends",
     ],
 )
 

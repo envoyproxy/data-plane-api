@@ -8,7 +8,7 @@ licenses(["notice"])  # Apache 2
 package_group(
     name = "friends",
     includes = [
-        "//envoy:friends",
+        "//docs",
     ],
     packages = [
         "//envoy/api/v2",
@@ -133,18 +133,5 @@ api_go_grpc_library(
         ":discovery_go_proto",
         "//envoy/api/v2/core:base_go_proto",
         "//envoy/api/v2/route:route_go_proto",
-    ],
-)
-
-proto_library(
-    name = "v2",
-    visibility = ["//envoy:__pkg__"],
-    deps = [
-        ":cds",
-        ":discovery",
-        ":eds",
-        ":lds",
-        ":rds",
-        "//envoy/api/v2/core:protocol",
     ],
 )

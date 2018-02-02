@@ -4,12 +4,14 @@ licenses(["notice"])  # Apache 2
 
 package_group(
     name = "friends",
+    includes = [
+        "//envoy/api/v2:friends",
+    ],
     packages = [
-        "//envoy/api/v2",
         "//envoy/api/v2/endpoint",
+        "//envoy/api/v2/cluster",
         "//envoy/api/v2/listener",
         "//envoy/api/v2/route",
-        "//envoy/config/bootstrap/v2",
     ],
 )
 
