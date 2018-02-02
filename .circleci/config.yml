@@ -1,8 +1,12 @@
+references:
+  envoy-build-image: &envoy-build-image
+    envoyproxy/envoy-build:220e5cb537b5185c953de1aac7d0613f8cf155ac
+
 version: 2
 jobs:
    test:
      docker:
-       - image: envoyproxy/envoy-build:61b38528d7e46ced9d749d278ba185332310ca95
+       - image: *envoy-build-image
      resource_class: xlarge
      working_directory: /source
      steps:
@@ -10,7 +14,7 @@ jobs:
        - run: ci/do_ci.sh bazel.test
    docs:
      docker:
-       - image: envoyproxy/envoy-build:61b38528d7e46ced9d749d278ba185332310ca95
+       - image: *envoy-build-image
      resource_class: xlarge
      working_directory: /source
      steps:
@@ -22,7 +26,7 @@ jobs:
            path: generated/docs
    format:
      docker:
-       - image: lyft/envoy-build:114e24c6fd05fc026492e9d2ca5608694e5ea59d
+       - image: *envoy-build-image
      resource_class: xlarge
      working_directory: /source
      steps:
