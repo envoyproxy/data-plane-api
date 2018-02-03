@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-// [#proto-status: draft]
-
-// [#protodoc-title: Metrics Service]
+// [#protodoc-title: Metrics service]
 
 package envoy.config.metrics.v2;
 

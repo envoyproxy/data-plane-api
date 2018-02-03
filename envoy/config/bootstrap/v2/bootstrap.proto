@@ -67,6 +67,7 @@ message Bootstrap {
     // streamed on the ADS channel.
     envoy.api.v2.core.ApiConfigSource ads_config = 3;
 
+    // [#not-implemented-hide:] Hide from docs.
     message DeprecatedV1 {
       // This is the global :ref:`SDS <arch_overview_dynamic_config_sds>` config
       // when using v1 REST for :ref:`CDS
@@ -75,7 +76,7 @@ message Bootstrap {
       envoy.api.v2.core.ConfigSource sds_config = 1;
     }
 
-    // [#not-implemented-hide:]
+    // [#not-implemented-hide:] Hide from docs.
     DeprecatedV1 deprecated_v1 = 4 [deprecated = true];
   }
   // xDS configuration sources.

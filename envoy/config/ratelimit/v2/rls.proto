@@ -7,7 +7,7 @@ import "envoy/api/v2/core/grpc_service.proto";
 
 import "validate/validate.proto";
 
-// [#protodoc-title: Rate limit service configuration]
+// [#protodoc-title: Rate limit service]
 
 // Rate limit :ref:`configuration overview <config_rate_limit_service>`.
 message RateLimitServiceConfig {
