@@ -13,10 +13,10 @@ import "gogoproto/gogo.proto";
 
 message Gzip {
   // Value from 1 to 9 that controls the amount of internal memory used by zlib. Higher values
-  // use more memory, but are faster and produce better compression results. Default value is 5.
+  // use more memory, but are faster and produce better compression results. The default value is 5.
   google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
 
-  // Minimal response length, in bytes, which will trigger compression. Default value is 30.
+  // Minimal response length, in bytes, which will trigger compression. The default value is 30.
   google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
   message CompressionLevel {
