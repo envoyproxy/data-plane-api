@@ -10,7 +10,6 @@ import "gogoproto/gogo.proto";
 option (gogoproto.equal_all) = true;
 
 // [#protodoc-title: Network addresses]
-// [#v2-api-diff: Addresses now have .proto structure.]
 
 message Pipe {
   // Unix Domain Socket path.
