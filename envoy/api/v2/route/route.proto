@@ -97,6 +97,12 @@ message VirtualHost {
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 9;
+
+  // [#not-implemented-hide:]
+  // Specifies the number of proxies between the origin client and this Envoy instance that
+  // are known to append an accurate source IP address to the X-Forwarded-For HTTP request
+  // header. The default is 1.
+  uint32 num_trusted_ingress_proxies = 12;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
