@@ -335,7 +335,7 @@ replace()
 
 .. code-block:: lua
 
-  headers:add(key, value)
+  headers:replace(key, value)
 
 Replaces a header. *key* is a string that supplies the header key. *value* is a string that supplies
 the header value. If the header does not exist, it is added as per the *add()* function.
