@@ -88,8 +88,10 @@ During load balancing, Envoy will generally only consider healthy hosts in an up
 However, if the percentage of healthy hosts in the cluster becomes too low, Envoy will disregard
 health status and balance amongst all hosts. This is known as the *panic threshold*. The default
 panic threshold is 50%. This is :ref:`configurable <config_cluster_manager_cluster_runtime>` via
-runtime. The panic threshold is used to avoid a situation in which host failures cascade throughout
-the cluster as load increases.
+runtime as well as in the :ref:`cluster configuration
+<envoy_api_field_Cluster.CommonLoadBalancerSettings.healthy_panic_threshold>`. The panic threshold
+is used to avoid a situation in which host failures cascade throughout the cluster as load
+increases.
 
 .. _arch_overview_load_balancing_priority_levels:
 

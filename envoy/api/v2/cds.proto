@@ -343,7 +343,7 @@ message Cluster {
     RingHashLbConfig ring_hash_lb_config = 23;
   }
 
-  // See :ref:`base.TransportSocket<envoy_api_msg_core.TransportSocket>` description.
+  // Optional custom transport socket implementation to use for upstream connections.
   core.TransportSocket transport_socket = 24;
 
   // The Metadata field can be used to provide additional information about the
@@ -361,7 +361,19 @@ message Cluster {
     // Use HTTP1.1 or HTTP2, depending on which one is used on the downstream connection.
     USE_DOWNSTREAM_PROTOCOL = 1;
   }
+
+  // Determines how Envoy selects the protocol used to speak to upstream hosts.
   ClusterProtocolSelection protocol_selection = 26;
+
+  // Common settings for all load balancer implementations.
+  message CommonLoadBalancerSettings {
+    // Configures the :ref:`healthy panic threshold <arch_overview_load_balancing_panic_threshold>`.
+    // If not specified, the default is 50%.
+    core.Percent healthy_panic_threshold = 1;
+  }
+
+  // Common settings for all load balancer implementations.
+  CommonLoadBalancerSettings common_load_balancer_settings = 27;
 }
 
 // An extensible structure containing the address Envoy should bind to when
