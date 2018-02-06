@@ -223,10 +223,13 @@ message HttpConnectionManager {
   // "Expect: 100-continue" header, and send a "100 Continue" response itself.
   bool proxy_100_continue = 18;
 
-  // If use_remote_address is true and remote_address_ipv4_mapped is true and the remote address is
-  // an IPv4 address, the address will be mapped to IPv6. For example, 50.0.0.1 is represented as
+  // If :ref:`use_remote_address <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.use_remote_address>`
+  // is true and remote_address_ipv4_mapped is true and the remote address is an IPv4 address, the
+  // address will be mapped to IPv6 before it is appended. This is useful for testing compatibility
+  // of upstream services that parse the header value. For example, 50.0.0.1 is represented as
   // ::FFFF:50.0.0.1. See `IPv4-Mapped IPv6 Addresses
-  // <https://tools.ietf.org/html/rfc4291#section-2.5.5.2>`_ for details.
+  // <https://tools.ietf.org/html/rfc4291#section-2.5.5.2>`_ for details. This will also affect the
+  // :ref:`config_http_conn_man_headers_x-envoy-external-address` header. 
   bool remote_address_ipv4_mapped_ipv6 = 19;
 }
 
