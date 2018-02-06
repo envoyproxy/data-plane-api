@@ -158,6 +158,10 @@ Envoy uses the final XFF contents to determine whether a request originated exte
 internally. This influences whether the :ref:`config_http_conn_man_headers_x-envoy-internal` header
 is set.
 
+To test IPv6 compatibility of upstream services, :ref:`remote_address_ipv4_mapped_ipv6
+<config_http_conn_man_remote_address_ipv4_mapped_ipv6>` can also be enabled. Envoy will append the
+remote address in IPv4 mapped IPv6 format, e.g. ::FFFF:50.0.0.1.
+
 A few very important notes about XFF:
 
 1. Since IP addresses are appended to XFF, only the last address (furthest to the right) can be

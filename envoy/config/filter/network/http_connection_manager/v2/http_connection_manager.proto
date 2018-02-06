@@ -222,6 +222,12 @@ message HttpConnectionManager {
   // downstream. If this is false or not set, Envoy will instead strip the
   // "Expect: 100-continue" header, and send a "100 Continue" response itself.
   bool proxy_100_continue = 18;
+
+  // If use_remote_address is true and remote_address_ipv4_mapped is true and the remote address is
+  // an IPv4 address, the address will be mapped to IPv6. For example, 50.0.0.1 is represented as
+  // ::FFFF:50.0.0.1. See `IPv4-Mapped IPv6 Addresses
+  // <https://tools.ietf.org/html/rfc4291#section-2.5.5.2>`_ for details.
+  bool remote_address_ipv4_mapped_ipv6 = 19;
 }
 
 message Rds {
