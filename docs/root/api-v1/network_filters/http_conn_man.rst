@@ -214,6 +214,12 @@ generate_request_id
   *true*. Generating a random UUID4 is expensive so in high throughput scenarios where this
   feature is not desired it can be disabled.
 
+proxy_100_continue
+  *(optional, boolean)* Controls how the connection manager handles 100-Continue.
+  This defaults to *false*.   In this case Envoy will strip incoming "Expect: 100-Continue" headers
+  from downstream requests, and send the "100 Continue" response itself.  If set to true, Envoy will
+  proxy both the "Expect: 100-Continue" header upstream and the "100 Continue" response downstream.
+
 .. _config_http_conn_man_tracing:
 
 Tracing
