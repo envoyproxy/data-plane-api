@@ -223,7 +223,8 @@ message HttpConnectionManager {
   // "Expect: 100-continue" header, and send a "100 Continue" response itself.
   bool proxy_100_continue = 18;
 
-  // If :ref:`use_remote_address <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.use_remote_address>`
+  // If
+  // :ref:`use_remote_address <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.use_remote_address>`
   // is true and remote_address_ipv4_mapped is true and the remote address is an IPv4 address, the
   // address will be mapped to IPv6 before it is appended. This is useful for testing compatibility
   // of upstream services that parse the header value. For example, 50.0.0.1 is represented as

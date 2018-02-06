@@ -161,8 +161,8 @@ is set.
 To test IPv6 compatibility of upstream services which parse XFF header values,
 :ref:`remote_address_ipv4_mapped_ipv6
 <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.remote_address_ipv4_mapped_ipv6>`
-can also be enabled in the v2 API. Envoy will append the remote address in IPv4 mapped IPv6 format,
-e.g. ::FFFF:50.0.0.1. This change will also apply to
+can be enabled in the v2 API. Envoy will append the remote address in IPv4 mapped IPv6 format, e.g.
+::FFFF:50.0.0.1. This change will also apply to
 :ref:`config_http_conn_man_headers_x-envoy-external-address`.
 
 A few very important notes about XFF:
