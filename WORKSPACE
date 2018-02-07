@@ -18,6 +18,13 @@ http_archive(
     urls = ["https://github.com/google/protobuf/archive/v3.5.0.tar.gz"],
 )
 
+# Needed for ``bazel fetch`` to work with @com_google_protobuf
+# https://github.com/google/protobuf/blob/v3.5.0/util/python/BUILD#L6-L9
+bind(
+    name = "python_headers",
+    actual = "@com_google_protobuf//util/python:python_headers",
+)
+
 bind(
     name = "six",
     actual = "@six_archive//:six",

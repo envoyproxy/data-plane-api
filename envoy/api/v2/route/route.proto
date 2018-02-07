@@ -563,7 +563,7 @@ message RedirectAction {
   // code is MOVED_PERMANENTLY (301).
   RedirectResponseCode response_code = 3 [(validate.rules).enum.defined_only = true];
 
-  // [#not-implemented-hide:] The scheme portion of the URL will be swapped with "https".
+  // The scheme portion of the URL will be swapped with "https".
   bool https_redirect = 4;
 }
 
