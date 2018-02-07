@@ -305,7 +305,7 @@ gRPC streaming endpoints
 .. http:post:: /envoy.api.v2.ClusterDiscoveryService/StreamClusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/cds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
