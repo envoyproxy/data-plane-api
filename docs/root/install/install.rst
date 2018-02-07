@@ -8,5 +8,5 @@ Building and installation
 
   building
   ref_configs
-  sandboxes/sandboxes.rst
+  getting_started
   tools/tools
