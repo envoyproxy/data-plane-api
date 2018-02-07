@@ -42,7 +42,8 @@ In addition, the following conventions should be followed:
 
     * Consuming code will break and require source change to match the changes.
 
-* Non-frozen fields should be tagged with `[#not-implemented-hide:]`, `[#not-implemented-warn:]`,  `[#proto-status: draft]` or `[#proto-status: experimental]`.
+* Non-frozen fields should be tagged with `[#not-implemented-hide:]`, `[#not-implemented-warn:]`,  
+  `[#proto-status: draft]` or `[#proto-status: experimental]`.
 
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
@@ -92,6 +93,13 @@ In addition, the following conventions should be followed:
   value like `TYPE_NAME_UNSPECIFIED = 0`, and treat it as an error. This design
   pattern forces developers to explicitly choose the correct enum value for
   their use case, and avoid misunderstanding of the default behavior.
+
+* Proto fields should be sorted logically, not by field number. For large protos, place a common
+  at the top that specifies the next free field number. E.g.,
+
+  ```
+  // [#comment:next free field: 28]
+  ```
 
 ## Package organization
 
