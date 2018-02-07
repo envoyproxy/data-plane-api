@@ -322,7 +322,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /envoy.api.v2.EndpointDiscoveryService/StreamEndpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/eds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -339,7 +339,7 @@ is set in the :ref:`eds_cluster_config
 .. http:post:: /envoy.api.v2.ListenerDiscoveryService/StreamListeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/lds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -356,7 +356,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /envoy.api.v2.RouteDiscoveryService/StreamRoutes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/rds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -377,7 +377,7 @@ REST endpoints
 .. http:post:: /v2/discovery:clusters
 
 See `cds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/cds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/cds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -394,7 +394,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /v2/discovery:endpoints
 
 See `eds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/eds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/eds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -411,7 +411,7 @@ is set in the :ref:`eds_cluster_config
 .. http:post:: /v2/discovery:listeners
 
 See `lds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/lds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/lds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -428,7 +428,7 @@ is set in the :ref:`dynamic_resources
 .. http:post:: /v2/discovery:routes
 
 See `rds.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/rds.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/rds.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
@@ -478,7 +478,7 @@ document. The gRPC endpoint is:
 .. http:post:: /envoy.api.v2.AggregatedDiscoveryService/StreamAggregatedResources
 
 See `discovery.proto
-<https://github.com/envoyproxy/data-plane-api/blob/master/api/discovery.proto>`_
+<https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/discovery.proto>`_
 for the service definition. This is used by Envoy as a client when
 
 .. code-block:: yaml
