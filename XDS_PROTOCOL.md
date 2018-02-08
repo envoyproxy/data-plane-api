@@ -6,16 +6,16 @@ corresponding APIs are referred to as _xDS_. Resources are requested via
 _subscriptions_, by specifying a filesystem path to watch, initiating gRPC
 streams or polling a REST-JSON URL. The latter two methods involve sending
 requests with a
-[`DiscoveryRequest`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L24)
+[`DiscoveryRequest`](envoy/api/v2/discovery.proto#L17)
 proto payload. Resources are delivered in a
-[`DiscoveryResponse`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L53)
+[`DiscoveryResponse`](envoy/api/v2/discovery.proto#L51)
 proto payload in all methods. We discuss each type of subscription below.
 
 ## Filesystem subscriptions
 
 The simplest approach to delivering dynamic configuration is to place it at a
 well known path specified in the
-[`ConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L145).
+[`ConfigSource`](envoy/api/v2/core/config_source.proto#L66).
 Envoy will use `inotify` (`kqueue` on Mac OS X) to monitor the file for changes
 and parse the `DiscoveryResponse` proto in the file on update. Binary
 protobufs, JSON, YAML and proto text are supported formats for the
@@ -30,7 +30,7 @@ continue to apply if an configuration update rejection occurs.
 ### Singleton resource type discovery
 
 A gRPC
-[`ApiConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L120)
+[`ApiConfigSource`](envoy/api/v2/core/config_source.proto#L18)
 can be specified independently for each xDS API, pointing at an upstream
 cluster corresponding to a management server. This will initiate an independent
 bidirectional gRPC stream for each xDS resource type, potentially to distinct
@@ -43,10 +43,10 @@ control of sequencing is required.
 Each xDS API is concerned with resources of a given type. There is a 1:1
 correspondence between an xDS API and a resource type. That is:
 
-* [LDS: `envoy.api.v2.Listener`](api/lds.proto)
-* [RDS: `envoy.api.v2.RouteConfiguration`](api/rds.proto)
-* [CDS: `envoy.api.v2.Cluster`](api/cds.proto)
-* [EDS: `envoy.api.v2.ClusterLoadAssignment`](api/eds.proto)
+* [LDS: `envoy.api.v2.Listener`](envoy/api/v2/lds.proto)
+* [RDS: `envoy.api.v2.RouteConfiguration`](envoy/api/v2/rds.proto)
+* [CDS: `envoy.api.v2.Cluster`](envoy/api/v2/cds.proto)
+* [EDS: `envoy.api.v2.ClusterLoadAssignment`](envoy/api/v2/eds.proto)
 
 The concept of [_type
 URLs_](https://developers.google.com/protocol-buffers/docs/proto3#any) appears
