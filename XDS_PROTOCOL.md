@@ -43,10 +43,10 @@ control of sequencing is required.
 Each xDS API is concerned with resources of a given type. There is a 1:1
 correspondence between an xDS API and a resource type. That is:
 
-* [LDS: `envoy.api.v2.Listener`](api/lds.proto)
-* [RDS: `envoy.api.v2.RouteConfiguration`](api/rds.proto)
-* [CDS: `envoy.api.v2.Cluster`](api/cds.proto)
-* [EDS: `envoy.api.v2.ClusterLoadAssignment`](api/eds.proto)
+* [LDS: `envoy.api.v2.Listener`](api/v2/lds.proto)
+* [RDS: `envoy.api.v2.RouteConfiguration`](api/v2/rds.proto)
+* [CDS: `envoy.api.v2.Cluster`](api/v2/cds.proto)
+* [EDS: `envoy.api.v2.ClusterLoadAssignment`](api/v2/eds.proto)
 
 The concept of [_type
 URLs_](https://developers.google.com/protocol-buffers/docs/proto3#any) appears
