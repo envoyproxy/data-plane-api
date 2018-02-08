@@ -65,12 +65,11 @@ the  :option:`--service-node` option.
 x-envoy-external-address
 ------------------------
 
-It is a common case where a service wants to perform analytics based on the client IP address. Per
-the lengthy discussion on :ref:`XFF <config_http_conn_man_headers_x-forwarded-for>`, this can get
-quite complicated. A proper implementation involves forwarding XFF, and then choosing the first non
-RFC1918 address *from the right*. Since this is such a common occurrence, Envoy simplifies this by
-setting *x-envoy-external-address* during decoding if and only if the request ingresses externally
-(i.e., it's from an external client). *x-envoy-external-address* is not set or overwritten for
+It is a common case where a service wants to perform analytics based on the origin client's IP
+address. Per the lengthy discussion on :ref:`XFF <config_http_conn_man_headers_x-forwarded-for>`,
+this can get quite complicated, so Envoy simplifies this by setting *x-envoy-external-address*
+to the *trusted client address* (as defined in that XFF discussion) if the request is from
+an external client.  *x-envoy-external-address* is not set or overwritten for
 internal requests. This header can be safely forwarded between internal services for analytics
 purposes without having to deal with the complexities of XFF.
 
@@ -156,8 +155,8 @@ operates in a transparent mode where it does not modify XFF.
 .. attention::
 
   In general, *use_remote_address* should be set to true when Envoy is deployed as an edge
-  node, whereas it may need to be set to false when Envoy is used as an internal service node
-  in a mesh deployment.
+  node (aka a front proxy), whereas it may need to be set to false when Envoy is used as
+  an internal service node in a mesh deployment.
 
 The value of *use_remote_address* controls how Envoy determines the *trusted client address*.
 Given an HTTP request that has traveled through a series of zero or more proxies to reach
@@ -166,16 +165,87 @@ accurate. The source IP address of the immediate downstream node's connection to
 trusted. XFF *sometimes* can be trusted. Malicious clients can forge XFF, but the last
 address in XFF can be trusted if it was put there by a trusted proxy.
 
-Envoy's rules for determining the trusted client address are:
+Envoy's default rules for determining the trusted client address (*before* appending anything
+to XFF) are:
 
 * If *use_remote_address* is false and an XFF containing at least one IP address is
   present in the request, the trusted client address is the *last* (rightmost) IP address in XFF.
 * Otherwise, the trusted client address is the source IP address of the immediate downstream
   node's connection to Envoy.
 
+In an environment where there are one or more trusted proxies in front of an edge
+Envoy instance, the *xff_num_trusted_hops* configuration option can be used to trust
+additional addresses from XFF:
+
+* If *use_remote_address* is false and *xff_num_trusted_hops* is set to a value *N* that is
+  greater than zero, the trusted client address is the *N+1* th address from the right end
+  of XFF.
+* If *use_remote_address* is true and *xff_num_trusted_hops* is set to a value *N* that is
+  greater than zero, the trusted client address is the *N* th address from the right end
+  of XFF.
+
 Envoy uses the trusted client address contents to determine whether a request originated
 externally or internally. This influences whether the
 :ref:`config_http_conn_man_headers_x-envoy-internal` header is set.
+
+Example 1: Envoy as edge proxy, without a trusted proxy in front of it
+    Settings:
+      | use_remote_address = true
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 192.0.2.5
+      | XFF = "198.51.100.128, 198.51.100.10, 198.51.100.1"
+
+    Result:
+      | Trusted client address = 192.0.2.5 (XFF is ignored)
+      | X-Envoy-External-Address is set to 192.0.2.5
+      | XFF is changed to "198.51.100.128, 198.51.100.10, 198.51.100.1, 192.0.2.5"
+      | Request type = external
+
+Example 2: Envoy as internal proxy, with the Envoy edge proxy from Example 1 in front of it
+    Settings:
+      | use_remote_address = false
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 10.11.12.13 (address of the Envoy edge proxy)
+      | XFF = "198.51.100.128, 198.51.100.10, 198.51.100.1, 192.0.2.5"
+
+    Result:
+      | Trusted client address = 192.0.2.5 (last address in XFF is trusted)
+      | X-Envoy-External-Address is not modified
+      | Request type = internal
+
+
+Example 3: Envoy as edge proxy, with two trusted external proxies in front of it
+    Settings:
+      | use_remote_address = true
+      | xff_num_trusted_hops = 2
+
+    Request details:
+      | Downstream IP address = 192.0.2.5
+      | XFF = "198.51.100.128, 198.51.100.10, 198.51.100.1"
+
+    Result:
+      | Trusted client address = 198.51.100.10 (2nd to last address in XFF is trusted)
+      | X-Envoy-External-Address is set to 198.51.100.10
+      | XFF is changed to "198.51.100.128, 198.51.100.10, 198.51.100.1, 192.0.2.5"
+      | Request type = external
+
+Example 4: Envoy as internal proxy, with the edge proxy from Example 3 in front of it
+    Settings:
+      | use_remote_address = true
+      | xff_num_trusted_hops = 2
+
+    Request details:
+      | Downstream IP address = 10.11.12.13 (address of the Envoy edge proxy)
+      | XFF = "198.51.100.128, 198.51.100.10, 198.51.100.1, 192.0.2.5"
+
+    Result:
+      | Trusted client address = 198.51.100.10
+      | X-Envoy-External-Address is not modified
+      | Request type = internal
 
 A few very important notes about XFF:
 

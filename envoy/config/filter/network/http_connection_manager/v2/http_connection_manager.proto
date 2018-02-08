@@ -160,7 +160,6 @@ message HttpConnectionManager {
   // :ref:`config_http_conn_man_headers_x-envoy-external-address` for more information.
   google.protobuf.BoolValue use_remote_address = 14;
 
-  // [#not-implemented-hide:]
   // The number of additional ingress proxy hops from the right side of the
   // :ref:`config_http_conn_man_headers_x-forwarded-for` HTTP header to trust when
   // determining the origin client's IP address. The default is zero if this option
