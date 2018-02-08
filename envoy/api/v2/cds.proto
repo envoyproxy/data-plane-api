@@ -320,6 +320,7 @@ message Cluster {
     // be allocated a single virtual node.
     google.protobuf.UInt64Value minimum_ring_size = 1;
 
+    // [#not-implemented-hide:] Hide from docs.
     message DeprecatedV1 {
       // Defaults to true, meaning that std::hash is used to hash hosts onto
       // the ketama ring. std::hash can vary by platform. For this reason,
@@ -329,7 +330,9 @@ message Cluster {
       // to use `xxHash <https://github.com/Cyan4973/xxHash>`_ now.
       google.protobuf.BoolValue use_std_hash = 1;
     }
+
     // Deprecated settings from v1 config.
+    // [#not-implemented-hide:] Hide from docs.
     DeprecatedV1 deprecated_v1 = 2 [deprecated = true];
   }
 
@@ -349,6 +352,9 @@ message Cluster {
   message CommonLbConfig {
     // Configures the :ref:`healthy panic threshold <arch_overview_load_balancing_panic_threshold>`.
     // If not specified, the default is 50%.
+    //
+    // .. note::
+    //   The specified percent will be truncated to the nearest 1%.
     core.Percent healthy_panic_threshold = 1;
   }
 
