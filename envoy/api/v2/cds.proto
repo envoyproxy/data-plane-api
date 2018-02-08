@@ -354,7 +354,7 @@ message Cluster {
     // If not specified, the default is 50%.
     //
     // .. note::
-    //   The specified percent will be rounded to the nearest 1%.
+    //   The specified percent will be truncated to the nearest 1%.
     core.Percent healthy_panic_threshold = 1;
   }
 
