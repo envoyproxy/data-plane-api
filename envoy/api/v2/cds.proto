@@ -356,6 +356,9 @@ message Cluster {
     // .. note::
     //   The specified percent will be truncated to the nearest 1%.
     core.Percent healthy_panic_threshold = 1;
+    //Configuration for ZoneAwareLoadBalancer
+    core.Percent zone_aware_routing_enabled = 100;
+    google.protobuf.UInt64Value zone_aware_routing_min_cluster_size = 6;
   }
 
   // Common configuration for all load balancer implementations.
