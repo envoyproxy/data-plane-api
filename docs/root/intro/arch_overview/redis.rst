@@ -87,6 +87,8 @@ For details on each command's usage see the official
   GEODIST, Geo
   GEOHASH, Geo
   GEOPOS, Geo
+  GEORADIUS_RO, Geo
+  GEORADIUSBYMEMBER_RO, Geo
   HDEL, Hash
   HEXISTS, Hash
   HGET, Hash
