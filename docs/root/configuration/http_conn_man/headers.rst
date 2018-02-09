@@ -69,7 +69,7 @@ It is a common case where a service wants to perform analytics based on the orig
 address. Per the lengthy discussion on :ref:`XFF <config_http_conn_man_headers_x-forwarded-for>`,
 this can get quite complicated, so Envoy simplifies this by setting *x-envoy-external-address*
 to the *trusted client address* (as defined in that XFF discussion) if the request is from
-an external client.  *x-envoy-external-address* is not set or overwritten for
+an external client. *x-envoy-external-address* is not set or overwritten for
 internal requests. This header can be safely forwarded between internal services for analytics
 purposes without having to deal with the complexities of XFF.
 
