@@ -15,17 +15,15 @@ intended to represent a realistic Envoy deployment.
 Copy both :repo:`configs/Dockerfile` and
 :repo:`configs/google_com_proxy.v2.yaml` to the same directory on your local
 disk. Then, build and run the Dockerfile, and test out Envoy by sending a
-request to port 10000:
+request to port 10000::
 
-.. code-block:: console
-
-  docker build -t envoy-google-test:v1 .
-  docker run -d -p 10000:10000 envoy-google-test:v1
-  curl -v localhost:10000
+  $ docker build -t envoy-google-test:v1 .
+  $ docker run -d -p 10000:10000 envoy-google-test:v1
+  $ curl -v localhost:10000
 
 The Dockerfile will build a container containing the latest version of Envoy,
 and copy a basic Envoy configuration into the container. This basic
-configuration tells Envoy to route incoming requests to *.google.com.
+configuration tells Envoy to route incoming requests to \*.google.com.
 
 Sandboxes
 ---------
