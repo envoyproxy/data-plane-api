@@ -7,6 +7,6 @@ Building and installation
   :maxdepth: 2
 
   building
+  getting_started
   ref_configs
-  sandboxes/sandboxes.rst
   tools/tools

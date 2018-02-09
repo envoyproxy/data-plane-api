@@ -11,3 +11,4 @@ FAQ
   sni
   zone_aware_routing
   zipkin_tracing
+  lb_panic_threshold

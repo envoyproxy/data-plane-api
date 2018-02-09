@@ -13,10 +13,10 @@ import "gogoproto/gogo.proto";
 
 message Gzip {
   // Value from 1 to 9 that controls the amount of internal memory used by zlib. Higher values
-  // use more memory, but are faster and produce better compression results. Default value is 5.
+  // use more memory, but are faster and produce better compression results. The default value is 5.
   google.protobuf.UInt32Value memory_level = 1 [(validate.rules).uint32 = {gte: 1, lte: 9}];
 
-  // Minimum response length, in bytes, which will trigger compression. Default value is 30.
+  // Minimum response length, in bytes, which will trigger compression. The default value is 30.
   google.protobuf.UInt32Value content_length = 2 [(validate.rules).uint32.gte = 30];
 
   message CompressionLevel {
@@ -27,11 +27,11 @@ message Gzip {
     }
   }
 
-  // A value used for selecting zlib's compression level. This setting will affect speed and amount
-  // of compression applied to the content. "BEST" provides higher compression at the cost of higher
-  // latency, "SPEED" provides lower compression with minimum impact on response time. "DEFAULT"
-  // provides an optimal result between speed and compression. This field will be set to "DEFAULT"
-  // if not specified.
+  // A value used for selecting the zlib compression level. This setting will affect speed and
+  // amount of compression applied to the content. "BEST" provides higher compression at the cost of
+  // higher latency, "SPEED" provides lower compression with minimum impact on response time.
+  // "DEFAULT" provides an optimal result between speed and compression. This field will be set to
+  // "DEFAULT" if not specified.
   CompressionLevel.Enum compression_level = 3 [(validate.rules).enum.defined_only = true];
 
   enum CompressionStrategy {
@@ -41,7 +41,7 @@ message Gzip {
     RLE = 3;
   }
 
-  // A value used for selecting zlib's compression strategy which is directly related to the
+  // A value used for selecting the zlib compression strategy which is directly related to the
   // characteristics of the content. Most of the time "DEFAULT" will be the best choice, though
   // there are situations which changing this parameter might produce better results. For example,
   // run-length encoding (RLE) is typically used when the content is known for having sequences
@@ -55,15 +55,13 @@ message Gzip {
   // "application/xhtml+xml", "image/svg+xml", "text/css", "text/html", "text/plain", "text/xml".
   repeated string content_type = 6 [(validate.rules).repeated = {max_items: 50}];
 
-  // If true, disables compression when the response contains Etag header. When it is false, the
-  // filter will preserve weak Etags and remove the ones that require strong validation. Note that
-  // if any of these options fit the specific scenario, an alternative solution is to disabled Etag
-  // at the origin and use *last-modified* header instead.
+  // If true, disables compression when the response contains an etag header. When it is false, the
+  // filter will preserve weak etags and remove the ones that require strong validation.
   bool disable_on_etag_header = 7;
 
-  // If true, disables compression when response contains *last-modified*
-  // header.
-  bool disable_on_last_modified_header = 8;
+  // If true, removes accept-encoding from the request headers before dispatching it to the upstream
+  // so that responses do not get compressed before reaching the filter.
+  bool remove_accept_encoding_header = 8;
 
   // Value from 9 to 15 that represents the base two logarithmic of the compressor's window size.
   // Larger window results in better compression at the expense of memory usage. The default is 12

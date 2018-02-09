@@ -149,24 +149,44 @@ address of the nearest client to the XFF list before proxying the request. Some 
 3. ``x-forwarded-for: 50.0.0.1, 10.0.0.1`` (internal proxy hop)
 
 Envoy will only append to XFF if the :ref:`use_remote_address
-<config_http_conn_man_use_remote_address>` HTTP connection manager option is set to true. This means
-that if *use_remote_address* is false, the connection manager operates in a transparent mode where
-it does not modify XFF. This is needed for certain types of mesh deployments depending on whether
-the Envoy in question is an edge node or an internal service node.
+<config_http_conn_man_use_remote_address>` HTTP connection manager option is set to true.
+This means that if *use_remote_address* is false (which is the default), the connection manager
+operates in a transparent mode where it does not modify XFF.
 
-Envoy uses the final XFF contents to determine whether a request originated externally or
-internally. This influences whether the :ref:`config_http_conn_man_headers_x-envoy-internal` header
-is set.
+.. attention::
+
+  In general, *use_remote_address* should be set to true when Envoy is deployed as an edge
+  node, whereas it may need to be set to false when Envoy is used as an internal service node
+  in a mesh deployment.
+
+The value of *use_remote_address* controls how Envoy determines the *trusted client address*.
+Given an HTTP request that has traveled through a series of zero or more proxies to reach
+Envoy, the trusted client address is the earliest source IP address that is known to be
+accurate. The source IP address of the immediate downstream node's connection to Envoy is
+trusted. XFF *sometimes* can be trusted. Malicious clients can forge XFF, but the last
+address in XFF can be trusted if it was put there by a trusted proxy.
+
+Envoy's rules for determining the trusted client address are:
+
+* If *use_remote_address* is false and an XFF containing at least one IP address is
+  present in the request, the trusted client address is the *last* (rightmost) IP address in XFF.
+* Otherwise, the trusted client address is the source IP address of the immediate downstream
+  node's connection to Envoy.
+
+Envoy uses the trusted client address contents to determine whether a request originated
+externally or internally. This influences whether the
+:ref:`config_http_conn_man_headers_x-envoy-internal` header is set.
 
 A few very important notes about XFF:
 
-1. Since IP addresses are appended to XFF, only the last address (furthest to the right) can be
-   trusted. More specifically, the first external (non RFC1918) address from *the right* is the only
-   trustable addresses. Anything to the left of that can be spoofed. To make this easier to deal
-   with for analytics, etc., front Envoy will also set the
-   :ref:`config_http_conn_man_headers_x-envoy-external-address` header.
-2. XFF is what Envoy uses to determine whether a request is internal origin or external origin. It
-   does this by checking to see if XFF contains a *single* IP address which is an RFC1918 address.
+1. If *use_remote_address* is set to true, Envoy sets the
+   :ref:`config_http_conn_man_headers_x-envoy-external-address` header to the trusted
+   client address.
+2. XFF is what Envoy uses to determine whether a request is internal origin or external origin.
+   If *use_remote_address* is set to true, the request is internal if and only if the
+   request contains no XFF and the immediate downstream node's connection to Envoy has
+   an internal (RFC1918 or RFC4193) source address. If *use_remote_address* is false, the
+   request is internal if and only if XFF contains a single RFC1918 or RFC4193 address.
 
    * **NOTE**: If an internal service proxies an external request to another internal service, and
      includes the original XFF header, Envoy will append to it on egress if
