@@ -14,13 +14,13 @@ import "validate/validate.proto";
 message ExtAuthz {
 
   // The external authorization gRPC service configuration.
+  // Note: Only works with :ref:`Envoy's in-built gRPC client <envoy_api_msg_core.GrpcService.EnvoyGrpc>`
   envoy.api.v2.core.GrpcService grpc_service = 1;
 
   // The filter's behaviour in case the external authorization service does
   // not respond back. If set to true then in case of failure to get a
-  // response back from the authorization service allow the traffic.
+  // response back from the authorization service or getting a response that is NOT denied then
+  // traffic will be permitted.
   // Defaults to false.
-  // If set to true and the response from the authorization service is NOT
-  // Denied then the traffic will be permitted.
   bool failure_mode_allow = 2;
 }
