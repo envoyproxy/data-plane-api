@@ -38,7 +38,7 @@ service ClusterDiscoveryService {
 // [#protodoc-title: Clusters]
 
 // Configuration for a single upstream cluster.
-// [#comment:next free field: 28]
+// [#comment:next free field: 29]
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // The cluster name is used when emitting
@@ -50,7 +50,7 @@ message Cluster {
   // :option:`--max-obj-name-len` command line argument to the desired value.
   string name = 1 [(validate.rules).string.min_bytes = 1];
 
-  // Supplies the name to be used while emitting stats.
+  // An optional alternative to the cluster name to be used while emitting stats.
   // Any ``:`` in the name will be converted to ``_`` when emitting statistics.
   string alt_stat_name = 28;
 
