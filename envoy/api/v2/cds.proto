@@ -356,10 +356,15 @@ message Cluster {
     // .. note::
     //   The specified percent will be truncated to the nearest 1%.
     core.Percent healthy_panic_threshold = 1;
-    //Configuration for ZoneAwareLoadBalancer
-    // [#not-implemented-hide:] If specified envoy can use this config option to decide on applying ZoneAwareLoadBalancing
+    // [#not-implemented-hide:] Configures percentage of requests that will be routed to same zone
+    // If not specified, the default is 100%.
+    // :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
+    // :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
     core.Percent zone_aware_routing_enabled = 2;
-    // [#not-implemented-hide:] If specified envoy can use this config instead of upstream.zone_aware_routing.min_cluster_size as a runtime option
+    // [#not-implemented-hide:] Configures minimum upstream cluster size for zone aware routing
+    // If not specified, the default is 6.
+    // :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
+    // :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
     google.protobuf.UInt64Value zone_aware_routing_min_cluster_size = 3;
   }
 
