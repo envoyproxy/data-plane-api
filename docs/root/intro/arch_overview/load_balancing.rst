@@ -72,7 +72,7 @@ table lookup build times as well as host selection times (approximately 10x and 
 when using a large ring size of 256K entries). The downside of Maglev is that it is not as stable
 as ring hash. More keys will move position when hosts are removed (simulations show approximately
 double the keys will move). With that said, for many applications including Redis, Maglev is very
-likely a superior drop-in replacement for ring hash. The advanced reader can use
+likely a superior drop in replacement for ring hash. The advanced reader can use
 :repo:`this benchmark </test/common/upstream/load_balancer_benchmark.cc>` to compare ring hash
 versus Maglev with different parameters.
 
