@@ -363,7 +363,9 @@ message Cluster {
     // :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
     core.Percent zone_aware_routing_enabled = 2;
     // [#not-implemented-hide:]
-    // Configures minimum upstream cluster size for zone aware routing
+    // Configures minimum upstream cluster size required for zone aware routing
+    // If upstream cluster size is less than specified ,zone aware routing is not performed
+    // even configured.
     // If not specified, the default is 6.
     // :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
     // :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
