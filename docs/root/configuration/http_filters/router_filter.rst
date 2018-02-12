@@ -153,8 +153,8 @@ statistics to a dual stat tree. This can be useful for application level categor
 doesn't know about. The output tree is documented :ref:`here <config_cluster_manager_cluster_stats_alt_tree>`.
 
 This should not be confused with :ref:`alt_stat_name <envoy_api_field_Cluster.alt_stat_name>` which
-is specified while defining the cluster and when provided, statistics are only emitted to a single
-tree and is named with the value provided.
+is specified while defining the cluster and when provided specifies an alternative name for the
+cluster at the root of the statistic tree.
 
 x-envoy-upstream-canary
 ^^^^^^^^^^^^^^^^^^^^^^^
