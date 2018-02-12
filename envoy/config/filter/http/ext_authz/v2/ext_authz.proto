@@ -14,7 +14,6 @@ import "validate/validate.proto";
 message ExtAuthz {
 
   // The external authorization gRPC service configuration.
-  // Note: Only works with :ref:`Envoy's in-built gRPC client <envoy_api_msg_core.GrpcService.EnvoyGrpc>`
   envoy.api.v2.core.GrpcService grpc_service = 1;
 
   // The filter's behaviour in case the external authorization service does
