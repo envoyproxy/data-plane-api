@@ -136,6 +136,10 @@ message Cluster {
     // policy<arch_overview_load_balancing_types_original_destination>`
     // for an explanation.
     ORIGINAL_DST_LB = 4;
+
+    // Refer to the :ref:`Maglev load balancing policy<arch_overview_load_balancing_types_maglev>`
+    // for an explanation.
+    MAGLEV = 5;
   }
   // The :ref:`load balancer type <arch_overview_load_balancing_types>` to use
   // when picking a host in the cluster.
