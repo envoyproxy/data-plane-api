@@ -86,3 +86,30 @@ following statistics:
    downstream_rq_3xx, Counter, Total 3xx responses
    downstream_rq_4xx, Counter, Total 4xx responses
    downstream_rq_5xx, Counter, Total 5xx responses
+
+.. _config_http_conn_man_stats_per_codec:
+
+Per codec statistics
+-----------------------
+
+Each codec has the option of adding per-codec statistics.  Currently only http2 has codec stats.
+
+Http2 codec statistics
+~~~~~~~~~~~~~~~~~~~~~~
+
+All http2 statistics are rooted at *http2.*
+
+
+.. csv-table::
+   :header: Name, Type, Description
+   :widths: 1, 1, 2
+
+   rx_reset, Counter, Total number of reset streams frames received by Envoy.
+   tx_reset, Counter, Total number of reset stream frames transmitted by Envoy.
+   header_overflow, Counter, Total number of headers going over the 64512 byte limit.
+   trailers, Counter, Total number of trailers FIXME what is this?
+   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream.
+   too_many_header_frames, Counter, Total number of times an http2 connection is reset due to receiving too many headers frames.
+
+
+
