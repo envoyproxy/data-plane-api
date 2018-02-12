@@ -52,6 +52,10 @@ message Cluster {
 
   // An optional alternative to the cluster name to be used while emitting stats.
   // Any ``:`` in the name will be converted to ``_`` when emitting statistics.
+  // This should not be confused with 
+  // :ref:`Router Filter Header <config_http_filters_router_x-envoy-upstream-alt-stat-name>` which 
+  // is a request header that emits statistics to a dual stat tree where as specifying
+  // **alt_stat_name** here emits statistics to a single tree with the name provided. 
   string alt_stat_name = 28;
 
   // Refer to :ref:`service discovery type <arch_overview_service_discovery_types>`
