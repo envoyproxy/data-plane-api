@@ -91,7 +91,7 @@ message HealthCheck {
   message RedisHealthCheck {
   }
 
-  // [#not-implemented-hide:] `grpc.health.v1.Health
+  // `grpc.health.v1.Health
   // <https://github.com/grpc/grpc/blob/master/src/proto/grpc/health/v1/health.proto>`_-based
   // healthcheck. See `gRPC doc <https://github.com/grpc/grpc/blob/master/doc/health-checking.md>`_
   // for details.
@@ -116,7 +116,7 @@ message HealthCheck {
     // Redis health check.
     RedisHealthCheck redis_health_check = 10;
 
-    // [#not-implemented-hide:] GRPC health check.
+    // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
   }
 }
