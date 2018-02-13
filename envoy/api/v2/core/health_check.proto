@@ -116,7 +116,7 @@ message HealthCheck {
     // Redis health check.
     RedisHealthCheck redis_health_check = 10;
 
-    // GRPC health check.
+    // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
   }
 }
