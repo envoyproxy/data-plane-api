@@ -104,12 +104,12 @@ All http2 statistics are rooted at *http2.*
    :header: Name, Type, Description
    :widths: 1, 1, 2
 
-   rx_reset, Counter, Total number of reset streams frames received by Envoy.
+   rx_reset, Counter, Total number of reset stream frames received by Envoy.
    tx_reset, Counter, Total number of reset stream frames transmitted by Envoy.
-   header_overflow, Counter, Total number of headers going over the 64512 byte limit.
+   header_overflow, Counter, Total number of connections reset due to the headers being larger than Envoy::Http::Http2::ConnectionImpl::StreamImpl::MAX_HEADER_SIZE (63k).
    trailers, Counter, Total number of trailers seen on requests coming from downstream.
-   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream.
-   too_many_header_frames, Counter, Total number of times an http2 connection is reset due to receiving too many headers frames.
+   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream. This tracks an unexpected occurance due to an as yet undiagnosed bug.
+   too_many_header_frames, Counter, Total number of times an HTTP2 connection is reset due to receiving too many headers frames. Envoy currently supports proxying at most one header frame for 100-Continue, one non-100 response code header frame and one frame with trailers.
 
 
 
