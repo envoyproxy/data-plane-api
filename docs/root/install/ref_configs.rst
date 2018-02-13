@@ -56,15 +56,3 @@ A few notes about the example configurations:
   reference configuration and it is assumed to be running at `rds.yourcompany.net`.
 * :ref:`Cluster discovery service <config_cluster_manager_cds>` is configured for the service to
   service reference configuration and it is assumed that be running at `cds.yourcompany.net`.
-
-Smoketest configuration
------------------------
-
-A very minimal Envoy configuration that can be used to validate basic plain HTTP proxying is
-available in :repo:`configs/google_com_proxy.json`. This is not intended to represent a realistic
-Envoy deployment. To smoketest Envoy with this, run:
-
-.. code-block:: console
-
-  build/source/exe/envoy -c configs/google_com_proxy.json -l debug
-  curl -v localhost:10000

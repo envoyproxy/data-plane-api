@@ -38,16 +38,23 @@ service ClusterDiscoveryService {
 // [#protodoc-title: Clusters]
 
 // Configuration for a single upstream cluster.
-// [#comment:next free field: 28]
+// [#comment:next free field: 29]
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // The cluster name is used when emitting
-  // :ref:`statistics <config_cluster_manager_cluster_stats>`.
+  // :ref:`statistics <config_cluster_manager_cluster_stats>` if :ref:`alt_stat_name
+  // <envoy_api_field_Cluster.alt_stat_name>` is not provided.
   // Any ``:`` in the cluster name will be converted to ``_`` when emitting statistics.
   // By default, the maximum length of a cluster name is limited to 60
   // characters. This limit can be increased by setting the
   // :option:`--max-obj-name-len` command line argument to the desired value.
   string name = 1 [(validate.rules).string.min_bytes = 1];
+
+  // An optional alternative to the cluster name to be used while emitting stats.
+  // Any ``:`` in the name will be converted to ``_`` when emitting statistics. This should not be
+  // confused with :ref:`Router Filter Header
+  // <config_http_filters_router_x-envoy-upstream-alt-stat-name>`.
+  string alt_stat_name = 28;
 
   // Refer to :ref:`service discovery type <arch_overview_service_discovery_types>`
   // for an explanation on each type.
@@ -131,6 +138,10 @@ message Cluster {
     // policy<arch_overview_load_balancing_types_original_destination>`
     // for an explanation.
     ORIGINAL_DST_LB = 4;
+
+    // Refer to the :ref:`Maglev load balancing policy<arch_overview_load_balancing_types_maglev>`
+    // for an explanation.
+    MAGLEV = 5;
   }
   // The :ref:`load balancer type <arch_overview_load_balancing_types>` to use
   // when picking a host in the cluster.
@@ -356,6 +367,21 @@ message Cluster {
     // .. note::
     //   The specified percent will be truncated to the nearest 1%.
     core.Percent healthy_panic_threshold = 1;
+    message ZoneAwareLbConfig {
+      // [#not-implemented-hide:]
+      // Configures percentage of requests that will be considered for zone aware routing
+      // if zone aware routing is configured. If not specified, the default is 100%.
+      // * :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
+      // * :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
+      core.Percent routing_enabled = 1;
+      // [#not-implemented-hide:]
+      // Configures minimum upstream cluster size required for zone aware routing
+      // If upstream cluster size is less than specified, zone aware routing is not performed
+      // even if zone aware routing is configured. If not specified, the default is 6.
+      // * :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
+      // * :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
+      google.protobuf.UInt64Value min_cluster_size = 2;
+    }
   }
 
   // Common configuration for all load balancer implementations.

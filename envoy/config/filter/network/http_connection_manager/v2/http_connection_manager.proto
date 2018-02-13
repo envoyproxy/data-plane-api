@@ -19,6 +19,7 @@ import "gogoproto/gogo.proto";
 // [#protodoc-title: HTTP connection manager]
 // HTTP connection manager :ref:`configuration overview <config_http_conn_man>`.
 
+// [#comment:next free field: 21]
 message HttpConnectionManager {
   enum CodecType {
     option (gogoproto.goproto_enum_prefix) = false;
@@ -229,6 +230,20 @@ message HttpConnectionManager {
   // downstream. If this is false or not set, Envoy will instead strip the
   // "Expect: 100-continue" header, and send a "100 Continue" response itself.
   bool proxy_100_continue = 18;
+
+  // If
+  // :ref:`use_remote_address
+  // <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.use_remote_address>`
+  // is true and represent_ipv4_remote_address_as_ipv4_mapped_ipv6 is true and the remote address is
+  // an IPv4 address, the address will be mapped to IPv6 before it is appended to *x-forwarded-for*.
+  // This is useful for testing compatibility of upstream services that parse the header value. For
+  // example, 50.0.0.1 is represented as ::FFFF:50.0.0.1. See `IPv4-Mapped IPv6 Addresses
+  // <https://tools.ietf.org/html/rfc4291#section-2.5.5.2>`_ for details. This will also affect the
+  // :ref:`config_http_conn_man_headers_x-envoy-external-address` header. See
+  // :ref:`http_connection_manager.represent_ipv4_remote_address_as_ipv4_mapped_ipv6
+  // <config_http_conn_man_runtime_represent_ipv4_remote_address_as_ipv4_mapped_ipv6>` for runtime
+  // control.
+  bool represent_ipv4_remote_address_as_ipv4_mapped_ipv6 = 20;
 }
 
 message Rds {
