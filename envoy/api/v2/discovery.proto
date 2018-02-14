@@ -50,7 +50,7 @@ message DiscoveryRequest {
 
   // [#not-implemented-hide:]
   // This is populated when the previous :ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>`
-  // failed to update configuration. The *message* field in *error_details* provides the Envoy 
+  // failed to update configuration. The *message* field in *error_details* provides the Envoy
   // internal exception related to the failure. It is only intended for consumption during manual
   // debugging, the string provided is not guaranteed to be stable across Envoy versions.
   google.rpc.Status error_detail = 6;
