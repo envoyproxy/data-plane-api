@@ -53,6 +53,7 @@ def api_go_proto_library(name, proto, deps = []):
             "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
             "@com_github_golang_protobuf//ptypes/any:go_default_library",
             "@com_lyft_protoc_gen_validate//validate:go_default_library",
+            "@googleapis//:rpc_status_go_proto",
         ]
     )
 

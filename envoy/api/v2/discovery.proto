@@ -6,6 +6,7 @@ option go_package = "v2";
 import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/any.proto";
+import "google/rpc/status.proto";
 import "gogoproto/gogo.proto";
 
 option (gogoproto.equal_all) = true;
@@ -46,6 +47,10 @@ message DiscoveryRequest {
   // may be empty if no nonce is available, e.g. at startup or for non-stream
   // xDS implementations.
   string response_nonce = 5;
+
+  // populated when the previous DiscoveryResponse failed to update configuration.
+  // message field in the status would provide the actual error message that caused the failure.
+  google.rpc.Status error_detail = 6;
 }
 
 message DiscoveryResponse {
