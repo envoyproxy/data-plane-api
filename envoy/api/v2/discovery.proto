@@ -48,8 +48,11 @@ message DiscoveryRequest {
   // xDS implementations.
   string response_nonce = 5;
 
-  // populated when the previous DiscoveryResponse failed to update configuration.
-  // message field in the status would provide the actual error message that caused the failure.
+  // [#not-implemented-hide:]
+  // This is populated when the previous :ref:`DiscoveryResponse <envoy_api_msg_DiscoveryResponse>`
+  // failed to update configuration. The *message* field in *error_details* provides the Envoy 
+  // internal exception related to the failure. It is only intended for consumption during manual
+  // debugging, the string provided is not guaranteed to be stable across Envoy versions.
   google.rpc.Status error_detail = 6;
 }
 
