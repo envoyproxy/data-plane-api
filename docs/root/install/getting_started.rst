@@ -52,3 +52,14 @@ Envoy binary, and putting the binary in an Ubuntu container.
   :maxdepth: 1
 
   sandboxes/local_docker_build
+
+Other use cases
+---------------
+
+In addition to the proxy itself, Envoy is also bundled as part of several open
+source distributions that target specific use cases.
+
+.. toctree::
+  :maxdepth: 1
+
+  distro/ambassador
