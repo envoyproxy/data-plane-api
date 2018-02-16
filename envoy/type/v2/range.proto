@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+// [#proto-status: draft]
+
+package envoy.type.v2;
+option go_package = "v2";
+
+import "validate/validate.proto";
+
+// [#protodoc-title: Range]
+
+// Specifies the signed int64 start and end of the range using half-open interval semantics [start,
+// end).
+message SInt64Range {
+  // start of the range (inclusive)
+  sint64 start = 1;
+
+  // end of the range (exclusive)
+  sint64 end = 2;
+}

@@ -5,6 +5,7 @@ option go_package = "route";
 
 import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/auth/auth.proto";
+import "envoy/type/v2/range.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
@@ -815,6 +816,38 @@ message HeaderMatcher {
   // * The regex *\d{3}* does not match the value *1234*
   // * The regex *\d{3}* does not match the value *123.456*
   google.protobuf.BoolValue regex = 3;
+
+  // [#not-implemented-hide:]
+  // Specifies how the header match will be performed to route the request.
+  // If header_match_specifier is absent, a request that has the
+  // :ref:`envoy_api_msg_route.HeaderMatcher.name` header will match, regardless of the header's
+  // value.
+  oneof header_match_specifier {
+    // If specified, header match will be performed based on the value of the header.
+    string exact_match = 4;
+
+    // If specified, this regex string is a regular expression rule which implies the entire request
+    // header value must match the regex. The rule will not match if only a subsequence of the
+    // request header value matches the regex. The regex grammar used in the value field is defined
+    // `here <http://en.cppreference.com/w/cpp/regex/ecmascript>`_.
+    //
+    // Examples:
+    //
+    // * The regex *\d{3}* matches the value *123*
+    // * The regex *\d{3}* does not match the value *1234*
+    // * The regex *\d{3}* does not match the value *123.456*
+    string regex_match = 5;
+
+    // [#not-implemented-hide:]
+    // If specified, header match will be performed based on range.
+    // The rule will match if the request header value is within this range.
+    // This only applies to integer header values.
+    //
+    // Examples:
+    //
+    // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9
+    envoy.type.v2.SInt64Range range_match = 6;
+  }
 }
 
 // Query parameter matching treats the query string of a request's :path header
