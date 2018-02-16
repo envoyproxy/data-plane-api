@@ -97,4 +97,9 @@ message GrpcService {
   // A set of credentials that will be composed to form the `channel credentials
   // <https://grpc.io/docs/guides/auth.html#credential-types>`_.
   repeated Credentials credentials = 4;
+
+  // Additional metadata to include in streams initiated to the GrpcService.
+  // This can be used for scenarios in which additional ad hoc authorization
+  // headers (e.g. `x-foo-bar: baz-key`) are to be injected.
+  repeated HeaderValue initial_metadata = 5;
 }
