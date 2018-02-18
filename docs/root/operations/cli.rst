@@ -175,3 +175,8 @@ following are the command line options that Envoy supports.
   *(optional)* The maximum number of stats that can be shared between hot-restarts. This setting
   affects the output of :option:`--hot-restart-version`; the same value must be used to hot
   restart. Defaults to 16384.
+
+.. option:: --disable-hot-restart
+
+  *(optional)* This flag disables Envoy hot restart for builds that have it enabled. By default, hot
+  restart is enabled.

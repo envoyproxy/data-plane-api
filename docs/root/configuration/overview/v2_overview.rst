@@ -518,7 +518,7 @@ Status
 All features described in the :ref:`v2 API reference <envoy_api_reference>` are
 implemented unless otherwise noted. In the v2 API reference and the
 `v2 API repository
-<https://github.com/envoyproxy/data-plane-api/tree/master/api>`_, all protos are
+<https://github.com/envoyproxy/data-plane-api/tree/master>`_, all protos are
 *frozen* unless they are tagged as *draft* or *experimental*. Here, *frozen*
 means that we will not break wire format compatibility.
 
