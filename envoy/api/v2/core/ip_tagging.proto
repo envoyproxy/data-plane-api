@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// [#proto-status: experimental]
+
+package envoy.api.v2.core;
+option go_package = "core";
+
+import "envoy/api/v2/core/address.proto";
+
+// [#not-implemented-hide:]
+// This defines a mapping from a set of CIDR prefixes to a textual tag, so that
+// protocol-specific filters can tag requests with extra information based on the
+// origin client's IP address.
+message IPTag {
+  // Specifies the ip tag name to apply.
+  string ip_tag_name = 1;
+
+  // A list of IP address and subnet masks that will be tagged with the
+  // ip_tag_name. Both IPv4 and IPv6 CIDR addresses are allowed here.
+  repeated envoy.api.v2.core.CidrRange ip_list = 2;
+}

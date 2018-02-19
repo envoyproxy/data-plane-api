@@ -95,6 +95,21 @@ api_go_proto_library(
 )
 
 api_proto_library(
+    name = "ip_tagging",
+    srcs = ["ip_tagging.proto"],
+    visibility = [
+        ":friends",
+    ],
+    deps = [":address"],
+)
+
+api_go_proto_library(
+    name = "ip_tagging",
+    proto = ":ip_tagging",
+    deps = [":address_go_proto"],
+)
+
+api_proto_library(
     name = "protocol",
     srcs = ["protocol.proto"],
     visibility = [
