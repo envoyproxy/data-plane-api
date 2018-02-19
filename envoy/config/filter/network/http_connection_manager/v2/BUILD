@@ -9,6 +9,7 @@ api_proto_library(
         "//envoy/api/v2:rds",
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:config_source",
+        "//envoy/api/v2/core:ip_tagging",
         "//envoy/api/v2/core:protocol",
         "//envoy/config/filter/accesslog/v2:accesslog",
     ],

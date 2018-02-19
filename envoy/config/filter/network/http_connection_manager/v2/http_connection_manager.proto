@@ -5,6 +5,7 @@ option go_package = "v2";
 
 import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/core/config_source.proto";
+import "envoy/api/v2/core/ip_tagging.proto";
 import "envoy/api/v2/core/protocol.proto";
 import "envoy/config/filter/accesslog/v2/accesslog.proto";
 import "envoy/api/v2/rds.proto";
@@ -19,7 +20,7 @@ import "gogoproto/gogo.proto";
 // [#protodoc-title: HTTP connection manager]
 // HTTP connection manager :ref:`configuration overview <config_http_conn_man>`.
 
-// [#comment:next free field: 21]
+// [#comment:next free field: 22]
 message HttpConnectionManager {
   enum CodecType {
     option (gogoproto.goproto_enum_prefix) = false;
@@ -244,6 +245,14 @@ message HttpConnectionManager {
   // <config_http_conn_man_runtime_represent_ipv4_remote_address_as_ipv4_mapped_ipv6>` for runtime
   // control.
   bool represent_ipv4_remote_address_as_ipv4_mapped_ipv6 = 20;
+
+  // [#not-implemented-hide:]
+  // Mapping of CIDR prefixes to tags. If the
+  // :ref:`trusted client address
+  // <config_http_conn_man_headers_x-forwarded-for_trusted_client_address>` for an HTTP request
+  // matches one or more of these prefixes, Envoy adds the matching tag(s) to its internal
+  // representation of the request. Routes can then match on the presence of tags.
+  repeated envoy.api.v2.core.IPTag ip_tags = 21;
 }
 
 message Rds {
