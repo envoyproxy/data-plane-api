@@ -147,6 +147,9 @@ message ResponseFlags {
 
   // Indicates that the request was rate-limited locally.
   bool rate_limited = 12;
+
+  // Indicates that the request was deemed unauthorized and denied.
+  bool unauthorized_denied = 13;
 }
 
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
