@@ -53,7 +53,7 @@ ip_tag_name
 ip_list
   *(required, array)* A list of IP address subnets in the form "ip_address/xx".
 
-  .. code_block:: json
+  .. code-block:: json
 
     [
       "10.15.0.0/16",
