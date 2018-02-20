@@ -542,6 +542,13 @@ message RedirectAction {
   // The path portion of the URL will be swapped with this value.
   string path_redirect = 2;
 
+  // [#not-implemented-hide:]
+  // The path portion of the URL can be rewritten with original path replaced
+  // according to rules of this regex.
+  // This helps to use original path as a part of redirect action when prefix/suffix
+  // rewriting is needed.
+  string path_redirect_regex = 5;
+
   enum RedirectResponseCode {
     // Moved Permanently HTTP Status Code - 301.
     MOVED_PERMANENTLY = 0;
