@@ -5,6 +5,7 @@ package envoy.api.v2.core;
 import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
@@ -53,6 +54,10 @@ message GrpcService {
     //    streams_total, Counter, Total number of streams opened
     //    streams_closed_<gRPC status code>, Counter, Total streams closed with <gRPC status code>
     string stat_prefix = 3 [(validate.rules).string.min_bytes = 1];
+
+    // Additional configuration for site-specific customizations of the Google
+    // gRPC library.
+    google.protobuf.Struct config = 4;
   }
 
   oneof target_specifier {
@@ -92,4 +97,9 @@ message GrpcService {
   // A set of credentials that will be composed to form the `channel credentials
   // <https://grpc.io/docs/guides/auth.html#credential-types>`_.
   repeated Credentials credentials = 4;
+
+  // Additional metadata to include in streams initiated to the GrpcService.
+  // This can be used for scenarios in which additional ad hoc authorization
+  // headers (e.g. `x-foo-bar: baz-key`) are to be injected.
+  repeated HeaderValue initial_metadata = 5;
 }
