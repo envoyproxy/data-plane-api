@@ -14,9 +14,9 @@ message IPTagging {
   // The type of requests the filter should apply to. The supported types
   // are internal, external or both. A request is considered internal if
   // :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>`
-  // is set to true. If x-envoy-internal is not set or false, a request is
-  // considered external. The filter defaults to both, and it will apply to
-  // all request types.
+  // is set to true. If :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>`
+  // is not set or false, a request is considered external. The filter defaults to both,
+  // and it will apply to all request types.
   enum RequestType {
     // Both external and internal requests will be tagged. This is the default value.
     BOTH = 0;
@@ -50,11 +50,12 @@ message IPTagging {
   google.protobuf.UInt32Value root_branching_factor = 3
       [(validate.rules).uint32 = {gte: 0, lte: 20}];
 
+  // Supplies the IP tag name and the IP address and subnet
   message IPTag {
     // Specifies the IP tag name to apply.
     string ip_tag_name = 1;
 
-    // A list of IP address and subnet masks that will be tagged with the
+    // A list of IP address subnets that will be tagged with
     // ip_tag_name. Both IPv4 and IPv6 are supported.
     repeated envoy.api.v2.core.CidrRange ip_list = 2;
   }

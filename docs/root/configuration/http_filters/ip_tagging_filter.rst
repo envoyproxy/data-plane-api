@@ -32,11 +32,12 @@ owning HTTP connection manager.
 
         <tag_name>.hit, Counter, Total number of requests that have the <tag_name> applied to it.
         no_hit, Counter, Total number of requests with no applicable IP tags.
+        total, Counter, Total number of requests the IP Tagging Filter operated on.
 
 Runtime
 -------
 
 The IP Tagging filter supports the following runtime settings:
 
-ip_tagging.filter_enabled
+ip_tagging.http_filter_enabled
     The % of requests for which the filter is enabled. Default is 100.
