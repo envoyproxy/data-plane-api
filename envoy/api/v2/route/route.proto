@@ -5,7 +5,7 @@ option go_package = "route";
 
 import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/auth/auth.proto";
-import "envoy/type/v2/range.proto";
+import "envoy/type/range.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
@@ -846,7 +846,7 @@ message HeaderMatcher {
     // Examples:
     //
     // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9
-    envoy.type.v2.SInt64Range range_match = 6;
+    envoy.type.Int64Range range_match = 6;
   }
 }
 

@@ -49,6 +49,6 @@ proto_library(
         "//envoy/service/discovery/v2:ads",
         "//envoy/service/load_stats/v2:lrs",
         "//envoy/service/metrics/v2:metrics_service",
-        "//envoy/type/v2:range",
+        "//envoy/type:range",
     ],
 )
