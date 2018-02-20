@@ -98,7 +98,8 @@ messages:
 The version provides Envoy and the management server a shared notion of the
 currently applied configuration, as well as a mechanism to ACK/NACK
 configuration updates. If Envoy had instead rejected configuration update __X__,
-it would reply with [`error_detail`] (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/discovery.proto#L56) populated and its previous version, which in this case was the empty
+it would reply with [`error_detail`] (https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto) 
+populated and its previous version, which in this case was the empty
 initial version. The error_detail has more details around the exact error message
 populated in the message field:
 
