@@ -1,4 +1,4 @@
-.. _config_http_filters_lua_v1:
+.. _config_http_filters_ip_tagging_v1:
 
 HTTP IP Tagging Filter
 ======================

@@ -18,6 +18,7 @@ G. Karlsson.
 
 Configuration
 -------------
+* :ref:`v1 API reference <config_http_filters_ip_tagging_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.filter.http.ip_tagging.v2.IPTagging>`
 
 Statistics
