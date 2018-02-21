@@ -49,7 +49,7 @@ message TruncatedPercent {
 
   // Specifies the integral denominator. If not specified, defaults to 100. If the denominator
   // specified is less than the numerator, the final percentage is capped at 100.
-  google.protobuf.UInt32Value denominator = 3 [(validate.rules).uint32.gt = 0];
+  google.protobuf.UInt32Value denominator = 2 [(validate.rules).uint32.gt = 0];
 }
 
 // Identifies a specific Envoy instance. The node identifier is presented to the
