@@ -841,11 +841,15 @@ message HeaderMatcher {
     // [#not-implemented-hide:]
     // If specified, header match will be performed based on range.
     // The rule will match if the request header value is within this range.
-    // This only applies to integer header values.
+    // The entire request header value must represent an integer in base 10 notation: consisting of
+    // an optional plus or minus sign followed by a sequence of digits. The rule will not match if
+    // the header value does not represent an integer. Match will fail for empty values, floating
+    // point numbers or if only a subsequence of the header value is an integer.
     //
     // Examples:
     //
-    // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9
+    // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9,
+    // "-1somestring"
     envoy.type.Int64Range range_match = 6;
   }
 }

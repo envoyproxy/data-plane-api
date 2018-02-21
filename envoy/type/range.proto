@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-// [#proto-status: draft]
-
 package envoy.type;
 
 // [#protodoc-title: Range]
