@@ -262,7 +262,7 @@ message Cluster {
 
   // Optional configuration used to bind newly established upstream connections.
   // This overrides any bind_config specified in the bootstrap proto.
-  // If the addres and port are empty, no bind will be performed.
+  // If the address and port are empty, no bind will be performed.
   core.BindConfig upstream_bind_config = 21;
 
   // Optionally divide the endpoints in this cluster into subsets defined by
