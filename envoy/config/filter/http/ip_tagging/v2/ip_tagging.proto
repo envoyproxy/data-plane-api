@@ -31,26 +31,7 @@ message IPTagging {
   // The type of request the filter should apply to.
   RequestType request_type = 1 [(validate.rules).enum.defined_only = true];
 
-  // Supplies the fraction of completeness to use when calculating the branch.
-  // If not set, the default value is 0.5.
-  //
-  // .. note::
-  //
-  //  The fill_factor supports a value greater than 0 and less than or equal
-  //  to 1.
-  google.protobuf.DoubleValue fill_factor = 2 [(validate.rules).double = {gt: 0.0, lte: 1.0}];
-
-  // Specifies the branch value to use at the root of the trie. If not
-  // set, the default value is 0 and a branch value will be calculated during
-  // Level Compressed Trie creation.
-  //
-  // .. note::
-  //
-  //  The filter supports a range 0 - 20 inclusively for root branching factor.
-  google.protobuf.UInt32Value root_branching_factor = 3
-      [(validate.rules).uint32 = {gte: 0, lte: 20}];
-
-  // Supplies the IP tag name and the IP address and subnet
+  // Supplies the IP tag name and the IP address subnets.
   message IPTag {
     // Specifies the IP tag name to apply.
     string ip_tag_name = 1;
@@ -60,6 +41,7 @@ message IPTagging {
     repeated envoy.api.v2.core.CidrRange ip_list = 2;
   }
 
+  // [#comment:TODO(ccaraman): Extend functionality to load IP tags from file system.]
   // The set of IP tags for the filter.
   repeated IPTag ip_tags = 4;
 }

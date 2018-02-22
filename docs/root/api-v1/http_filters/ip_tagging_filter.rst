@@ -11,8 +11,6 @@ HTTP IP Tagging :ref:`configuration overview <config_http_filters_ip_tagging>`.
     "name": "ip_tagging",
     "config": {
       "request_type": "...",
-      "fill_factor" : "...",
-      "root_branching_factor": "...",
       "ip_tags": []
     }
   }
@@ -23,16 +21,7 @@ request_type
   :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is set to true. If
   :ref:`x-envoy-internal<config_http_conn_man_headers_x-envoy-internal>` is not set or false, a
   request is considered external. The filter defaults to *both*, and it will apply to all request
-  types. Default value is *BOTH*.
-
-fill_factor
-  *(optional, double)* Supplies the fraction of completeness to use when calculating the branch. The supported range is
-  greater than 0 and less than or equal to 1. If not specified, the value is 0.5.
-
-root_braching_factor
-  *(optional, integer)* Specifies the branch value to use at the root of the trie. The supported range is 0 through
-  20 inclusively. If not set, the default value is 0 and a branch value will be calculated during Level Compressed
-  Trie creation.
+  types.
 
 ip_tags
   *(required, array)* A list of tags and the associated IP addresses subnets.

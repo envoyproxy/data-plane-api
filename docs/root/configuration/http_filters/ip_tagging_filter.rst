@@ -4,17 +4,15 @@ IP Tagging
 ==========
 
 The HTTP IP Tagging filter sets the header *x-envoy-ip-tags* with the string tags for the trusted address from
-:ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>`:. If there are no tags for an address,
+:ref:`x-forwarded-for <config_http_conn_man_headers_x-forwarded-for>`. If there are no tags for an address,
 the header is not set.
 
-Internally, a Level-Compressed trie stores tags for IP Address and CIDR ranges. The algorithm for the Level-Compressed
-trie is described in the paper `IP-address lookup using
+The implementation for IP Tagging provides a scalable way to compare IP address to a large list of CIDR
+ranges efficiently. The underlying algorithm for storing tags and IP address subnets is a Level-Compressed trie
+described in the paper `IP-address lookup using
 LC-tries <https://www.nada.kth.se/~snilsson/publications/IP-address-lookup-using-LC-tries/>`_ by S. Nilsson and
 G. Karlsson.
 
-.. note::
-  Note that the filter does not support nested prefixes. If there are nested prefixes, an
-  exception will be thrown during filter initialization. Nested prefix support will be added soon.
 
 Configuration
 -------------
@@ -24,8 +22,8 @@ Configuration
 Statistics
 ----------
 
-The IP Tagging filter outputs statistics in the *http.<stat_prefix>.ip_tagging.* namespace. The stat prefix comes from the
-owning HTTP connection manager.
+The IP Tagging filter outputs statistics in the *http.<stat_prefix>.ip_tagging.* namespace. The stat prefix comes from
+the owning HTTP connection manager.
 
 .. csv-table::
   :header: Name, Type, Description
