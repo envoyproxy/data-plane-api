@@ -59,7 +59,7 @@ VALID_ANNOTATIONS = set([
     PROTO_STATUS_ANNOTATION,
 ])
 
-# These can propagate from file scope to message/enum scope (and be overriden).
+# These can propagate from file scope to message/enum scope (and be overridden).
 INHERITED_ANNOTATIONS = set([
     PROTO_STATUS_ANNOTATION,
 ])

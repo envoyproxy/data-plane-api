@@ -197,7 +197,7 @@ enter the ``front-envoy`` container, and ``curl`` for services locally::
 When envoy runs it also attaches an ``admin`` to your desired port. In the example
 configs the admin is bound to port ``8001``. We can ``curl`` it to gain useful information.
 For example you can ``curl`` ``/server_info`` to get information about the
-envoy version you are running. Addionally you can ``curl`` ``/stats`` to get
+envoy version you are running. Additionally you can ``curl`` ``/stats`` to get
 statistics. For example inside ``frontenvoy`` we can get::
 
   $ docker-compose exec front-envoy /bin/bash
