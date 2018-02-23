@@ -142,3 +142,13 @@ features. The following sandboxes are available:
     sandboxes/jaeger_tracing
     sandboxes/grpc_bridge
 
+Other use cases
+---------------
+
+In addition to the proxy itself, Envoy is also bundled as part of several open
+source distributions that target specific use cases.
+
+.. toctree::
+    :maxdepth: 1
+
+    distro/ambassador
