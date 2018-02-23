@@ -29,7 +29,7 @@ Validate
   The validate fields specify the expected values and test cases to check. At least one test
   case is required.
 
-A simple tool configuration json has one test case and is writen as follows. The test
+A simple tool configuration json has one test case and is written as follows. The test
 expects a cluster name match of "instant-server".::
 
    [
@@ -143,7 +143,7 @@ validate
   cluster_name
     *(optional, string)* Match the cluster name.
 
-  virutal_cluster_name
+  virtual_cluster_name
     *(optional, string)* Match the virtual cluster name.
 
   virtual_host_name

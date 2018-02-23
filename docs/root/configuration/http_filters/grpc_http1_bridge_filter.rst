@@ -16,7 +16,7 @@ response trailers to a compliant gRPC server. It works by doing the following:
   *grpc-status* code. If it is not zero, the filter switches the HTTP response code to 503. It also copies
   the *grpc-status* and *grpc-message* trailers into the response headers so that the client can look
   at them if it wishes.
-* The client should send HTTP/1.1 requests that translate to the following psuedo headers:
+* The client should send HTTP/1.1 requests that translate to the following pseudo headers:
 
   * *\:method*: POST
   * *\:path*: <gRPC-METHOD-NAME>
