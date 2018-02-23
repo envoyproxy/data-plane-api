@@ -15,6 +15,7 @@ HTTP filters
   grpc_web_filter
   gzip_filter
   health_check_filter
+  ip_tagging_filter
   lua_filter
   rate_limit_filter
   router_filter
