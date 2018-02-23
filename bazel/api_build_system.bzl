@@ -21,7 +21,7 @@ def _LibrarySuffix(library_name, suffix):
 
 # TODO(htuch): has_services is currently ignored but will in future support
 # gRPC stub generation.
-# TOOD(htuch): Convert this to native py_proto_library once
+# TODO(htuch): Convert this to native py_proto_library once
 # https://github.com/bazelbuild/bazel/issues/3935 and/or
 # https://github.com/bazelbuild/bazel/issues/2626 are resolved.
 def api_py_proto_library(name, srcs = [], deps = [], has_services = 0):
