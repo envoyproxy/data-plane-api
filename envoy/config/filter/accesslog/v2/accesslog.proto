@@ -95,7 +95,7 @@ message AccessLogCommon {
   // The upstream cluster that *upstream_remote_address* belongs to.
   string upstream_cluster = 15;
 
-  // Flags indicating occurences during request/response processing.
+  // Flags indicating occurrences during request/response processing.
   ResponseFlags response_flags = 16;
 
   // All metadata encountered during request processing, including endpoint
@@ -110,7 +110,7 @@ message AccessLogCommon {
 }
 
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-// Flags indicating occurences during request/response processing.
+// Flags indicating occurrences during request/response processing.
 message ResponseFlags {
   // Indicates local server healthcheck failed.
   bool failed_local_healthcheck = 1;

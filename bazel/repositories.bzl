@@ -5,8 +5,10 @@ OPENCENSUS_SHA = "993c711ba22a5f08c1d4de58a3c07466995ed962" # Dec 13, 2017
 
 PGV_GIT_SHA = "3204975f8145b7d187081b7034060012ae838d17"
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 def api_dependencies():
-    native.git_repository(
+    git_repository(
         name = "com_lyft_protoc_gen_validate",
         remote = "https://github.com/lyft/protoc-gen-validate.git",
         commit = PGV_GIT_SHA,

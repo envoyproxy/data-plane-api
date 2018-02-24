@@ -24,6 +24,9 @@ ENVOY_PREFIX = '.envoy.'
 # Namespace prefix for WKTs.
 WKT_NAMESPACE_PREFIX = '.google.protobuf.'
 
+# Namespace prefix for RPCs.
+RPC_NAMESPACE_PREFIX = '.google.rpc.'
+
 # http://www.fileformat.info/info/unicode/char/2063/index.htm
 UNICODE_INVISIBLE_SEPARATOR = u'\u2063'
 
@@ -59,7 +62,7 @@ VALID_ANNOTATIONS = set([
     PROTO_STATUS_ANNOTATION,
 ])
 
-# These can propagate from file scope to message/enum scope (and be overriden).
+# These can propagate from file scope to message/enum scope (and be overridden).
 INHERITED_ANNOTATIONS = set([
     PROTO_STATUS_ANNOTATION,
 ])
@@ -433,6 +436,12 @@ def FormatFieldType(type_context, field):
         wkt,
         'https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#%s'
         % wkt.lower())
+  elif field.type_name.startswith(RPC_NAMESPACE_PREFIX):
+    rpc = field.type_name[len(RPC_NAMESPACE_PREFIX):]
+    return FormatExternalLink(
+        rpc,
+        'https://cloud.google.com/natural-language/docs/reference/rpc/google.rpc#%s'
+        % rpc.lower())
   elif field.type_name:
     return field.type_name
 

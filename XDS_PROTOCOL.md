@@ -6,16 +6,16 @@ corresponding APIs are referred to as _xDS_. Resources are requested via
 _subscriptions_, by specifying a filesystem path to watch, initiating gRPC
 streams or polling a REST-JSON URL. The latter two methods involve sending
 requests with a
-[`DiscoveryRequest`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L24)
+[`DiscoveryRequest`](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest)
 proto payload. Resources are delivered in a
-[`DiscoveryResponse`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/discovery.proto#L53)
+[`DiscoveryResponse`](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryresponse)
 proto payload in all methods. We discuss each type of subscription below.
 
 ## Filesystem subscriptions
 
 The simplest approach to delivering dynamic configuration is to place it at a
 well known path specified in the
-[`ConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L145).
+[`ConfigSource`](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#core-configsource).
 Envoy will use `inotify` (`kqueue` on Mac OS X) to monitor the file for changes
 and parse the `DiscoveryResponse` proto in the file on update. Binary
 protobufs, JSON, YAML and proto text are supported formats for the
@@ -30,7 +30,7 @@ continue to apply if an configuration update rejection occurs.
 ### Singleton resource type discovery
 
 A gRPC
-[`ApiConfigSource`](https://github.com/envoyproxy/data-plane-api/blob/1388a257bbeb423cadd3d8270ad6913849188283/api/base.proto#L120)
+[`ApiConfigSource`](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#core-apiconfigsource)
 can be specified independently for each xDS API, pointing at an upstream
 cluster corresponding to a management server. This will initiate an independent
 bidirectional gRPC stream for each xDS resource type, potentially to distinct
@@ -98,7 +98,8 @@ messages:
 The version provides Envoy and the management server a shared notion of the
 currently applied configuration, as well as a mechanism to ACK/NACK
 configuration updates. If Envoy had instead rejected configuration update __X__,
-it would reply with [`error_detail`] (https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#envoy-api-field-discoveryrequest-error-detail)
+it would reply with
+[`error_detail`](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#envoy-api-field-discoveryrequest-error-detail)
 populated and its previous version, which in this case was the empty
 initial version. The error_detail has more details around the exact error message
 populated in the message field:

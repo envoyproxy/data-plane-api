@@ -29,7 +29,7 @@ message UpstreamLocalityStats {
   //
   // The total number of requests successfully completed by the endpoints in the
   // locality. These include non-5xx responses for HTTP, where errors
-  // originate at the client and the endpoint responded successfuly. For gRPC,
+  // originate at the client and the endpoint responded successfully. For gRPC,
   // the grpc-status values are those not covered by total_error_requests below.
   uint64 total_successful_requests = 2;
 
