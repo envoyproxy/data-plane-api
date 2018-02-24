@@ -150,14 +150,15 @@ message ResponseFlags {
 
   // Reasons why the request was unauthorized
   enum UnauthorizedType {
+    // Default is permitted
+    PERMITTED = 0;
     // The request was denied by the external authorization service.
-    EXTERNAL_SERVICE = 0;
+    EXTERNAL_SERVICE = 1;
   }
 
   // Indicates that the request was deemed unauthorized and denied.
   message Unauthorized {
-    bool is_unauthorized;
-    UnauthorizedType reason;
+    UnauthorizedType reason = 1;
   }
   Unauthorized unauthorized_denied = 13;
 }
