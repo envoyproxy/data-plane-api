@@ -34,24 +34,6 @@ message Locality {
   string sub_zone = 3;
 }
 
-// Identifies a percentage, in the range [0.0, 100.0].
-message Percent {
-  double value = 1 [(validate.rules).double = {gte: 0, lte: 100}];
-}
-
-// A truncated percentage is used in cases in which for performance reasons performing floating
-// point to integer conversions during randomness calculations is undesirable. The message includes
-// both a numerator and denominator that together determine the final truncated percentage in the
-// range 0-100 inclusive.
-message TruncatedPercent {
-  // Specifies the integral numerator. Defaults to 0.
-  uint32 numerator = 1;
-
-  // Specifies the integral denominator. If not specified, defaults to 100. If the denominator
-  // specified is less than the numerator, the final percentage is capped at 100.
-  google.protobuf.UInt32Value denominator = 2 [(validate.rules).uint32.gt = 0];
-}
-
 // Identifies a specific Envoy instance. The node identifier is presented to the
 // management server, which may use this identifier to distinguish per Envoy
 // configuration for serving.

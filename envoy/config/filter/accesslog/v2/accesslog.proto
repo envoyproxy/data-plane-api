@@ -5,6 +5,7 @@ option go_package = "v2";
 
 import "envoy/api/v2/core/address.proto";
 import "envoy/api/v2/core/base.proto";
+import "envoy/type/percent.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -368,7 +369,7 @@ message RuntimeFilter {
   string runtime_key = 1 [(validate.rules).string.min_bytes = 1];
 
   // The default sampling percentage. If not specified, defaults to 0% with denominator of 100.
-  envoy.api.v2.core.TruncatedPercent percent_sampled = 2;
+  envoy.type.FractionalPercent percent_sampled = 2;
 
   // By default, sampling pivots on the header
   // :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` being present. If

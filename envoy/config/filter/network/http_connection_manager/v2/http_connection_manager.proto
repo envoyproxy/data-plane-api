@@ -3,11 +3,11 @@ syntax = "proto3";
 package envoy.config.filter.network.http_connection_manager.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/core/config_source.proto";
 import "envoy/api/v2/core/protocol.proto";
-import "envoy/config/filter/accesslog/v2/accesslog.proto";
 import "envoy/api/v2/rds.proto";
+import "envoy/config/filter/accesslog/v2/accesslog.proto";
+import "envoy/type/percent.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -93,14 +93,14 @@ message HttpConnectionManager {
     // 'tracing.client_sampling' in the :ref:`HTTP Connection Manager
     // <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent client_sampling = 3;
+    envoy.type.Percent client_sampling = 3;
 
     // Target percentage of requests managed by this HTTP connection manager that will be randomly
     // selected for trace generation, if not requested by the client or not forced. This field is
     // a direct analog for the runtime variable 'tracing.random_sampling' in the
     // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent random_sampling = 4;
+    envoy.type.Percent random_sampling = 4;
 
     // Target percentage of requests managed by this HTTP connection manager that will be traced
     // after all other sampling checks have been applied (client-directed, force tracing, random
@@ -110,7 +110,7 @@ message HttpConnectionManager {
     // analog for the runtime variable 'tracing.global_enabled' in the
     // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent overall_sampling = 5;
+    envoy.type.Percent overall_sampling = 5;
   }
 
   // Presence of the object defines whether the connection manager

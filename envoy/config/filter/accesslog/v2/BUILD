@@ -15,5 +15,6 @@ api_proto_library(
         "//envoy/api/v2/core:address",
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:grpc_service",
+        "//envoy/type:percent",
     ],
 )
