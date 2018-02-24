@@ -382,7 +382,7 @@ message RuntimeFilter {
   // <envoy_api_msg_config.filter.accesslog.v2.AndFilter>` and :ref:`OrFilter
   // <envoy_api_msg_config.filter.accesslog.v2.OrFilter>` blocks that are easier to reason about
   // from a probability perspective (i.e., setting to true will cause the filter to behave like
-  // an independent random variable with composed within logical operator filters).
+  // an independent random variable when composed within logical operator filters).
   bool use_independent_randomness = 3;
 }
 
