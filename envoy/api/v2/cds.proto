@@ -38,7 +38,7 @@ service ClusterDiscoveryService {
 // [#protodoc-title: Clusters]
 
 // Configuration for a single upstream cluster.
-// [#comment:next free field: 29]
+// [#comment:next free field: 30]
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // The cluster name is used when emitting
@@ -165,6 +165,12 @@ message Cluster {
   // implementations. If not specified, there is no limit. Setting this
   // parameter to 1 will effectively disable keep alive.
   google.protobuf.UInt32Value max_requests_per_connection = 9;
+
+  // [#not-implemented-hide:]
+  // The idle timeout for upstream connections. The idle timeout is defined as the period in which
+  // there are no active requests. If not set, there is no idle timeout. When the idle timeout is
+  // reached the connection will be closed. 
+  google.protobuf.Duration idle_timeout = 29 [(gogoproto.stdduration) = true];
 
   // Optional :ref:`circuit breaking <arch_overview_circuit_break>` for the cluster.
   cluster.CircuitBreakers circuit_breakers = 10;
