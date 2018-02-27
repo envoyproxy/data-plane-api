@@ -1,3 +1,6 @@
+.. _building:
+
+
 Building
 ========
 
@@ -29,7 +32,7 @@ for more information on performing manual builds.
 Pre-built binaries
 ------------------
 
-On every master commit we create a set of lightweight docker images that contain the Envoy
+On every master commit we create a set of lightweight Docker images that contain the Envoy
 binary. We also tag the docker images with release versions when we do official releases.
 
 * `envoyproxy/envoy <https://hub.docker.com/r/envoyproxy/envoy/tags/>`_: Release binary with
@@ -42,3 +45,15 @@ binary. We also tag the docker images with release versions when we do official 
 We will consider producing additional binary types depending on community interest in helping with
 CI, packaging, etc. Please open an `issue <https://github.com/envoyproxy/envoy/issues>`_ in GitHub
 if desired.
+
+Modifying Envoy
+---------------
+
+If you're interested in modifying Envoy and testing your changes, one approach
+is to use Docker. This guide will walk through the process of building your own
+Envoy binary, and putting the binary in an Ubuntu container.
+
+.. toctree::
+    :maxdepth: 1
+
+    sandboxes/local_docker_build
