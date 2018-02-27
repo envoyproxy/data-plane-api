@@ -15,6 +15,7 @@ Envoy documentation
 
   about_docs
   intro/intro
+  start/start
   install/install
   configuration/configuration
   operations/operations
