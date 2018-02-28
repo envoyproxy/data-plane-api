@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package envoy.service.metrics.v2;
 option go_package = "v2";
+option java_generic_services = true;
 
 import "envoy/api/v2/core/base.proto";
 
