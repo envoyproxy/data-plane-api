@@ -148,18 +148,18 @@ message ResponseFlags {
   // Indicates that the request was rate-limited locally.
   bool rate_limited = 12;
 
-  // Reasons why the request was unauthorized
-  enum UnauthorizedType {
-    // Default is permitted
-    PERMITTED = 0;
-    // The request was denied by the external authorization service.
-    EXTERNAL_SERVICE = 1;
+  message Unauthorized {
+    // Reasons why the request was unauthorized
+    enum UnauthorizedType {
+      UNAUTHORIZED_TYPE_UNSPECIFIED = 0;
+      // The request was denied by the external authorization service.
+      EXTERNAL_SERVICE = 1;
+    }
+
+    UnauthorizedType reason = 1;
   }
 
   // Indicates that the request was deemed unauthorized and denied.
-  message Unauthorized {
-    UnauthorizedType reason = 1;
-  }
   Unauthorized unauthorized_denied = 13;
 }
 
