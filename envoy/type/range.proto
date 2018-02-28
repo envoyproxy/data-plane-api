@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package envoy.type;
-option go_package = "type";
+option go_package = "envoy_type";
 
 import "gogoproto/gogo.proto";
 
