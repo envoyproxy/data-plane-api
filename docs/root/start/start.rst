@@ -3,7 +3,7 @@
 Getting Started
 ===============
 
-This section gets you started with a very simple configuration, and provides some example configurations.
+This section gets you started with a very simple configuration and provides some example configurations.
 
 Envoy does not currently provide separate pre-built binaries, but does provide Docker images. This is
 the fastest way to get started using Envoy. Should you wish to use Envoy outside of a
@@ -44,8 +44,9 @@ Simple Configuration
 Envoy can be configured using a single YAML file passed in as an argument on the command line.
 
 The :ref:`admin message <envoy_api_msg_config.bootstrap.v2.Admin>` is required to configure
-the administration server. The `address` key specifies the :ref:`address <envoy_api_file_envoy/api/v2/core/address.proto>`
-which in this case is simply `localhost:9901`.
+the administration server. The `address` key specifies the
+listening :ref:`address <envoy_api_file_envoy/api/v2/core/address.proto>`
+which in this case is simply `0.0.0.0:9901`.
 
 .. code-block:: yaml
 
@@ -54,8 +55,9 @@ which in this case is simply `localhost:9901`.
     address:
       socket_address: { address: 0.0.0.0, port_value: 9901 }
 
-The :ref:`static_resources <envoy_api_field_config.bootstrap.v2.Bootstrap.static_resources>` contains everything that is configured staticaly when Envoy starts,
+The :ref:`static_resources <envoy_api_field_config.bootstrap.v2.Bootstrap.static_resources>` contains everything that is configured statically when Envoy starts,
 as opposed to the means of configuring resources dynamically when Envoy is running.
+The :ref:`v2 API Overview <config_overview_v2>` describes this.
 
 .. code-block:: yaml
 
