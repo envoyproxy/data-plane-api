@@ -63,7 +63,7 @@ The :ref:`v2 API Overview <config_overview_v2>` describes this.
 
     static_resources:
 
-The :ref:`listeners <envoy_api_file_envoy/api/v2/listener/listener.proto>` blah.
+The specification of the :ref:`listeners <envoy_api_file_envoy/api/v2/listener/listener.proto>`.
 
 .. code-block:: yaml
 
@@ -88,7 +88,7 @@ The :ref:`listeners <envoy_api_file_envoy/api/v2/listener/listener.proto>` blah.
               http_filters:
               - name: envoy.router
 
-The :ref:`clusters <envoy_api_file_envoy/api/v2/cds.proto>` blah.
+The specification of the :ref:`clusters <envoy_api_file_envoy/api/v2/cds.proto>`.
 
 .. code-block:: yaml
 
@@ -107,6 +107,7 @@ Using the Envoy Docker Image
 ----------------------------
 
 Create a simple Dockerfile to execute Envoy, which assumes that envoy.yaml (described above) is in your local directory.
+You can refer to the :ref:`Command line options <operations_cli>`.
 
 .. code-block:: none
 
