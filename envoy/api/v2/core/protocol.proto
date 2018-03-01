@@ -18,7 +18,6 @@ option (gogoproto.equal_all) = true;
 message TcpProtocolOptions {
 }
 
-// [#not-implemented-hide:]
 message HttpProtocolOptions {
   // [#not-implemented-hide:]
   // The idle timeout for upstream connections. The idle timeout is defined as the period in which
