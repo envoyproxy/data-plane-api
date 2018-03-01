@@ -71,7 +71,7 @@ Configuring Ambassador
 
 Ambassador uses Kubernetes annotations to add or remove configuration. This
 sample YAML will add a route to Google, similar to the basic configuration
-example in the :ref:`Getting Started guide <install_getting_started>`.
+example in the :ref:`Getting Started guide <start>`.
 
 .. code-block:: yaml
 
