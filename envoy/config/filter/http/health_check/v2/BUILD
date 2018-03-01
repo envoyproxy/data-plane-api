@@ -6,6 +6,6 @@ api_proto_library(
     name = "health_check",
     srcs = ["health_check.proto"],
     deps = [
-        "//envoy/api/v2/core:base",
+        "//envoy/type:percent",
     ],
 )

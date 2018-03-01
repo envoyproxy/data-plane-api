@@ -13,4 +13,4 @@ v2 API reference
   http_routes/http_routes
   config/filter/filter
   common_messages/common_messages
-  types/range
+  types/types
