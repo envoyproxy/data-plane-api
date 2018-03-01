@@ -86,7 +86,12 @@ In addition, the following conventions should be followed:
 
   This is more efficient, extendable and self-describing.
 
-* To represent percentage values, use the Percent message type defined in [api/base.proto](api/base.proto).
+* The API includes two types for representing [percents](envoy/type/percent.proto). `Percent` is
+  effectively a double value in the range 0.0-100.0. `FractionalPercent` is an integral fraction
+  that can be used to create a truncated percentage also in the range 0.0-100.0. In high performance
+  paths, `FractionalPercent` is preferred as randomness calculations can be performed using integral
+  modulo and comparison operations only without any floating point conversions. Typically, most
+  users do not need infinite precision in these paths.
 
 * For enum types, if one of the enum values is used for most cases, make it the
   first enum value with `0` numeric value. Otherwise, define the first enum
