@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package envoy.api.v2.core;
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -15,6 +16,15 @@ option (gogoproto.equal_all) = true;
 
 // [#not-implemented-hide:]
 message TcpProtocolOptions {
+}
+
+// [#not-implemented-hide:]
+message HttpProtocolOptions {
+  // [#not-implemented-hide:]
+  // The idle timeout for upstream connections. The idle timeout is defined as the period in which
+  // there are no active requests. If not set, there is no idle timeout. When the idle timeout is
+  // reached the connection will be closed.
+  google.protobuf.Duration idle_timeout = 1 [(gogoproto.stdduration) = true];
 }
 
 message Http1ProtocolOptions {
