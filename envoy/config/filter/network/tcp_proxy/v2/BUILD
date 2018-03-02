@@ -7,6 +7,7 @@ api_proto_library(
     srcs = ["tcp_proxy.proto"],
     deps = [
         "//envoy/api/v2/core:address",
+        "//envoy/api/v2/core:base",
         "//envoy/config/filter/accesslog/v2:accesslog",
     ],
 )
