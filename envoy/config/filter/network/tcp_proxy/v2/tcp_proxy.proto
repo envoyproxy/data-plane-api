@@ -5,6 +5,7 @@ option go_package = "v2";
 
 import "envoy/config/filter/accesslog/v2/accesslog.proto";
 import "envoy/api/v2/core/address.proto";
+import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
@@ -33,6 +34,12 @@ message TcpProxy {
   //  required to use more complex routing in the interim.
   //
   string cluster = 2;
+
+  // [#not-implemented-hide:]
+  // Optional endpoint metadata match criteria. Only endpoints in the upstream
+  // cluster with metadata matching that set in metadata_match will be
+  // considered. The filter name should be specified as *envoy.lb*.
+  envoy.api.v2.core.Metadata metadata_match = 9;
 
   // The idle timeout for connections managed by the TCP proxy filter. The idle timeout
   // is defined as the period in which there are no bytes sent or received on either
