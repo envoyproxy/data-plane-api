@@ -454,6 +454,8 @@ Supported variable names are:
     If the original connection was redirected by iptables REDIRECT, this represents
     the original destination address restored by the
     :ref:`Original Destination Filter <config_listener_filters_original_dst>` using SO_ORIGINAL_DST socket option.
+    If the original connection was redirected by iptables TPROXY, and the listener's transparent
+    option was set to true, this represents the original destination address and port.
 
 %DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%
     Same as **%DOWNSTREAM_LOCAL_ADDRESS%** excluding port if the address is an IP address.
