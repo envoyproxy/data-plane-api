@@ -8,6 +8,7 @@ licenses(["notice"])  # Apache 2
 package_group(
     name = "friends",
     packages = [
+        "//envoy/admin/...",
         "//envoy/api/v2",
         "//envoy/config/...",
         "//envoy/service/...",

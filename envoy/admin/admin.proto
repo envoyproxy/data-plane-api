@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package envoy.admin;
+
+import "google/protobuf/any.proto";
+import "envoy/api/v2/rds.proto";
+
+import "gogoproto/gogo.proto";
+
+message ConfigDump {
+  map<string, google.protobuf.Any> configs = 1 [(gogoproto.nullable) = false];
+}
+
+message RouteConfigDump {
+  repeated envoy.api.v2.RouteConfiguration static_route_configs = 1 [(gogoproto.nullable) = false];
+  repeated envoy.api.v2.RouteConfiguration dynamic_route_configs = 2 [(gogoproto.nullable) = false];
+}
