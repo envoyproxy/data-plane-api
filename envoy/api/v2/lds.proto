@@ -131,5 +131,5 @@ message Listener {
   // connections can be redirected to the listener using an *iptables* *TPROXY* target, in which
   // case the original source and destination addresses and ports are preserved on accepted
   // connections. Requires Envoy to run with the *CAP_NET_ADMIN* capability. Defaults to false.
-  google.protobuf.BoolValue transparent = 10;
+  bool transparent = 10;
 }
