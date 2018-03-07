@@ -177,16 +177,16 @@ The fields are:
 
 .. http:get:: /hystrix_event_stream
 
-  Start streaming 
-  `event stream <https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events>`_ 
-  to Hystrix dashboard. Detalied description of Hystrix and its dashboard can be found 
-  `here <https://github.com/Netflix-Skunkworks/hystrix-dashboard>`_. 
-  
-  The dashboard should set the stream source to this admin endpoint. 
+  Start streaming
+  `event stream <https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events>`_
+  to Hystrix dashboard. Detalied description of Hystrix and its dashboard can be found
+  `here <https://github.com/Netflix-Skunkworks/hystrix-dashboard>`_.
+
+  The dashboard should set the stream source to this admin endpoint.
 
   Notes on the usage of Hystrix dashboard to visualize Envoy statistics:
      Not all the data presented in the Hystrix dashboard is relevant in Envoy.
-  
+
     * Success, Failure, Timeout, Error rate, Number of host, are shown in the dashboard.
     * Hystrix's "Short circuit" is similar to Envoy's outlier detection, in that it is triggered by
       error responses. In Envoy the result of high error rate is the host being ejected from the load
@@ -199,5 +199,5 @@ The fields are:
     * Latency information is currently not available.
     * Window size is set to 10 seconds, with 10 buckets of 1 second each. Currently, the value is
       not configurable.
-  
-  
+
+
