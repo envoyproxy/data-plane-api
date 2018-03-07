@@ -22,7 +22,7 @@ message HttpProtocolOptions {
   // [#not-implemented-hide:]
   // The idle timeout for upstream connection pool connections. The idle timeout is defined as the
   // period in which there are no active requests. If not set, there is no idle timeout. When the
-  // idle timeout is reached the connection will be closed. Note that request based timeouts mean 
+  // idle timeout is reached the connection will be closed. Note that request based timeouts mean
   // that HTTP/2 PINGs will not keep the connection alive.
   google.protobuf.Duration idle_timeout = 1 [(gogoproto.stdduration) = true];
 }
