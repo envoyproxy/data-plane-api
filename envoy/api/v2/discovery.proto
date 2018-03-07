@@ -36,6 +36,10 @@ message DiscoveryRequest {
   // explicitly enumerated in resource_names.
   repeated string resource_names = 3;
 
+  // When true the list of resource_names is added to the set of tracked resources
+  // by this node.
+  bool incremental = 4;
+
   // Type of the resource that is being requested, e.g.
   // "type.googleapis.com/envoy.api.v2.ClusterLoadAssignment". This is implicit
   // in requests made via singleton xDS APIs such as CDS, LDS, etc. but is
@@ -61,6 +65,14 @@ message DiscoveryResponse {
 
   // The response resources. These resources are typed and depend on the API being called.
   repeated google.protobuf.Any resources = 2 [(gogoproto.nullable) = false];
+
+  // When true the resources list is a diff to the exiting resources.
+  // Incremental can only be set to true in DiscoveryResponse if this stream has
+  // seen incremental = true in a DiscorevyRequest.
+  bool incremental = 6;
+
+  // When incremental = true, the removed_resources should be removed by the xds client.
+  repeated string removed_resources = 7;
 
   // [#not-implemented-hide:]
   // Canary is used to support two Envoy command line flags:
