@@ -41,7 +41,7 @@ service ClusterDiscoveryService {
 // [#protodoc-title: Clusters]
 
 // Configuration for a single upstream cluster.
-// [#comment:next free field: 29]
+// [#comment:next free field: 30]
 message Cluster {
   // Supplies the name of the cluster which must be unique across all clusters.
   // The cluster name is used when emitting
@@ -183,6 +183,10 @@ message Cluster {
   auth.UpstreamTlsContext tls_context = 11;
 
   reserved 12;
+
+  // Additional options when handling HTTP requests. These options will be applicable to both
+  // HTTP1 and HTTP2 requests.
+  core.HttpProtocolOptions common_http_protocol_options = 29;
 
   // Additional options when handling HTTP1 requests.
   core.Http1ProtocolOptions http_protocol_options = 13;
