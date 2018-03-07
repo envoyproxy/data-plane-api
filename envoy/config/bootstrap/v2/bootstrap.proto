@@ -58,6 +58,9 @@ message Bootstrap {
     // configuration source.
     envoy.api.v2.core.ConfigSource cds_config = 2;
 
+    // A CDS config used for the ClusterManager's Lazy loading functionality.
+    envoy.api.v2.core.ConfigSource lazy_load_cds_config = 5;
+
     // A single :ref:`ADS <config_overview_v2_ads>` source may be optionally
     // specified. This must have :ref:`api_type
     // <envoy_api_field_core.ApiConfigSource.api_type>` :ref:`GRPC
