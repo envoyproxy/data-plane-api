@@ -188,16 +188,14 @@ The fields are:
      Not all the data presented in the Hystrix dashboard is relevant in Envoy.
 
     * Success, Failure, Timeout, Error rate, Number of host, are shown in the dashboard.
-    * Hystrix's "Short circuit" is similar to Envoy's outlier detection, in that it is triggered by
+    * Hystrix's *Short circuit* is similar to Envoy's outlier detection, in that it is triggered by
       error responses. In Envoy the result of high error rate is the host being ejected from the load
-      balancer pool, but it does not cause rejected requests, and therefore we set "Short circuited"
-      to '0', and circuit breaker is set to "Forced Closed".
-    * "Bad request" does not exist in Envoy, and therefore is set to '0'.
+      balancer pool, but it does not cause rejected requests, and therefore we set *Short circuited*
+      to 0, and circuit breaker is set to *Forced Closed*.
+    * *Bad request* does not exist in Envoy, and therefore is set to 0.
     * Requests rejected as a result of exceeding max number of connections or queue size (in Envoy,
-      referred as "short circuited") are presented as "Rejected", which better suits Hystrix's
+      referred as *short circuited*) are presented as *Rejected*, which better suits Hystrix's
       terminology.
     * Latency information is currently not available.
     * Window size is set to 10 seconds, with 10 buckets of 1 second each. Currently, the value is
       not configurable.
-
-
