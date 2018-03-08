@@ -545,7 +545,7 @@ message RedirectAction {
     // The path portion of the URL will be swapped with this value.
     string path_redirect = 2;
 
-    // [#not-implemented-hide:]Indicates that during redirection, the matched prefix (or path)
+    // Indicates that during redirection, the matched prefix (or path)
     // should be swapped with this value. This option allows redirect URLs be dynamically created
     // based on the request.
     string prefix_rewrite = 5;
@@ -575,7 +575,7 @@ message RedirectAction {
   // The scheme portion of the URL will be swapped with "https".
   bool https_redirect = 4;
 
-  // [#not-implemented-hide:] Indicates that during redirection, the query portion of the URL will
+  // Indicates that during redirection, the query portion of the URL will
   // be removed. Default value is false.
   bool strip_query = 6;
 }
