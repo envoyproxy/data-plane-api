@@ -3,6 +3,7 @@ syntax = "proto3";
 
 package envoy.config.filter.http.jwt_auth.v2;
 
+import "envoy/api/v2/route/route.proto";
 import "google/protobuf/duration.proto";
 import "validate/validate.proto";
 
@@ -124,20 +125,19 @@ message JSONWebTokenAuthenticationFilterConfig {
   repeated JSONWebToken jwts = 2;
 
   // This message defines a pattern to match a HTTP request.
-  // A pattern is matched only if both http_method and path_match are matched.
-  message HttpPattern {
-    // Define a HTTP method. It should be one of valid HTTP methods.
-    // It should not be empty.
-    string http_method = 1;
-
-    // Defines a path match
-    oneof path_match {
-      // Defines an exact path match
-      string path_exact = 2;
-
-      // Defines an path prefix match
-      string path_prefix = 3;
-    }
+  // A pattern is matched only if all "headers" are matched.
+  message HttpMatcher {
+    // Specifies a set of headers should match on.
+    // For example::
+    //
+    //    headers:
+    //       name: :method
+    //       value: OPTIONS
+    //    headers:
+    //       name: :path
+    //       regex_match: /.*
+    //
+    repeated envoy.api.v2.route.HeaderMatcher headers = 6;
   }
 
   // If a request doesn't have JWT, it will be rejected.
@@ -147,14 +147,22 @@ message JSONWebTokenAuthenticationFilterConfig {
   // Examples: bypass all CORS options requests::
   //
   //   bypass_jwt:
-  //      http_method: OPTIONS
-  //      path_prefix: /
+  //      headers:
+  //         name: :method
+  //         value: OPTIONS
+  //      headers:
+  //         name: :path
+  //         regex_match: /.*
   //
   // Examples: bypass /healthz check::
   //
   //   bypass_jwt:
-  //      http_method: GET
-  //      path_exact: /healthz
+  //      headers:
+  //         name: :method
+  //         value: GET
+  //      headers:
+  //         name: :path
+  //         exact_match: /healthz
   //
-  repeated HttpPattern bypass_jwt = 3;
+  repeated HttpMatcher bypass_jwt = 3;
 }
