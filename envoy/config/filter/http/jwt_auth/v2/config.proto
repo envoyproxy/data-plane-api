@@ -1,31 +1,17 @@
-// Copyright 2017 Istio Authors
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
 
 syntax = "proto3";
 
-package Envoy.Http.JwtAuth.Config;
+package envoy.config.filter.http.jwt_auth.v2;
 
 import "google/protobuf/duration.proto";
 import "validate/validate.proto";
 
-// JSON Web Token (JWT) token format for authentication as defined by
-// https://tools.ietf.org/html/rfc7519. See [OAuth
-// 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC
-// 1.0](http://openid.net/connect) for how this is used in the whole
-// authentication flow.
+// JSON Web Token (JWT) token format for authentication is defined
+// `here <https://tools.ietf.org/html/rfc7519>`_.
+// See `OAuth2.0 <https://tools.ietf.org/html/rfc6749>`_ and
+// `OIDC1.0 <http://openid.net/connect>`_ for the authentication flow.
 //
-// Example,
+// Example,::
 //
 //     issuer: https://example.com
 //     audiences:
@@ -33,9 +19,9 @@ import "validate/validate.proto";
 //       bookstore_web.apps.googleusercontent.com
 //     jwks_uri: https://example.com/.well-known/jwks.json
 //
-message JWT {
+message JSONWebToken {
   // Identifies the principal that issued the JWT. See
-  // https://tools.ietf.org/html/rfc7519#section-4.1.1
+  // `here <https://tools.ietf.org/html/rfc7519#section-4.1.1>`_.
   // Usually a URL or an email address.
   //
   // Example: https://securetoken.google.com
@@ -43,14 +29,11 @@ message JWT {
   //
   string issuer = 1;
 
-  // The list of JWT
-  // [audiences](https://tools.ietf.org/html/rfc7519#section-4.1.3).
-  // that are allowed to access. A JWT containing any of these
-  // audiences will be accepted.
+  // The list of JWT `audiences
+  // <https://tools.ietf.org/html/rfc7519#section-4.1.3>`_. that are allowed to
+  // access. A JWT containing any of these audiences will be accepted.
   //
-  // The service name will be accepted if audiences is empty.
-  //
-  // Example:
+  // Example::
   //
   //     audiences:
   //     - bookstore_android.apps.googleusercontent.com
@@ -59,20 +42,14 @@ message JWT {
   repeated string audiences = 2;
 
   // URL of the provider's public key set to validate signature of the
-  // JWT. See [OpenID
-  // Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata).
-  //
-  // Optional if the key set document can either (a) be retrieved from
-  // [OpenID
-  // Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html
-  // of the issuer or (b) inferred from the email domain of the issuer
-  // (e.g. a Google service account).
+  // JWT. See `OpenID
+  // Discovery
+  // <https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>`_
   //
   // Example: https://www.googleapis.com/oauth2/v1/certs
   string jwks_uri = 3;
 
-  // If false, remove the JWT from the HTTP request and do not forward to the
-  // application.
+  // If false, remove the JWT and do not forward to the backend.
   bool forward_jwt = 4;
 
   // Duration after which the cached public key should be expired. The
@@ -85,28 +62,33 @@ message JWT {
   // If no explicit location is specified the following default
   // locations are tried in order:
   //
-  //     1) The Authorization header using the Bearer schema,
-  //        e.g. Authorization: Bearer <token>. (see
-  //        https://tools.ietf.org/html/rfc6750#section-2.1)
+  // 1. The Authorization header using the Bearer schema.
+  //    See `here <https://tools.ietf.org/html/rfc6750#section-2.1>`_
+  //    Example::
   //
-  //     2) `access_token` query parameter (see
-  //     https://tools.ietf.org/html/rfc6750#section-2.3)
+  //       Authorization: Bearer <token>.
   //
-
-  // Only one JWT token is verified per request.
-  // If multiple header or parameter names specified, the first one with the
-  // token will be used.
+  // 2. `access_token` query parameter.
+  //    See `here <https://tools.ietf.org/html/rfc6750#section-2.3>`_
+  //
+  //
+  // Only the first JWT token is verified per request if multiple tokens are
+  // specified.
   // If both jwt_headers and jwt_params are specified, jwt_headers will be
   // checked first.
-
+  //
   // JWT is sent in a request header. `jwt_headers` represents the
-  // header names. Their format is:
+  // header names. Their format is::
+  //
   //    header_name: <JWT>
   //
-  // For example, if config is
+  // For example, if config is::
+  //
   //   jwt_headers:
   //      x-goog-iap-jwt-assertion
-  // The header format will be:
+  //
+  // The header format will be::
+  //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
   repeated string jwt_headers = 6;
@@ -114,48 +96,38 @@ message JWT {
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
   //
-  // For example, if config is:
+  // For example, if config is::
+  //
   //   jwt_params:
   //      jwt_token
-  // The query parameter is:  ?jwt_token=<JWT>
+  //
+  // The query parameter is::
+  //
+  //    /path?jwt_token=<JWT>
   //
   repeated string jwt_params = 8;
 
   // This field is specific for Envoy proxy implementation.
-  // It is the cluster name in the Envoy config for the jwks_uri.
+  // It is the cluster name in the Envoy "cluster_manager" config section.
+  // In order for Envoy to call "jwks_uri", its host has to be specified
+  // as a "cluster" in the config for each jwks_uri.
   string jwks_uri_cluster = 7;
 }
 
-// Determines how to apply auth policies for individual requests.
-message Config {
+// This is the Envoy filter config for JSON Web Token authentication.
+message JSONWebTokenAuthenticationFilterConfig {
   // List of JWT rules to valide.
   //
-  // If the request includes a JWT it must match one of the JWT listed
-  // here matched by the issuer. If validation is successfull the
-  // follow attributes are included in requests to the mixer:
+  // If the request includes a JWT, it must match one of the JWT listed
+  // here with the same issuer.
   //
-  //     request.auth.principal - The string of the issuer (`iss`) and
-  //     subject (`sub`) claims within a JWT concatenated with “/”
-  //     with a percent-encoded subject value
-  //
-  //     request.auth.audiences - This should reflect the audience
-  //     (`aud`) claim within matched JWT.
-  //
-  //     request.auth.presenter - The authorized presenter of the
-  //     credential. This value should reflect the optional Authorized
-  //     Presenter (`azp`) claim within a JWT
-  //
-  // If no match is found the request is rejected with HTTP status
-  // code 401.
-  //
-  // JWT validation is skipped if the user's traffic request does not
-  // include a JWT.
-  repeated JWT jwts = 2;
+  repeated JSONWebToken jwts = 2;
 
   // This message defines a pattern to match a HTTP request.
   // A pattern is matched only if both http_method and path_match are matched.
   message HttpPattern {
-    // Define a HTTP method.
+    // Define a HTTP method. It should be one of valid HTTP methods.
+    // It should not be empty.
     string http_method = 1;
 
     // Defines a path match
@@ -172,13 +144,13 @@ message Config {
   // But some requests can be forwarded without JWT, such as OPTIONS for CORS
   // and some health checking paths.
   //
-  // Examples: bypass all CORS options requests.
+  // Examples: bypass all CORS options requests::
   //
   //   bypass_jwt:
   //      http_method: OPTIONS
   //      path_prefix: /
   //
-  // Examples: bypass /healthz check
+  // Examples: bypass /healthz check::
   //
   //   bypass_jwt:
   //      http_method: GET
