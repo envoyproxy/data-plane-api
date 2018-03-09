@@ -52,13 +52,24 @@ message JSONWebToken {
   // Example: https://www.googleapis.com/oauth2/v1/certs
   string jwks_uri = 3;
 
-  // If false, remove the JWT and do not forward to the backend.
-  google.protobuf.BoolValue forward_jwt = 4;
+  // This field is specific for Envoy proxy implementation.
+  // It is the cluster name in the Envoy "cluster_manager" config section.
+  // In order for Envoy to call "jwks_uri", its host has to be specified
+  // as a "cluster" in the config for each jwks_uri.
+  string jwks_uri_cluster = 4;
 
   // Duration after which the cached public key should be expired. The
   // system wide default is applied if no duration is explicitly
   // specified.
   google.protobuf.Duration public_key_cache_duration = 5;
+
+  // If false, the JWT is removed in the request after a success verification.
+  // Set it true, if don't want it to be removed.
+  google.protobuf.BoolValue forward_jwt = 6;
+
+  // If true, the request is allowed if the JWT verification fails
+  // Default is not allowed.
+  google.protobuf.BoolValue allow_failed_jwt = 7;
 
   // Two fields below define where to extract the JWT from an HTTP request.
   //
@@ -93,7 +104,7 @@ message JSONWebToken {
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated JwtHeader jwt_headers = 6;
+  repeated JwtHeader jwt_headers = 8;
 
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
@@ -107,13 +118,7 @@ message JSONWebToken {
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 7;
-
-  // This field is specific for Envoy proxy implementation.
-  // It is the cluster name in the Envoy "cluster_manager" config section.
-  // In order for Envoy to call "jwks_uri", its host has to be specified
-  // as a "cluster" in the config for each jwks_uri.
-  string jwks_uri_cluster = 8;
+  repeated string jwt_params = 9;
 }
 
 // This message specifies a header location to extract JWT token.
@@ -163,10 +168,6 @@ message JSONWebTokenAuthentication {
   // Default is not allowed.
   google.protobuf.BoolValue allow_missing_jwt = 2;
 
-  // If true, the request is allowed if JWT verification fails
-  // Default is not allowed.
-  google.protobuf.BoolValue allow_failed_jwt_verification = 3;
-
   // This applies when JWT is missing and allow_missing_jwt is false.
   // If a request doesn't have JWT, it will be rejected.
   // But some requests can be forwarded without JWT, such as OPTIONS for CORS
@@ -192,5 +193,5 @@ message JSONWebTokenAuthentication {
   //      - name: :path
   //        exact_match: /healthz
   //
-  repeated HttpMatcher bypass_jwt = 4;
+  repeated HttpMatcher bypass_jwt = 3;
 }
