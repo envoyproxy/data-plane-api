@@ -20,6 +20,7 @@ import "validate/validate.proto";
 //       bookstore_web.apps.googleusercontent.com
 //     jwks_uri: https://example.com/.well-known/jwks.json
 //
+// [#not-implemented-hide:]
 message JSONWebToken {
   // Identifies the principal that issued the JWT. See
   // `here <https://tools.ietf.org/html/rfc7519#section-4.1.1>`_.
@@ -116,6 +117,7 @@ message JSONWebToken {
 }
 
 // This is the Envoy filter config for JSON Web Token authentication.
+// [#not-implemented-hide:]
 message JSONWebTokenAuthentication {
   // List of JWT rules to valide.
   //
@@ -131,11 +133,11 @@ message JSONWebTokenAuthentication {
     // For example::
     //
     //    headers:
-    //       name: :method
-    //       value: OPTIONS
+    //    - name: :method
+    //      value: OPTIONS
     //    headers:
-    //       name: :path
-    //       regex_match: /.*
+    //    - name: :path
+    //      regex_match: /.*
     //
     repeated envoy.api.v2.route.HeaderMatcher headers = 6;
   }
@@ -148,21 +150,21 @@ message JSONWebTokenAuthentication {
   //
   //   bypass_jwt:
   //      headers:
-  //         name: :method
-  //         value: OPTIONS
+  //      - name: :method
+  //        value: OPTIONS
   //      headers:
-  //         name: :path
-  //         regex_match: /.*
+  //      - name: :path
+  //        regex_match: /.*
   //
   // Examples: bypass /healthz check::
   //
   //   bypass_jwt:
   //      headers:
-  //         name: :method
-  //         value: GET
+  //      - name: :method
+  //        value: GET
   //      headers:
-  //         name: :path
-  //         exact_match: /healthz
+  //      - name: :path
+  //        exact_match: /healthz
   //
   repeated HttpMatcher bypass_jwt = 3;
 }
