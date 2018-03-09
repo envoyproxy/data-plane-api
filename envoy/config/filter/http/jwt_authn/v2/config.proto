@@ -61,8 +61,8 @@ message JSONWebToken {
 
   // Two fields below define where to extract the JWT from an HTTP request.
   //
-  // If no explicit location is specified the following default
-  // locations are tried in order:
+  // If no explicit location is specified, the following default locations are
+  // tried in order:
   //
   // 1. The Authorization header using the Bearer schema.
   //    See `here <https://tools.ietf.org/html/rfc6750#section-2.1>`_
@@ -76,24 +76,38 @@ message JSONWebToken {
   //
   // Only the first JWT token is verified per request if multiple tokens are
   // specified.
+  //
   // If both jwt_headers and jwt_params are specified, jwt_headers will be
   // checked first.
   //
-  // JWT is sent in a request header. `jwt_headers` represents the
-  // header names. Their format is::
+
+  // This message specifies a header location to extract JWT token.
+  // A HTTP header format is::
   //
-  //    header_name: <JWT>
+  //    name: value_prefix<JWT>
   //
-  // For example, if config is::
+  message JwtHeader {
+    // The HTTP header name.
+    string name = 1;
+
+    // The value prefix. The value format is "prefix<token>"
+    // For example, for "Authorization: Bearer <token>",
+    // value_prefix="Bearer " with a space at the end.
+    string value_prefix = 2;
+  }
+
+  // Specify the HTTP headers to extract JWT token.
+  //
+  // For examples, following config::
   //
   //   jwt_headers:
-  //      x-goog-iap-jwt-assertion
+  //   -name: x-goog-iap-jwt-assertion
   //
-  // The header format will be::
+  // can be used to extract token from header::
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated string jwt_headers = 6;
+  repeated JwtHeader jwt_headers = 6;
 
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
@@ -101,7 +115,7 @@ message JSONWebToken {
   // For example, if config is::
   //
   //   jwt_params:
-  //      jwt_token
+  //     jwt_token
   //
   // The query parameter is::
   //
