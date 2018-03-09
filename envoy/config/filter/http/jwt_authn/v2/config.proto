@@ -5,6 +5,7 @@ package envoy.config.filter.http.jwt_authn.v2;
 
 import "envoy/api/v2/route/route.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 
 // JSON Web Token (JWT) token format for authentication is defined
@@ -52,7 +53,7 @@ message JSONWebToken {
   string jwks_uri = 3;
 
   // If false, remove the JWT and do not forward to the backend.
-  bool forward_jwt = 4;
+  google.protobuf.BoolValue forward_jwt = 4;
 
   // Duration after which the cached public key should be expired. The
   // system wide default is applied if no duration is explicitly
@@ -81,21 +82,6 @@ message JSONWebToken {
   // checked first.
   //
 
-  // This message specifies a header location to extract JWT token.
-  // A HTTP header format is::
-  //
-  //    name: value_prefix<JWT>
-  //
-  message JwtHeader {
-    // The HTTP header name.
-    string name = 1;
-
-    // The value prefix. The value format is "prefix<token>"
-    // For example, for "Authorization: Bearer <token>",
-    // value_prefix="Bearer " with a space at the end.
-    string value_prefix = 2;
-  }
-
   // Specify the HTTP headers to extract JWT token.
   //
   // For examples, following config::
@@ -121,16 +107,49 @@ message JSONWebToken {
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 8;
+  repeated string jwt_params = 7;
 
   // This field is specific for Envoy proxy implementation.
   // It is the cluster name in the Envoy "cluster_manager" config section.
   // In order for Envoy to call "jwks_uri", its host has to be specified
   // as a "cluster" in the config for each jwks_uri.
-  string jwks_uri_cluster = 7;
+  string jwks_uri_cluster = 8;
+}
+
+// This message specifies a header location to extract JWT token.
+// A HTTP header format is::
+//
+//    name: value_prefix<JWT>
+//
+message JwtHeader {
+  // The HTTP header name.
+  string name = 1;
+
+  // The value prefix. The value format is "prefix<token>"
+  // For example, for "Authorization: Bearer <token>",
+  // value_prefix="Bearer " with a space at the end.
+  string value_prefix = 2;
+}
+
+// This message defines a pattern to match a HTTP request.
+// A pattern is matched only if all "headers" are matched.
+message HttpMatcher {
+  // Specifies a set of headers should match on.
+  // For example::
+  //
+  //    headers:
+  //    - name: :method
+  //      value: OPTIONS
+  //    headers:
+  //    - name: :path
+  //      regex_match: /.*
+  //
+  repeated envoy.api.v2.route.HeaderMatcher headers = 1;
 }
 
 // This is the Envoy filter config for JSON Web Token authentication.
+// If a JWT is sucessfully verified, header "sec-istio-auth-userinfo" will
+// be added with base64 encoded JSON payload to be send to the backend.
 // [#not-implemented-hide:]
 message JSONWebTokenAuthentication {
   // List of JWT rules to valide.
@@ -138,24 +157,17 @@ message JSONWebTokenAuthentication {
   // If the request includes a JWT, it must match one of the JWT listed
   // here with the same issuer.
   //
-  repeated JSONWebToken jwts = 2;
+  repeated JSONWebToken jwts = 1;
 
-  // This message defines a pattern to match a HTTP request.
-  // A pattern is matched only if all "headers" are matched.
-  message HttpMatcher {
-    // Specifies a set of headers should match on.
-    // For example::
-    //
-    //    headers:
-    //    - name: :method
-    //      value: OPTIONS
-    //    headers:
-    //    - name: :path
-    //      regex_match: /.*
-    //
-    repeated envoy.api.v2.route.HeaderMatcher headers = 6;
-  }
+  // If true, the request is allowed if JWT is missing.
+  // Default is not allowed.
+  google.protobuf.BoolValue allow_missing_jwt = 2;
 
+  // If true, the request is allowed if JWT verification fails
+  // Default is not allowed.
+  google.protobuf.BoolValue allow_failed_jwt_verification = 3;
+
+  // This applies when JWT is missing and allow_missing_jwt is false.
   // If a request doesn't have JWT, it will be rejected.
   // But some requests can be forwarded without JWT, such as OPTIONS for CORS
   // and some health checking paths.
@@ -180,5 +192,5 @@ message JSONWebTokenAuthentication {
   //      - name: :path
   //        exact_match: /healthz
   //
-  repeated HttpMatcher bypass_jwt = 3;
+  repeated HttpMatcher bypass_jwt = 4;
 }
