@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-package envoy.config.filter.http.jwt_auth.v2;
+package envoy.config.filter.http.jwt_authn.v2;
 
 import "envoy/api/v2/route/route.proto";
 import "google/protobuf/duration.proto";
@@ -116,7 +116,7 @@ message JSONWebToken {
 }
 
 // This is the Envoy filter config for JSON Web Token authentication.
-message JSONWebTokenAuthenticationFilterConfig {
+message JSONWebTokenAuthentication {
   // List of JWT rules to valide.
   //
   // If the request includes a JWT, it must match one of the JWT listed
