@@ -13,7 +13,9 @@ import "validate/validate.proto";
 // See `OAuth2.0 <https://tools.ietf.org/html/rfc6749>`_ and
 // `OIDC1.0 <http://openid.net/connect>`_ for the authentication flow.
 //
-// Example,::
+// Example:
+//
+// .. code-block:: yaml
 //
 //     issuer: https://example.com
 //     audiences:
@@ -22,7 +24,7 @@ import "validate/validate.proto";
 //     jwks_uri: https://example.com/.well-known/jwks.json
 //
 // [#not-implemented-hide:]
-message JSONWebToken {
+message JsonWebToken {
   // Identifies the principal that issued the JWT. See
   // `here <https://tools.ietf.org/html/rfc7519#section-4.1.1>`_.
   // Usually a URL or an email address.
@@ -36,7 +38,9 @@ message JSONWebToken {
   // <https://tools.ietf.org/html/rfc7519#section-4.1.3>`_. that are allowed to
   // access. A JWT containing any of these audiences will be accepted.
   //
-  // Example::
+  // Example:
+  //
+  // .. code-block:: yaml
   //
   //     audiences:
   //     - bookstore_android.apps.googleusercontent.com
@@ -44,12 +48,17 @@ message JSONWebToken {
   //
   repeated string audiences = 2;
 
-  // URL of the provider's public key set to validate signature of the
-  // JWT. See `OpenID
+  // URL of the provider's public key server. The public key is used to validate
+  // signature of the JWT. See `OpenID
   // Discovery
   // <https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>`_
   //
-  // Example: https://www.googleapis.com/oauth2/v1/certs
+  // Example:
+  //
+  // .. code-block:: yaml
+  //
+  //    jwks_uri: https://www.googleapis.com/oauth2/v1/certs
+  //
   string jwks_uri = 3;
 
   // This field is specific for Envoy proxy implementation.
@@ -58,17 +67,17 @@ message JSONWebToken {
   // as a "cluster" in the config for each jwks_uri.
   string jwks_uri_cluster = 4;
 
-  // Duration after which the cached public key should be expired. The
-  // system wide default is applied if no duration is explicitly
-  // specified.
+  // Duration after which the cached public key should be expired. If not
+  // specified, default cache duration is 5 minutes.
   google.protobuf.Duration public_key_cache_duration = 5;
 
   // If false, the JWT is removed in the request after a success verification.
   // Set it true, if don't want it to be removed.
+  // Default value is false which is to remove JWT.
   google.protobuf.BoolValue forward_jwt = 6;
 
-  // If true, the request is allowed if the JWT verification fails
-  // Default is not allowed.
+  // If true, the request is allowed if the JWT verification fails.
+  // Default value is false; JWT verification failed request will be rejected.
   google.protobuf.BoolValue allow_failed_jwt = 7;
 
   // Two fields below define where to extract the JWT from an HTTP request.
@@ -97,8 +106,10 @@ message JSONWebToken {
   //
   // For examples, following config::
   //
+  // .. code-block:: yaml
+  //
   //   jwt_headers:
-  //   -name: x-goog-iap-jwt-assertion
+  //   - name: x-goog-iap-jwt-assertion
   //
   // can be used to extract token from header::
   //
@@ -111,8 +122,10 @@ message JSONWebToken {
   //
   // For example, if config is::
   //
+  // .. code-block:: yaml
+  //
   //   jwt_params:
-  //     jwt_token
+  //   - jwt_token
   //
   // The query parameter is::
   //
@@ -142,6 +155,8 @@ message HttpMatcher {
   // Specifies a set of headers should match on.
   // For example::
   //
+  // .. code-block:: yaml
+  //
   //    headers:
   //    - name: :method
   //      value: OPTIONS
@@ -162,7 +177,7 @@ message JSONWebTokenAuthentication {
   // If the request includes a JWT, it must match one of the JWT listed
   // here with the same issuer.
   //
-  repeated JSONWebToken jwts = 1;
+  repeated JsonWebToken jwts = 1;
 
   // If true, the request is allowed if JWT is missing.
   // Default is not allowed.
@@ -175,23 +190,27 @@ message JSONWebTokenAuthentication {
   //
   // Examples: bypass all CORS options requests::
   //
+  // .. code-block:: yaml
+  //
   //   bypass_jwt:
-  //      headers:
-  //      - name: :method
-  //        value: OPTIONS
-  //      headers:
-  //      - name: :path
-  //        regex_match: /.*
+  //   - headers:
+  //     - name: :method
+  //       value: OPTIONS
+  //   - headers:
+  //     - name: :path
+  //       regex_match: /.*
   //
   // Examples: bypass /healthz check::
   //
-  //   bypass_jwt:
-  //      headers:
-  //      - name: :method
-  //        value: GET
-  //      headers:
-  //      - name: :path
-  //        exact_match: /healthz
+  // .. code-block:: yaml
   //
-  repeated HttpMatcher bypass_jwt = 3;
+  //   bypass_jwt:
+  //   - headers:
+  //     - name: :method
+  //       value: GET
+  //   - headers:
+  //     - name: :path
+  //       exact_match: /healthz
+  //
+  repeated envoy.api.v2.route.RouteMatch bypass_jwt = 3;
 }
