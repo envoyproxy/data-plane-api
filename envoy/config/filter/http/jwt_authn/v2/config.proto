@@ -48,9 +48,9 @@ message JsonWebToken {
   //
   repeated string audiences = 2;
 
-  // URL of the provider's public key server. The public key is used to validate
-  // signature of the JWT. See `OpenID
-  // Discovery
+  // `Json web key set <https://tools.ietf.org/html/rfc7517#appendix-A>`_ URI.
+  // Json web key set is fetched from the URI to validate signature of the JWT.
+  // See `OpenID Discovery
   // <https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>`_
   //
   // Example:
