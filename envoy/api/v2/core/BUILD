@@ -80,6 +80,19 @@ api_go_proto_library(
 )
 
 api_proto_library(
+    name = "envoy_http_target",
+    srcs = ["envoy_http_target.proto"],
+    visibility = [
+        ":friends",
+    ],
+)
+
+api_go_proto_library(
+    name = "envoy_http_target",
+    proto = ":envoy_http_target",
+)
+
+api_proto_library(
     name = "grpc_service",
     srcs = ["grpc_service.proto"],
     visibility = [
