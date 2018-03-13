@@ -270,7 +270,7 @@ passed to subsequent filters. Meaning, the following Lua code is invalid:
 must be set. *body* is a string and supplies the optional response body. May be nil.
 
 metadata()
-^^^^^^^^^
+^^^^^^^^^^
 
 .. code-block:: lua
 
