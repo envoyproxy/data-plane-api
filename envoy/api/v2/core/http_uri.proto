@@ -4,11 +4,9 @@ package envoy.api.v2.core;
 
 import "validate/validate.proto";
 
-// When Envoy makes a HTTP call, two values are needed to specify the HTTP
-// target; "uri" for the HTTP URI and "cluster" for the cluster name in the
-// Envoy config.
+// Envoy external URI descriptor
 // [#not-implemented-hide:]
-message HttpURI {
+message HttpUri {
   // The HTTP server URI. It should be a full FQDN with protocol, host and path.
   //
   // Example:
@@ -19,39 +17,19 @@ message HttpURI {
   //
   string uri = 1 [(validate.rules).string.min_bytes = 1];
 
-  // Specify the endpoint. Only static cluster is supported for now.
-  oneof endpoint {
+  // Specify how `uri` is to be fetched. Today, this requires an explicit
+  // cluster, but in the future we may support dynamic cluster creation or
+  // inline DNS resolution. See `also
+  // <https://github.com/envoyproxy/envoy/issues/1606>`_.
+  oneof http_target_specifier {
     // A cluster is created in the Envoy "cluster_manager" config
     // section. This field specifies the cluster name.
-    //
-    // Example:  a jwks cluster in "cluster_manager" section of Envoy config.
-    //
-    // .. code-block:: json
-    //
-    //    {
-    //      "name": "jwt.www.googleapis.com|443",
-    //      "connect_timeout_ms": 1000,
-    //      "type": "strict_dns",
-    //      "lb_type": "round_robin",
-    //         "hosts": [
-    //            {
-    //              "url": "tcp://www.googleapis.com:443"
-    //            }
-    //          ],
-    //      "ssl_context": {},
-    //      "circuit_breakers": {
-    //         "default": {
-    //           "max_pending_requests": 10000,
-    //           "max_requests": 10000
-    //         }
-    //      }
-    //    }
     //
     // Example:
     //
     // .. code-block:: yaml
     //
-    //    cluster: jwt.www.googleapis.com|443
+    //    cluster: jwks_cluster
     //
     string cluster = 2;
   }
