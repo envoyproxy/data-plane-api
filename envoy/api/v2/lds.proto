@@ -132,4 +132,9 @@ message Listener {
   // case the original source and destination addresses and ports are preserved on accepted
   // connections. Requires Envoy to run with the *CAP_NET_ADMIN* capability. Defaults to false.
   bool transparent = 10;
+
+  // [#not-implemented-hide:] Whether the listener should set the IP_FREEBIND socket option. When
+  // this flag is set to true listeners can be bound to an IP address that is not configured on the
+  // system running Envoy. Defaults to false.
+  bool freebind = 11;
 }
