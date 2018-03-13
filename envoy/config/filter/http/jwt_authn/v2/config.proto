@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-package envoy.config.filter.http.jwt_authn.v2;
+package envoy.config.filter.http.jwtauthn.v2;
 
 import "envoy/api/v2/route/route.proto";
 import "google/protobuf/duration.proto";
@@ -24,7 +24,7 @@ import "validate/validate.proto";
 //     jwks_uri: https://example.com/.well-known/jwks.json
 //
 // [#not-implemented-hide:]
-message JsonWebToken {
+message JWT {
   // Identifies the principal that issued the JWT. See
   // `here <https://tools.ietf.org/html/rfc7519#section-4.1.1>`_.
   // Usually a URL or an email address.
@@ -53,32 +53,54 @@ message JsonWebToken {
   // See `OpenID Discovery
   // <https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>`_
   //
-  // Example:
+  // Before Envoy supports dynamic cluster, a dedicated cluster must
+  // be created in the "cluster_manager" envoy config section for the host part
+  // of the URI, its name must be appended to jwks_uri as "?cluster=name".
+  //
+  // Example:  jwks envoy cluster:
+  //
+  // .. code-block:: json
+  //
+  //    {
+  //      "name": "jwt.www.googleapis.com|443",
+  //      "connect_timeout_ms": 1000,
+  //      "type": "strict_dns",
+  //      "lb_type": "round_robin",
+  //         "hosts": [
+  //            {
+  //              "url": "tcp://www.googleapis.com:443"
+  //            }
+  //          ],
+  //      "ssl_context": {},
+  //      "circuit_breakers": {
+  //         "default": {
+  //           "max_pending_requests": 10000,
+  //           "max_requests": 10000
+  //         }
+  //      }
+  //    }
+  //
+  // Example:  jwks_uri:
   //
   // .. code-block:: yaml
   //
-  //    jwks_uri: https://www.googleapis.com/oauth2/v1/certs
+  //    jwks_uri:
+  //    https://www.googleapis.com/oauth2/v1/certs?cluster=jwt.www.googleapis.com|443
   //
   string jwks_uri = 3;
 
-  // This field is specific for Envoy proxy implementation.
-  // It is the cluster name in the Envoy "cluster_manager" config section.
-  // In order for Envoy to call "jwks_uri", its host has to be specified
-  // as a "cluster" in the config for each jwks_uri.
-  string jwks_uri_cluster = 4;
-
   // Duration after which the cached public key should be expired. If not
   // specified, default cache duration is 5 minutes.
-  google.protobuf.Duration public_key_cache_duration = 5;
+  google.protobuf.Duration public_key_cache_duration = 4;
 
   // If false, the JWT is removed in the request after a success verification.
   // Set it true, if don't want it to be removed.
   // Default value is false which is to remove JWT.
-  google.protobuf.BoolValue forward_jwt = 6;
+  bool forward_jwt = 5;
 
   // If true, the request is allowed if the JWT verification fails.
   // Default value is false; JWT verification failed request will be rejected.
-  google.protobuf.BoolValue allow_failed_jwt = 7;
+  bool allow_failed_jwt = 6;
 
   // Two fields below define where to extract the JWT from an HTTP request.
   //
@@ -115,7 +137,7 @@ message JsonWebToken {
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated JwtHeader jwt_headers = 8;
+  repeated JwtHeader jwt_headers = 7;
 
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
@@ -131,7 +153,7 @@ message JsonWebToken {
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 9;
+  repeated string jwt_params = 8;
 }
 
 // This message specifies a header location to extract JWT token.
@@ -171,17 +193,17 @@ message HttpMatcher {
 // If a JWT is sucessfully verified, header "sec-istio-auth-userinfo" will
 // be added with base64 encoded JSON payload to be send to the backend.
 // [#not-implemented-hide:]
-message JSONWebTokenAuthentication {
+message JWTAuthentication {
   // List of JWT rules to valide.
   //
   // If the request includes a JWT, it must match one of the JWT listed
   // here with the same issuer.
   //
-  repeated JsonWebToken jwts = 1;
+  repeated JWT jwt_rules = 1;
 
   // If true, the request is allowed if JWT is missing.
   // Default is not allowed.
-  google.protobuf.BoolValue allow_missing_jwt = 2;
+  bool allow_missing_jwt = 2;
 
   // This applies when JWT is missing and allow_missing_jwt is false.
   // If a request doesn't have JWT, it will be rejected.
