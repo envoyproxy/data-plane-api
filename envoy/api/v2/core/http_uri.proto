@@ -1,4 +1,3 @@
-// [#protodoc-title: Protocol options]
 
 syntax = "proto3";
 
