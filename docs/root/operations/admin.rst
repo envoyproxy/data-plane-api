@@ -14,9 +14,11 @@ modify different aspects of the server:
   The administration interface in its current form both allows destructive operations to be
   performed (e.g., shutting down the server) as well as potentially exposes private information
   (e.g., stats, cluster names, cert info, etc.). It is **critical** that access to the
-  administration interface is only allowed via a secure network. This involves setting up
-  an appropriate firewall or optimally only allowing access to the administration listener via
-  localhost. This can be accomplished with a v2 configuration like the following:
+  administration interface is only allowed via a secure network. It is also **critical** that hosts
+  that access the administration interface are **only** attached to the secure network (i.e., to
+  avoid CSRF attacks). This involves setting up an appropriate firewall or optimally only allowing
+  access to the administration listener via localhost. This can be accomplished with a v2
+  configuration like the following:
 
   .. code-block:: yaml
 
