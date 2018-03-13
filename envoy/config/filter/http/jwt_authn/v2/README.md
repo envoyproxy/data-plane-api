@@ -10,9 +10,9 @@
     - Issuer (and audience) should be valid and are specified in the config.
 
 3. In order to verify JWT, [JWKS](https://tools.ietf.org/html/rfc7517#appendix-A) can be fetched from a remote server by the filter. JWKS will be cached by Envoy.
-    
+
 3. If JWT is valid, the user is authenticated and the request will be passed to the backend server. Verified JWT payload will be added as a new HTTP header to be passed to the backend server, and original JWT will be removed. If JWT is not valid, the request will be rejected with an error message.
-   
+
 ## The locations to extract JWT
 
 JWT will be extracted from the HTTP headers or query parameters. If not extract location specified, the default location is the HTTP header:
@@ -32,7 +32,7 @@ If a JWT has been suceessfully verified, its payload will be passed to the backe
 
 ## Fetch remote JWKS.
 
-JWKS are needed to verify JWT.  They can be fetched from remote servers by HTTP/HTTPS.  Before Envoy can support dynamic cluster, users need to create a dedicated cluster in the "cluster_manager" Envoy config section for each remote JWKS server and specify jwks_uri in the format as:
+JWKS are needed to verify JWT. They can be fetched from remote servers by HTTP/HTTPS. Before Envoy can support dynamic cluster, users need to create a dedicated cluster in the "cluster_manager" Envoy config section for each remote JWKS server and specify jwks_uri in the format as:
 ```
 jwks_uri: JWKS_URI?cluster=cluster_name
 ```
