@@ -1,0 +1,60 @@
+// [#protodoc-title: Protocol options]
+
+syntax = "proto3";
+
+package envoy.api.v2.core;
+
+import "validate/validate.proto";
+
+// When Envoy makes a HTTP call, two values are needed to specify the HTTP
+// target; "uri" for the HTTP URI and "cluster" for the cluster name in the
+// Envoy config.
+// [#not-implemented-hide:]
+message HttpURI {
+  // The HTTP server URI. It should be a full FQDN with protocol, host and path.
+  //
+  // Example:
+  //
+  // .. code-block:: yaml
+  //
+  //    uri: https://www.googleapis.com/oauth2/v1/certs
+  //
+  string uri = 1 [(validate.rules).string.min_bytes = 1];
+
+  // Specify the cluster. Only static cluster is supported for now.
+  oneof cluster {
+    // A static cluster is created in the Envoy "cluster_manager" config
+    // section. This field specifies the static cluster name.
+    //
+    // Example:  a jwks cluster in "cluster_manager" section of Envoy config.
+    //
+    // .. code-block:: json
+    //
+    //    {
+    //      "name": "jwt.www.googleapis.com|443",
+    //      "connect_timeout_ms": 1000,
+    //      "type": "strict_dns",
+    //      "lb_type": "round_robin",
+    //         "hosts": [
+    //            {
+    //              "url": "tcp://www.googleapis.com:443"
+    //            }
+    //          ],
+    //      "ssl_context": {},
+    //      "circuit_breakers": {
+    //         "default": {
+    //           "max_pending_requests": 10000,
+    //           "max_requests": 10000
+    //         }
+    //      }
+    //    }
+    //
+    // Example:
+    //
+    // .. code-block:: yaml
+    //
+    //    static_cluster: jwt.www.googleapis.com|443
+    //
+    string static_cluster = 2;
+  }
+}
