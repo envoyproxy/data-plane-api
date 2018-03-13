@@ -36,16 +36,16 @@ message Http1ProtocolOptions {
 
   // [#not-implemented-hide:]
   // Handle incoming HTTP/1.0 requests.
-  // This is off by default, and not fully HTTP/1.0 compliant. There is planned
-  // support for HTTP/1.0 style connect logic, dechunking, and handling lack of
-  // client host iff the default_host field is configured.
+  // This is off by default, and not fully HTTP/1.0 compliant. There is planned support for HTTP/1.0
+  // style connect logic, dechunking, and handling lack of client host iff the default_host field is
+  // configured.
   // Any requests for further 1.0 compatibility can be added here:
   // https://github.com/envoyproxy/envoy/issues/170
-  google.protobuf.BoolValue http_1_0_compatibility_mode = 2;
+  bool accept_http_10 = 2;
 
   // [#not-implemented-hide:]
-  // A default host. This is highly suggested if http_1_0_compatibility_mode is
-  // turned on as Envoy does not fully support HTTP/1.0 without a Host header.
+  // A default host. This is highly suggested if accept_http_10 is true on as Envoy does not
+  // otherwise support HTTP/1.0 without a Host header.
   string default_host = 3;
 }
 
