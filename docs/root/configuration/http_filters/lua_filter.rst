@@ -269,6 +269,17 @@ passed to subsequent filters. Meaning, the following Lua code is invalid:
 *headers* is a table of key/value pairs to send. Note that the *:status* header
 must be set. *body* is a string and supplies the optional response body. May be nil.
 
+metadata()
+^^^^^^^^^
+
+.. code-block:: lua
+
+  headers = handle:metadata()
+
+Returns the current route entry metadata.
+
+Returns a :ref:`metadata object <config_http_filters_lua_metadata_wrapper>`.
+
 .. _config_http_filters_lua_header_wrapper:
 
 Header object API
@@ -365,3 +376,29 @@ Get bytes from the buffer. By default Envoy will not copy all buffer bytes to Lu
 cause a buffer segment to be copied. *index* is an integer and supplies the buffer start index to
 copy. *length* is an integer and supplies the buffer length to copy. *index* + *length* must be
 less than the buffer length.
+
+.. _config_http_filters_lua_metadata_wrapper:
+
+Metadata object API
+-------------------
+
+get()
+^^^^^
+
+.. code-block:: lua
+
+  metadata:get(key)
+
+Gets a metadata. *key* is a string that suplies the filter key. Returns a table that is the
+representation of a *filter_metadata* entry struct.
+
+__pairs()
+^^^^^^^^^
+
+.. code-block:: lua
+
+  for key, value in pairs(metadata) do
+  end
+
+Iterates through every *filter_metadata* entry. *key* is a string that supplies a *filter_metadata*
+key. *value* is *filter_metadata* entry struct.
