@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package envoy.api.v2.core;
@@ -20,10 +19,10 @@ message HttpURI {
   //
   string uri = 1 [(validate.rules).string.min_bytes = 1];
 
-  // Specify the cluster. Only static cluster is supported for now.
-  oneof cluster {
-    // A static cluster is created in the Envoy "cluster_manager" config
-    // section. This field specifies the static cluster name.
+  // Specify the endpoint. Only static cluster is supported for now.
+  oneof endpoint {
+    // A cluster is created in the Envoy "cluster_manager" config
+    // section. This field specifies the cluster name.
     //
     // Example:  a jwks cluster in "cluster_manager" section of Envoy config.
     //
@@ -52,8 +51,8 @@ message HttpURI {
     //
     // .. code-block:: yaml
     //
-    //    static_cluster: jwt.www.googleapis.com|443
+    //    cluster: jwt.www.googleapis.com|443
     //
-    string static_cluster = 2;
+    string cluster = 2;
   }
 }
