@@ -35,7 +35,6 @@ message TcpProxy {
   //
   string cluster = 2;
 
-  // [#not-implemented-hide:]
   // Optional endpoint metadata match criteria. Only endpoints in the upstream
   // cluster with metadata matching that set in metadata_match will be
   // considered. The filter name should be specified as *envoy.lb*.
