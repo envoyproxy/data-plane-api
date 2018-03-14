@@ -19,7 +19,8 @@ statistics. Any ``:`` character in the stats name is replaced with ``_``.
   cluster_added, Counter, Total clusters added (either via static config or CDS)
   cluster_modified, Counter, Total clusters modified (via CDS)
   cluster_removed, Counter, Total clusters removed (via CDS)
-  total_clusters, Gauge, Number of currently loaded clusters
+  active_clusters, Gauge, Number of currently active (warmed) clusters
+  warming_clusters, Gauge, Number of currently warming (not active) clusters
 
 Every cluster has a statistics tree rooted at *cluster.<name>.* with the following statistics:
 
