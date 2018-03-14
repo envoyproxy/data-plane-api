@@ -62,6 +62,11 @@ message BindConfig {
   // The address to bind to when creating a socket.
   SocketAddress source_address = 1
       [(validate.rules).message.required = true, (gogoproto.nullable) = false];
+
+  // [#not-implemented-hide:] Whether to set the IP_FREEBIND option when creating the socket. If
+  // set, allows the source_address specified to be an address that is not configured on the system
+  // running Envoy. Defaults to false.
+  bool freebind = 2;
 }
 
 // Addresses specify either a logical or physical address and port, which are

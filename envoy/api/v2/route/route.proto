@@ -90,7 +90,7 @@ message VirtualHost {
   repeated core.HeaderValueOption response_headers_to_add = 10;
 
   // Specifies a list of HTTP headers that should be removed from each response
-  // handle by this virtual host.
+  // handled by this virtual host.
   repeated string response_headers_to_remove = 11;
 
   // Indicates that the virtual host has a CORS policy.
@@ -163,29 +163,26 @@ message WeightedCluster {
     // considered. The filter name should be specified as *envoy.lb*.
     core.Metadata metadata_match = 3;
 
-    // [#not-implemented-hide:]
     // Specifies a list of headers to be added to requests when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     // Headers specified at this level are applied before headers from the enclosing
     // :ref:`envoy_api_msg_route.RouteAction`,
     // :ref:`envoy_api_msg_route.VirtualHost`, and
-    // :ref:`envoy_api_msg_route.RouteConfiguration`. For more information, including details on
+    // :ref:`envoy_api_msg_RouteConfiguration`. For more information, including details on
     // header value syntax, see the documentation on :ref:`custom request headers
     // <config_http_conn_man_headers_custom_request_headers>`.
     repeated core.HeaderValueOption request_headers_to_add = 4;
 
-    // [#not-implemented-hide:]
     // Specifies a list of headers to be added to responses when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     // Headers specified at this level are applied before headers from the enclosing
     // :ref:`envoy_api_msg_route.RouteAction`,
     // :ref:`envoy_api_msg_route.VirtualHost`, and
-    // :ref:`envoy_api_msg_route.RouteConfiguration`. For more information, including details on
+    // :ref:`envoy_api_msg_RouteConfiguration`. For more information, including details on
     // header value syntax, see the documentation on :ref:`custom request headers
     // <config_http_conn_man_headers_custom_request_headers>`.
     repeated core.HeaderValueOption response_headers_to_add = 5;
 
-    // [#not-implemented-hide:]
     // Specifies a list of headers to be removed from responses when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     repeated string response_headers_to_remove = 6;
