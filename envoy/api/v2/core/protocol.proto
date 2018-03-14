@@ -39,8 +39,8 @@ message Http1ProtocolOptions {
   // This is off by default, and not fully HTTP/1.0 compliant. There is planned support for HTTP/1.0
   // style connect logic, dechunking, and handling lack of client host iff the default_host field is
   // configured.
-  // Any requests for further 1.0 compatibility can be added here:
-  // https://github.com/envoyproxy/envoy/issues/170
+  // Any requests for further 1.0 compatibility can be added `here
+  // <https://github.com/envoyproxy/envoy/issues/170`_
   bool accept_http_10 = 2;
 
   // [#not-implemented-hide:]
