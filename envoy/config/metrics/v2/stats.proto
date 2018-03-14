@@ -165,9 +165,5 @@ message DogStatsdSink {
     // The UDP address of a running DogStatsD compliant listener. If specified,
     // statistics will be flushed to this address.
     envoy.api.v2.core.Address address = 1;
-
-    // The name of a cluster that is DogStatsD compliant TCP listener. If specified,
-    // Envoy will connect to this cluster to flush statistics.
-    string tcp_cluster_name = 2;
   }
 }
