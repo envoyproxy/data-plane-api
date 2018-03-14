@@ -13,6 +13,7 @@ Health checking
     "type": "...",
     "timeout_ms": "...",
     "interval_ms": "...",
+    "no_traffic_interval_ms": "...",
     "unhealthy_threshold": "...",
     "healthy_threshold": "...",
     "path": "...",
@@ -36,6 +37,10 @@ timeout_ms
 
 interval_ms
   *(required, integer)* The interval between health checks in milliseconds.
+
+no_traffic_interval_ms
+  *(sometimes required, integer)* The no traffic interval between health checks in milliseconds.
+  Default value is 60000ms (60 seconds).
 
 unhealthy_threshold
   *(required, integer)* The number of unhealthy health checks required before a host is marked

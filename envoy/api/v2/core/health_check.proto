@@ -124,6 +124,9 @@ message HealthCheck {
     // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
   }
+
+  // The no traffic interval between health checks. Default value is 60 seconds.
+  google.protobuf.Duration no_traffic_interval = 2;
 }
 
 // [#not-implemented-hide:] Part of HDS.
