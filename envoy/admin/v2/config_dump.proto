@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.admin;
+package envoy.admin.v2;
 
 import "google/protobuf/any.proto";
 import "envoy/api/v2/rds.proto";
@@ -11,6 +11,9 @@ import "gogoproto/gogo.proto";
 
 // The /config_dump admin endpoint uses this wrapper message to maintain and serve arbitrary
 // configuration information from any component in Envoy.
+// TODO(jsedgwick) In the future, we may want to formalize this further with an RPC for config_dump,
+// and perhaps even with an RPC per config type. That strategy across all endpoints will allow for
+// more flexibility w.r.t. protocol, serialization, parameters, etc.
 message ConfigDump {
   // This map is serialized and dumped in its entirety at the /config_dump endpoint.
   //
