@@ -35,11 +35,11 @@ message Http1ProtocolOptions {
   google.protobuf.BoolValue allow_absolute_url = 1;
 
   // [#not-implemented-hide:]
-  // Handle incoming HTTP/1.0 requests.
-  // This is off by default, and not fully HTTP/1.0 compliant. There is planned support for HTTP/1.0
+  // Handle incoming HTTP/1.0 and HTTP 0.9 requests.
+  // This is off by default, and not fully standards compliant. There support for pre-HTTP/1.1
   // style connect logic, dechunking, and handling lack of client host iff the default_host field is
   // configured.
-  // Any requests for further 1.0 compatibility can be added `here
+  // Any requests for spec compliance can be added `here
   // <https://github.com/envoyproxy/envoy/issues/170`_
   bool accept_http_10 = 2;
 
