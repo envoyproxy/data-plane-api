@@ -23,6 +23,13 @@ are supported. Since Envoy has plugging mechanism to support different statistic
 API, multiple stats sinks are supported. Some of them emit tagged/multiple dimentions statistics.
 They are documented in detail in the configuration guide.
 
+Envoy emits three types of values as statistics:
+
+* **Counters**: Unsigned integers that only increase and never decrease. E.g., total requests.
+* **Gauges**: Unsigned integers that both increase and decrease. E.g., currently active requests.
+* **Histograms**: Unsigned integers that ultimately will yield summarized percentile values. E.g.,
+  upstream request time.
+
 Internally, counters and gauges are batched and periodically flushed to improve performance.
 Histograms are written as they are received. Note: what were previously referred to as timers have
 become histograms as the only difference between the two representations was the units.
