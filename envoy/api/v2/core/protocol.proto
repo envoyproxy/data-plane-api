@@ -44,7 +44,7 @@ message Http1ProtocolOptions {
   // [#not-implemented-hide:]
   // A default host for HTTP/1.0 requests. This is highly suggested if *accept_http_10* is true as
   // Envoy does not otherwise support HTTP/1.0 without a Host header.
-  // This is a no-op if accept_http_10 is not true.
+  // This is a no-op if *accept_http_10* is not true.
   string default_host_for_http_10 = 3;
 }
 
