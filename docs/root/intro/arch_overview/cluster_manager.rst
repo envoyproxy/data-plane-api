@@ -38,3 +38,12 @@ that clusters do not become available until the following operations have taken 
 
 The previous items ensure that Envoy has an accurate view of a cluster before it begins using it
 for traffic serving.
+
+When discussing cluster warming, the cluster "becoming available" means:
+
+* For newly added clusters, the cluster will not appear to exist to the rest of Envoy until it has
+  been warmed. I.e., HTTP routes that reference the cluster will result in either a 404 or 503
+  (depending on configuration).
+* For updated clusters, the old cluster will continue to exist and serve traffic. When the new
+  cluster has been warmed, it will be atomically swapped with the old cluster such that no
+  traffic interruptions take place.
