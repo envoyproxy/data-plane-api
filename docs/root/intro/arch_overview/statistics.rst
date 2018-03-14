@@ -4,12 +4,14 @@ Statistics
 ==========
 
 One of the primary goals of Envoy is to make the network understandable. Envoy emits a large number
-of statistics depending on how it is configured. Generally the statistics fall into two categories:
+of statistics depending on how it is configured. Generally the statistics fall into three categories:
 
 * **Downstream**: Downstream statistics relate to incoming connections/requests. They are emitted by
   listeners, the HTTP connection manager, the TCP proxy filter, etc.
 * **Upstream**: Upstream statistics relate to outgoing connections/requests. They are emitted by
   connection pools, the router filter, the TCP proxy filter, etc.
+* **Server**: Server statistics describes how the Envoy server instance is working. Statistics like
+  server uptime or amount of allocated memory are categorized here.
 
 A single proxy scenario typically involves both downstream and upstream statistics. The two types
 can be used to get a detailed picture of that particular network hop. Statistics from the entire
