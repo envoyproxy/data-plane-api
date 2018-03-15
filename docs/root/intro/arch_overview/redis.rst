@@ -58,9 +58,10 @@ Supported commands
 At the protocol level, pipelines are supported. MULTI (transaction block) is not.
 Use pipelining wherever possible for the best performance.
 
-At the command level, Envoy only supports commands that can be reliably hashed to a server.
-Therefore, all supported commands contain a key. Supported commands are functionally identical to
-the original Redis command except possibly in failure scenarios.
+At the command level, Envoy only supports commands that can be reliably hashed to a server. PING
+is the only exception, which Envoy responds to immediately with PONG. Arguments to PING are not
+allowed. All other supported commands must contain a key. Supported commands are functionally
+identical to the original Redis command except possibly in failure scenarios.
 
 For details on each command's usage see the official
 `Redis command reference <https://redis.io/commands>`_.
@@ -69,6 +70,7 @@ For details on each command's usage see the official
   :header: Command, Group
   :widths: 1, 1
 
+  PING, Connection
   DEL, Generic
   DUMP, Generic
   EXISTS, Generic
