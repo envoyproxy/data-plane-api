@@ -18,7 +18,7 @@ can be used to get a detailed picture of that particular network hop. Statistics
 mesh give a very detailed picture of each hop and overall network health. The statistics emitted are
 documented in detail in the operations guide.
 
-In v1 API, Envoy only supports statsd as the statistics output format. Both TCP and UDP statsd
+In the v1 API, Envoy only supports statsd as the statistics output format. Both TCP and UDP statsd
 are supported. Since Envoy has plugging mechanism to support different statistics sinks, as of v2
 API, multiple stats sinks are supported. Some of them emit tagged/multiple dimentions statistics.
 They are documented in detail in the configuration guide.
