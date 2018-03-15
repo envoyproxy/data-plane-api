@@ -23,9 +23,9 @@ are supported. As of the v2 API, Envoy has the ability to support custom, plugga
 standard sink implementations are included in Envoy. Some sinks also support emitting statistics
 with tags/dimensions.
 
-Envoy's tagged statistics have the following characteristic. Within Envoy, statistics have canonical
-string representations as their name. The statistic name is dynamically stripped to produce tags.
-Users can configure the behavior via Tag Specifier configuration.
+Within Envoy and throughout the documentation, statistics are identified by a canonical string
+representation. The dynamic portions of these strings are stripped to become tags. Users can
+configure this behavior via the Tag Specifier configuration.
 
 Those three types of values are emitted as statistics:
 
