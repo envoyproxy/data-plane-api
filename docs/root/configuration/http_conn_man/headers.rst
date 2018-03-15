@@ -391,7 +391,7 @@ x-b3-sampled
 ------------
 
 The *x-b3-sampled* HTTP header is used by the Zipkin tracer in Envoy.
-When the Sampled flag is 1, the soan will be reported to the tracing
+When the Sampled flag is either not specified or set to 1, the span will be reported to the tracing
 system. Once Sampled is set to 0 or 1, the same
 value should be consistently sent downstream. See more on zipkin tracing
 `here <https://github.com/openzipkin/b3-propagation>`.
