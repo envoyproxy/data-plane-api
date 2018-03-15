@@ -167,4 +167,6 @@ message DogStatsdSink {
     // statistics will be flushed to this address.
     envoy.api.v2.core.Address address = 1;
   }
+
+  reserved 2;
 }
