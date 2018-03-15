@@ -11,7 +11,7 @@ Quick Start
 -----------
 
 This Quick Start runs the example quickly using files in the Envoy repo. The sections below explain
-the configuation file and execution steps in detail.
+the configuration file and execution steps in detail.
 
 Copy both :repo:`configs/Dockerfile` and
 :repo:`configs/google_com_proxy.v2.yaml` to the same directory on your local
@@ -27,10 +27,14 @@ and copy a basic Envoy configuration into the container. This basic
 configuration tells Envoy to route incoming requests to \*.google.com.
 
 
-Simple Configuration
---------------------
+Configuration Walkthrough
+-------------------------
 
-Envoy can be configured using a single YAML file passed in as an argument on the command line.
+Envoy can be configured both statically and dynamically.
+In the static configuration model, a YAML configuration file is used, which is passed
+as an argument on the command line.
+Envoy also has an extensive set of APIs that can be used for dynamic configuration.
+In this section, we'll walk through a simple static configuration.
 
 Below is the `google_com_proxy.v2.yaml` file.
 
@@ -110,8 +114,8 @@ Let's go through each section in detail.
 
 ..
 
-  The specification of the :ref:`listeners <envoy_api_file_envoy/api/v2/lds.proto>`. One or more
-  listeners can be specified as members of ``listeners``.
+  The ``listeners`` key specifies a list of :ref:`listeners <arch_overview_listeners>`. You can refer to the
+  :ref:`listener configuration <envoy_api_file_envoy/api/v2/lds.proto>` details.
 
   The ``name`` key uniquely identifies the listener.
 
@@ -120,7 +124,7 @@ Let's go through each section in detail.
   which in this case is simply `0.0.0.0:10000`.
 
   The ``filter_chains`` key is required and specifies the list of filter chains to
-  consider for this listener. The
+  consider for this listener.
   :ref:`FilterChain <envoy_api_msg_listener.FilterChain>` with the most specific
   :ref:`FilterChainMatch <envoy_api_msg_listener.FilterChainMatch>` criteria is used on a
   connection.
@@ -134,6 +138,8 @@ Let's go through each section in detail.
 ..
 
   The filter chain consists of a list of ``filters``.
+  Filters can be :ref:`network (L3/L4) filters <arch_overview_network_filters>`, the
+  :ref:`HTTP Connection Manager <arch_overview_http_conn_man>`, or :ref:`HTTP filters <arch_overview_http_filters>`.
 
   The ``name`` specifies a supported filter.
   Envoy has several built in filters that start with `envoy`. The specified filter is the
@@ -229,31 +235,5 @@ Let's go through each section in detail.
   The ``tls_context`` key specifies the :ref:`TLS configuration <envoy_api_msg_auth.UpstreamTlsContext>`.
   for connections to the upstream cluster. If no TLS
   configuration is specified, TLS will not be used for new connections.
-
-
-Using the Envoy Docker Image
-----------------------------
-
-Create a simple Dockerfile to execute Envoy, which assumes that envoy.yaml (described above) is in your local directory.
-You can refer to the :ref:`Command line options <operations_cli>`.
-
-.. code-block:: none
-
-  FROM envoyproxy/envoy:latest
-  RUN apt-get update
-  COPY envoy.yaml /etc/envoy.yaml
-  CMD /usr/local/bin/envoy -c /etc/envoy.yaml
-
-Build the Docker image that runs your configuration using::
-
-  $ docker build -t envoy:v1
-
-And now you can execute it with::
-
-  $ docker run -d --name envoy -p 9901:9901 -p 10000:10000 envoy:v1
-
-And finally test is using::
-
-  $ curl -v localhost:10000
 
 
