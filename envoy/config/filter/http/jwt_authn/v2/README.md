@@ -32,9 +32,10 @@ If a JWT has been suceessfully verified, its payload will be passed to the backe
 
 ## Fetch remote JWKS.
 
-JWKS are needed to verify JWT. They can be fetched from remote servers by HTTP/HTTPS. Before Envoy can support dynamic cluster, users need to create a dedicated cluster in the "cluster_manager" Envoy config section for each remote JWKS server and specify the cluster name in the jwks_uri_cluster field.
+JWKS are needed to verify JWT. They can be fetched from remote servers by HTTP/HTTPS. Before Envoy can support dynamic cluster, users need to create a dedicated cluster in the "cluster_manager" Envoy config section for each remote JWKS server and specify the cluster name in the jwks_uri.cluster field.
 ```
-jwks_uri_cluster: cluster_name
+jwks_uri:
+   cluster: cluster_name
 ```
 
 ## Example config.
@@ -73,8 +74,10 @@ Here is the Envoy HTTP filter config example:
        "jwt_rules": [
          {
            "issuer": "628645741881-noabiu23f5a8m8ovd8ucv698lj78vv0l@developer.gserviceaccount.com",
-           "jwks_uri": "http://localhost:8081/",
-           "jwks_uri_cluster": "jwks_cluster",
+           "jwks_uri": {
+              "uri": "http://localhost:8081/",
+              "cluster": "jwks_cluster",
+           }
          }
        ]
     }

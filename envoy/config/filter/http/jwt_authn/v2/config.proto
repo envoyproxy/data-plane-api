@@ -3,9 +3,9 @@ syntax = "proto3";
 
 package envoy.config.filter.http.jwtauthn.v2;
 
+import "envoy/api/v2/core/http_uri.proto";
 import "envoy/api/v2/route/route.proto";
 import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
 import "validate/validate.proto";
 
 // JSON Web Token (JWT) token format for authentication is defined
@@ -57,59 +57,24 @@ message JWT {
   //
   // .. code-block:: yaml
   //
-  //    jwks_uri: https://www.googleapis.com/oauth2/v1/certs
+  //    jwks_uri:
+  //    - uri: https://www.googleapis.com/oauth2/v1/certs
+  //      cluster: jwt.www.googleapis.com|443
   //
-  string jwks_uri = 3;
-
-  // This field is specific for Envoy proxy implementation.
-  // It is the cluster name in the Envoy "cluster_manager" config section.
-  // In order for Envoy to call "jwks_uri", its host has to be specified
-  // as a "cluster" in the config for each jwks_uri.
-  //
-  // Example:  jwks cluster in "cluster_manager" section of Envoy config.
-  //
-  // .. code-block:: json
-  //
-  //    {
-  //      "name": "jwt.www.googleapis.com|443",
-  //      "connect_timeout_ms": 1000,
-  //      "type": "strict_dns",
-  //      "lb_type": "round_robin",
-  //         "hosts": [
-  //            {
-  //              "url": "tcp://www.googleapis.com:443"
-  //            }
-  //          ],
-  //      "ssl_context": {},
-  //      "circuit_breakers": {
-  //         "default": {
-  //           "max_pending_requests": 10000,
-  //           "max_requests": 10000
-  //         }
-  //      }
-  //    }
-  //
-  // Example:  jwks_uri_cluster:
-  //
-  // .. code-block:: yaml
-  //
-  //    jwks_uri: https://www.googleapis.com/oauth2/v1/certs
-  //    jwks_uri_cluster: jwt.www.googleapis.com|443
-  //
-  string jwks_uri_cluster = 4;
+  envoy.api.v2.core.HttpUri jwks_uri = 3;
 
   // Duration after which the cached public key should be expired. If not
   // specified, default cache duration is 5 minutes.
-  google.protobuf.Duration public_key_cache_duration = 5;
+  google.protobuf.Duration public_key_cache_duration = 4;
 
   // If false, the JWT is removed in the request after a success verification.
   // Set it true, if don't want it to be removed.
   // Default value is false which is to remove JWT.
-  bool forward_jwt = 6;
+  bool forward_jwt = 5;
 
   // If true, the request is allowed if the JWT verification fails.
   // Default value is false; JWT verification failed request will be rejected.
-  bool allow_failed_jwt = 7;
+  bool allow_failed_jwt = 6;
 
   // Two fields below define where to extract the JWT from an HTTP request.
   //
@@ -146,7 +111,7 @@ message JWT {
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated JwtHeader jwt_headers = 8;
+  repeated JwtHeader jwt_headers = 7;
 
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
@@ -162,7 +127,7 @@ message JWT {
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 9;
+  repeated string jwt_params = 8;
 
   // Following two fields specify if the payload of a successfully verified
   // JWT should be forwarded to the backend, and how to forward it.
@@ -170,12 +135,12 @@ message JWT {
 
   // If false, JWT payload will be forwarded. This is the default value.
   // If true, it is not forwarded.
-  bool not_jwt_payload = 10;
+  bool not_jwt_payload = 9;
 
   // This field specifies the header name to forward JWT payload.
   // If it is not specified, the name "sec-istio-auth-userinfo" will be used.
   // If multiple JWTs needed to be forwarded, please use different header names.
-  string jwt_payload_header = 11;
+  string jwt_payload_header = 10;
 }
 
 // This message specifies a header location to extract JWT token.
@@ -193,24 +158,6 @@ message JwtHeader {
   string value_prefix = 2;
 }
 
-// This message defines a pattern to match a HTTP request.
-// A pattern is matched only if all "headers" are matched.
-message HttpMatcher {
-  // Specifies a set of headers should match on.
-  // For example::
-  //
-  // .. code-block:: yaml
-  //
-  //    headers:
-  //    - name: :method
-  //      value: OPTIONS
-  //    headers:
-  //    - name: :path
-  //      regex_match: /.*
-  //
-  repeated envoy.api.v2.route.HeaderMatcher headers = 1;
-}
-
 // This is the Envoy filter config for JSON Web Token authentication.
 // If a JWT is sucessfully verified, header "sec-istio-auth-userinfo" will
 // be added with base64 encoded JSON payload to be send to the backend.
@@ -224,15 +171,15 @@ message JWTAuthentication {
   repeated JWT jwt_rules = 1;
 
   // If true, the request is allowed if JWT is missing.
-  // Default is not allowed.
+  // Default is false, a request without JWT is not allowed.
   bool allow_missing_jwt = 2;
 
   // This applies when JWT is missing and allow_missing_jwt is false.
-  // If a request doesn't have JWT, it will be rejected.
-  // But some requests can be forwarded without JWT, such as OPTIONS for CORS
-  // and some health checking paths.
+  // Under that config, if a request doesn't have JWT, it will be rejected.
+  // But some requests still needed to be forwarded without JWT, such as
+  // OPTIONS for CORS and some health checking paths.
   //
-  // Examples: bypass all CORS options requests::
+  // Examples: bypass all CORS options requests
   //
   // .. code-block:: yaml
   //
@@ -244,7 +191,7 @@ message JWTAuthentication {
   //     - name: :path
   //       regex_match: /.*
   //
-  // Examples: bypass /healthz check::
+  // Examples: bypass /healthz check
   //
   // .. code-block:: yaml
   //
