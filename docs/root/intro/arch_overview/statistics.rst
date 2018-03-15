@@ -23,7 +23,11 @@ are supported. As of the v2 API, Envoy has the ability to support custom, plugga
 standard sink implementations are included in Envoy. Some sinks also support emitting statistics
 with tags/dimensions.
 
-Envoy emits three types of values as statistics:
+Envoy's tagged statistics have the following characteristic. Within Envoy, statistics have canonical
+string representations as their name. The statistic name is dynamically stripped to produce tags.
+Users can configure the behavior via Tag Specifier configuration.
+
+Those three types of values are emitted as statistics:
 
 * **Counters**: Unsigned integers that only increase and never decrease. E.g., total requests.
 * **Gauges**: Unsigned integers that both increase and decrease. E.g., currently active requests.
