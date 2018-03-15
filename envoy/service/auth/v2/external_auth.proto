@@ -24,7 +24,7 @@ message CheckRequest {
 }
 
 // Dscribes an HTTP/1.1 response.
-message HttpReponse {
+message HttpResponse {
   // Http headers fields.
   map<string, string> headers = 1;
 
@@ -42,5 +42,5 @@ message CheckResponse {
   // headers since body is more likely to be ignored. When the status is not OK, e.g.
   // NOT_AUTHORIZED, this message can be used to serve the downstream client with addional HTTP
   // headers and body if necessary.
-  HttpReponse http_response = 2;
+  HttpResponse http_response = 2;
 }
