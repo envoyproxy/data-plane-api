@@ -79,6 +79,7 @@ Every cluster has a statistics tree rooted at *cluster.<name>.* with the followi
   update_attempt, Counter, Total cluster membership update attempts
   update_success, Counter, Total cluster membership update successes
   update_failure, Counter, Total cluster membership update failures
+  update_empty, Counter, Total cluster membership updates ending with empty cluster load assignment and continuing with previous config
   version, Gauge, Hash of the contents from the last successful API fetch
   max_host_weight, Gauge, Maximum weight of any host in the cluster
   bind_errors, Counter, Total errors binding the socket to the configured source address.
@@ -189,6 +190,7 @@ the following statistics:
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
+  lb_recalculate_zone_structures, Counter, The number of times locality aware routing structures are regenerated for fast decisions on upstream locality selection
   lb_healthy_panic, Counter, Total requests load balanced with the load balancer in panic mode
   lb_zone_cluster_too_small, Counter, No zone aware routing because of small upstream cluster size
   lb_zone_routing_all_directly, Counter, Sending all requests directly to the same zone
@@ -196,6 +198,7 @@ the following statistics:
   lb_zone_routing_cross_zone, Counter, Zone aware routing mode but have to send cross zone
   lb_local_cluster_not_ok, Counter, Local host set is not set or it is panic mode for local cluster
   lb_zone_number_differs, Counter, Number of zones in local and upstream cluster different
+  lb_zone_no_capacity_left, Counter, Total number of times ended with random zone selection due to routing error
 
 Load balancer subset statistics
 -------------------------------

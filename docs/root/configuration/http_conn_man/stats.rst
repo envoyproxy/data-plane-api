@@ -99,7 +99,6 @@ Http2 codec statistics
 
 All http2 statistics are rooted at *http2.*
 
-
 .. csv-table::
    :header: Name, Type, Description
    :widths: 1, 1, 2
@@ -111,5 +110,17 @@ All http2 statistics are rooted at *http2.*
    headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream. This tracks an unexpected occurrence due to an as yet undiagnosed bug.
    too_many_header_frames, Counter, Total number of times an HTTP2 connection is reset due to receiving too many headers frames. Envoy currently supports proxying at most one header frame for 100-Continue one non-100 response code header frame and one frame with trailers.
 
+Tracing statistics
+------------------
 
+Tracing statistics are emitted when tracing decisions are made. All tracing statistics are rooted at *http.<stat_prefix>.tracing.* with the following statistics:
 
+.. csv-table::
+   :header: Name, Type, Description
+   :widths: 1, 1, 2
+
+   random_sampling, Counter, Total number of traceable decisions by random sampling
+   service_forced, Counter, Total number of traceable decisions by server runtime flag *tracing.global_enabled*
+   client_enabled, Counter, Total number of traceable decisions by request header *x-envoy-force-trace*
+   not_traceable, Counter, Total number of non-traceable decisions by request id
+   health_check, Counter, Total number of non-traceable decisions by health check
