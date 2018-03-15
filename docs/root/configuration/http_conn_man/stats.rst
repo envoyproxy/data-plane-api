@@ -44,7 +44,7 @@ statistics:
    downstream_rq_rx_reset, Counter, Total request resets received
    downstream_rq_tx_reset, Counter, Total request resets sent
    downstream_rq_non_relative_path, Counter, Total requests with a non-relative HTTP path
-   downstream_rq_too_large, Counter, Total requests resulting in a 413 due to buffering an overly large body.
+   downstream_rq_too_large, Counter, Total requests resulting in a 413 due to buffering an overly large body
    downstream_rq_1xx, Counter, Total 1xx responses
    downstream_rq_2xx, Counter, Total 2xx responses
    downstream_rq_3xx, Counter, Total 3xx responses
@@ -52,7 +52,7 @@ statistics:
    downstream_rq_5xx, Counter, Total 5xx responses
    downstream_rq_ws_on_non_ws_route, Counter, Total WebSocket upgrade requests rejected by non WebSocket routes
    downstream_rq_time, Histogram, Request time milliseconds
-   rs_too_large, Counter, Total response errors due to buffering an overly large body.
+   rs_too_large, Counter, Total response errors due to buffering an overly large body
 
 Per user agent statistics
 -------------------------
@@ -103,12 +103,12 @@ All http2 statistics are rooted at *http2.*
    :header: Name, Type, Description
    :widths: 1, 1, 2
 
-   rx_reset, Counter, Total number of reset stream frames received by Envoy.
-   tx_reset, Counter, Total number of reset stream frames transmitted by Envoy.
-   header_overflow, Counter, Total number of connections reset due to the headers being larger than `Envoy::Http::Http2::ConnectionImpl::StreamImpl::MAX_HEADER_SIZE` (63k).
-   trailers, Counter, Total number of trailers seen on requests coming from downstream.
-   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream. This tracks an unexpected occurrence due to an as yet undiagnosed bug.
-   too_many_header_frames, Counter, Total number of times an HTTP2 connection is reset due to receiving too many headers frames. Envoy currently supports proxying at most one header frame for 100-Continue one non-100 response code header frame and one frame with trailers.
+   rx_reset, Counter, Total number of reset stream frames received by Envoy
+   tx_reset, Counter, Total number of reset stream frames transmitted by Envoy
+   header_overflow, Counter, Total number of connections reset due to the headers being larger than `Envoy::Http::Http2::ConnectionImpl::StreamImpl::MAX_HEADER_SIZE` (63k)
+   trailers, Counter, Total number of trailers seen on requests coming from downstream
+   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream. This tracks an unexpected occurrence due to an as yet undiagnosed bug
+   too_many_header_frames, Counter, Total number of times an HTTP2 connection is reset due to receiving too many headers frames. Envoy currently supports proxying at most one header frame for 100-Continue one non-100 response code header frame and one frame with trailers
 
 Tracing statistics
 ------------------
