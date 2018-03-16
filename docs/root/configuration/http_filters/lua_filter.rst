@@ -276,7 +276,8 @@ metadata()
 
   headers = handle:metadata()
 
-Returns the current route entry metadata.
+Returns the current route entry metadata. Note that the metadata should be specified
+under the filter name.
 
 Returns a :ref:`metadata object <config_http_filters_lua_metadata_wrapper>`.
 
@@ -312,7 +313,7 @@ get()
 
   headers:get(key)
 
-Gets a header. *key* is a string that suplies the header key. Returns a string that is the header
+Gets a header. *key* is a string that supplies the header key. Returns a string that is the header
 value or nil if there is no such header.
 
 __pairs()
@@ -389,7 +390,7 @@ get()
 
   metadata:get(key)
 
-Gets a metadata. *key* is a string that suplies the filter key. Returns a table that is the
+Gets a metadata. *key* is a string that supplies the filter key. Returns a table that is the
 representation of a *filter_metadata* entry struct.
 
 __pairs()
