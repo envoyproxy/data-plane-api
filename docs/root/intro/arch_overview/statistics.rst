@@ -27,7 +27,7 @@ Within Envoy and throughout the documentation, statistics are identified by a ca
 representation. The dynamic portions of these strings are stripped to become tags. Users can
 configure this behavior via the Tag Specifier configuration.
 
-Those three types of values are emitted as statistics:
+Envoy emits three types of values as statistics:
 
 * **Counters**: Unsigned integers that only increase and never decrease. E.g., total requests.
 * **Gauges**: Unsigned integers that both increase and decrease. E.g., currently active requests.
