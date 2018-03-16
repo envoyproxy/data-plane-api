@@ -5,7 +5,6 @@ Version history
 =====
 
 * listeners: added :ref:`transparent <envoy_api_field_Listener.transparent>` option.
-* listeners: added :ref:`freebind <envoy_api_field_Listener.freebind>` option.
 
 1.5.0
 =====
