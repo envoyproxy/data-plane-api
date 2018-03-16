@@ -13,7 +13,6 @@ Health checking
     "type": "...",
     "timeout_ms": "...",
     "interval_ms": "...",
-    "no_traffic_interval_ms": "...",
     "unhealthy_threshold": "...",
     "healthy_threshold": "...",
     "path": "...",
