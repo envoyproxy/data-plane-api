@@ -30,7 +30,7 @@ import "validate/validate.proto";
 //       - seconds: 300
 //
 // [#not-implemented-hide:]
-message JWT {
+message JwtRule {
   // Identifies the principal that issued the JWT. See
   // `here <https://tools.ietf.org/html/rfc7519#section-4.1.1>`_.
   // Usually a URL or an email address.
@@ -55,7 +55,7 @@ message JWT {
   //
   repeated string audiences = 2;
 
-  // `Json web key set <https://tools.ietf.org/html/rfc7517#appendix-A>`_ is
+  // `JSON Web Key Set <https://tools.ietf.org/html/rfc7517#appendix-A>`_ is
   // needed. to validate signature of the JWT. This field specifies where to
   // fetch JWKS.
   oneof jwks_source_specifier {
@@ -197,7 +197,7 @@ message JwtHeader {
 // [#not-implemented-hide:]
 message JwtAuthentication {
   // List of JWT rules to valide.
-  repeated JWT jwt_rules = 1;
+  repeated JwtRule jwt_rules = 1;
 
   // If true, the request is allowed if JWT is missing.
   // Default is false, a request without JWT is not allowed.
