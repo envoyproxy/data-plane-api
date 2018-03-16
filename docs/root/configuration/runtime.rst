@@ -4,10 +4,11 @@ Runtime
 =======
 
 The :ref:`runtime configuration <arch_overview_runtime>` specifies the location of the local file
-system tree that contains re-loadable configuration elements. Values can be viewed at the `/runtime`
-admin endpoint. Values can be modified and added at the `/runtime_modify` admin endpoint. If runtime
-is not configured, an empty provider is used which has the effect of using all defaults built into
-the code, except for any values added via `/runtime_modify`.
+system tree that contains re-loadable configuration elements. Values can be viewed at the
+:ref:`/runtime admin endpoint <operations_admin_interface_runtime>`. Values can be modified and
+added at the :ref:`/runtime_modify admin endpoint <operations_admin_interface_runtime_modify>`.  If
+runtime is not configured, an empty provider is used which has the effect of using all defaults
+built into the code, except for any values added via `/runtime_modify`.
 
 * :ref:`v1 API reference <config_runtime_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Runtime>`

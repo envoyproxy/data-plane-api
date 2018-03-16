@@ -205,6 +205,8 @@ The fields are:
 
   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
 
+.. _operations_admin_interface_runtime_modify:
+
 .. http:post:: /runtime_modify?key1=value1&key2=value2&keyN=valueN
 
   Adds or modifies runtime values as passed in query parameters. To delete a previously added key,
