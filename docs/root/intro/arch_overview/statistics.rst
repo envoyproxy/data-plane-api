@@ -25,7 +25,7 @@ with tags/dimensions.
 
 Within Envoy and throughout the documentation, statistics are identified by a canonical string
 representation. The dynamic portions of these strings are stripped to become tags. Users can
-configure this behavior via the Tag Specifier configuration.
+configure this behavior via :ref:`the Tag Specifier configuration <envoy_api_msg_config.metrics.v2.TagSpecifier>`.
 
 Envoy emits three types of values as statistics:
 
