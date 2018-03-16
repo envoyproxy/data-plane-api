@@ -23,24 +23,25 @@ message CheckRequest {
   AttributeContext attributes = 1;
 }
 
-// Dscribes an HTTP/1.1 response.
-message HttpResponse {
-  // Http headers fields.
-  map<string, string> headers = 1;
+// Describes an HTTP/1.1 object.
+message HttpMessage {
+  // Http status code.
+  int32 status = 1;
 
-  // Http body.
-  string body = 2;
+  // Http entity headers.
+  map<string, string> headers = 2;
+
+  // Http entity body.
+  string body = 3;
 }
 
 message CheckResponse {
   // Status `OK` allows the request. Any other status indicates the request should be denied.
   google.rpc.Status status = 1;
 
-  // Supplies additional HTTP body and headers depending on the authorization status check.
-  // When the response is OK, this message allows to modify the existing request headers before
-  // dispatching them to the upstream. In this case, the authorization sercice should provide only
-  // headers since body is more likely to be ignored. When the status is not OK, e.g.
-  // NOT_AUTHORIZED, this message can be used to serve the downstream client with addional HTTP
-  // headers and body if necessary.
-  HttpResponse http_response = 2;
+  // Optional http message that may be used by the authorization service a) in the case of a not OK
+  // status, to provide a more detailed http response to the downstream client. b) in the case of OK
+  // status, to provide the http headers which should be modified in the request before dispatching
+  // it to the upstream.
+  HttpMessage http_message = 2;
 }
