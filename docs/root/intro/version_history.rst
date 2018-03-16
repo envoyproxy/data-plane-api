@@ -3,10 +3,13 @@ Version history
 
 1.7.0
 =====
+
 * Added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
+* admin: added :ref:`/config_dump endpoint <operations_admin_interface_config_dump>` for dumping current configs
+* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
 
 1.6.0
 =====
@@ -201,7 +204,7 @@ Version history
 * macOS is :repo:`now supported </bazel#quick-start-bazel-build-for-developers>`. (A few features
   are missing such as hot restart and original destination routing).
 * YAML is now directly supported for :ref:`config files <config_overview_v1>`.
-* Added :ref:`/routes <operations_admin_interface_routes>` admin endpoint.
+* Added /routes admin endpoint.
 * End-to-end flow control is now supported for TCP proxy, HTTP/1, and HTTP/2. HTTP flow control
   that includes filter buffering is incomplete and will be implemented in 1.5.0.
 * Log verbosity :repo:`compile time flag </bazel#log-verbosity>` added.
