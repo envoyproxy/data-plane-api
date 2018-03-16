@@ -31,8 +31,8 @@ Envoy emits three types of values as statistics:
 
 * **Counters**: Unsigned integers that only increase and never decrease. E.g., total requests.
 * **Gauges**: Unsigned integers that both increase and decrease. E.g., currently active requests.
-* **Histograms**: Unsigned integers that ultimately will yield summarized percentile values. E.g.,
-  upstream request time.
+* **Histograms**: Unsigned integers that are part of a stream of values that are then aggregated by
+  the collector to ultimately yield summarized percentile values. E.g., upstream request time.
 
 Internally, counters and gauges are batched and periodically flushed to improve performance.
 Histograms are written as they are received. Note: what were previously referred to as timers have
