@@ -185,7 +185,7 @@ message RemoteJwks {
 // This message specifies a header location to extract JWT token.
 message JwtHeader {
   // The HTTP header name.
-  string name = 1;
+  string name = 1 [(validate.rules).string.min_bytes = 1];
 
   // The value prefix. The value format is "value_prefix<token>"
   // For example, for "Authorization: Bearer <token>",
