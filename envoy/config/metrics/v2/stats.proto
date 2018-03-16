@@ -22,7 +22,7 @@ message StatsSink {
   // * :ref:`envoy.dog_statsd <envoy_api_msg_config.metrics.v2.DogStatsdSink>`
   // * :ref:`envoy.metrics_service <envoy_api_msg_config.metrics.v2.MetricsServiceConfig>`
   //
-  // Some sinks support tagged/multiple dimentions metrics and some do not.
+  // Sinks optionally support tagged/multiple dimension metrics.
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being
