@@ -204,3 +204,9 @@ The fields are:
   .. http:get:: /runtime?format=json
 
   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
+
+.. http:post:: /runtime_modify?key1=value1&key2=value2&keyN=valueN
+
+  Adds or modifies runtime values as passed in query parameters. To delete a previously added key,
+  use an empty string as the value. Note that deletion only applies to overrides added via this
+  endpoint; values loaded from disk can be modified via override but not deleted.
