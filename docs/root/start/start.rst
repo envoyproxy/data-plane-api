@@ -40,8 +40,8 @@ features. The following sandboxes are available:
     sandboxes/jaeger_tracing
     sandboxes/grpc_bridge
 
-Using a Configuration File with the Envoy Docker Image
-------------------------------------------------------
+Using the Envoy Docker Image
+----------------------------
 
 You can create a simple Dockerfile to execute Envoy, which assumes that envoy.yaml (described in the Examples)
 is in your local directory.

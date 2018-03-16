@@ -4,14 +4,14 @@ Simple Example
 ==============
 
 This is perhaps the most minimal Envoy configuration which can be used to validate basic plain HTTP
-proxying is available in :repo:`configs/google_com_proxy.v2.yaml`. This is not
+proxying. It is available in :repo:`configs/google_com_proxy.v2.yaml`. This is not
 intended to represent a realistic Envoy deployment.
 
 Quick Start
 -----------
 
-This Quick Start runs the example quickly using files in the Envoy repo. The sections below explain
-the configuration file and execution steps in detail.
+This Quick Start gets you started using only files in the Envoy repo. The sections below explain
+this configuration file and execution steps in detail.
 
 Copy both :repo:`configs/Dockerfile` and
 :repo:`configs/google_com_proxy.v2.yaml` to the same directory on your local
@@ -89,7 +89,7 @@ Let's go through each section in detail.
   The :ref:`admin message <envoy_api_msg_config.bootstrap.v2.Admin>` is required to configure
   the administration server.
 
-  The ``address`` key specifies the
+  The ``address`` field specifies the
   listening :ref:`address <envoy_api_file_envoy/api/v2/core/address.proto>`
   which in this case is simply `0.0.0.0:9901`.
 
@@ -102,7 +102,7 @@ Let's go through each section in detail.
   The :ref:`static_resources <envoy_api_field_config.bootstrap.v2.Bootstrap.static_resources>` contains
   everything that is configured statically when Envoy starts,
   as opposed to the means of configuring resources dynamically when Envoy is running.
-  The :ref:`v2 API Overview <config_overview_v2>` describes this.
+  The :ref:`v2 API Overview <config_overview_v2>` describes the latter.
 
 .. code-block:: yaml
 
@@ -114,20 +114,20 @@ Let's go through each section in detail.
 
 ..
 
-  The ``listeners`` key specifies a list of :ref:`listeners <arch_overview_listeners>`. You can refer to the
+  The ``listeners`` field specifies a list of :ref:`listeners <arch_overview_listeners>`. See
   :ref:`listener configuration <envoy_api_file_envoy/api/v2/lds.proto>` details.
 
-  The ``name`` key uniquely identifies the listener.
+  The ``name`` field uniquely identifies the listener.
 
-  The ``address`` key specifies specifies the
+  The ``address`` field specifies specifies the
   listening :ref:`address <envoy_api_file_envoy/api/v2/core/address.proto>`
   which in this case is simply `0.0.0.0:10000`.
 
-  The ``filter_chains`` key is required and specifies the list of filter chains to
+  The ``filter_chains`` field is required and specifies the list of filter chains to
   consider for this listener.
   :ref:`FilterChain <envoy_api_msg_listener.FilterChain>` with the most specific
   :ref:`FilterChainMatch <envoy_api_msg_listener.FilterChainMatch>` criteria is used on a
-  connection.
+  connection. This simple example does not use explicit match criteria.
 
 .. code-block:: yaml
 
@@ -139,7 +139,8 @@ Let's go through each section in detail.
 
   The filter chain consists of a list of ``filters``.
   Filters can be :ref:`network (L3/L4) filters <arch_overview_network_filters>`, the
-  :ref:`HTTP Connection Manager <arch_overview_http_conn_man>`, or :ref:`HTTP filters <arch_overview_http_filters>`.
+  :ref:`HTTP Connection Manager <arch_overview_http_conn_man>` (which is a L4 filter),
+  or :ref:`HTTP filters <arch_overview_http_filters>`.
 
   The ``name`` specifies a supported filter.
   Envoy has several built in filters that start with `envoy`. The specified filter is the
@@ -166,28 +167,28 @@ Let's go through each section in detail.
 
   This is the configuration for the :ref:`HTTP Connection Manager <config_http_conn_man>`.
 
-  The ``stat_prefix`` key is a human readable prefix used to identify this connection manager in
+  The ``stat_prefix`` field is a human readable prefix used to identify this connection manager in
   the :ref:`statistics <config_http_conn_man_stats>`.
 
-  The ``route_config`` key specifies a static :ref:`Route configuration <envoy_api_file_envoy/api/v2/rds.proto>`.
+  The ``route_config`` field specifies a static :ref:`Route configuration <envoy_api_file_envoy/api/v2/rds.proto>`.
 
-  The ``name`` key names the route configuration. This is optional.
+  The ``name`` field names the route configuration. This is optional.
 
-  The ``virtual_hosts`` key contains a list of :ref:`Virtual Hosts <envoy_api_msg_route.VirtualHost>`.
+  The ``virtual_hosts`` field contains a list of :ref:`Virtual Hosts <envoy_api_msg_route.VirtualHost>`.
 
-  The ``name`` key names the virtual host for statistics reporting.
+  The ``name`` field names the virtual host for statistics reporting.
 
-  The ``domains`` key contains a list of domains (host/authority header) that will be matched to this virtual
+  The ``domains`` field contains a list of domains (host/authority header) that will be matched to this virtual
   host.
 
-  The ``routes`` key contains a list of :ref:`Routes <envoy_api_msg_route.Route>` that are matched, in order, for incoming requests. The first
+  The ``routes`` field contains a list of :ref:`Routes <envoy_api_msg_route.Route>` that are matched, in order, for incoming requests. The first
   route that matches is used.
 
-  The ``match`` key provides the :ref:`RouteMatch parameters <envoy_api_msg_route.RouteMatch>` used to select the route.
+  The ``match`` field provides the :ref:`RouteMatch parameters <envoy_api_msg_route.RouteMatch>` used to select the route.
 
-  The ``route`` key provides the :ref:`RouteAction parameters <envoy_api_msg_route.RouteAction>` invoked when the route is selected.
+  The ``route`` field provides the :ref:`RouteAction parameters <envoy_api_msg_route.RouteAction>` invoked when the route is selected.
 
-  The ``http_filters`` key contains a list of
+  The ``http_filters`` field contains a list of
   :ref:`HttpFilter <envoy_api_msg_config.filter.network.http_connection_manager.v2.HttpFilter>` for the connection manager.
   In this case
   the built-in :ref:`envoy.router <config_http_filters_router>` filter is specified which
@@ -208,31 +209,31 @@ Let's go through each section in detail.
 
 ..
 
-  The ``clusters`` key specifies a list of :ref:`clusters <arch_overview_cluster_manager>`. You can refer to the
+  The ``clusters`` field specifies a list of :ref:`clusters <arch_overview_cluster_manager>`. See
   :ref:`cluster configuration <envoy_api_file_envoy/api/v2/cds.proto>` details.
 
-  The ``name`` key is required and must be unique across all clusters. It is used when emitting statistics.
+  The ``name`` field is required and must be unique across all clusters. It is used when emitting statistics.
 
-  The ``connect_timeout`` key specifies a timeout value for new network connections to hosts in the cluster.
+  The ``connect_timeout`` field specifies a timeout value for new network connections to hosts in the cluster.
 
-  The ``type`` key specifies the :ref:`service discovery type <arch_overview_service_discovery_types>`
+  The ``type`` field specifies the :ref:`service discovery type <arch_overview_service_discovery_types>`
   to use for resolving the cluster.
 
-  The ``dns_lookup_family`` key specifies the :ref:`DnsLookupFamily <envoy_api_enum_Cluster.DnsLookupFamily>`
+  The ``dns_lookup_family`` field specifies the :ref:`DnsLookupFamily <envoy_api_enum_Cluster.DnsLookupFamily>`
   which is the DNS IP address resolution
   policy.
 
-  The ``lb_policy`` key specifies the :ref:`load balancer type <arch_overview_load_balancing_types>`
+  The ``lb_policy`` field specifies the :ref:`load balancer type <arch_overview_load_balancing_types>`
   to use when picking a host in the cluster.
 
-  The ``hosts`` key specifies the :ref:`host address <envoy_api_msg_core.Address>`.
+  The ``hosts`` field specifies the :ref:`host address <envoy_api_msg_core.Address>`.
   If the service discovery type is
   :ref:`STATIC<envoy_api_enum_value_Cluster.DiscoveryType.STATIC>`,
   :ref:`STRICT_DNS<envoy_api_enum_value_Cluster.DiscoveryType.STRICT_DNS>`
   or :ref:`LOGICAL_DNS<envoy_api_enum_value_Cluster.DiscoveryType.LOGICAL_DNS>`,
   then ``hosts`` is required.
 
-  The ``tls_context`` key specifies the :ref:`TLS configuration <envoy_api_msg_auth.UpstreamTlsContext>`.
+  The ``tls_context`` field specifies the :ref:`TLS configuration <envoy_api_msg_auth.UpstreamTlsContext>`.
   for connections to the upstream cluster. If no TLS
   configuration is specified, TLS will not be used for new connections.
 
