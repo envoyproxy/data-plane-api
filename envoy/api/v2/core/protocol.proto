@@ -19,7 +19,6 @@ message TcpProtocolOptions {
 }
 
 message HttpProtocolOptions {
-  // [#not-implemented-hide:]
   // The idle timeout for upstream connection pool connections. The idle timeout is defined as the
   // period in which there are no active requests. If not set, there is no idle timeout. When the
   // idle timeout is reached the connection will be closed. Note that request based timeouts mean
