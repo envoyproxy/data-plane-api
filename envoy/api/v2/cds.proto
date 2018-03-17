@@ -86,7 +86,8 @@ message Cluster {
     ORIGINAL_DST = 4;
   }
   // The :ref:`service discovery type <arch_overview_service_discovery_types>`
-  // to use for resolving the cluster.
+  // to use for resolving the cluster. If not specified,
+  // :ref:`LOGICAL_DNS<envoy_api_enum_value_Cluster.DiscoveryType.LOGICAL_DNS>` is assumed.
   DiscoveryType type = 2 [(validate.rules).enum.defined_only = true];
 
   // Only valid when discovery type is EDS.
