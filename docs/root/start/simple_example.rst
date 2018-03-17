@@ -109,8 +109,6 @@ Below is the :repo:`configs/google_com_proxy.v2.yaml` file.
     clusters:
     - name: service_google
       connect_timeout: 0.25s
-      # Comment out the following line to test on v6 networks
-      dns_lookup_family: V4_ONLY
       lb_policy: ROUND_ROBIN
       hosts: [{ socket_address: { address: google.com, port_value: 443 }}]
       tls_context: { sni: www.google.com }
@@ -255,8 +253,6 @@ Let's go through each section in detail.
       clusters:
       - name: service_google
         connect_timeout: 0.25s
-        # Comment out the following line to test on v6 networks
-        dns_lookup_family: V4_ONLY
         lb_policy: ROUND_ROBIN
         hosts: [{ socket_address: { address: google.com, port_value: 443 }}]
         tls_context: { sni: www.google.com }
@@ -270,10 +266,6 @@ Let's go through each section in detail.
 
   The ``connect_timeout`` field specifies a timeout value for new network connections to hosts in the cluster.
 
-  The ``dns_lookup_family`` field specifies the :ref:`DnsLookupFamily <envoy_api_enum_Cluster.DnsLookupFamily>`
-  which is the DNS IP address resolution
-  policy.
-
   The ``lb_policy`` field specifies the :ref:`load balancer type <arch_overview_load_balancing_types>`
   to use when picking a host in the cluster.
 
@@ -282,10 +274,11 @@ Let's go through each section in detail.
   :ref:`STATIC<envoy_api_enum_value_Cluster.DiscoveryType.STATIC>`,
   :ref:`STRICT_DNS<envoy_api_enum_value_Cluster.DiscoveryType.STRICT_DNS>`
   or :ref:`LOGICAL_DNS<envoy_api_enum_value_Cluster.DiscoveryType.LOGICAL_DNS>`,
-  then ``hosts`` is required.
+  then ``hosts`` is required. In this case, all requests will be routed to google.com:443.
 
   The ``tls_context`` field specifies the :ref:`TLS configuration <envoy_api_msg_auth.UpstreamTlsContext>`.
   for connections to the upstream cluster. If no TLS
-  configuration is specified, TLS will not be used for new connections.
+  configuration is specified, TLS will not be used for new connections. In this case the
+  `SNI <https://en.wikipedia.org/wiki/Server_Name_Indication>`_ is set to www.google.com.
 
 
