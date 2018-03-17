@@ -31,10 +31,10 @@ response trailers to a compliant gRPC server. It works by doing the following:
 * Because this scheme must buffer the response to look for the *grpc-status* trailer it will only
   work with unary gRPC APIs.
 
-More info: http://www.grpc.io/docs/guides/wire.html
-
 This filter also collects stats for all gRPC requests that transit, even if those requests are
 normal gRPC requests over HTTP/2.
+
+More info: wire format in `gRPC over HTTP/2 <https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md>`_.
 
 Statistics
 ----------
