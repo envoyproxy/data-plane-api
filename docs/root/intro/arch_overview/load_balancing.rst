@@ -28,13 +28,14 @@ Weighted least request
 ^^^^^^^^^^^^^^^^^^^^^^
 
 The least request load balancer uses an O(1) algorithm which selects two random healthy hosts and
-picks the host which has fewer active requests. (Research has shown that this approach is nearly as
-good as an O(N) full scan). If any host in the cluster has a load balancing weight greater than 1,
-the load balancer shifts into a mode where it randomly picks a host and then uses that host <weight>
-times. This algorithm is simple and sufficient for load testing. It should not be used where true
-weighted least request behavior is desired (generally if request durations are variable and long in
-length). We may add a true full scan weighted least request variant in the future to cover this use
-case.
+picks the host which has fewer active requests
+(`Research <http://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf>`_ has shown that this
+approach is nearly as good as an O(N) full scan). If any host in the cluster has a load balancing
+weight greater than 1, the load balancer shifts into a mode where it randomly picks a host and then
+uses that host <weight> times. This algorithm is simple and sufficient for load testing. It should
+not be used where true weighted least request behavior is desired (generally if request durations
+are variable and long in length). We may add a true full scan weighted least request variant in the
+future to cover this use case.
 
 .. _arch_overview_load_balancing_types_ring_hash:
 
