@@ -4,7 +4,7 @@ Version history
 1.6.0
 =====
 * http : added idle timeout for :ref:`upstream http connections
-  <envoy_api_core.HttpProtocolOptions.idle_timeout>`.
+  <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
 
 
 1.5.0
