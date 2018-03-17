@@ -19,9 +19,9 @@ mesh give a very detailed picture of each hop and overall network health. The st
 documented in detail in the operations guide.
 
 In the v1 API, Envoy only supports statsd as the statistics output format. Both TCP and UDP statsd
-are supported. As of the v2 API, Envoy has the ability to support custom, pluggable sinks. A few
-standard sink implementations are included in Envoy. Some sinks also support emitting statistics
-with tags/dimensions.
+are supported. As of the v2 API, Envoy has the ability to support custom, pluggable sinks. :ref:`A
+few standard sink implementations<envoy_api_msg_config.metrics.v2.StatsSink>` are included in Envoy.
+Some sinks also support emitting statistics with tags/dimensions.
 
 Within Envoy and throughout the documentation, statistics are identified by a canonical string
 representation. The dynamic portions of these strings are stripped to become tags. Users can
