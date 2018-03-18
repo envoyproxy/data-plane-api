@@ -9,7 +9,7 @@ import "validate/validate.proto";
 
 // [#not-implemented-hide:]
 // External Authorization filter calls out to an external service over the
-// gRPC Authorization API defined by
+// gRPC and HTTP Authorization API defined by
 // :ref:`external_auth <envoy_api_msg_auth.CheckRequest>`.
 // A failed check will cause this filter to return 403 Forbidden.
 message ExtAuthz {
@@ -23,4 +23,25 @@ message ExtAuthz {
   // is NOT denied then traffic will be permitted.
   // Defaults to false.
   bool failure_mode_allow = 2;
+
+  // When this value is set to true, the filter must call an HTTP authorization service only.
+  bool use_http_service = 3;
+
+  // The external authorization HTTP service configuration. Only applicable when `use_http_service`
+  // is true.
+  message HttpService {
+
+    // Sets the cluster name which the authorization request must be sent to.
+    string cluster = 1;
+
+    // Sets the time in milliseconds within the service should respond to an authorization request.
+    uint32 timeout_ms = 2;
+
+    // Sets a list of authorization response headers that are allowed to be injected in the
+    // downstream client request before dispatching it to the upstream.
+    repeated string allowed_headers = 3;
+
+    // Sets an optional prefix to the value of request header `path` in the authorization request.
+    string path_prefix = 4;
+  }
 }
