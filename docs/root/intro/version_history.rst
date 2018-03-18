@@ -5,7 +5,7 @@ Version history
 =====
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
-
+* lua http filter: extended to support :ref:`metadata object <config_http_filters_lua_metadata_wrapper>` API.
 
 1.5.0
 =====

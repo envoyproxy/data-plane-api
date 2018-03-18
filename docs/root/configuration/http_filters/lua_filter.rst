@@ -274,7 +274,7 @@ metadata()
 
 .. code-block:: lua
 
-  headers = handle:metadata()
+  metadata = handle:metadata()
 
 Returns the current route entry metadata. Note that the metadata should be specified
 under the filter name.
