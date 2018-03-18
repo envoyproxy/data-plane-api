@@ -3,11 +3,11 @@ syntax = "proto3";
 package envoy.config.filter.network.http_connection_manager.v2;
 option go_package = "v2";
 
-import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/core/config_source.proto";
 import "envoy/api/v2/core/protocol.proto";
-import "envoy/config/filter/accesslog/v2/accesslog.proto";
 import "envoy/api/v2/rds.proto";
+import "envoy/config/filter/accesslog/v2/accesslog.proto";
+import "envoy/type/percent.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -93,14 +93,14 @@ message HttpConnectionManager {
     // 'tracing.client_sampling' in the :ref:`HTTP Connection Manager
     // <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent client_sampling = 3;
+    envoy.type.Percent client_sampling = 3;
 
     // Target percentage of requests managed by this HTTP connection manager that will be randomly
     // selected for trace generation, if not requested by the client or not forced. This field is
     // a direct analog for the runtime variable 'tracing.random_sampling' in the
     // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent random_sampling = 4;
+    envoy.type.Percent random_sampling = 4;
 
     // Target percentage of requests managed by this HTTP connection manager that will be traced
     // after all other sampling checks have been applied (client-directed, force tracing, random
@@ -110,7 +110,7 @@ message HttpConnectionManager {
     // analog for the runtime variable 'tracing.global_enabled' in the
     // :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
     // Default: 100%
-    envoy.api.v2.core.Percent overall_sampling = 5;
+    envoy.type.Percent overall_sampling = 5;
   }
 
   // Presence of the object defines whether the connection manager
@@ -161,7 +161,6 @@ message HttpConnectionManager {
   // :ref:`config_http_conn_man_headers_x-envoy-external-address` for more information.
   google.protobuf.BoolValue use_remote_address = 14;
 
-  // [#not-implemented-hide:]
   // The number of additional ingress proxy hops from the right side of the
   // :ref:`config_http_conn_man_headers_x-forwarded-for` HTTP header to trust when
   // determining the origin client's IP address. The default is zero if this option
@@ -213,8 +212,9 @@ message HttpConnectionManager {
     // Whether to forward the SAN of the client cert. Defaults to false.
     google.protobuf.BoolValue san = 2;
 
-    // [#not-implemented-hide:]
-    // Whether to forward the entire client cert in base64 encoded format. Defaults to false.
+    // Whether to forward the entire client cert in URL encoded PEM format. This will appear in the
+    // XFCC header comma separated from other values with the value Cert="PEM".
+    // Defaults to false.
     bool cert = 3;
   };
 
@@ -273,6 +273,7 @@ message HttpFilter {
   // * :ref:`envoy.grpc_json_transcoder <config_http_filters_grpc_json_transcoder>`
   // * :ref:`envoy.grpc_web <config_http_filters_grpc_web>`
   // * :ref:`envoy.health_check <config_http_filters_health_check>`
+  // * :ref:`envoy.ip_tagging <config_http_filters_ip_tagging>`
   // * :ref:`envoy.lua <config_http_filters_lua>`
   // * :ref:`envoy.rate_limit <config_http_filters_rate_limit>`
   // * :ref:`envoy.router <config_http_filters_router>`

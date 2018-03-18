@@ -16,7 +16,7 @@ Input
   2. A tool config JSON file. The tool config JSON file schema is found in
      :ref:`config <config_tools_router_check_tool>`.
      The tool config input file specifies urls (composed of authorities and paths)
-     and expected route parameter values. Additonal parameters such as additonal headers are optional.
+     and expected route parameter values. Additional parameters such as additional headers are optional.
 
 Output
   The program exits with status EXIT_FAILURE if any test case does not match the expected route parameter
@@ -48,7 +48,7 @@ Building
 
 Running
   The tool takes two input json files and an optional command line parameter ``--details``. The
-  expected order of command line arguements is:
+  expected order of command line arguments is:
   1. The router configuration json file.
   2. The tool configuration json file.
   3. The optional details flag. ::

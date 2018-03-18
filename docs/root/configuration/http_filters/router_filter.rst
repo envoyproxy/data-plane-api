@@ -150,8 +150,11 @@ x-envoy-upstream-alt-stat-name
 
 Setting this header on egress requests will cause Envoy to emit upstream response code/timing
 statistics to a dual stat tree. This can be useful for application level categories that Envoy
-doesn't know about. The output tree is documented :ref:`here
-<config_cluster_manager_cluster_stats_alt_tree>`.
+doesn't know about. The output tree is documented :ref:`here <config_cluster_manager_cluster_stats_alt_tree>`.
+
+This should not be confused with :ref:`alt_stat_name <envoy_api_field_Cluster.alt_stat_name>` which
+is specified while defining the cluster and when provided specifies an alternative name for the
+cluster at the root of the statistic tree.
 
 x-envoy-upstream-canary
 ^^^^^^^^^^^^^^^^^^^^^^^

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.service.discovery.v2;
 
+option java_generic_services = true;
+
 import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/core/health_check.proto";
 import "envoy/api/v2/endpoint/endpoint.proto";

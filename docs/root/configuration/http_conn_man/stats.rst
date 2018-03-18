@@ -86,3 +86,30 @@ following statistics:
    downstream_rq_3xx, Counter, Total 3xx responses
    downstream_rq_4xx, Counter, Total 4xx responses
    downstream_rq_5xx, Counter, Total 5xx responses
+
+.. _config_http_conn_man_stats_per_codec:
+
+Per codec statistics
+-----------------------
+
+Each codec has the option of adding per-codec statistics. Currently only http2 has codec stats.
+
+Http2 codec statistics
+~~~~~~~~~~~~~~~~~~~~~~
+
+All http2 statistics are rooted at *http2.*
+
+
+.. csv-table::
+   :header: Name, Type, Description
+   :widths: 1, 1, 2
+
+   rx_reset, Counter, Total number of reset stream frames received by Envoy.
+   tx_reset, Counter, Total number of reset stream frames transmitted by Envoy.
+   header_overflow, Counter, Total number of connections reset due to the headers being larger than `Envoy::Http::Http2::ConnectionImpl::StreamImpl::MAX_HEADER_SIZE` (63k).
+   trailers, Counter, Total number of trailers seen on requests coming from downstream.
+   headers_cb_no_stream, Counter, Total number of errors where a header callback is called without an associated stream. This tracks an unexpected occurrence due to an as yet undiagnosed bug.
+   too_many_header_frames, Counter, Total number of times an HTTP2 connection is reset due to receiving too many headers frames. Envoy currently supports proxying at most one header frame for 100-Continue one non-100 response code header frame and one frame with trailers.
+
+
+

@@ -19,7 +19,10 @@ unhealthy, successes required before marking a host healthy, etc.):
   considered healthy. Envoy also supports connect only L3/L4 health checking.
 * **Redis**: Envoy will send a Redis PING command and expect a PONG response. The upstream Redis
   server can respond with anything other than PONG to cause an immediate active health check
-  failure.
+  failure. Optionally, Envoy can perform EXISTS on a user-specified key. If the key does not exist
+  it is considered a passing healthcheck. This allows the user to mark a Redis instance for
+  maintenance by setting the specified key to any value and waiting for traffic to drain. See
+  :ref:`redis_key <config_cluster_manager_cluster_hc_redis_key>`.
 
 Passive health checking
 -----------------------

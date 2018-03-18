@@ -4,7 +4,7 @@ Jaeger Tracing
 ==============
 
 The Jaeger tracing sandbox demonstrates Envoy's :ref:`request tracing <arch_overview_tracing>`
-capabilities using `Jaeger <https://uber.github.io/jaeger/>`_ as the tracing provider. This sandbox
+capabilities using `Jaeger <http://jaegertracing.io/>`_ as the tracing provider. This sandbox
 is very similar to the front proxy architecture described above, with one difference:
 service1 makes an API call to service2 before returning a response.
 The three containers will be deployed inside a virtual network called ``envoymesh``.
@@ -13,9 +13,9 @@ All incoming requests are routed via the front envoy, which is acting as a rever
 sitting on the edge of the ``envoymesh`` network. Port ``80`` is mapped to  port ``8000``
 by docker compose (see :repo:`/examples/jaeger-tracing/docker-compose.yml`). Notice that
 all envoys are configured to collect request traces (e.g., http_connection_manager/config/tracing setup in
-:repo:`/examples/jaeger-tracing/front-envoy-jaeger.json`) and setup to propagate the spans generated
+:repo:`/examples/jaeger-tracing/front-envoy-jaeger.yaml`) and setup to propagate the spans generated
 by the Jaeger tracer to a Jaeger cluster (trace driver setup
-in :repo:`/examples/jaeger-tracing/front-envoy-jaeger.json`).
+in :repo:`/examples/jaeger-tracing/front-envoy-jaeger.yaml`).
 
 Before routing a request to the appropriate service envoy or the application, Envoy will take
 care of generating the appropriate spans for tracing (parent/child context spans).

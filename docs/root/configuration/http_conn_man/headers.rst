@@ -65,13 +65,12 @@ the  :option:`--service-node` option.
 x-envoy-external-address
 ------------------------
 
-It is a common case where a service wants to perform analytics based on the client IP address. Per
-the lengthy discussion on :ref:`XFF <config_http_conn_man_headers_x-forwarded-for>`, this can get
-quite complicated. A proper implementation involves forwarding XFF, and then choosing the first non
-RFC1918 address *from the right*. Since this is such a common occurrence, Envoy simplifies this by
-setting *x-envoy-external-address* during decoding if and only if the request ingresses externally
-(i.e., it's from an external client). *x-envoy-external-address* is not set or overwritten for
-internal requests. This header can be safely forwarded between internal services for analytics
+It is a common case where a service wants to perform analytics based on the origin client's IP
+address. Per the lengthy discussion on :ref:`XFF <config_http_conn_man_headers_x-forwarded-for>`,
+this can get quite complicated, so Envoy simplifies this by setting *x-envoy-external-address*
+to the :ref:`trusted client address <config_http_conn_man_headers_x-forwarded-for_trusted_client_address>`
+if the request is from an external client. *x-envoy-external-address* is not set or overwritten
+for internal requests. This header can be safely forwarded between internal services for analytics
 purposes without having to deal with the complexities of XFF.
 
 .. _config_http_conn_man_headers_x-envoy-force-trace:
@@ -156,8 +155,10 @@ operates in a transparent mode where it does not modify XFF.
 .. attention::
 
   In general, *use_remote_address* should be set to true when Envoy is deployed as an edge
-  node, whereas it may need to be set to false when Envoy is used as an internal service node
-  in a mesh deployment.
+  node (aka a front proxy), whereas it may need to be set to false when Envoy is used as
+  an internal service node in a mesh deployment.
+
+.. _config_http_conn_man_headers_x-forwarded-for_trusted_client_address:
 
 The value of *use_remote_address* controls how Envoy determines the *trusted client address*.
 Given an HTTP request that has traveled through a series of zero or more proxies to reach
@@ -166,30 +167,125 @@ accurate. The source IP address of the immediate downstream node's connection to
 trusted. XFF *sometimes* can be trusted. Malicious clients can forge XFF, but the last
 address in XFF can be trusted if it was put there by a trusted proxy.
 
-Envoy's rules for determining the trusted client address are:
+Envoy's default rules for determining the trusted client address (*before* appending anything
+to XFF) are:
 
 * If *use_remote_address* is false and an XFF containing at least one IP address is
   present in the request, the trusted client address is the *last* (rightmost) IP address in XFF.
 * Otherwise, the trusted client address is the source IP address of the immediate downstream
   node's connection to Envoy.
 
+In an environment where there are one or more trusted proxies in front of an edge
+Envoy instance, the *xff_num_trusted_hops* configuration option can be used to trust
+additional addresses from XFF:
+
+* If *use_remote_address* is false and *xff_num_trusted_hops* is set to a value *N* that is
+  greater than zero, the trusted client address is the (N+1)th address from the right end
+  of XFF. (If the XFF contains fewer than N+1 addresses, Envoy falls back to using the
+  immediate downstream connection's source address as trusted client address.)
+* If *use_remote_address* is true and *xff_num_trusted_hops* is set to a value *N* that is
+  greater than zero, the trusted client address is the Nth address from the right end
+  of XFF. (If the XFF contains fewer than N addresses, Envoy falls back to using the
+  immediate downstream connection's source address as trusted client address.)
+
 Envoy uses the trusted client address contents to determine whether a request originated
 externally or internally. This influences whether the
 :ref:`config_http_conn_man_headers_x-envoy-internal` header is set.
 
-Testing IPv6 in a large multi-hop system can be difficult from a change management perspective. For
-testing IPv6 compatibility of upstream services which parse XFF header values,
-:ref:`represent_ipv4_remote_address_as_ipv4_mapped_ipv6
-<envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.represent_ipv4_remote_address_as_ipv4_mapped_ipv6>`
-can be enabled in the v2 API. Envoy will append an IPv4 address in mapped IPv6 format, e.g.
-::FFFF:50.0.0.1. This change will also apply to
-:ref:`config_http_conn_man_headers_x-envoy-external-address`.
+Example 1: Envoy as edge proxy, without a trusted proxy in front of it
+    Settings:
+      | use_remote_address = true
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 192.0.2.5
+      | XFF = "203.0.113.128, 203.0.113.10, 203.0.113.1"
+
+    Result:
+      | Trusted client address = 192.0.2.5 (XFF is ignored)
+      | X-Envoy-External-Address is set to 192.0.2.5
+      | XFF is changed to "203.0.113.128, 203.0.113.10, 203.0.113.1, 192.0.2.5"
+      | X-Envoy-Internal is removed (if it was present in the incoming request)
+
+Example 2: Envoy as internal proxy, with the Envoy edge proxy from Example 1 in front of it
+    Settings:
+      | use_remote_address = false
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 10.11.12.13 (address of the Envoy edge proxy)
+      | XFF = "203.0.113.128, 203.0.113.10, 203.0.113.1, 192.0.2.5"
+
+    Result:
+      | Trusted client address = 192.0.2.5 (last address in XFF is trusted)
+      | X-Envoy-External-Address is not modified
+      | X-Envoy-Internal is removed (if it was present in the incoming request)
+
+Example 3: Envoy as edge proxy, with two trusted external proxies in front of it
+    Settings:
+      | use_remote_address = true
+      | xff_num_trusted_hops = 2
+
+    Request details:
+      | Downstream IP address = 192.0.2.5
+      | XFF = "203.0.113.128, 203.0.113.10, 203.0.113.1"
+
+    Result:
+      | Trusted client address = 203.0.113.10 (2nd to last address in XFF is trusted)
+      | X-Envoy-External-Address is set to 203.0.113.10
+      | XFF is changed to "203.0.113.128, 203.0.113.10, 203.0.113.1, 192.0.2.5"
+      | X-Envoy-Internal is removed (if it was present in the incoming request)
+
+Example 4: Envoy as internal proxy, with the edge proxy from Example 3 in front of it
+    Settings:
+      | use_remote_address = false
+      | xff_num_trusted_hops = 2
+
+    Request details:
+      | Downstream IP address = 10.11.12.13 (address of the Envoy edge proxy)
+      | XFF = "203.0.113.128, 203.0.113.10, 203.0.113.1, 192.0.2.5"
+
+    Result:
+      | Trusted client address = 203.0.113.10
+      | X-Envoy-External-Address is not modified
+      | X-Envoy-Internal is removed (if it was present in the incoming request)
+
+Example 5: Envoy as an internal proxy, receiving a request from an internal client
+    Settings:
+      | use_remote_address = false
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 10.20.30.40 (address of the internal client)
+      | XFF is not present
+
+    Result:
+      | Trusted client address = 10.20.30.40
+      | X-Envoy-External-Address remains unset
+      | X-Envoy-Internal is set to "true"
+
+Example 6: The internal Envoy from Example 5, receiving a request proxied by another Envoy
+    Settings:
+      | use_remote_address = false
+      | xff_num_trusted_hops = 0
+
+    Request details:
+      | Downstream IP address = 10.20.30.50 (address of the Envoy instance proxying to this one)
+      | XFF = "10.20.30.40"
+
+    Result:
+      | Trusted client address = 10.20.30.40
+      | X-Envoy-External-Address remains unset
+      | X-Envoy-Internal is set to "true"
 
 A few very important notes about XFF:
 
 1. If *use_remote_address* is set to true, Envoy sets the
    :ref:`config_http_conn_man_headers_x-envoy-external-address` header to the trusted
    client address.
+
+.. _config_http_conn_man_headers_x-forwarded-for_internal_origin:
+
 2. XFF is what Envoy uses to determine whether a request is internal origin or external origin.
    If *use_remote_address* is set to true, the request is internal if and only if the
    request contains no XFF and the immediate downstream node's connection to Envoy has
@@ -206,6 +302,12 @@ A few very important notes about XFF:
      Envoy will not consider it internal. This is a known "bug" due to the simplification of how
      XFF is parsed to determine if a request is internal. In this scenario, do not forward XFF and
      allow Envoy to generate a new one with a single internal origin IP.
+3. Testing IPv6 in a large multi-hop system can be difficult from a change management perspective.
+   For testing IPv6 compatibility of upstream services which parse XFF header values,
+   :ref:`represent_ipv4_remote_address_as_ipv4_mapped_ipv6 <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.represent_ipv4_remote_address_as_ipv4_mapped_ipv6>`
+   can be enabled in the v2 API. Envoy will append an IPv4 address in mapped IPv6 format, e.g.
+   ::FFFF:50.0.0.1. This change will also apply to
+   :ref:`config_http_conn_man_headers_x-envoy-external-address`.
 
 .. _config_http_conn_man_headers_x-forwarded-proto:
 
@@ -309,13 +411,13 @@ The encode one or more options. For example, Debug is encoded as
 Custom request/response headers
 -------------------------------
 
-Custom request/response headers can be added to a request/response that matches a specific route at
-the route, virtual host, and global route configuration level. See the relevant :ref:`v1
+Custom request/response headers can be added to a request/response at the weighted cluster,
+route, virtual host, and/or global route configuration level. See the relevant :ref:`v1
 <config_http_conn_man_route_table>` and :ref:`v2 <envoy_api_msg_RouteConfiguration>` API
 documentation.
 
-Headers are appended to requests/responses in the following order: route level headers,
-virtual host level headers and finally global level headers.
+Headers are appended to requests/responses in the following order: weighted cluster level headers,
+route level headers, virtual host level headers and finally global level headers.
 
 Envoy supports adding dynamic values to request and response headers. The percent symbol (%) is
 used to delimit variable names.
@@ -352,6 +454,8 @@ Supported variable names are:
     If the original connection was redirected by iptables REDIRECT, this represents
     the original destination address restored by the
     :ref:`Original Destination Filter <config_listener_filters_original_dst>` using SO_ORIGINAL_DST socket option.
+    If the original connection was redirected by iptables TPROXY, and the listener's transparent
+    option was set to true, this represents the original destination address and port.
 
 %DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT%
     Same as **%DOWNSTREAM_LOCAL_ADDRESS%** excluding port if the address is an IP address.
@@ -361,7 +465,7 @@ Supported variable names are:
     :ref:`x-forwarded-proto <config_http_conn_man_headers_x-forwarded-proto>` request header.
 
 %UPSTREAM_METADATA(["namespace", "key", ...])%
-    Populates the header with ref:`EDS endpoint metadata <envoy_api_file_envoy/service/discovery/v2/eds.proto>` from the
+    Populates the header with :ref:`EDS endpoint metadata <envoy_api_field_endpoint.LbEndpoint.metadata>` from the
     upstream host selected by the router. Metadata may be selected from any namespace. In general,
     metadata values may be strings, numbers, booleans, lists, nested structures, or null. Upstream
     metadata values may be selected from nested structs by specifying multiple keys. Otherwise,

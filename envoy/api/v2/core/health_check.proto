@@ -57,7 +57,7 @@ message HealthCheck {
   }
 
   message HttpHealthCheck {
-    // [#not-implemented-hide:] The value of the host header in the HTTPS health check request. If
+    // The value of the host header in the HTTP health check request. If
     // left empty (default value), the IP on behalf of which this health check is performed will be
     // used.
     string host = 1;
@@ -89,9 +89,14 @@ message HealthCheck {
   }
 
   message RedisHealthCheck {
+    // If set, optionally perform ``EXISTS <key>`` instead of ``PING``. A return value
+    // from Redis of 0 (does not exist) is considered a passing healthcheck. A return value other
+    // than 0 is considered a failure. This allows the user to mark a Redis instance for maintenance
+    // by setting the specified key to any value and waiting for traffic to drain.
+    string key = 1;
   }
 
-  // [#not-implemented-hide:] `grpc.health.v1.Health
+  // `grpc.health.v1.Health
   // <https://github.com/grpc/grpc/blob/master/src/proto/grpc/health/v1/health.proto>`_-based
   // healthcheck. See `gRPC doc <https://github.com/grpc/grpc/blob/master/doc/health-checking.md>`_
   // for details.
@@ -116,9 +121,18 @@ message HealthCheck {
     // Redis health check.
     RedisHealthCheck redis_health_check = 10;
 
-    // [#not-implemented-hide:] GRPC health check.
+    // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
   }
+
+  // [#not-implemented-hide:] The "no traffic interval" is a special health check interval that is
+  // used when a cluster has never had traffic routed to it. This lower interval allows cluster
+  // information to be kept up to date, without sending a potentially large amount of active health
+  // checking traffic for no reason. Once a cluster has been used for traffic routing, Envoy will
+  // shift back to using the standard health check interval that is defined.
+  //
+  // The default value for "no traffic interval" is 60 seconds.
+  google.protobuf.Duration no_traffic_interval = 12;
 }
 
 // [#not-implemented-hide:] Part of HDS.

@@ -16,7 +16,7 @@ response trailers to a compliant gRPC server. It works by doing the following:
   *grpc-status* code. If it is not zero, the filter switches the HTTP response code to 503. It also copies
   the *grpc-status* and *grpc-message* trailers into the response headers so that the client can look
   at them if it wishes.
-* The client should send HTTP/1.1 requests that translate to the following psuedo headers:
+* The client should send HTTP/1.1 requests that translate to the following pseudo headers:
 
   * *\:method*: POST
   * *\:path*: <gRPC-METHOD-NAME>
@@ -31,10 +31,10 @@ response trailers to a compliant gRPC server. It works by doing the following:
 * Because this scheme must buffer the response to look for the *grpc-status* trailer it will only
   work with unary gRPC APIs.
 
-More info: http://www.grpc.io/docs/guides/wire.html
-
 This filter also collects stats for all gRPC requests that transit, even if those requests are
 normal gRPC requests over HTTP/2.
+
+More info: wire format in `gRPC over HTTP/2 <https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md>`_.
 
 Statistics
 ----------

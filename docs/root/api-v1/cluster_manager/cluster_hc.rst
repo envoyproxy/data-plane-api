@@ -19,7 +19,8 @@ Health checking
     "send": [],
     "receive": [],
     "interval_jitter_ms": "...",
-    "service_name": "..."
+    "service_name": "...",
+    "redis_key": "..."
   }
 
 type
@@ -47,7 +48,7 @@ healthy_threshold
   a host healthy.
 
 path
-  *(sometimes required, string)* This parameter is required if the type is *http*. It species the
+  *(sometimes required, string)* This parameter is required if the type is *http*. It specifies the
   HTTP path that will be requested during health checking. For example */healthcheck*.
 
 send
@@ -80,3 +81,11 @@ service_name
   *(optional, string)* An optional service name parameter which is used to validate the identity of
   the health checked cluster. See the :ref:`architecture overview
   <arch_overview_health_checking_identity>` for more information.
+
+.. _config_cluster_manager_cluster_hc_redis_key:
+
+redis_key
+  *(optional, string)* If the type is *redis*, perform ``EXISTS <redis_key>`` instead of
+  ``PING``. A return value from Redis of 0 (does not exist) is considered a passing healthcheck. A
+  return value other than 0 is considered a failure. This allows the user to mark a Redis instance
+  for maintenance by setting the specified key to any value and waiting for traffic to drain.

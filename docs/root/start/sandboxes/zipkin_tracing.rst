@@ -13,9 +13,9 @@ All incoming requests are routed via the front envoy, which is acting as a rever
 sitting on the edge of the ``envoymesh`` network. Port ``80`` is mapped to  port ``8000``
 by docker compose (see :repo:`/examples/zipkin-tracing/docker-compose.yml`). Notice that
 all envoys are configured to collect request traces (e.g., http_connection_manager/config/tracing setup in
-:repo:`/examples/zipkin-tracing/front-envoy-zipkin.json`) and setup to propagate the spans generated
+:repo:`/examples/zipkin-tracing/front-envoy-zipkin.yaml`) and setup to propagate the spans generated
 by the Zipkin tracer to a Zipkin cluster (trace driver setup
-in :repo:`/examples/zipkin-tracing/front-envoy-zipkin.json`).
+in :repo:`/examples/zipkin-tracing/front-envoy-zipkin.yaml`).
 
 Before routing a request to the appropriate service envoy or the application, Envoy will take
 care of generating the appropriate spans for tracing (parent/child/shared context spans).

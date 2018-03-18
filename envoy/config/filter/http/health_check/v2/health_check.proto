@@ -6,7 +6,7 @@ option go_package = "v2";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
-import "envoy/api/v2/core/base.proto";
+import "envoy/type/percent.proto";
 
 import "validate/validate.proto";
 import "gogoproto/gogo.proto";
@@ -29,5 +29,5 @@ message HealthCheck {
   // If operating in non-pass-through mode, specifies a set of upstream cluster
   // names and the minimum percentage of servers in each of those clusters that
   // must be healthy in order for the filter to return a 200.
-  map<string, envoy.api.v2.core.Percent> cluster_min_healthy_percentages = 4;
+  map<string, envoy.type.Percent> cluster_min_healthy_percentages = 4;
 }

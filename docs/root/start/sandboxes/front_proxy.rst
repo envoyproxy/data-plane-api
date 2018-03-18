@@ -18,9 +18,9 @@ All incoming requests are routed via the front envoy, which is acting as a rever
 the edge of the ``envoymesh`` network. Port ``80`` is mapped to  port ``8000`` by docker compose
 (see :repo:`/examples/front-proxy/docker-compose.yml`). Moreover, notice
 that all  traffic routed by the front envoy to the service containers is actually routed to the
-service envoys (routes setup in :repo:`/examples/front-proxy/front-envoy.json`). In turn the service
+service envoys (routes setup in :repo:`/examples/front-proxy/front-envoy.yaml`). In turn the service
 envoys route the  request to the flask app via the loopback address (routes setup in
-:repo:`/examples/front-proxy/service-envoy.json`). This setup
+:repo:`/examples/front-proxy/service-envoy.yaml`). This setup
 illustrates the advantage of running service envoys  collocated with your services: all requests are
 handled by the service envoy, and efficiently routed to your services.
 
@@ -197,7 +197,7 @@ enter the ``front-envoy`` container, and ``curl`` for services locally::
 When envoy runs it also attaches an ``admin`` to your desired port. In the example
 configs the admin is bound to port ``8001``. We can ``curl`` it to gain useful information.
 For example you can ``curl`` ``/server_info`` to get information about the
-envoy version you are running. Addionally you can ``curl`` ``/stats`` to get
+envoy version you are running. Additionally you can ``curl`` ``/stats`` to get
 statistics. For example inside ``frontenvoy`` we can get::
 
   $ docker-compose exec front-envoy /bin/bash

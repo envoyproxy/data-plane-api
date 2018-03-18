@@ -5,6 +5,7 @@ option go_package = "v2";
 
 import "envoy/api/v2/core/address.proto";
 import "envoy/api/v2/core/base.proto";
+import "envoy/type/percent.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -95,7 +96,7 @@ message AccessLogCommon {
   // The upstream cluster that *upstream_remote_address* belongs to.
   string upstream_cluster = 15;
 
-  // Flags indicating occurences during request/response processing.
+  // Flags indicating occurrences during request/response processing.
   ResponseFlags response_flags = 16;
 
   // All metadata encountered during request processing, including endpoint
@@ -110,7 +111,7 @@ message AccessLogCommon {
 }
 
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
-// Flags indicating occurences during request/response processing.
+// Flags indicating occurrences during request/response processing.
 message ResponseFlags {
   // Indicates local server healthcheck failed.
   bool failed_local_healthcheck = 1;
@@ -147,6 +148,20 @@ message ResponseFlags {
 
   // Indicates that the request was rate-limited locally.
   bool rate_limited = 12;
+
+  message Unauthorized {
+    // Reasons why the request was unauthorized
+    enum Reason {
+      REASON_UNSPECIFIED = 0;
+      // The request was denied by the external authorization service.
+      EXTERNAL_SERVICE = 1;
+    }
+
+    Reason reason = 1;
+  }
+
+  // Indicates if the request was deemed unauthorized and the reason for it.
+  Unauthorized unauthorized_details = 13;
 }
 
 // [#not-implemented-hide:] Not configuration. TBD how to doc proto APIs.
@@ -327,6 +342,9 @@ message ComparisonFilter {
 
     // >=
     GE = 1;
+
+    // <=
+    LE = 2;
   }
 
   // Comparison operator.
@@ -358,16 +376,28 @@ message NotHealthCheckFilter {
 message TraceableFilter {
 }
 
-// Filters for random sampling of requests. Sampling pivots on the header
-// :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` being present. If
-// :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` is present, the filter will
-// consistently sample across multiple hosts based on the runtime key value and the value extracted
-// from :ref:`x-request-id<config_http_conn_man_headers_x-request-id>`. If it is missing, the
-// filter will randomly sample based on the runtime key value.
+// Filters for random sampling of requests.
 message RuntimeFilter {
-  // Runtime key to get the percentage of requests to be sampled. This runtime
-  // control is specified in the range 0-100 and defaults to 0.
+  // Runtime key to get an optional overridden numerator for use in the *percent_sampled* field.
+  // If found in runtime, this value will replace the default numerator.
   string runtime_key = 1 [(validate.rules).string.min_bytes = 1];
+
+  // The default sampling percentage. If not specified, defaults to 0% with denominator of 100.
+  envoy.type.FractionalPercent percent_sampled = 2;
+
+  // By default, sampling pivots on the header
+  // :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` being present. If
+  // :ref:`x-request-id<config_http_conn_man_headers_x-request-id>` is present, the filter will
+  // consistently sample across multiple hosts based on the runtime key value and the value
+  // extracted from :ref:`x-request-id<config_http_conn_man_headers_x-request-id>`. If it is
+  // missing, or *use_independent_randomness* is set to true, the filter will randomly sample based
+  // on the runtime key value alone. *use_independent_randomness* can be used for logging kill
+  // switches within complex nested :ref:`AndFilter
+  // <envoy_api_msg_config.filter.accesslog.v2.AndFilter>` and :ref:`OrFilter
+  // <envoy_api_msg_config.filter.accesslog.v2.OrFilter>` blocks that are easier to reason about
+  // from a probability perspective (i.e., setting to true will cause the filter to behave like
+  // an independent random variable when composed within logical operator filters).
+  bool use_independent_randomness = 3;
 }
 
 // Performs a logical “and” operation on the result of each filter in filters.

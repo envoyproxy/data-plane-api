@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package envoy.api.v2.core;
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -17,12 +18,31 @@ option (gogoproto.equal_all) = true;
 message TcpProtocolOptions {
 }
 
+message HttpProtocolOptions {
+  // The idle timeout for upstream connection pool connections. The idle timeout is defined as the
+  // period in which there are no active requests. If not set, there is no idle timeout. When the
+  // idle timeout is reached the connection will be closed. Note that request based timeouts mean
+  // that HTTP/2 PINGs will not keep the connection alive.
+  google.protobuf.Duration idle_timeout = 1 [(gogoproto.stdduration) = true];
+}
+
 message Http1ProtocolOptions {
   // Handle HTTP requests with absolute URLs in the requests. These requests
   // are generally sent by clients to forward/explicit proxies. This allows clients to configure
   // envoy as their HTTP proxy. In Unix, for example, this is typically done by setting the
   // *http_proxy* environment variable.
   google.protobuf.BoolValue allow_absolute_url = 1;
+
+  // Handle incoming HTTP/1.0 and HTTP 0.9 requests.
+  // This is off by default, and not fully standards compliant. There is support for pre-HTTP/1.1
+  // style connect logic, dechunking, and handling lack of client host iff
+  // *default_host_for_http_10* is configured.
+  bool accept_http_10 = 2;
+
+  // A default host for HTTP/1.0 requests. This is highly suggested if *accept_http_10* is true as
+  // Envoy does not otherwise support HTTP/1.0 without a Host header.
+  // This is a no-op if *accept_http_10* is not true.
+  string default_host_for_http_10 = 3;
 }
 
 message Http2ProtocolOptions {

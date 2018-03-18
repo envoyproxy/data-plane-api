@@ -9,6 +9,27 @@ modify different aspects of the server:
 * :ref:`v1 API reference <config_admin_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Admin>`
 
+.. attention::
+
+  The administration interface in its current form both allows destructive operations to be
+  performed (e.g., shutting down the server) as well as potentially exposes private information
+  (e.g., stats, cluster names, cert info, etc.). It is **critical** that access to the
+  administration interface is only allowed via a secure network. It is also **critical** that hosts
+  that access the administration interface are **only** attached to the secure network (i.e., to
+  avoid CSRF attacks). This involves setting up an appropriate firewall or optimally only allowing
+  access to the administration listener via localhost. This can be accomplished with a v2
+  configuration like the following:
+
+  .. code-block:: yaml
+
+    admin:
+      access_log_path: /tmp/admin_access.log
+      address:
+        socket_address: { address: 127.0.0.1, port_value: 9901 }
+
+  In the future additional security options will be added to the administration interface. This
+  work is tracked in `this <https://github.com/envoyproxy/envoy/issues/2763>`_ issue.
+
 .. http:get:: /
 
   Render an HTML home page with a table of links to all available options.
@@ -163,7 +184,7 @@ The fields are:
 
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
-  gauges are outputed. Histograms will be outputed in a future update.
+  gauges are output. Histograms will be output in a future update.
 
 .. http:get:: /runtime
 
