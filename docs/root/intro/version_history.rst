@@ -6,6 +6,8 @@ Version history
 
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
+* gRPC/JSON transcoder :ref:`filter <config_http_filters_grpc_json_transcoder>`: added option to disable recalculating
+  routes based on the modified request headers.
 * health check: added setting for :ref:`no-traffic
   interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
 * tracing: when using the zipkin tracer, it is now possible for clients to specify the sampling decision (using
