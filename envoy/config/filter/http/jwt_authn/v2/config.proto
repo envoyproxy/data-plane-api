@@ -101,11 +101,6 @@ message JwtRule {
   // If true, the JWT is not removed in the request. Default value is false.
   bool forward_jwt = 5;
 
-  // If true, the request is allowed if this JWT verification fails.
-  // If false, a failed verification request will be rejected.
-  // Default value is false.
-  bool allow_failed_jwt = 6;
-
   // Two fields below define where to extract the JWT from an HTTP request.
   //
   // If no explicit location is specified, the following default locations are
@@ -137,7 +132,7 @@ message JwtRule {
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated JwtHeader jwt_headers = 7;
+  repeated JwtHeader jwt_headers = 6;
 
   // JWT is sent in a query parameter. `jwt_params` represents the
   // query parameter names.
@@ -153,7 +148,7 @@ message JwtRule {
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 8;
+  repeated string jwt_params = 7;
 
   // This field specifies the header name to forward a successfully verified
   // JWT payload to the backend. The forwarded data is::
@@ -163,7 +158,7 @@ message JwtRule {
   // If it is not specified, the payload will not be forwarded.
   // If multiple JWT payloads needed to be forwarded, distinct header names
   // are required.
-  string jwt_payload_header = 9;
+  string jwt_payload_header = 8;
 }
 
 // This message specifies how to fetch JWKS from remote and how to cache it.
@@ -202,12 +197,15 @@ message JwtAuthentication {
   // List of JWT rules to valide.
   repeated JwtRule jwt_rules = 1;
 
-  // If true, the request is allowed if JWT is missing.
-  // Default is false, a request without JWT is not allowed.
-  bool allow_missing_jwt = 2;
+  // If true, the request is allowed if JWT is missing or JWT
+  // verification fails.
+  // Default is false, a request without JWT or failed JWT verification
+  // is not allowed.
+  bool allow_missing_or_failed_jwt = 2;
 
-  // This applies when JWT is missing and allow_missing_jwt is false.
-  // Under that config, if a request doesn't have JWT, it will be rejected.
+  // This field lists the patterns allowed to bypass JWT verification.
+  // This only applies when `allow_missing_or_failed_jwt` is false.
+  // Under this config, if a request doesn't have JWT, it will be rejected.
   // But some requests still needed to be forwarded without JWT, such as
   // OPTIONS for CORS and some health checking paths.
   //
