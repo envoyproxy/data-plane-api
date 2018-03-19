@@ -21,6 +21,8 @@ message StatsSink {
   // * :ref:`envoy.statsd <envoy_api_msg_config.metrics.v2.StatsdSink>`
   // * :ref:`envoy.dog_statsd <envoy_api_msg_config.metrics.v2.DogStatsdSink>`
   // * :ref:`envoy.metrics_service <envoy_api_msg_config.metrics.v2.MetricsServiceConfig>`
+  //
+  // Sinks optionally support tagged/multiple dimensional metrics.
   string name = 1;
 
   // Stats sink specific configuration which depends on the sink being
@@ -137,7 +139,8 @@ message TagSpecifier {
   }
 }
 
-// Stats configuration proto schema for built-in *envoy.statsd* sink.
+// Stats configuration proto schema for built-in *envoy.statsd* sink. This sink does not support
+// tagged metrics.
 message StatsdSink {
   oneof statsd_specifier {
     option (validate.required) = true;
