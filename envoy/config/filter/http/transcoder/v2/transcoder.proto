@@ -55,4 +55,12 @@ message GrpcJsonTranscoder {
   // `JsonPrintOptions <https://developers.google.com/protocol-buffers/docs/reference/cpp/
   // google.protobuf.util.json_util#JsonPrintOptions>`_.
   PrintOptions print_options = 3;
+
+
+  // Whether to skip recalculating the route after the
+  // outgoing headers have been transformed to the match the upstream gRPC service
+  // If set to true, Envoy will determine the cluster to
+  // route to based on the route for the incoming request
+  // Defaults to false.
+  bool skip_recalculating_route = 5;
 }
