@@ -109,6 +109,7 @@ Below is the :repo:`configs/google_com_proxy.v2.yaml` file.
     clusters:
     - name: service_google
       connect_timeout: 0.25s
+      type: LOGICAL_DNS
       lb_policy: ROUND_ROBIN
       hosts: [{ socket_address: { address: google.com, port_value: 443 }}]
       tls_context: { sni: www.google.com }
@@ -253,6 +254,7 @@ Let's go through each section in detail.
       clusters:
       - name: service_google
         connect_timeout: 0.25s
+        type: LOGICAL_DNS
         lb_policy: ROUND_ROBIN
         hosts: [{ socket_address: { address: google.com, port_value: 443 }}]
         tls_context: { sni: www.google.com }
@@ -266,8 +268,10 @@ Let's go through each section in detail.
 
   The ``connect_timeout`` field specifies a timeout value for new network connections to hosts in the cluster.
 
-  The ``lb_policy`` field specifies the :ref:`load balancer type <arch_overview_load_balancing_types>`
-  to use when picking a host in the cluster.
+  The ``type`` field specifies the :ref:`service discovery type <arch_overview_service_discovery_types>`
+  to use for resolving the cluster. :ref:`LOGICAL_DNS<arch_overview_service_discovery_types_logical_dns>`
+  (the default) is generally the best choice for a static configuration based on DNS, read the description to find
+  out why.
 
   The ``hosts`` field specifies the :ref:`host address <envoy_api_msg_core.Address>`.
   If the service discovery type is
