@@ -6,7 +6,7 @@ Runtime
 The :ref:`runtime configuration <arch_overview_runtime>` specifies the location of the local file
 system tree that contains re-loadable configuration elements. Values can be viewed at the
 :ref:`/runtime admin endpoint <operations_admin_interface_runtime>`. Values can be modified and
-added at the :ref:`/runtime_modify admin endpoint <operations_admin_interface_runtime_modify>`.  If
+added at the :ref:`/runtime_modify admin endpoint <operations_admin_interface_runtime_modify>`. If
 runtime is not configured, an empty provider is used which has the effect of using all defaults
 built into the code, except for any values added via `/runtime_modify`.
 
