@@ -5,7 +5,8 @@ Version history
 =====
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
-
+* health check: added setting for :ref:`no-traffic
+  interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
 
 1.5.0
 =====
