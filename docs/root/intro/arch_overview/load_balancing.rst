@@ -249,6 +249,28 @@ with regard to percentage relations in the local zone between originating and up
 
 Note that when using multiple priorities, zone aware routing is currently only supported for P=0.
 
+.. _arch_overview_load_balancing_locality_weighted_lb:
+
+Locality weighted load balancing
+--------------------------------
+
+Another approach to determining how to weight assignments across different zones
+and geographical locations is by using explicit weights supplied via EDS in the
+:ref:`LocalityLbEndpoints <envoy_api_msg_endpoint.LocalityLbEndpoints>` message.
+This approach is mutually exclusive with the above zone aware routing, since in
+the case of locality aware LB, we rely on the management server to provide the
+locality weighting, rather than the Envoy-side heuristics used in zone aware
+routing.
+
+Envoy will continue to take into account the health of endpoints in a locality
+and adjust the management server assigned weights based on this. For example,
+if locality X is weighted 60%, locality Y at 20% and locality Z at 20%, but
+only half of locality Z's endpoints are healthy, we would weight X/Y/Z as
+67%/22%/11%.
+
+Locality weighted LB is configured via :ref:`locality_weighted_lb
+<envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb>`.
+
 .. _arch_overview_load_balancer_subsets:
 
 Load Balancer Subsets

@@ -389,6 +389,16 @@ message Cluster {
       // * :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
       google.protobuf.UInt64Value min_cluster_size = 2;
     }
+
+    // If this is set true, zone aware LB is not used and instead :ref:`locality
+    // weighted load balancing
+    // <arch_overview_load_balancing_locality_weighted_lb>` is used. Locality weight at
+    // a given priority level is computed from a combination of EDS assigned
+    // locality weight and known health status of the endpoints within a
+    // locality. For example, if locality X is weighted 60%, locality Y at 20%
+    // and locality Z at 20%, but only half of locality Z's endpoints are
+    // healthy, we would weight X/Y/Z as 67%/22%/11%.
+    bool locality_weighted_lb = 2;
   }
 
   // Common configuration for all load balancer implementations.

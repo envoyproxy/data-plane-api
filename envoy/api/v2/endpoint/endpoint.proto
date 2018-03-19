@@ -78,6 +78,17 @@ message LocalityLbEndpoints {
   // If unspecified, each locality is presumed to have equal weight in a
   // cluster.
   //
+  // Locality weights are only considered when :ref:`locality weighted load
+  // balancing <arch_overview_load_balancing_locality_weighted_lb>` is
+  // configured via :ref:`locality_weighted_lb
+  // <envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb>`. These
+  // weights are ignored otherwise.
+  //
+  // The effective weight takes into account known locality health. For example,
+  // if locality X is weighted 60%, locality Y at 20% and locality Z at 20%, but
+  // only half of locality Z's endpoints are healthy, we would weight X/Y/Z as
+  // 67%/22%/11%.
+  //
   // .. attention::
   //
   //   The limit of 128 is somewhat arbitrary, but is applied due to performance
