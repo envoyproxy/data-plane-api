@@ -102,8 +102,6 @@ upstream.weight_enabled
   Binary switch to turn on or off weighted load balancing. If set to non 0, weighted load balancing
   is enabled. Defaults to enabled.
 
-.. _config_cluster_manager_cluster_runtime_ring_hash:
-
 .. _config_cluster_manager_cluster_runtime_zone_routing:
 
 Zone aware load balancing

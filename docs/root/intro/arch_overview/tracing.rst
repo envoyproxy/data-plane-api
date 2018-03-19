@@ -60,20 +60,15 @@ Alternatively the trace context can be manually propagated by the service:
   :ref:`config_http_conn_man_headers_x-ot-span-context` HTTP header
   while sending HTTP requests to other services.
 
-* When using the Zipkin tracer, Envoy relies on the service to propagate either the
-  official B3 HTTP headers (
+* When using the Zipkin tracer, Envoy relies on the service to propagate the
+  B3 HTTP headers (
   :ref:`config_http_conn_man_headers_x-b3-traceid`,
   :ref:`config_http_conn_man_headers_x-b3-spanid`,
   :ref:`config_http_conn_man_headers_x-b3-parentspanid`,
   :ref:`config_http_conn_man_headers_x-b3-sampled`, and
-  :ref:`config_http_conn_man_headers_x-b3-flags`) or for convenience it is
-  also possible to just propagate the
-  :ref:`config_http_conn_man_headers_x-ot-span-context` HTTP header.
-
-NOTE: Work is currently underway in the distributed tracing community to define a standard for trace
-context propagation. Once a suitable approach has been adopted, the use of the non-standard single
-header :ref:`config_http_conn_man_headers_x-ot-span-context` for propagating Zipkin trace context
-will be replaced.
+  :ref:`config_http_conn_man_headers_x-b3-flags`). The :ref:`config_http_conn_man_headers_x-b3-sampled`
+  header can also be supplied by an external client to either enable or disable tracing for a particular
+  request.
 
 What data each trace contains
 -----------------------------

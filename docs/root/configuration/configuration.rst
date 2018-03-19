@@ -18,4 +18,5 @@ Configuration reference
   access_log
   rate_limit
   runtime
+  statistics
   tools/router_check

@@ -28,9 +28,9 @@ the owning HTTP connection manager.
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
-        <tag_name>.hit, Counter, Total number of requests that have the <tag_name> applied to it.
-        no_hit, Counter, Total number of requests with no applicable IP tags.
-        total, Counter, Total number of requests the IP Tagging Filter operated on.
+        <tag_name>.hit, Counter, Total number of requests that have the <tag_name> applied to it
+        no_hit, Counter, Total number of requests with no applicable IP tags
+        total, Counter, Total number of requests the IP Tagging Filter operated on
 
 Runtime
 -------

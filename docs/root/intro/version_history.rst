@@ -3,9 +3,19 @@ Version history
 
 1.6.0
 =====
+
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
 * lua http filter: extended to support :ref:`metadata object <config_http_filters_lua_metadata_wrapper>` API.
+* health check: added setting for :ref:`no-traffic
+  interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
+* tracing: when using the zipkin tracer, it is now possible for clients to specify the sampling decision (using
+  the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header) and have the decision
+  propagated through to subsequently invoked services.
+* tracing: when using the zipkin tracer, it is no longer necessary to propagate the
+  :ref:`x-ot-span-context <config_http_conn_man_headers_x-ot-span-context>` header.
+  See more on trace context propagation :ref:`here <arch_overview_tracing>`.
+* listeners: added :ref:`transparent <envoy_api_field_Listener.transparent>` option.
 
 1.5.0
 =====
