@@ -347,7 +347,7 @@ x-ot-span-context
 -----------------
 
 The *x-ot-span-context* HTTP header is used by Envoy to establish proper parent-child relationships
-between tracing spans. This header can be used with both LightStep and Zipkin tracers.
+between tracing spans when used with the LightStep tracer.
 For example, an egress span is a child of an ingress
 span (if the ingress span was present). Envoy injects the *x-ot-span-context* header on ingress requests and
 forwards it to the local service. Envoy relies on the application to propagate *x-ot-span-context* on
