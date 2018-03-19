@@ -36,7 +36,7 @@ message CheckResponse {
   // modified in the original request before it gets sent to the upstream.
   message HttpResponse {
     // Http status code.
-    int32 http_status = 1;
+    int32 status_code = 1;
 
     // Http entity headers.
     map<string, string> headers = 2;
