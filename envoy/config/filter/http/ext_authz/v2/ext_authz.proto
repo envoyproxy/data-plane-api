@@ -9,7 +9,7 @@ import "validate/validate.proto";
 
 // [#not-implemented-hide:]
 // External Authorization filter calls out to an external service over the
-// gRPC and HTTP Authorization API defined by
+// gRPC or HTTP Authorization API defined by
 // :ref:`external_auth <envoy_api_msg_auth.CheckRequest>`.
 // A failed check will cause this filter to return 403 Forbidden.
 message ExtAuthz {
