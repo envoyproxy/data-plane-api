@@ -1,4 +1,4 @@
-# JWT Authentication envoy HTTP filter config
+# JWT Authentication HTTP filter config
 
 ## Overview
 
