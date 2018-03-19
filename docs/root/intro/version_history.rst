@@ -7,6 +7,10 @@ Version history
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
 * health check: added setting for :ref:`no-traffic
   interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
+* Added :ref:`weighted round robin
+  <arch_overview_load_balancing_types_round_robin>` support. The round robin
+  scheduler now respects endpoint weights and also has improved fidelity across
+  picks.
 
 1.5.0
 =====
