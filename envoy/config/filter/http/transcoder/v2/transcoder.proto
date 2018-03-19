@@ -55,4 +55,9 @@ message GrpcJsonTranscoder {
   // `JsonPrintOptions <https://developers.google.com/protocol-buffers/docs/reference/cpp/
   // google.protobuf.util.json_util#JsonPrintOptions>`_.
   PrintOptions print_options = 3;
+
+  // Whether to keep the incoming request route after the outgoing headers have been transformed to
+  // the match the upstream gRPC service. Note: This means that routes for gRPC services that are
+  // not transcoded cannot be used in combination with *match_incoming_request_route*.
+  bool match_incoming_request_route = 5;
 }
