@@ -4,7 +4,7 @@ Squash
 ======
 
 Squash is an HTTP filter which enables Envoy to integrate with Squash microservices debugger.
-Code: https://github.com/solo-io/squash, API Docs:  https://squash.solo.io/
+Code: https://github.com/solo-io/squash, API Docs: https://squash.solo.io/
 
 Overview
 --------

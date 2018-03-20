@@ -75,6 +75,7 @@ message BindConfig {
 message Address {
   oneof address {
     option (validate.required) = true;
+
     SocketAddress socket_address = 1;
     Pipe pipe = 2;
   }

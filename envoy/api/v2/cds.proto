@@ -375,6 +375,7 @@ message Cluster {
     //   The specified percent will be truncated to the nearest 1%.
     envoy.type.Percent healthy_panic_threshold = 1;
     // Configuration for :ref:`zone aware routing <arch_overview_load_balancing_zone_aware_routing>`.
+    // [#not-implemented-hide:]
     message ZoneAwareLbConfig {
       // [#not-implemented-hide:]
       // Configures percentage of requests that will be considered for zone aware routing
@@ -392,6 +393,7 @@ message Cluster {
     }
     // Configuration for :ref:`locality weighted load balancing
     // <arch_overview_load_balancing_locality_weighted_lb>`
+    // [#not-implemented-hide:]
     message LocalityWeightedLbConfig {
     }
     oneof locality_config_specifier {

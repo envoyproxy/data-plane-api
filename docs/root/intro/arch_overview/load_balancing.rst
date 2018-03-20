@@ -46,11 +46,10 @@ The ring/modulo hash load balancer implements consistent hashing to upstream hos
 based on mapping all hosts onto a circle such that the addition or removal of a host from the host
 set changes only affect 1/N requests. This technique is also commonly known as `"ketama"
 <https://github.com/RJ/ketama>`_ hashing. A consistent hashing load balancer is only effective
-when protocol routing is used that specifies a value to hash on. The default minimum ring size is
-specified in :ref:`runtime <config_cluster_manager_cluster_runtime_ring_hash>`. The minimum ring
-size governs the replication factor for each host in the ring. For example, if the minimum ring
-size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
-balancer does not currently support weighting.
+when protocol routing is used that specifies a value to hash on. The minimum ring size governs the
+replication factor for each host in the ring. For example, if the minimum ring size is 1024 and
+there are 16 hosts, each host will be replicated 64 times. The ring hash load balancer does not
+currently support weighting.
 
 When priority based load balancing is in use, the priority level is also chosen by hash, so the
 endpoint selected will still be consistent when the set of backends is stable.
