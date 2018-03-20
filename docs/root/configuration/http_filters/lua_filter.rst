@@ -277,7 +277,18 @@ metadata()
   metadata = handle:metadata()
 
 Returns the current route entry metadata. Note that the metadata should be specified
-under the filter name.
+under the filter name i.e. *envoy.lua*. Below is an example of a *metadata* in a
+:ref:`route entry <config_http_conn_man_route_table_route>`.
+
+.. code-block:: yaml
+
+  metadata:
+    filter_metadata:
+      envoy.lua:
+        foo: bar
+        baz:
+          - bad
+          - baz
 
 Returns a :ref:`metadata object <config_http_filters_lua_metadata_wrapper>`.
 
@@ -390,8 +401,9 @@ get()
 
   metadata:get(key)
 
-Gets a metadata. *key* is a string that supplies the filter key. Returns a table that is the
-representation of a *filter_metadata* entry struct.
+Gets a metadata. *key* is a string that supplies the metadata key. Returns the corresponding
+value of the given metadata key. The type of the value can be: *null*, *boolean*, *number*,
+*string* and *table*.
 
 __pairs()
 ^^^^^^^^^
@@ -401,5 +413,5 @@ __pairs()
   for key, value in pairs(metadata) do
   end
 
-Iterates through every *filter_metadata* entry. *key* is a string that supplies a *filter_metadata*
-key. *value* is *filter_metadata* entry struct.
+Iterates through every *metadata* entry. *key* is a string that supplies a *metadata*
+key. *value* is *metadata* entry value.
