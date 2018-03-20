@@ -24,8 +24,8 @@ The next default location is in the query parameter as:
 ?access_token=<TOKEN>
 ```
 
-If a custom location is desired, "jwt_headers" and "jwt_params" can be used to specify custom locations to extract JWT.
+If a custom location is desired, "from_headers" and "from_params" can be used to specify custom locations to extract JWT.
 
 ## HTTP header to pass sucessfully verified JWT
 
-If a JWT is valid, its payload will be passed to the backend in a new HTTP header specified in `forward_jwt_header` field. Its value is base64 encoded JWT payload in JSON.
+If a JWT is valid, its payload will be passed to the backend in a new HTTP header specified in `forward_payload_header` field. Its value is base64 encoded JWT payload in JSON.
