@@ -264,7 +264,7 @@ routing.
 When all endpoints are healthy, the locality is picked using a weighted
 round-robin schedule, where the locality weight is used for weighting. When some
 endpoints in a locality are unhealthy, we adjust the locality weight to reflect
-this.  As with :ref:`priority levels
+this. As with :ref:`priority levels
 <arch_overview_load_balancing_priority_levels>`, we assume an over-provision
 factor (currently hardcoded at 1.4), which means we do not perform any weight
 adjustment when only a small number of endpoints in a locality are unhealthy.
@@ -302,10 +302,7 @@ picked. The load balancer follows these steps:
 
 1. Pick :ref:`priority level <arch_overview_load_balancing_priority_levels>`.
 2. Pick locality (as described in this section) within priority level from (1).
-3. Pick endpoint using cluster specified load balancer within locality from (2)
-
-Locality weighted LB is configured via :ref:`locality_weighted_lb_config
-<envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb_config>`.
+3. Pick endpoint using cluster specified load balancer within locality from (2).
 
 .. _arch_overview_load_balancer_subsets:
 

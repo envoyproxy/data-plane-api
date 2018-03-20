@@ -374,7 +374,8 @@ message Cluster {
     // .. note::
     //   The specified percent will be truncated to the nearest 1%.
     envoy.type.Percent healthy_panic_threshold = 1;
-    // Configuration for :ref:`zone aware routing <arch_overview_load_balancing_zone_aware_routing>`.
+    // Configuration for :ref:`zone aware routing
+    // <arch_overview_load_balancing_zone_aware_routing>`.
     // [#not-implemented-hide:]
     message ZoneAwareLbConfig {
       // [#not-implemented-hide:]
@@ -397,7 +398,9 @@ message Cluster {
     message LocalityWeightedLbConfig {
     }
     oneof locality_config_specifier {
+      // [#not-implemented-hide:]
       ZoneAwareLbConfig zone_aware_lb_config = 2;
+      // [#not-implemented-hide:]
       LocalityWeightedLbConfig locality_weighted_lb_config = 3;
     }
   }
