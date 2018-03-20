@@ -24,7 +24,7 @@ The next default location is in the query parameter as:
 ?access_token=<TOKEN>
 ```
 
-If a custom location is desired, "from_headers" and "from_params" can be used to specify custom locations to extract JWT.
+If a custom location is desired, `from_headers` or `from_params` can be used to specify custom locations to extract JWT.
 
 ## HTTP header to pass sucessfully verified JWT
 
