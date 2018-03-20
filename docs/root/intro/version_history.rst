@@ -58,7 +58,6 @@ Version history
   <envoy_api_field_core.Address.pipe>`.
 * listeners: added support for :ref:`abstract unix domain sockets <envoy_api_msg_core.Pipe>` on
   Linux. The abstract namespace can be used by prepending '@' to a socket path.
-* listeners: added :ref:`transparent <envoy_api_field_Listener.transparent>` option.
 * load balancer: added cluster configuration for :ref:`healthy panic threshold
   <envoy_api_field_Cluster.CommonLbConfig.healthy_panic_threshold>` percentage.
 * load balancer: added :ref:`Maglev <arch_overview_load_balancing_types_maglev>` consistent hash
