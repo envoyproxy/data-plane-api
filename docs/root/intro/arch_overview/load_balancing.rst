@@ -262,14 +262,44 @@ the case of locality aware LB, we rely on the management server to provide the
 locality weighting, rather than the Envoy-side heuristics used in zone aware
 routing.
 
-Envoy will continue to take into account the health of endpoints in a locality
-and adjust the management server assigned weights based on this. For example,
-if locality X is weighted 60%, locality Y at 20% and locality Z at 20%, but
-only half of locality Z's endpoints are healthy, we would weight X/Y/Z as
-67%/22%/11%.
+When all endpoints are healthy, the locality is picked using a weighted
+round-robin schedule, where the locality weight is used for weighting. When some
+endpoints in a locality are unhealthy, we adjust the locality weight to reflect
+this.  As with :ref:`priority levels
+<arch_overview_load_balancing_priority_levels>`, we assume an over-provision
+factor (currently hardcoded at 1.4), which means we do not perform any weight
+adjustment when only a small number of endpoints in a locality are unhealthy.
 
-Locality weighted LB is configured via :ref:`locality_weighted_lb
-<envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb>`.
+Assume a simple set-up with 2 localities X and Y, where X has a locality weight
+of 1 and Y has a locality weight of 2, L=Y 100% healthy.
+
++----------------------------+---------------------------+----------------------------+
+| L=X healthy endpoints      | Percent of traffic to L=X |  Percent of traffic to L=Y |
++============================+===========================+============================+
+| 100%                       | 33%                       |   67%                      |
++----------------------------+---------------------------+----------------------------+
+| 70%                        | 33%                       |   67%                      |
++----------------------------+---------------------------+----------------------------+
+| 69%                        | 32%                       |   68%                      |
++----------------------------+---------------------------+----------------------------+
+| 50%                        | 26%                       |   74%                      |
++----------------------------+---------------------------+----------------------------+
+| 25%                        | 15%                       |   85%                      |
++----------------------------+---------------------------+----------------------------+
+| 0%                         | 0%                        |   100%                     |
++----------------------------+---------------------------+----------------------------+
+
+
+To sum this up in pseudo algorithms:
+
+::
+
+  health(L_X) = 140 * healthy_X_backends / total_X_backends
+  effective_weight(L_X) = locality_weight_X * min(100, health(L_X))
+  load to L_X = effective_weight(L_X) / Σ_c(effective_weight(L_c))
+
+Locality weighted LB is configured via :ref:`locality_weighted_lb_config
+<envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb_config>`.
 
 .. _arch_overview_load_balancer_subsets:
 
