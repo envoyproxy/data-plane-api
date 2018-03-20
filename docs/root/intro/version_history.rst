@@ -65,6 +65,7 @@ Version history
 * load balancer: added support for
   :ref:`LocalityLbEndpoints<envoy_api_msg_endpoint.LocalityLbEndpoints>` priorities.
 * lua: added headers :ref:`replace() <config_http_filters_lua_header_wrapper>` API.
+* lua: extended to support :ref:`metadata object <config_http_filters_lua_metadata_wrapper>` API.
 * redis: added local `PING` support to the :ref:`Redis filter <arch_overview_redis>`.
 * redis: added `GEORADIUS_RO` and `GEORADIUSBYMEMBER_RO` to the :ref:`Redis command splitter
   <arch_overview_redis>` whitelist.
