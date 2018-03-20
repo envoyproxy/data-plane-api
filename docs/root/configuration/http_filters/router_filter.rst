@@ -64,10 +64,11 @@ x-envoy-retry-on
 ^^^^^^^^^^^^^^^^
 
 Setting this header on egress requests will cause Envoy to attempt to retry failed requests (number
-of retries defaults to 1 and can be controlled by :ref:`x-envoy-max-retries <config_http_filters_router_x-envoy-max-retries>`
-header or the :ref:`route config retry policy <config_http_conn_man_route_table_route_retry>`). The
-value to which the x-envoy-retry-on header is set indicates the retry policy. One or more policies can be specified
-using a ',' delimited list. The supported policies are:
+of retries defaults to 1 and can be controlled by :ref:`x-envoy-max-retries
+<config_http_filters_router_x-envoy-max-retries>` header or the :ref:`route config retry policy
+<config_http_conn_man_route_table_route_retry>`). The value to which the x-envoy-retry-on header is
+set indicates the retry policy. One or more policies can be specified using a ',' delimited list.
+The supported policies are:
 
 5xx
   Envoy will attempt a retry if the upstream server responds with any 5xx response code, or does not
@@ -81,7 +82,8 @@ using a ',' delimited list. The supported policies are:
     request, including any retries that take place.
 
 gateway-error
-  This policy is similar to the *5xx* policy but will only retry requests that result in a 502, 503, or 504.
+  This policy is similar to the *5xx* policy but will only retry requests that result in a 502, 503,
+  or 504.
 
 connect-failure
   Envoy will attempt a retry if a request is failed because of a connection failure to the upstream

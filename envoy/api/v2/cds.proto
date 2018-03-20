@@ -374,6 +374,8 @@ message Cluster {
     // .. note::
     //   The specified percent will be truncated to the nearest 1%.
     envoy.type.Percent healthy_panic_threshold = 1;
+
+    // [#not-implemented-hide:]
     message ZoneAwareLbConfig {
       // [#not-implemented-hide:]
       // Configures percentage of requests that will be considered for zone aware routing
