@@ -96,7 +96,7 @@ message JwtRule {
 
   // If false, the JWT is removed in the request after a success verification. If true, the JWT is
   // not removed in the request. Default value is false.
-  bool forward_jwt = 5;
+  bool forward = 5;
 
   // Two fields below define where to extract the JWT from an HTTP request.
   //
@@ -118,14 +118,14 @@ message JwtRule {
   //
   // .. code-block:: yaml
   //
-  //   jwt_headers:
+  //   from_headers:
   //   - name: x-goog-iap-jwt-assertion
   //
   // can be used to extract token from header::
   //
   //   x-goog-iap-jwt-assertion: <JWT>.
   //
-  repeated JwtHeader jwt_headers = 6;
+  repeated JwtHeader from_headers = 6;
 
   // JWT is sent in a query parameter. `jwt_params` represents the query parameter names.
   //
@@ -133,14 +133,14 @@ message JwtRule {
   //
   // .. code-block:: yaml
   //
-  //   jwt_params:
+  //   from_params:
   //   - jwt_token
   //
   // The JWT format in query parameter is::
   //
   //    /path?jwt_token=<JWT>
   //
-  repeated string jwt_params = 7;
+  repeated string from_params = 7;
 
   // This field specifies the header name to forward a successfully verified JWT payload to the
   // backend. The forwarded data is::
@@ -149,7 +149,7 @@ message JwtRule {
   //
   // If it is not specified, the payload will not be forwarded. If multiple JWT payloads needed to
   // be forwarded, distinct header names are required.
-  string jwt_payload_header = 8;
+  string forward_payload_header = 8;
 }
 
 // This message specifies how to fetch JWKS from remote and how to cache it.
@@ -188,7 +188,7 @@ message JwtAuthentication {
 
   // If true, the request is allowed if JWT is missing or JWT verification fails.
   // Default is false, a request without JWT or failed JWT verification is not allowed.
-  bool allow_missing_or_failed_jwt = 2;
+  bool allow_missing_or_failed = 2;
 
   // This field lists the patterns allowed to bypass JWT verification. This only applies when
   // `allow_missing_or_failed_jwt` is false. Under this config, if a request doesn't have JWT, it
@@ -199,7 +199,7 @@ message JwtAuthentication {
   //
   // .. code-block:: yaml
   //
-  //   bypass_jwt:
+  //   bypass:
   //   - headers:
   //     - name: :method
   //       value: OPTIONS
@@ -211,7 +211,7 @@ message JwtAuthentication {
   //
   // .. code-block:: yaml
   //
-  //   bypass_jwt:
+  //   bypass:
   //   - headers:
   //     - name: :method
   //       value: GET
@@ -219,5 +219,5 @@ message JwtAuthentication {
   //     - name: :path
   //       exact_match: /healthz
   //
-  repeated envoy.api.v2.route.RouteMatch bypass_jwt = 3;
+  repeated envoy.api.v2.route.RouteMatch bypass = 3;
 }
