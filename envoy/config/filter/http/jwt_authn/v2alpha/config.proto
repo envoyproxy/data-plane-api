@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-package envoy.config.filter.http.jwt_authn.v2;
+package envoy.config.filter.http.jwt_authn.v2alpha;
 
 import "envoy/api/v2/core/base.proto";
 import "envoy/api/v2/core/http_uri.proto";
