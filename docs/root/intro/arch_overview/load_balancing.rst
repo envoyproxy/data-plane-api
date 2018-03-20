@@ -297,6 +297,13 @@ To sum this up in pseudo algorithms:
   effective_weight(L_X) = locality_weight_X * min(100, health(L_X))
   load to L_X = effective_weight(L_X) / Σ_c(effective_weight(L_c))
 
+Note that the locality weighted pick takes place after the priority level is
+picked. The load balancer follows these steps:
+
+1. Pick :ref:`priority level <arch_overview_load_balancing_priority_levels>`.
+2. Pick locality (as described in this section) within priority level from (1).
+3. Pick endpoint using cluster specified load balancer within locality from (2)
+
 Locality weighted LB is configured via :ref:`locality_weighted_lb_config
 <envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb_config>`.
 
