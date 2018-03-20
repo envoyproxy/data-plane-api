@@ -6,6 +6,7 @@ Version history
 
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
+* lua http filter: extended to support :ref:`metadata object <config_http_filters_lua_metadata_wrapper>` API.
 * health check: added setting for :ref:`no-traffic
   interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
 * tracing: when using the zipkin tracer, it is now possible for clients to specify the sampling decision (using
