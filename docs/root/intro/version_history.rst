@@ -14,11 +14,12 @@ Version history
   and whether to use independent randomness or not.
 * admin: added :ref:`/runtime <operations_admin_interface_runtime>` admin endpoint to read the
   current runtime values.
-* build: added support for `building envoy with exported symbols <https://github.com/envoyproxy/envoy/tree/master/bazel#enabling-optional-features>`_.
-  This change allows scripts loaded with the lua filter to load shared object libraries such as
-  those installed via luarocks.
-* config: added support for sending error details as grpc.rpc.Status in
-  :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>`.
+* build: added support for :repo:`building Envoy with exported symbols
+  <bazel#enabling-optional-features>`. This change allows scripts loaded with the Lua filter to
+  load shared object libraries such as those installed via `LuaRocks <https://luarocks.org/>`_.
+* config: added support for sending error details as
+  `grpc.rpc.Status <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`_
+  in :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>`.
 * config: added support for :ref:`inline delivery <envoy_api_msg_core.DataSource>` of TLS
   certificates and private keys.
 * config: added restrictions for the backing :ref:`config sources <envoy_api_msg_core.ConfigSource>`
@@ -42,7 +43,7 @@ Version history
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
 * http: added support for :ref:`proxying 100-Continue responses
   <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.proxy_100_continue>`.
-* http: added the ability to pass a URL encoded Pem encoded peer certificate in the
+* http: added the ability to pass a URL encoded PEM encoded peer certificate in the
   :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
 * http: added support for trusting additional hops in the
   :ref:`config_http_conn_man_headers_x-forwarded-for` request header.
