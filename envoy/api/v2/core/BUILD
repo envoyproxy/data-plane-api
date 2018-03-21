@@ -80,6 +80,19 @@ api_go_proto_library(
 )
 
 api_proto_library(
+    name = "http_uri",
+    srcs = ["http_uri.proto"],
+    visibility = [
+        ":friends",
+    ],
+)
+
+api_go_proto_library(
+    name = "http_uri",
+    proto = ":http_uri",
+)
+
+api_proto_library(
     name = "grpc_service",
     srcs = ["grpc_service.proto"],
     visibility = [

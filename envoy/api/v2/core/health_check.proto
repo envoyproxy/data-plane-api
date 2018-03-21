@@ -124,6 +124,15 @@ message HealthCheck {
     // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
   }
+
+  // The "no traffic interval" is a special health check interval that is used when a cluster has
+  // never had traffic routed to it. This lower interval allows cluster information to be kept up to
+  // date, without sending a potentially large amount of active health checking traffic for no
+  // reason. Once a cluster has been used for traffic routing, Envoy will shift back to using the
+  // standard health check interval that is defined.
+  //
+  // The default value for "no traffic interval" is 60 seconds.
+  google.protobuf.Duration no_traffic_interval = 12;
 }
 
 // [#not-implemented-hide:] Part of HDS.

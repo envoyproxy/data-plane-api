@@ -24,3 +24,26 @@ distribution.
 
 * Cluster manager :ref:`configuration <config_cluster_manager>`.
 * CDS :ref:`configuration <config_cluster_manager_cds>`.
+
+Cluster warming
+---------------
+
+When clusters are initialized both at server boot as well as via CDS, they are "warmed." This means
+that clusters do not become available until the following operations have taken place.
+
+* Initial service discovery load (e.g., DNS resolution, EDS update, etc.).
+* Initial active :ref:`health check <arch_overview_health_checking>` pass if active health checking
+  is configured. Envoy will send a health check request to each discovered host to determine its
+  initial health status.
+
+The previous items ensure that Envoy has an accurate view of a cluster before it begins using it
+for traffic serving.
+
+When discussing cluster warming, the cluster "becoming available" means:
+
+* For newly added clusters, the cluster will not appear to exist to the rest of Envoy until it has
+  been warmed. I.e., HTTP routes that reference the cluster will result in either a 404 or 503
+  (depending on configuration).
+* For updated clusters, the old cluster will continue to exist and serve traffic. When the new
+  cluster has been warmed, it will be atomically swapped with the old cluster such that no
+  traffic interruptions take place.

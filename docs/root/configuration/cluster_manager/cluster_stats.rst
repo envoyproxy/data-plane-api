@@ -19,7 +19,8 @@ statistics. Any ``:`` character in the stats name is replaced with ``_``.
   cluster_added, Counter, Total clusters added (either via static config or CDS)
   cluster_modified, Counter, Total clusters modified (via CDS)
   cluster_removed, Counter, Total clusters removed (via CDS)
-  total_clusters, Gauge, Number of currently loaded clusters
+  active_clusters, Gauge, Number of currently active (warmed) clusters
+  warming_clusters, Gauge, Number of currently warming (not active) clusters
 
 Every cluster has a statistics tree rooted at *cluster.<name>.* with the following statistics:
 
@@ -32,7 +33,8 @@ Every cluster has a statistics tree rooted at *cluster.<name>.* with the followi
   upstream_cx_http1_total, Counter, Total HTTP/1.1 connections
   upstream_cx_http2_total, Counter, Total HTTP/2 connections
   upstream_cx_connect_fail, Counter, Total connection failures
-  upstream_cx_connect_timeout, Counter, Total connection timeouts
+  upstream_cx_connect_timeout, Counter, Total connection connect timeouts
+  upstream_cx_idle_timeout, Counter, Total connection idle timeouts
   upstream_cx_connect_attempts_exceeded, Counter, Total consecutive connection failures exceeding configured connection attempts
   upstream_cx_overflow, Counter, Total times that the cluster's connection circuit breaker overflowed
   upstream_cx_connect_ms, Histogram, Connection establishment milliseconds
@@ -66,21 +68,22 @@ Every cluster has a statistics tree rooted at *cluster.<name>.* with the followi
   upstream_rq_retry, Counter, Total request retries
   upstream_rq_retry_success, Counter, Total request retry successes
   upstream_rq_retry_overflow, Counter, Total requests not retried due to circuit breaking
-  upstream_flow_control_paused_reading_total, Counter, Total number of times flow control paused reading from upstream.
-  upstream_flow_control_resumed_reading_total, Counter, Total number of times flow control resumed reading from upstream.
-  upstream_flow_control_backed_up_total, Counter, Total number of times the upstream connection backed up and paused reads from downstream.
-  upstream_flow_control_drained_total, Counter, Total number of times the upstream connection drained and resumed reads from downstream.
+  upstream_flow_control_paused_reading_total, Counter, Total number of times flow control paused reading from upstream
+  upstream_flow_control_resumed_reading_total, Counter, Total number of times flow control resumed reading from upstream
+  upstream_flow_control_backed_up_total, Counter, Total number of times the upstream connection backed up and paused reads from downstream
+  upstream_flow_control_drained_total, Counter, Total number of times the upstream connection drained and resumed reads from downstream
   membership_change, Counter, Total cluster membership changes
   membership_healthy, Gauge, Current cluster healthy total (inclusive of both health checking and outlier detection)
   membership_total, Gauge, Current cluster membership total
-  retry_or_shadow_abandoned, Counter, Total number of times shadowing or retry buffering was canceled due to buffer limits.
+  retry_or_shadow_abandoned, Counter, Total number of times shadowing or retry buffering was canceled due to buffer limits
   config_reload, Counter, Total API fetches that resulted in a config reload due to a different config
   update_attempt, Counter, Total cluster membership update attempts
   update_success, Counter, Total cluster membership update successes
   update_failure, Counter, Total cluster membership update failures
+  update_empty, Counter, Total cluster membership updates ending with empty cluster load assignment and continuing with previous config
   version, Gauge, Hash of the contents from the last successful API fetch
   max_host_weight, Gauge, Maximum weight of any host in the cluster
-  bind_errors, Counter, Total errors binding the socket to the configured source address.
+  bind_errors, Counter, Total errors binding the socket to the configured source address
 
 Health check statistics
 -----------------------
@@ -188,6 +191,7 @@ the following statistics:
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
+  lb_recalculate_zone_structures, Counter, The number of times locality aware routing structures are regenerated for fast decisions on upstream locality selection
   lb_healthy_panic, Counter, Total requests load balanced with the load balancer in panic mode
   lb_zone_cluster_too_small, Counter, No zone aware routing because of small upstream cluster size
   lb_zone_routing_all_directly, Counter, Sending all requests directly to the same zone
@@ -195,6 +199,7 @@ the following statistics:
   lb_zone_routing_cross_zone, Counter, Zone aware routing mode but have to send cross zone
   lb_local_cluster_not_ok, Counter, Local host set is not set or it is panic mode for local cluster
   lb_zone_number_differs, Counter, Number of zones in local and upstream cluster different
+  lb_zone_no_capacity_left, Counter, Total number of times ended with random zone selection due to rounding error
 
 Load balancer subset statistics
 -------------------------------
@@ -206,8 +211,8 @@ decisions. Stats are rooted at *cluster.<name>.* and contain the following stati
   :header: Name, Type, Description
   :widths: 1, 1, 2
 
-  lb_subsets_active, Gauge, Number of currently available subsets.
-  lb_subsets_created, Counter, Number of subsets created.
-  lb_subsets_removed, Counter, Number of subsets removed due to no hosts.
-  lb_subsets_selected, Counter, Number of times any subset was selected for load balancing.
-  lb_subsets_fallback, Counter, Number of times the fallback policy was invoked.
+  lb_subsets_active, Gauge, Number of currently available subsets
+  lb_subsets_created, Counter, Number of subsets created
+  lb_subsets_removed, Counter, Number of subsets removed due to no hosts
+  lb_subsets_selected, Counter, Number of times any subset was selected for load balancing
+  lb_subsets_fallback, Counter, Number of times the fallback policy was invoked

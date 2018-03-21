@@ -26,7 +26,7 @@ message FaultDelay {
   // on which the delay will be injected.
   uint32 percent = 2 [(validate.rules).uint32.lte = 100];
 
-  oneof fault_delay_type {
+  oneof fault_delay_secifier {
     option (validate.required) = true;
     // Add a fixed delay before forwarding the operation upstream. See
     // https://developers.google.com/protocol-buffers/docs/proto3#json for

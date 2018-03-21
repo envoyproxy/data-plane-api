@@ -28,13 +28,14 @@ Weighted least request
 ^^^^^^^^^^^^^^^^^^^^^^
 
 The least request load balancer uses an O(1) algorithm which selects two random healthy hosts and
-picks the host which has fewer active requests. (Research has shown that this approach is nearly as
-good as an O(N) full scan). If any host in the cluster has a load balancing weight greater than 1,
-the load balancer shifts into a mode where it randomly picks a host and then uses that host <weight>
-times. This algorithm is simple and sufficient for load testing. It should not be used where true
-weighted least request behavior is desired (generally if request durations are variable and long in
-length). We may add a true full scan weighted least request variant in the future to cover this use
-case.
+picks the host which has fewer active requests
+(`Research <http://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf>`_ has shown that this
+approach is nearly as good as an O(N) full scan). If any host in the cluster has a load balancing
+weight greater than 1, the load balancer shifts into a mode where it randomly picks a host and then
+uses that host <weight> times. This algorithm is simple and sufficient for load testing. It should
+not be used where true weighted least request behavior is desired (generally if request durations
+are variable and long in length). We may add a true full scan weighted least request variant in the
+future to cover this use case.
 
 .. _arch_overview_load_balancing_types_ring_hash:
 
@@ -45,11 +46,10 @@ The ring/modulo hash load balancer implements consistent hashing to upstream hos
 based on mapping all hosts onto a circle such that the addition or removal of a host from the host
 set changes only affect 1/N requests. This technique is also commonly known as `"ketama"
 <https://github.com/RJ/ketama>`_ hashing. A consistent hashing load balancer is only effective
-when protocol routing is used that specifies a value to hash on. The default minimum ring size is
-specified in :ref:`runtime <config_cluster_manager_cluster_runtime_ring_hash>`. The minimum ring
-size governs the replication factor for each host in the ring. For example, if the minimum ring
-size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
-balancer does not currently support weighting.
+when protocol routing is used that specifies a value to hash on. The minimum ring size governs the
+replication factor for each host in the ring. For example, if the minimum ring size is 1024 and
+there are 16 hosts, each host will be replicated 64 times. The ring hash load balancer does not
+currently support weighting.
 
 When priority based load balancing is in use, the priority level is also chosen by hash, so the
 endpoint selected will still be consistent when the set of backends is stable.
