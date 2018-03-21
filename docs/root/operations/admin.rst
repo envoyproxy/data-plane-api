@@ -186,6 +186,8 @@ The fields are:
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
   gauges are output. Histograms will be output in a future update.
 
+.. _operations_admin_interface_runtime:
+
 .. http:get:: /runtime
 
   Outputs all runtime values on demand in a human-readable format. See

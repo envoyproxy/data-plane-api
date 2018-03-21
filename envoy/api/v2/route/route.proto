@@ -815,7 +815,6 @@ message HeaderMatcher {
   // * The regex *\d{3}* does not match the value *123.456*
   google.protobuf.BoolValue regex = 3;
 
-  // [#not-implemented-hide:]
   // Specifies how the header match will be performed to route the request.
   // If header_match_specifier is absent, a request that has the
   // :ref:`envoy_api_msg_route.HeaderMatcher.name` header will match, regardless of the header's
@@ -836,7 +835,6 @@ message HeaderMatcher {
     // * The regex *\d{3}* does not match the value *123.456*
     string regex_match = 5;
 
-    // [#not-implemented-hide:]
     // If specified, header match will be performed based on range.
     // The rule will match if the request header value is within this range.
     // The entire request header value must represent an integer in base 10 notation: consisting of
@@ -847,7 +845,7 @@ message HeaderMatcher {
     // Examples:
     //
     // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9,
-    // "-1somestring"
+    //   "-1somestring"
     envoy.type.Int64Range range_match = 6;
   }
 }
