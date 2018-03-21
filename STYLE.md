@@ -47,8 +47,9 @@ In addition, the following conventions should be followed:
 
 * Protos for configs and services that are not implemented immediately in
   Envoy, or are under active design and development should be versioned
-  "v2alpha" or "v2alpha1". Alpha-versioned protos are considered experimental
-  and are not required to preserve compatibility.
+  "v2alpha". If several iterations of the alpha API are expected, then versions
+  "v2alpha1", "v2alpha2", and so on are preferred. Alpha-versioned protos are
+  considered experimental and are not required to preserve compatibility.
 
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
