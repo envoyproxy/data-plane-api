@@ -45,6 +45,11 @@ In addition, the following conventions should be followed:
 * Non-frozen fields should be tagged with `[#not-implemented-hide:]`, `[#not-implemented-warn:]`,
   `[#proto-status: draft]` or `[#proto-status: experimental]`.
 
+* Protos for configs and services that are not implemented immediately in
+  Envoy, or are under active design and development should be versioned
+  "v2alpha" or "v2alpha1". Alpha-versioned protos are considered experimental
+  and are not required to preserve compatibility.
+
 * Every proto directory should have a `README.md` describing its content. See
   for example [envoy.service](envoy/service/README.md).
 
