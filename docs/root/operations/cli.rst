@@ -8,8 +8,9 @@ following are the command line options that Envoy supports.
 
 .. option:: -c <path string>, --config-path <path string>
 
-  *(required)* The path to the v1 or v2 :ref:`JSON/YAML/proto3 configuration
-  file <config>`. This will be parsed as a :ref:`v2 bootstrap configuration file
+  *(optional)* The path to the v1 or v2 :ref:`JSON/YAML/proto3 configuration
+  file <config>`. If this flag is missing, --config-yaml is required.
+  This will be parsed as a :ref:`v2 bootstrap configuration file
   <config_overview_v2_bootstrap>` and on failure, subject to
   :option:`--v2-config-only`, will be considered as a :ref:`v1 JSON
   configuration file <config_overview_v1>`. For v2 configuration files, valid
@@ -19,6 +20,17 @@ following are the command line options that Envoy supports.
   proto3
   <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.text_format>`_
   formats respectively.
+
+.. option:: --config-yaml <yaml string>
+
+  *(optional)* The YAML string for a v2 bootstrap configuration. If --config-path is also set,
+   the values in this yaml string will override and merge with the ones --config-path.
+   Because YAML is a superset of JSON, a json string may also be passed to --config-yaml.
+   --config-yaml is not compatible with bootstrap v1.
+
+   Example overriding the node id on the command line:
+
+      ./envoy -c bootstrap.yaml --config-yaml "node: {id: 'node1'}"
 
 .. option:: --v2-config-only
 
