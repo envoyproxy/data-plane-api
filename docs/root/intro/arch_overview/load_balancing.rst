@@ -20,7 +20,12 @@ Supported load balancers
 Round robin
 ^^^^^^^^^^^
 
-This is a simple policy in which each healthy upstream host is selected in round robin order.
+This is a simple policy in which each healthy upstream host is selected in round
+robin order. If :ref:`weights
+<envoy_api_field_endpoint.LbEndpoint.load_balancing_weight>` are assigned to
+endpoints in a locality, then a weighted round robin schedule is used, where
+higher weighted endpoints will appear more often in the rotation to achieve the
+effective weighting.
 
 .. _arch_overview_load_balancing_types_least_request:
 

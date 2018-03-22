@@ -3,6 +3,10 @@ Version history
 
 1.7.0
 =====
+* Added :ref:`weighted round robin
+  <arch_overview_load_balancing_types_round_robin>` support. The round robin
+  scheduler now respects endpoint weights and also has improved fidelity across
+  picks.
 
 1.6.0
 =====
