@@ -109,7 +109,7 @@ modify different aspects of the server:
 
   Dump currently loaded configuration from various Envoy components as JSON-serialized proto
   messages. Currently, only route configs are available but more are on the way. See
-  envoy/admin/v2/config_dump.proto for more information.  That proto is in draft state and is
+  envoy/admin/v2/config_dump.proto for more information. That proto is in draft state and is
   subject to change.
 
 .. http:get:: /cpuprofiler
