@@ -217,9 +217,9 @@ message HttpConnectionManager {
     // Defaults to false.
     bool cert = 3;
 
-    // [#not-implemented-hide:] Whether to forward the DNS SAN entries of the client cert. Defaults
-    // to false.
-    bool dns_san = 4;
+    // [#not-implemented-hide:] Whether to forward the DNS type SAN entries of the client cert.
+    // Defaults to false.
+    bool dns = 4;
   };
 
   // This field is valid only when :ref:`forward_client_cert_details
