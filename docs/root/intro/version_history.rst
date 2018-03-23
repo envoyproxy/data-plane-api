@@ -8,7 +8,7 @@ Version history
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
-  in run-time: trace debug info warning error critical.
+  at run-time: trace debug info warning error critical.
 
 1.6.0
 =====
