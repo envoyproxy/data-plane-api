@@ -127,6 +127,8 @@ modify different aspects of the server:
 
   See :option:`--hot-restart-version`.
 
+.. _operations_admin_interface_logging:
+
 .. http:get:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
