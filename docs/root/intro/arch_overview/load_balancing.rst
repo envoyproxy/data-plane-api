@@ -309,6 +309,13 @@ picked. The load balancer follows these steps:
 2. Pick locality (as described in this section) within priority level from (1).
 3. Pick endpoint using cluster specified load balancer within locality from (2).
 
+Locality weighted load balancing is configured by setting
+:ref:`locality_weighted_lb_config
+<envoy_api_field_Cluster.CommonLbConfig.locality_weighted_lb_config>` in the
+cluster configuration and providing weights in :ref:`LocalityLbEndpoints
+<envoy_api_msg_endpoint.LocalityLbEndpoints>` via :ref:`load_balancing_weight
+<envoy_api_field_endpoint.LocalityLbEndpoints.load_balancing_weight>`.
+
 .. _arch_overview_load_balancer_subsets:
 
 Load Balancer Subsets
