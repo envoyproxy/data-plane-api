@@ -122,7 +122,8 @@ The following keys are supported:
 2. ``Hash`` The SHA 256 diguest of the current client certificate.
 3. ``SAN`` The URI type SAN field of the current client certificate.
 4. ``Subject`` The Subject field of the current client certificate. The value is always double-quoted.
-5. ``DNS`` The DNS type SAN field of the current client certificate. A client certificate may contain multiple DNS Subject Alternative Names, each will be a separate entry in XFCC header.
+5. ``Cert`` The entire client certificate in URL encoded PEM format.
+6. ``DNS`` The DNS type SAN field of the current client certificate. A client certificate may contain multiple DNS Subject Alternative Names, each will be a separate XFCC element.
 
 A client certificate may contain multiple SAN types. For details on different SAN types, please refer `RFC 2459`_.
 
