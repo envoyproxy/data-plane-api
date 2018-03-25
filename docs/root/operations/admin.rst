@@ -182,6 +182,10 @@ The fields are:
 
   .. http:get:: /stats?format=prometheus
 
+  or alternatively,
+
+  .. http:get:: /stats/prometheus
+
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
   gauges are output. Histograms will be output in a future update.
