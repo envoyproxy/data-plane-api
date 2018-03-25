@@ -7,6 +7,8 @@ Version history
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
+* logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
+  at run-time: trace debug info warning error critical.
 
 1.6.0
 =====
