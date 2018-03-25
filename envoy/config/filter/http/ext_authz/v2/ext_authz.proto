@@ -5,35 +5,22 @@ option go_package = "v2";
 
 import "envoy/api/v2/core/grpc_service.proto";
 
-// The external authorization HTTP service configuration. Only applicable when
-// `use_http_service`
-// is true.
-message HttpService {
+import "validate/validate.proto";
 
-  // Sets the cluster name which the authorization request must be sent to.
-  string cluster = 1;
-
-  // Sets the time in milliseconds within the service should respond to an authorization
-  // request.
-  google.protobuf.Duration timeout = 2 [(gogoproto.stdduration) = true];
-
-  // List of headers that are allowed to be copied over or to modify the original
-  // request headers.
-  repeated string allowed_headers = 3;
-
-  // Sets an optional prefix to the value of request header `path` in the authorization request.
-  string path_prefix = 4;
-}
-
+// [#not-implemented-hide:]
+// External Authorization filter calls out to an external service over the
+// gRPC Authorization API defined by
+// :ref:`external_auth <envoy_api_msg_auth.CheckRequest>`.
+// A failed check will cause this filter to return 403 Forbidden.
 message ExtAuthz {
 
-  oneof services {
-    // The external authorization gRPC service configuration.
-    envoy.api.v2.core.GrpcService grpc_service = 1;
+  // The external authorization gRPC service configuration.
+  envoy.api.v2.core.GrpcService grpc_service = 1;
 
-    // The external authorization HTTP service configuration.
-    HttpService http_service = 3;
-  }
-
+  // The filter's behaviour in case the external authorization service does
+  // not respond back. If set to true then in case of failure to get a
+  // response back from the authorization service or getting a response that
+  // is NOT denied then traffic will be permitted.
+  // Defaults to false.
   bool failure_mode_allow = 2;
 }
