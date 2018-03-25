@@ -7,6 +7,7 @@ Version history
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
+* admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
 
 1.6.0
 =====
