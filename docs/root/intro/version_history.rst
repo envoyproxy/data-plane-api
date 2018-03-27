@@ -10,6 +10,13 @@ Version history
   picks.
 * admin: added :ref:`/config_dump endpoint <operations_admin_interface_config_dump>` for dumping current configs
 * admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
+* access log: ability to format START_TIME
+* admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
+* logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
+  at run-time: trace debug info warning error critical.
+* tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
+  to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
+  is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
 
 1.6.0
 =====

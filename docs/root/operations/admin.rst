@@ -136,6 +136,8 @@ modify different aspects of the server:
 
   See :option:`--hot-restart-version`.
 
+.. _operations_admin_interface_logging:
+
 .. http:get:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
@@ -182,6 +184,10 @@ The fields are:
   Outputs /stats in JSON format. This can be used for programmatic access of stats.
 
   .. http:get:: /stats?format=prometheus
+
+  or alternatively,
+
+  .. http:get:: /stats/prometheus
 
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
