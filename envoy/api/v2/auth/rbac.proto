@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+// [#proto-status: draft]
+
+package envoy.api.v2.auth;
+
+// Istio RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
+// objects.
+//
+// A ServiceRole specification includes a list of rules (permissions). Each rule has
+// the following standard fields:
+// * services: a list of services.
+// * methods: HTTP methods. In the case of gRPC, this field is ignored because the value is always
+// "POST".
+// * paths: HTTP paths or gRPC methods. Note that gRPC methods should be
+//   presented in the form of "packageName.serviceName/methodName".
+//
+// In addition to the standard fields, operators can use custom fields in the "constraints"
+// section. The fields used in ServiceRole definition map to attributes defined in AttributeContext
+// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+// as follows:
+//   service: destination.service
+//   method: request.http.method
+//   path: request.http.path
+//
+//  Custom field name can directly refer to the attribute name in AttributeContext. For example,
+//  destination.labels["app"], request.http.headers["version"].
+//
+// Below is an example of ServiceRole object "product-viewer", which has "read" ("GET" and "HEAD")
+// access to "products.default.svc.cluster.local" service at versions "v1" and "v2". "path" is not
+// specified, so it applies to any path in the service.
+//
+//     apiVersion: "config.istio.io/v1alpha1"
+//     kind: ServiceRole
+//     metadata:
+//       name: products-viewer
+//       namespace: default
+//     spec:
+//       rules:
+//       - services: ["products.default.svc.cluster.local"]
+//         paths: ["/products/*"]
+//         methods: ["GET", "HEAD"]
+//         constraints:
+//         - key: request.http.headers["version"]
+//           value: ["v1", "v2"]
+//
+// A ServiceRoleBinding specification includes two parts:
+// * "roleRef" refers to a ServiceRole object.
+// * A list of "subjects" that are assigned the roles.
+//
+// A subject can be a "user" or a "group", or represented with a set of custom "properties". The
+// names of a property used to identify a subject in ServiceRoleBinding map to attributes defined in
+// AttributeContext
+// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+// as follows:
+//    user: source.principal
+//    group is currently undefined. It is reserved to be used in the future.
+//
+// Custom property name directly refers to the attribute name in AttributeContext. For example,
+// source.service, source.labels["app"], request.http.headers["version"].
+//
+// Below is an example of ServiceRoleBinding object "test-binding-products", which binds two
+// subjects to ServiceRole "product-viewer":
+//   * User (service account) "cluster.local/ns/default/sa/bookinfo-reviews"
+//   * Service "reviews.default.svc.cluster.local" at version "v1".
+//
+//     apiVersion: "config.istio.io/v1alpha1"
+//     kind: ServiceRoleBinding
+//     metadata:
+//       name: test-binding-products
+//       namespace: default
+//     spec:
+//       subjects:
+//       - user: cluster.local/ns/default/sa/bookinfo-reviews
+//       - properties:
+//           source.service: "reviews.default.svc.cluster.local"
+//           source.labels["version"]: "v1"
+//       roleRef:
+//         kind: ServiceRole
+//         name: "products-viewer"
+
+// ServiceRole specification contains a list of access rules (permissions).
+// This represent the "Spec" part of the ServiceRole object. The name and namespace
+// of the ServiceRole is specified in "metadata" section of the ServiceRole object.
+message ServiceRole {
+  // Required. The set of access rules (permissions) that the role has.
+  repeated AccessRule rules = 1;
+}
+
+// AccessRule defines a permission to access a list of services.
+message AccessRule {
+  // Required. A list of service names.
+  // Exact match, prefix match, and suffix match are supported for service names.
+  // For example, the service name "bookstore.mtv.svc.cluster.local" matches
+  // "bookstore.mtv.svc.cluster.local" (exact match), or "bookstore*" (prefix match),
+  // or "*.mtv.svc.cluster.local" (suffix match).
+  // If set to ["*"], it refers to all services in the namespace.
+  repeated string services = 1;
+
+  // Optional. A list of HTTP paths or gRPC methods.
+  // gRPC methods must be presented as fully-qualified name in the form of
+  // packageName.serviceName/methodName.
+  // Exact match, prefix match, and suffix match are supported for paths.
+  // For example, the path "/books/review" matches
+  // "/books/review" (exact match), or "/books/*" (prefix match),
+  // or "*/review" (suffix match).
+  // If not specified, it applies to any path.
+  repeated string paths = 2;
+
+  // Optional. A list of HTTP methods (e.g., "GET", "POST").
+  // It is ignored in gRPC case because the value is always "POST".
+  // If set to ["*"] or not specified, it applies to any method.
+  repeated string methods = 3;
+
+  // Definition of a custom constraint. The fields used in ServiceRole definition map to attributes
+  // defined in AttributeContext
+  // (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto).
+  // The key of a constraint refers to the attribute name in AttributeContext. For example,
+  // destination.labels["app"], request.http.headers["version"].
+  message Constraint {
+    // Key of the constraint.
+    string key = 1;
+
+    // List of valid values for the constraint.
+    // Exact match, prefix match, and suffix match are supported for constraint values.
+    // For example, the value "v1alpha2" matches
+    // "v1alpha2" (exact match), or "v1*" (prefix match),
+    // or "*alpha2" (suffix match).
+    repeated string values = 2;
+  }
+
+  // Optional. Extra constraints in the ServiceRole specification.
+  // The above ServiceRole examples shows an example of constraint "version".
+  repeated Constraint constraints = 4;
+}
+
+// ServiceRoleBinding assigns a ServiceRole to a list of subjects.
+// This represents the "Spec" part of the ServiceRoleBinding object. The name and namespace
+// of the ServiceRoleBinding is specified in "metadata" section of the ServiceRoleBinding
+// object.
+message ServiceRoleBinding {
+  // Required. List of subjects that are assigned the ServiceRole object.
+  repeated Subject subjects = 1;
+
+  // Required. Reference to the ServiceRole object.
+  RoleRef role_ref = 2;
+}
+
+// Subject defines an identity or a group of identities. The identity is either a user or
+// a group or identified by a set of "properties". The names of a property
+// used to identify a subject in ServiceRoleBinding map to attributes defined in AttributeContext
+// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+// as follows:
+//    user: source.principal
+//    group is currently undefined. It is reserved to be used in the future.
+//
+// Custom property name directly refers to the attribute name in AttributeContext. For example,
+// source.service, source.labels["app"], request.http.headers["version"].
+message Subject {
+  // Optional. The user name/ID that the subject represents.
+  string user = 1;
+
+  // Optional. The group that the subject belongs to.
+  string group = 2;
+
+  // Optional. The set of properties that identify the subject.
+  map<string, string> properties = 3;
+}
+
+// RoleRef refers to a role object.
+message RoleRef {
+  // Required. The type of the role being referenced.
+  // Currently, "ServiceRole" is the only supported value for "kind".
+  string kind = 1;
+
+  // Required. The name of the ServiceRole object being referenced.
+  string name = 2;
+}
