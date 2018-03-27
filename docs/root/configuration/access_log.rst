@@ -36,6 +36,12 @@ The following command operators are supported:
   TCP
     Downstream connection start time including milliseconds.
 
+  START_TIME can be customized using a `format string <http://en.cppreference.com/w/cpp/io/manip/put_time>`_, for example:
+
+.. code-block:: none
+
+  %START_TIME(%Y/%m/%dT%H:%M:%S%z %s)%
+
 %BYTES_RECEIVED%
   HTTP
     Body bytes received.
