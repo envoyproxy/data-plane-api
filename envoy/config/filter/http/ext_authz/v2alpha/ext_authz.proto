@@ -4,14 +4,15 @@ package envoy.config.filter.http.ext_authz.v2alpha;
 option go_package = "v2";
 
 import "envoy/api/v2/core/grpc_service.proto";
+import "envoy/api/v2/core/http_uri.proto";
 
 import "google/protobuf/duration.proto";
 import "gogoproto/gogo.proto";
 
 // The external authorization HTTP service configuration.
 message HttpService {
-  // Sets the cluster name which the authorization request must be sent to.
-  string cluster = 1;
+  // Sets the HTTP server URI which the authorization requests must be sent to.
+  envoy.api.v2.core.HttpUri server_uri = 1;
 
   // Sets the time, in milliseconds, within the service should respond to an authorization
   // request.
@@ -31,5 +32,10 @@ message ExtAuthz {
     HttpService http_service = 3;
   }
 
+  // The filter's behaviour in case the external authorization service does
+  // not respond back. If set to true then in case of failure to get a
+  // response back from the authorization service or getting a response that
+  // is NOT denied then traffic will be permitted.
+  // Defaults to false.
   bool failure_mode_allow = 2;
 }
