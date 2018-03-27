@@ -120,6 +120,20 @@ And finally test is using::
 
   $ curl -v localhost:10000
 
+If you would like to use envoy with docker-compose you can overwrite the provided configuration file
+by using a volume.
+
+.. code-block: yaml
+
+  version: '3'
+  services:
+    envoy:
+      image: envoyproxy/envoy:latest
+      ports:
+        - "10000:10000"
+      volumes:
+        - ./envoy.yaml:/etc/envoy/envoy.yaml
+
 
 Sandboxes
 ---------
