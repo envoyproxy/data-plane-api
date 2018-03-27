@@ -72,11 +72,9 @@ api_proto_library(
     name = "rbac",
     srcs = ["rbac.proto"],
     visibility = [":friends"],
-    deps = [],
 )
 
 api_go_proto_library(
     name = "rbac",
     proto = ":rbac",
-    deps = [],
 )
