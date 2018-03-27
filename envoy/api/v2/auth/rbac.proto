@@ -2,6 +2,8 @@ syntax = "proto3";
 
 // [#proto-status: draft]
 
+import "validate/validate.proto";
+
 package envoy.api.v2.auth;
 
 // Istio RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
@@ -143,7 +145,7 @@ message ServiceRoleBinding {
   repeated Subject subjects = 1;
 
   // Required. Reference to the ServiceRole object.
-  RoleRef role_ref = 2;
+  RoleRef role_ref = 2 [(validate.rules).message.required = true];
 }
 
 // Subject defines an identity or a group of identities. The identity is either a user or
@@ -171,7 +173,7 @@ message Subject {
 message RoleRef {
   // Required. The type of the role being referenced.
   // Currently, "ServiceRole" is the only supported value for "kind".
-  string kind = 1;
+  string kind = 1 [(validate.rules).string.const = "ServiceRole"];
 
   // Required. The name of the ServiceRole object being referenced.
   string name = 2;
