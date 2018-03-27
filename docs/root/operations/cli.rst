@@ -71,6 +71,43 @@ following are the command line options that Envoy supports.
    *(optional)* The output file path where logs should be written. This file will be re-opened
    when SIGUSR1 is handled. If this is not set, log to stderr.
 
+.. option:: --log-format <format string>
+
+   *(optional)* The format string to use for laying out the log message metadata. If this is not
+   set, a default format string ``"[%Y-%m-%d %T.%e][%t][%l][%n] %v"`` is used.
+
+   The supported format flags are (with example output):
+
+   :%v:	The actual message to log ("some user text")
+   :%t:	Thread id ("1232")
+   :%P:	Process id ("3456")
+   :%n:	Logger's name ("filter")
+   :%l:	The log level of the message ("debug", "info", etc.)
+   :%L:	Short log level of the message ("D", "I", etc.)
+   :%a:	Abbreviated weekday name ("Tue")
+   :%A:	Full weekday name ("Tuesday")
+   :%b:	Abbreviated month name ("Mar")
+   :%B:	Full month name ("March")
+   :%c:	Date and time representation ("Tue Mar 27 15:25:06 2018")
+   :%C:	Year in 2 digits ("18")
+   :%Y:	Year in 4 digits ("2018")
+   :%D, %x:	Short MM/DD/YY date ("03/27/18")
+   :%m:	Month 01-12 ("03")
+   :%d:	Day of month 01-31 ("27")
+   :%H:	Hours in 24 format 00-23 ("15")
+   :%I:	Hours in 12 format 01-12 ("03")
+   :%M:	Minutes 00-59 ("25")
+   :%S:	Seconds 00-59 ("06")
+   :%e:	Millisecond part of the current second 000-999 ("008")
+   :%f:	Microsecond part of the current second 000000-999999 ("008789")
+   :%F:	Nanosecond part of the current second 000000000-999999999 ("008789123")
+   :%p:	AM/PM ("AM")
+   :%r:	12-hour clock ("03:25:06 PM")
+   :%R:	24-hour HH:MM time, equivalent to %H:%M ("15:25")
+   :%T, %X:	ISO 8601 time format (HH:MM:SS), equivalent to %H:%M:%S ("13:25:06")
+   :%z:	ISO 8601 offset from UTC in timezone ([+/-]HH:MM) ("-07:00")
+   :%%:	The % sign ("%")
+
 .. option:: --restart-epoch <integer>
 
   *(optional)* The :ref:`hot restart <arch_overview_hot_restart>` epoch. (The number of times
