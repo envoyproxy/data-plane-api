@@ -29,7 +29,7 @@ intended to represent a realistic Envoy deployment.
   $ curl -v localhost:10000
 
 The Docker image used will contain the latest version of Envoy
-and a basic Envoy configuration. This basic configuration tells 
+and a basic Envoy configuration. This basic configuration tells
 Envoy to route incoming requests to \*.google.com.
 
 Simple Configuration
