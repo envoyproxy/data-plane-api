@@ -6,7 +6,7 @@ package envoy.api.v2.auth;
 
 import "envoy/api/v2/auth/rbac.proto";
 
-// LocalRBAC specifies Istio RBAC policies that apply to the local RBAC engine
+// LocalRBAC specifies RBAC policies that apply to the local RBAC engine
 // that typically runs on a proxy. There can be multiple services running behind
 // a proxy.
 //
@@ -41,16 +41,13 @@ import "envoy/api/v2/auth/rbac.proto";
 //    },
 //  ]
 message LocalRBAC {
-  // A list of ServicePolicy. One per service.
-  repeated ServicePolicy service_policies = 1;
+  // Maps from the fully qualified service name to ServicePolicy.
+  map<string, ServicePolicy> service_policies = 1;
 }
 
-// ServicePolicy specifies a service and the Istio RBAC policies that apply to the service.
+// ServicePolicy specifies the RBAC policies that apply to a service.
 message ServicePolicy {
-  // The fully qualified name of the service.
-  string service = 1;
-
-  // The Istio RBAC policies that apply to the service.
+  // The RBAC policies that apply to a service.
   repeated Policy policies = 2;
 }
 

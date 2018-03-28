@@ -25,8 +25,12 @@ package envoy.api.v2.auth;
 //   method: request.http.method
 //   path: request.http.path
 //
-//  Custom field name can directly refer to the attribute name in AttributeContext. For example,
-//  destination.labels["app"], request.http.headers["version"].
+//  Custom field name can directly refer to the attribute names in Istio attribute vocabulary
+//  (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). These attributes are
+//  mapped to the attributes defined in AttributeContext
+//  (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+//  by the RBAC engine. Here are some examples of Istio attribute names: destination.labels["app"],
+//  request.headers["version"].
 //
 // Below is an example of ServiceRole object "product-viewer", which has "read" ("GET" and "HEAD")
 // access to "products.default.svc.cluster.local" service at versions "v1" and "v2". "path" is not
@@ -43,7 +47,7 @@ package envoy.api.v2.auth;
 //         paths: ["/products/*"]
 //         methods: ["GET", "HEAD"]
 //         constraints:
-//         - key: request.http.headers["version"]
+//         - key: request.headers["version"]
 //           value: ["v1", "v2"]
 //
 // A ServiceRoleBinding specification includes two parts:
@@ -58,8 +62,12 @@ package envoy.api.v2.auth;
 //    user: source.principal
 //    group is currently undefined. It is reserved to be used in the future.
 //
-// Custom property name directly refers to the attribute name in AttributeContext. For example,
-// source.service, source.labels["app"], request.http.headers["version"].
+// Custom property name directly refers to the attribute name in Istio attribute vocabulary
+// (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). These attributes are
+// mapped to the attributes defined in AttributeContext
+// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+// by the RBAC engine. Here are some examples of Istio attribute names:
+// source.service, source.labels["app"], request.headers["version"].
 //
 // Below is an example of ServiceRoleBinding object "test-binding-products", which binds two
 // subjects to ServiceRole "product-viewer":
@@ -114,11 +122,9 @@ message AccessRule {
   // If set to ["*"] or not specified, it applies to any method.
   repeated string methods = 3;
 
-  // Definition of a custom constraint. The fields used in ServiceRole definition map to attributes
-  // defined in AttributeContext
-  // (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto).
-  // The key of a constraint refers to the attribute name in AttributeContext. For example,
-  // destination.labels["app"], request.http.headers["version"].
+  // Definition of a custom constraint. The key in the constraint refers to an Istio attribute name
+  // (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html).For example,
+  // destination.labels["app"], request.headers["version"].
   message Constraint {
     // Key of the constraint.
     string key = 1;
@@ -150,14 +156,9 @@ message ServiceRoleBinding {
 
 // Subject defines an identity or a group of identities. The identity is either a user or
 // a group or identified by a set of "properties". The names of a property
-// used to identify a subject in ServiceRoleBinding map to attributes defined in AttributeContext
-// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
-// as follows:
-//    user: source.principal
-//    group is currently undefined. It is reserved to be used in the future.
-//
-// Custom property name directly refers to the attribute name in AttributeContext. For example,
-// source.service, source.labels["app"], request.http.headers["version"].
+// refers to an Istio attribute
+// (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). For example,
+// source.service, source.labels["app"], request.headers["version"].
 message Subject {
   // Optional. The user name/ID that the subject represents.
   string user = 1;
