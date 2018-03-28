@@ -17,4 +17,3 @@ api_go_proto_library(
         "//envoy/type:percent_go_proto",
     ],
 )
-
