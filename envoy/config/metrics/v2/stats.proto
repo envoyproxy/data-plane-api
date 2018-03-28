@@ -155,6 +155,7 @@ message StatsdSink {
     // Envoy will connect to this cluster to flush statistics.
     string tcp_cluster_name = 2;
   }
+  string prefix = 3;
 }
 
 // Stats configuration proto schema for built-in *envoy.dog_statsd* sink.
