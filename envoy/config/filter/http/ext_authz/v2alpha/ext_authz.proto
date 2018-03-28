@@ -1,25 +1,18 @@
 syntax = "proto3";
 
 package envoy.config.filter.http.ext_authz.v2alpha;
-option go_package = "v2";
+option go_package = "v2alpha";
 
 import "envoy/api/v2/core/grpc_service.proto";
 import "envoy/api/v2/core/http_uri.proto";
-
-import "google/protobuf/duration.proto";
-import "gogoproto/gogo.proto";
 
 // The external authorization HTTP service configuration.
 message HttpService {
   // Sets the HTTP server URI which the authorization requests must be sent to.
   envoy.api.v2.core.HttpUri server_uri = 1;
 
-  // Sets the time, in milliseconds, within the service should respond to an authorization
-  // request.
-  google.protobuf.Duration timeout = 2 [(gogoproto.stdduration) = true];
-
   // Sets an optional prefix to the value of authorization request header `path`.
-  string path_prefix = 3;
+  string path_prefix = 2;
 }
 
 message ExtAuthz {

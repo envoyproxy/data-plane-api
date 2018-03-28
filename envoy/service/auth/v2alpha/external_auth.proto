@@ -3,7 +3,7 @@ syntax = "proto3";
 // [#proto-status: draft]
 
 package envoy.service.auth.v2alpha;
-option go_package = "v2";
+option go_package = "v2alpha";
 option java_generic_services = true;
 
 import "envoy/service/auth/v2alpha/attribute_context.proto";
