@@ -9,7 +9,7 @@ following are the command line options that Envoy supports.
 .. option:: -c <path string>, --config-path <path string>
 
   *(optional)* The path to the v1 or v2 :ref:`JSON/YAML/proto3 configuration
-  file <config>`. If this flag is missing, --config-yaml is required.
+  file <config>`. If this flag is missing, :option:`--config-yaml` is required.
   This will be parsed as a :ref:`v2 bootstrap configuration file
   <config_overview_v2_bootstrap>` and on failure, subject to
   :option:`--v2-config-only`, will be considered as a :ref:`v1 JSON
