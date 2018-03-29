@@ -50,31 +50,3 @@ api_go_proto_library(
         "//envoy/api/v2/core:config_source_go_proto",
     ],
 )
-
-api_proto_library(
-    name = "local_rbac",
-    srcs = ["local_rbac.proto"],
-    visibility = [":friends"],
-    deps = [
-        ":rbac",
-    ],
-)
-
-api_go_proto_library(
-    name = "local_rbac",
-    proto = ":local_rbac",
-    deps = [
-        ":rbac_go_proto",
-    ],
-)
-
-api_proto_library(
-    name = "rbac",
-    srcs = ["rbac.proto"],
-    visibility = [":friends"],
-)
-
-api_go_proto_library(
-    name = "rbac",
-    proto = ":rbac",
-)

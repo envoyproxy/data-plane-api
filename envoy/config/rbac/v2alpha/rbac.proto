@@ -1,12 +1,10 @@
 syntax = "proto3";
 
-// [#proto-status: draft]
-
 import "validate/validate.proto";
 
 package envoy.api.v2.auth;
 
-// Istio RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
+// RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
 // objects.
 //
 // A ServiceRole specification includes a list of rules (permissions). Each rule has
@@ -19,24 +17,19 @@ package envoy.api.v2.auth;
 //
 // In addition to the standard fields, operators can use custom fields in the "constraints"
 // section. The fields used in ServiceRole definition map to attributes defined in AttributeContext
-// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
-// as follows:
+// (//envoy/service/auth/v2/attribute_context.proto) as follows:
 //   service: destination.service
 //   method: request.http.method
 //   path: request.http.path
 //
-//  Custom field name can directly refer to the attribute names in Istio attribute vocabulary
-//  (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). These attributes are
-//  mapped to the attributes defined in AttributeContext
-//  (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
-//  by the RBAC engine. Here are some examples of Istio attribute names: destination.labels["app"],
-//  request.headers["version"].
+//  Custom field name refers to the attributes defined in AttributeContext
+//  (//envoy/service/auth/v2/attribute_context.proto).
+//  For example, destination.labels["app"], request.http.headers["version"].
 //
 // Below is an example of ServiceRole object "product-viewer", which has "read" ("GET" and "HEAD")
 // access to "products.default.svc.cluster.local" service at versions "v1" and "v2". "path" is not
 // specified, so it applies to any path in the service.
 //
-//     apiVersion: "config.istio.io/v1alpha1"
 //     kind: ServiceRole
 //     metadata:
 //       name: products-viewer
@@ -47,8 +40,8 @@ package envoy.api.v2.auth;
 //         paths: ["/products/*"]
 //         methods: ["GET", "HEAD"]
 //         constraints:
-//         - key: request.headers["version"]
-//           value: ["v1", "v2"]
+//         - key: request.http.headers["version"]
+//           values: ["v1", "v2"]
 //
 // A ServiceRoleBinding specification includes two parts:
 // * "roleRef" refers to a ServiceRole object.
@@ -56,25 +49,20 @@ package envoy.api.v2.auth;
 //
 // A subject can be a "user" or a "group", or represented with a set of custom "properties". The
 // names of a property used to identify a subject in ServiceRoleBinding map to attributes defined in
-// AttributeContext
-// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
+// AttributeContext (//envoy/service/auth/v2/attribute_context.proto)
 // as follows:
 //    user: source.principal
 //    group is currently undefined. It is reserved to be used in the future.
 //
-// Custom property name directly refers to the attribute name in Istio attribute vocabulary
-// (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). These attributes are
-// mapped to the attributes defined in AttributeContext
-// (https://github.com/envoyproxy/data-plane-api/blob/master/envoy/service/auth/v2/attribute_context.proto)
-// by the RBAC engine. Here are some examples of Istio attribute names:
-// source.service, source.labels["app"], request.headers["version"].
+// Custom property name the attributes defined in AttributeContext
+// (//envoy/service/auth/v2/attribute_context.proto).
+// For example, source.service, source.labels["app"], request.http.headers["version"].
 //
 // Below is an example of ServiceRoleBinding object "test-binding-products", which binds two
 // subjects to ServiceRole "product-viewer":
 //   * User (service account) "cluster.local/ns/default/sa/bookinfo-reviews"
 //   * Service "reviews.default.svc.cluster.local" at version "v1".
 //
-//     apiVersion: "config.istio.io/v1alpha1"
 //     kind: ServiceRoleBinding
 //     metadata:
 //       name: test-binding-products
@@ -105,7 +93,7 @@ message AccessRule {
   // "bookstore.mtv.svc.cluster.local" (exact match), or "bookstore*" (prefix match),
   // or "*.mtv.svc.cluster.local" (suffix match).
   // If set to ["*"], it refers to all services in the namespace.
-  repeated string services = 1;
+  repeated string services = 1 [(validate.rules).repeated .min_items = 1];
 
   // Optional. A list of HTTP paths or gRPC methods.
   // gRPC methods must be presented as fully-qualified name in the form of
@@ -122,9 +110,10 @@ message AccessRule {
   // If set to ["*"] or not specified, it applies to any method.
   repeated string methods = 3;
 
-  // Definition of a custom constraint. The key in the constraint refers to an Istio attribute name
-  // (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html).For example,
-  // destination.labels["app"], request.headers["version"].
+  // Definition of a custom constraint. The key in the constraint refers to an attribute defined in
+  // AttributeContext
+  // (//envoy/service/auth/v2/attribute_context.proto). For example,
+  // destination.labels["app"], request.http.headers["version"].
   message Constraint {
     // Key of the constraint.
     string key = 1;
@@ -134,7 +123,7 @@ message AccessRule {
     // For example, the value "v1alpha2" matches
     // "v1alpha2" (exact match), or "v1*" (prefix match),
     // or "*alpha2" (suffix match).
-    repeated string values = 2;
+    repeated string values = 2 [(validate.rules).repeated .min_items = 1];
   }
 
   // Optional. Extra constraints in the ServiceRole specification.
@@ -148,17 +137,18 @@ message AccessRule {
 // object.
 message ServiceRoleBinding {
   // Required. List of subjects that are assigned the ServiceRole object.
-  repeated Subject subjects = 1;
+  repeated Subject subjects = 1 [(validate.rules).repeated .min_items = 1];
 
-  // Required. Reference to the ServiceRole object.
+  // Optional. Reference to the ServiceRole object.
+  // RoleRef is needed when a user defines a ServiceRoleBinding object.
+  // When used in a proxy filter configuration, this field is optional.
   RoleRef role_ref = 2 [(validate.rules).message.required = true];
 }
 
 // Subject defines an identity or a group of identities. The identity is either a user or
-// a group or identified by a set of "properties". The names of a property
-// refers to an Istio attribute
-// (https://istio.io/docs/reference/config/mixer/attribute-vocabulary.html). For example,
-// source.service, source.labels["app"], request.headers["version"].
+// a group or identified by a set of attributes. The attribute names are defined in
+// AttributeContext (//envoy/service/auth/v2/attribute_context.proto).
+// For example, source.service, source.labels["app"], request.http.headers["version"].
 message Subject {
   // Optional. The user name/ID that the subject represents.
   string user = 1;
@@ -166,8 +156,8 @@ message Subject {
   // Optional. The group that the subject belongs to.
   string group = 2;
 
-  // Optional. The set of properties that identify the subject.
-  map<string, string> properties = 3;
+  // Optional. The set of attributes that identify the subject.
+  map<string, string> attributes = 3;
 }
 
 // RoleRef refers to a role object.
