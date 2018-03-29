@@ -147,7 +147,7 @@ message Listener {
   // Whether the listener should set the *IP_FREEBIND* socket option. When this
   // flag is set to true, listeners can be bound to an IP address that is not
   // configured on the system running Envoy. When this flag is set to false, the
-  // option *IP_FREEBIND* is disabled on the socket.  When this flag is not set
+  // option *IP_FREEBIND* is disabled on the socket. When this flag is not set
   // (default), the socket is not modified, i.e. the option is neither enabled
   // nor disabled.
   google.protobuf.BoolValue freebind = 11;
