@@ -103,6 +103,15 @@ modify different aspects of the server:
 
     */failed_outlier_check*: The host has failed an outlier detection check.
 
+.. _operations_admin_interface_config_dump:
+
+.. http:get:: /config_dump
+
+  Dump currently loaded configuration from various Envoy components as JSON-serialized proto
+  messages. Currently, only route configs are available but more are on the way. See
+  :api:`envoy/admin/v2/config_dump.proto` for more information. That proto is in draft state and is
+  subject to change.
+
 .. http:get:: /cpuprofiler
 
   Enable or disable the CPU profiler. Requires compiling with gperftools.
@@ -127,6 +136,8 @@ modify different aspects of the server:
 
   See :option:`--hot-restart-version`.
 
+.. _operations_admin_interface_logging:
+
 .. http:get:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
@@ -141,14 +152,6 @@ modify different aspects of the server:
   Reset all counters to zero. This is useful along with :http:get:`/stats` during debugging. Note
   that this does not drop any data sent to statsd. It just effects local output of the
   :http:get:`/stats` command.
-
-.. _operations_admin_interface_routes:
-
-.. http:get:: /routes?route_config_name=<name>
-
-  This endpoint is only available if envoy has HTTP routes configured via RDS.
-  The endpoint dumps all the configured HTTP route tables, or only ones that
-  match the ``route_config_name`` query, if a query is specified.
 
 .. http:get:: /server_info
 
@@ -181,6 +184,10 @@ The fields are:
   Outputs /stats in JSON format. This can be used for programmatic access of stats.
 
   .. http:get:: /stats?format=prometheus
+
+  or alternatively,
+
+  .. http:get:: /stats/prometheus
 
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
