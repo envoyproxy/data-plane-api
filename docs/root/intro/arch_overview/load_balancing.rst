@@ -316,6 +316,10 @@ cluster configuration and providing weights in :ref:`LocalityLbEndpoints
 <envoy_api_msg_endpoint.LocalityLbEndpoints>` via :ref:`load_balancing_weight
 <envoy_api_field_endpoint.LocalityLbEndpoints.load_balancing_weight>`.
 
+This feature is not compatible with :ref:`load balancer subsetting
+<arch_overview_load_balancer_subsets>`, since it is not straightforward to
+reconcile locality level weighting with sensible weights for individual subsets.
+
 .. _arch_overview_load_balancer_subsets:
 
 Load Balancer Subsets
