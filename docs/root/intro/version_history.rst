@@ -12,6 +12,8 @@ Version history
 * admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
 * access log: ability to format START_TIME
 * admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
+* cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
+  representation of the bootstrap config and overrides --config-path.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
 * logger: added the ability to optionally set the log format via the :option:`--log-format` option.
