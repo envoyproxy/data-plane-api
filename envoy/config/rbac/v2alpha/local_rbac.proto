@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package envoy.api.v2.auth;
+package envoy.config.rbac.v2alpha;
 
 import "envoy/config/rbac/v2alpha/rbac.proto";
 
@@ -51,13 +51,13 @@ message ServicePolicy {
   map<string, RoleInfo> policies = 1;
 }
 
-// Policy specifies a ServiceRole and the associated ServiceRoleBindings.
+// RoleInfo specifies a ServiceRole and the associated ServiceRoleBindings.
 message RoleInfo {
   // The ServiceRole specification.
-  ServiceRole spec = 2;
+  ServiceRole spec = 1;
 
   // The ServiceRoleBindings that are associated with the given ServiceRole.
   // The key of the map is the name of the ServiceRoleBinding.
   // The value of the map is ServiceRoleBinding spec.
-  map<string, ServiceRoleBinding> bindings = 3;
+  map<string, ServiceRoleBinding> bindings = 2;
 }

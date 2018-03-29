@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "validate/validate.proto";
 
-package envoy.api.v2.auth;
+package envoy.config.rbac.v2alpha;
 
 // RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
 // objects.
@@ -15,20 +15,17 @@ package envoy.api.v2.auth;
 // * paths: HTTP paths or gRPC methods. Note that gRPC methods should be
 //   presented in the form of "packageName.serviceName/methodName".
 //
-// In addition to the standard fields, operators can use custom fields in the "constraints"
-// section. The fields used in ServiceRole definition map to attributes defined in AttributeContext
+// The fields used in ServiceRole definition map to attributes defined in AttributeContext
 // (//envoy/service/auth/v2/attribute_context.proto) as follows:
 //   service: destination.service
 //   method: request.http.method
 //   path: request.http.path
 //
-//  Custom field name refers to the attributes defined in AttributeContext
+//  In addition, users can specify "constraints" on any attributes defined in AttributeContext
 //  (//envoy/service/auth/v2/attribute_context.proto).
-//  For example, destination.labels["app"], request.http.headers["version"].
 //
 // Below is an example of ServiceRole object "product-viewer", which has "read" ("GET" and "HEAD")
-// access to "products.default.svc.cluster.local" service at versions "v1" and "v2". "path" is not
-// specified, so it applies to any path in the service.
+// access to "products.default.svc.cluster.local" service at versions "v1" and "v2".
 //
 //     kind: ServiceRole
 //     metadata:
@@ -47,16 +44,9 @@ package envoy.api.v2.auth;
 // * "roleRef" refers to a ServiceRole object.
 // * A list of "subjects" that are assigned the roles.
 //
-// A subject can be a "user" or a "group", or represented with a set of custom "properties". The
-// names of a property used to identify a subject in ServiceRoleBinding map to attributes defined in
-// AttributeContext (//envoy/service/auth/v2/attribute_context.proto)
-// as follows:
-//    user: source.principal
-//    group is currently undefined. It is reserved to be used in the future.
-//
-// Custom property name the attributes defined in AttributeContext
-// (//envoy/service/auth/v2/attribute_context.proto).
-// For example, source.service, source.labels["app"], request.http.headers["version"].
+// A subject can be a "user" or a "group", or represented with a set of attributes. Specifically,
+// "user" is mapped to "source.principal" attribute. "group" is currently undefined. It is reserved
+// to be used in the future.
 //
 // Below is an example of ServiceRoleBinding object "test-binding-products", which binds two
 // subjects to ServiceRole "product-viewer":
@@ -70,7 +60,7 @@ package envoy.api.v2.auth;
 //     spec:
 //       subjects:
 //       - user: cluster.local/ns/default/sa/bookinfo-reviews
-//       - properties:
+//       - attributes:
 //           source.service: "reviews.default.svc.cluster.local"
 //           source.labels["version"]: "v1"
 //       roleRef:
@@ -78,11 +68,11 @@ package envoy.api.v2.auth;
 //         name: "products-viewer"
 
 // ServiceRole specification contains a list of access rules (permissions).
-// This represent the "Spec" part of the ServiceRole object. The name and namespace
+// This represents the "Spec" part of the ServiceRole object. The name and namespace
 // of the ServiceRole is specified in "metadata" section of the ServiceRole object.
 message ServiceRole {
   // Required. The set of access rules (permissions) that the role has.
-  repeated AccessRule rules = 1;
+  repeated AccessRule rules = 1 [(validate.rules).repeated .min_items = 1];
 }
 
 // AccessRule defines a permission to access a list of services.
@@ -111,8 +101,7 @@ message AccessRule {
   repeated string methods = 3;
 
   // Definition of a custom constraint. The key in the constraint refers to an attribute defined in
-  // AttributeContext
-  // (//envoy/service/auth/v2/attribute_context.proto). For example,
+  // AttributeContext (//envoy/service/auth/v2/attribute_context.proto). For example,
   // destination.labels["app"], request.http.headers["version"].
   message Constraint {
     // Key of the constraint.
