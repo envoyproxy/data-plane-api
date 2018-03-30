@@ -5,7 +5,6 @@ option go_package = "route";
 option java_generic_services = true;
 
 import "envoy/api/v2/core/base.proto";
-import "envoy/api/v2/auth/auth.proto";
 import "envoy/type/range.proto";
 
 import "google/protobuf/duration.proto";
@@ -95,10 +94,6 @@ message VirtualHost {
 
   // Indicates that the virtual host has a CORS policy.
   CorsPolicy cors = 8;
-
-  // [#not-implemented-hide:]
-  // Return a 401/403 when auth checks fail.
-  auth.AuthAction auth = 9;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -134,10 +129,6 @@ message Route {
 
   // Decorator for the matched route.
   Decorator decorator = 5;
-
-  // [#not-implemented-hide:]
-  // Return a 401/403 when auth checks fail.
-  auth.AuthAction auth = 6;
 }
 
 // Compared to the :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` field that specifies a
