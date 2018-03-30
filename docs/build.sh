@@ -14,7 +14,7 @@ rm -rf "${GENERATED_RST_DIR}"
 mkdir -p "${GENERATED_RST_DIR}"
 
 if [ ! -d "${BUILD_DIR}"/venv ]; then
-  virtualenv "${BUILD_DIR}"/venv --no-site-packages
+  virtualenv "${BUILD_DIR}"/venv --no-site-packages --python=python2.7
   "${BUILD_DIR}"/venv/bin/pip install -r "${SCRIPT_DIR}"/requirements.txt
 fi
 
