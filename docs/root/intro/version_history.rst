@@ -27,6 +27,9 @@ Version history
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
+* mongo-proxy: added parsing support for OP_COMMAND and OP_COMMANDREPLY messages.
+  :ref:`Mongo proxy Statistics <config_network_filters_mongo_proxy_stats>` keep track of number of OP_COMMAND
+  and OP_COMMANDREPLY messages.
 
 1.6.0
 =====
