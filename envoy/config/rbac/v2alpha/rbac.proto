@@ -64,7 +64,6 @@ package envoy.config.rbac.v2alpha;
 //           source.service: "reviews.default.svc.cluster.local"
 //           source.labels["version"]: "v1"
 //       roleRef:
-//         kind: ServiceRole
 //         name: "products-viewer"
 
 // ServiceRole specification contains a list of access rules (permissions).
