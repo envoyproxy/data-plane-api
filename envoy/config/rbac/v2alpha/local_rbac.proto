@@ -16,7 +16,7 @@ import "envoy/config/rbac/v2alpha/rbac.proto";
 //         spec:
 //           rules:
 //           - services: [“*”]
-//             methods: [“*”]
+//             verbs: [“*”]
 //          bindings: {
 //            "bind-service-admin": {
 //              subjects:
@@ -29,7 +29,7 @@ import "envoy/config/rbac/v2alpha/rbac.proto";
 //            rules:
 //            - services: [“products.default.svc.cluster.local”]
 //              paths: [“/products/*”, “*/reviews”]
-//              methods: [“GET”, “HEAD”]
+//              verbs: [“GET”, “HEAD”]
 //          bindings: {
 //            "bind-product-viewer": {
 //               subjects:

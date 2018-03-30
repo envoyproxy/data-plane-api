@@ -10,7 +10,7 @@ package envoy.config.rbac.v2alpha;
 // A ServiceRole specification includes a list of rules (permissions). Each rule has
 // the following standard fields:
 // * services: a list of services.
-// * methods: HTTP methods. In the case of gRPC, this field is ignored because the value is always
+// * verbs: HTTP verbs. In the case of gRPC, this field is ignored because the value is always
 // "POST".
 // * paths: HTTP paths or gRPC methods. Note that gRPC methods should be
 //   presented in the form of "packageName.serviceName/methodName".
@@ -35,7 +35,7 @@ package envoy.config.rbac.v2alpha;
 //       rules:
 //       - services: ["products.default.svc.cluster.local"]
 //         paths: ["/products/*"]
-//         methods: ["GET", "HEAD"]
+//         verbs: ["GET", "HEAD"]
 //         constraints:
 //         - key: request.http.headers["version"]
 //           values: ["v1", "v2"]
@@ -94,10 +94,10 @@ message AccessRule {
   // If not specified, it applies to any path.
   repeated string paths = 2;
 
-  // Optional. A list of HTTP methods (e.g., "GET", "POST").
+  // Optional. A list of HTTP verbs (e.g., "GET", "POST").
   // It is ignored in gRPC case because the value is always "POST".
-  // If set to ["*"] or not specified, it applies to any method.
-  repeated string methods = 3;
+  // If set to ["*"] or not specified, it applies to any verb.
+  repeated string verbs = 3;
 
   // Definition of a custom constraint. The key in the constraint refers to an attribute defined in
   // AttributeContext (//envoy/service/auth/v2/attribute_context.proto). For example,
