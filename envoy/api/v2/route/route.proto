@@ -94,6 +94,8 @@ message VirtualHost {
 
   // Indicates that the virtual host has a CORS policy.
   CorsPolicy cors = 8;
+
+  reserved 9;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -129,6 +131,8 @@ message Route {
 
   // Decorator for the matched route.
   Decorator decorator = 5;
+
+  reserved 6;
 }
 
 // Compared to the :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` field that specifies a
