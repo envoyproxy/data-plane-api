@@ -151,10 +151,6 @@ message Subject {
 
 // RoleRef refers to a role object.
 message RoleRef {
-  // Required. The type of the role being referenced.
-  // Currently, "ServiceRole" is the only supported value for "kind".
-  string kind = 1 [(validate.rules).string.const = "ServiceRole"];
-
   // Required. The name of the ServiceRole object being referenced.
   string name = 2;
 }
