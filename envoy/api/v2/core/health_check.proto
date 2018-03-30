@@ -135,9 +135,9 @@ message HealthCheck {
   google.protobuf.Duration no_traffic_interval = 12;
 }
 
-// [#not-implemented-hide:] Part of HDS.
+// Endpoint health status.
 enum HealthStatus {
-  // UNKNOWN should be treated by Envoy as HEALTHY.
+  // The health status is not known. This is interpreted by Envoy as *HEALTHY*.
   UNKNOWN = 0;
 
   // Healthy.
@@ -147,12 +147,13 @@ enum HealthStatus {
   UNHEALTHY = 2;
 
   // Connection draining in progress. E.g.,
-  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
+  // `<https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/>`_
   // or
-  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
+  // `<https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining>`_.
+  // This is interpreted by Envoy as *UNHEALTHY*.
   DRAINING = 3;
 
-  // This value is used by HDS Remote server. From Envoy’s perspective
-  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
+  // Health check timed out. This is part of HDS and is interpreted by Envoy as
+  // *UNHEALTHY*.
   TIMEOUT = 4;
 }

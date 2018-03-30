@@ -26,8 +26,7 @@ message LbEndpoint {
   // Upstream host identifier
   Endpoint endpoint = 1;
 
-  // [#not-implemented-hide:] Optional health status when known and supplied by
-  // EDS server.
+  // Optional health status when known and supplied by EDS server.
   core.HealthStatus health_status = 2;
 
   // The endpoint metadata specifies values that may be used by the load
