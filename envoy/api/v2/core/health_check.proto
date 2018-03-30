@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package envoy.api.v2.core;
 
+import "envoy/api/v2/core/base.proto";
+
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -76,6 +78,11 @@ message HealthCheck {
     // the health checked cluster. See the :ref:`architecture overview
     // <arch_overview_health_checking_identity>` for more information.
     string service_name = 5;
+
+    // [#not-implemented-hide:]
+    // Specifies a list of HTTP headers that should be added to each request that is sent
+    // to the health checked cluster.
+    repeated core.HeaderValueOption request_headers_to_add = 6;
   }
 
   message TcpHealthCheck {
