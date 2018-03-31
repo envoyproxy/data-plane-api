@@ -178,7 +178,8 @@ The following command operators are supported:
   * %DYNAMIC_METADATA(com.test.my_filter:test_key)% will log: ``"foo"``
   * %DYNAMIC_METADATA(com.test.my_filter:test_object)% will log: ``{"inner_key": "bar"}``
   * %DYNAMIC_METADATA(com.test.my_filter:test_object:inner_key)% will log: ``"bar"``
-
+  * %DYNAMIC_METADATA(com.unknown_filter)% will log: ``-``
+  * %DYNAMIC_METADATA(com.test.my_filter:unknown_key)% will log: ``-``
 
 .. _config_access_log_default_format:
 
