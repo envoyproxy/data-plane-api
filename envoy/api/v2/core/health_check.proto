@@ -5,6 +5,7 @@ package envoy.api.v2.core;
 import "envoy/api/v2/core/base.proto";
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -116,6 +117,16 @@ message HealthCheck {
     string service_name = 1;
   }
 
+  // [#not-implemented-hide:] Custom health check.
+  message ExtensionHealthCheck {
+    // The registered name of the extension health check.
+    string name = 1 [(validate.rules).string.min_bytes = 1];
+
+    // An extension health checker specific configuration which depends on the extension health
+    // checker being instantiated.
+    google.protobuf.Struct config = 2;
+  }
+
   oneof health_checker {
     option (validate.required) = true;
 
@@ -130,6 +141,9 @@ message HealthCheck {
 
     // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
+
+    // [#not-implemented-hide:] Extension health check.
+    ExtensionHealthCheck extension_health_check = 12;
   }
 
   // The "no traffic interval" is a special health check interval that is used when a cluster has
@@ -139,7 +153,7 @@ message HealthCheck {
   // standard health check interval that is defined.
   //
   // The default value for "no traffic interval" is 60 seconds.
-  google.protobuf.Duration no_traffic_interval = 12;
+  google.protobuf.Duration no_traffic_interval = 13;
 }
 
 // [#not-implemented-hide:] Part of HDS.
