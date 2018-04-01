@@ -18,7 +18,15 @@ option (gogoproto.equal_all) = true;
 
 // Upstream host identifier.
 message Endpoint {
+  // The upstream host address.
   core.Address address = 1;
+
+  // [#not-implemented-hide:] Optional alternative health check port.
+  //
+  // By default the health check address port of an upstream host is the same as the host's serving
+  // address port. This provides an alternative health check port. If set it allows an upstream host
+  // to have different health check address port. The health checker should honor this.
+  uint32 health_check_port = 2;
 }
 
 // An Endpoint that Envoy can route traffic to.
