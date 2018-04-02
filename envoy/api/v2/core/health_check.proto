@@ -117,12 +117,12 @@ message HealthCheck {
   }
 
   // [#not-implemented-hide:] Custom health check.
-  message ExtensionHealthCheck {
-    // The registered name of the extension health check.
+  message CustomHealthCheck {
+    // The registered name of the custom health check.
     string name = 1 [(validate.rules).string.min_bytes = 1];
 
-    // An extension health checker specific configuration which depends on the extension health
-    // checker being instantiated.
+    // An custom health checker specific configuration which depends on the custom health checker
+    // being instantiated.
     google.protobuf.Struct config = 2;
   }
 
@@ -141,8 +141,8 @@ message HealthCheck {
     // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
 
-    // [#not-implemented-hide:] Extension health check.
-    ExtensionHealthCheck extension_health_check = 13;
+    // [#not-implemented-hide:] Custom health check.
+    CustomHealthCheck custom_health_check = 13;
   }
 
   // The "no traffic interval" is a special health check interval that is used when a cluster has
