@@ -101,6 +101,8 @@ modify different aspects of the server:
     */failed_active_hc*: The host has failed an :ref:`active health check
     <config_cluster_manager_cluster_hc>`.
 
+    */failed_eds_health*: The host was marked unhealthy by EDS.
+
     */failed_outlier_check*: The host has failed an outlier detection check.
 
 .. _operations_admin_interface_config_dump:
