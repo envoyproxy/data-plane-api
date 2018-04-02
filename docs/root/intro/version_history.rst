@@ -19,6 +19,8 @@ Version history
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
 * logger: added the ability to optionally set the log format via the :option:`--log-format` option.
+* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
+  <envoy_api_field_Listener.transparent>`.
 * sockets: added `IP_FREEBIND` socket option support for :ref:`listeners
   <envoy_api_field_Listener.freebind>` and upstream connections via
   :ref:`cluster manager wide
