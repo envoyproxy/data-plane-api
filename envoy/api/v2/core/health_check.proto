@@ -80,9 +80,8 @@ message HealthCheck {
     // <arch_overview_health_checking_identity>` for more information.
     string service_name = 5;
 
-    // [#not-implemented-hide:]
-    // Specifies a list of HTTP headers that should be added to each request that is sent
-    // to the health checked cluster.
+    // Specifies a list of HTTP headers that should be added to each request that is sent to the
+    // health checked cluster.
     repeated core.HeaderValueOption request_headers_to_add = 6;
   }
 
