@@ -169,8 +169,8 @@ The following command operators are supported:
   where NAMESPACE is the the filter namespace used when setting the metadata, KEY is an optional
   lookup up key in the namespace with the option of specifying nested keys separated by ':',
   and Z is an optional parameter denoting string truncation up to Z characters long. Dynamic Metadata
-  can be set by filters using the RequestInfo api: *setDynamicMetadata*. The data will be logged
-  as a json string. For example, for the following dynamic metadata:
+  can be set by filters using the RequestInfo API: *setDynamicMetadata*. The data will be logged
+  as a JSON string. For example, for the following dynamic metadata:
 
   ``com.test.my_filter: {"test_key": "foo", "test_object": {"inner_key": "bar"}}``
 
@@ -180,6 +180,7 @@ The following command operators are supported:
   * %DYNAMIC_METADATA(com.test.my_filter:test_object:inner_key)% will log: ``"bar"``
   * %DYNAMIC_METADATA(com.unknown_filter)% will log: ``-``
   * %DYNAMIC_METADATA(com.test.my_filter:unknown_key)% will log: ``-``
+  * %DYNAMIC_METADATA(com.test.my_filter):25% will log (truncation at 25 characters): ``{"test_key": "foo", "test``
 
 .. _config_access_log_default_format:
 
