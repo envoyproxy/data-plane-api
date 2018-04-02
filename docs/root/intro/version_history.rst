@@ -15,7 +15,7 @@ Version history
 * cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
   representation of the bootstrap config and overrides --config-path.
 * health check: added ability to set :ref:`additional HTTP headers
-  <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for http health check.
+  <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
 * logger: added the ability to optionally set the log format via the :option:`--log-format` option.
