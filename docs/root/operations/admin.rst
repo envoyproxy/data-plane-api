@@ -32,6 +32,9 @@ modify different aspects of the server:
   In the future additional security options will be added to the administration interface. This
   work is tracked in `this <https://github.com/envoyproxy/envoy/issues/2763>`_ issue.
 
+  All mutations should be sent as HTTP POST operations. For a limited time, they will continue to work
+  with HTTP GET, with a warning logged.
+
 .. http:get:: /
 
   Render an HTML home page with a table of links to all available options.
@@ -114,13 +117,13 @@ modify different aspects of the server:
   :api:`envoy/admin/v2/config_dump.proto` for more information. That proto is in draft state and is
   subject to change.
 
-.. http:get:: /cpuprofiler
+.. http:post:: /cpuprofiler
 
   Enable or disable the CPU profiler. Requires compiling with gperftools.
 
 .. _operations_admin_interface_healthcheck_fail:
 
-.. http:get:: /healthcheck/fail
+.. http:post:: /healthcheck/fail
 
   Fail inbound health checks. This requires the use of the HTTP :ref:`health check filter
   <config_http_filters_health_check>`. This is useful for draining a server prior to shutting it
@@ -129,9 +132,9 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_healthcheck_ok:
 
-.. http:get:: /healthcheck/ok
+.. http:post:: /healthcheck/ok
 
-  Negate the effect of :http:get:`/healthcheck/fail`. This requires the use of the HTTP
+  Negate the effect of :http:post:`/healthcheck/fail`. This requires the use of the HTTP
   :ref:`health check filter <config_http_filters_health_check>`.
 
 .. http:get:: /hot_restart_version
@@ -140,16 +143,16 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_logging:
 
-.. http:get:: /logging
+.. http:post:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
   development.
 
-.. http:get:: /quitquitquit
+.. http:post:: /quitquitquit
 
   Cleanly exit the server.
 
-.. http:get:: /reset_counters
+.. http:post:: /reset_counters
 
   Reset all counters to zero. This is useful along with :http:get:`/stats` during debugging. Note
   that this does not drop any data sent to statsd. It just effects local output of the
@@ -181,15 +184,15 @@ The fields are:
   aggregation. This command is very useful for local debugging. See :ref:`here <operations_stats>`
   for more information.
 
-  .. http:get:: /stats?format=json
+.. http:get:: /stats?format=json
 
   Outputs /stats in JSON format. This can be used for programmatic access of stats.
 
-  .. http:get:: /stats?format=prometheus
+.. http:get:: /stats?format=prometheus
 
   or alternatively,
 
-  .. http:get:: /stats/prometheus
+.. http:get:: /stats/prometheus
 
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
