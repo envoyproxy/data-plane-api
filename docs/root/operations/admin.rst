@@ -9,6 +9,8 @@ modify different aspects of the server:
 * :ref:`v1 API reference <config_admin_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Admin>`
 
+.. _operations_admin_interface_security:
+
 .. attention::
 
   The administration interface in its current form both allows destructive operations to be
@@ -197,11 +199,41 @@ The fields are:
 
 .. http:get:: /runtime
 
-  Outputs all runtime values on demand in a human-readable format. See
-  :ref:`here <arch_overview_runtime>` for more information on how these values are configured
-  and utilized.
+  Outputs all runtime values on demand in JSON format. See :ref:`here <arch_overview_runtime>` for
+  more information on how these values are configured and utilized. The output include the list of
+  the active runtime override layers and the stack of layer values for each key. Empty strings
+  indicate no value, and the final active value from the stack also is included in a separate key.
+  Example output:
 
-  .. http:get:: /runtime?format=json
+  .. code-block:: json
+  {
+      "layers": [
+          "disk",
+          "override",
+          "admin"
+      ],
+      "entries": {
+          "my_key": {
+              "layer_values": [
+                  "my_disk_value",
+                  "",
+                  ""
+              ],
+              "final_value": "my_disk_value"
+          },
+          "my_second_key": {
+              "layer_values": [
+                  "my_second_disk_value",
+                  "my_disk_override_value",
+                  "my_admin_override_value"
+              ],
+              "final_value": "my_admin_override_value"
+          }
+      }
+  }
+
+
+  .. http:get:: /runtime
 
   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
 
@@ -210,5 +242,11 @@ The fields are:
 .. http:post:: /runtime_modify?key1=value1&key2=value2&keyN=valueN
 
   Adds or modifies runtime values as passed in query parameters. To delete a previously added key,
-  use an empty string as the value. Note that deletion only applies to overrides added via this
+  use an empty string as the value.  Note that deletion only applies to overrides added via this
   endpoint; values loaded from disk can be modified via override but not deleted.
+
+.. attention::
+
+  Use the /runtime_modify endpoint with care.  Changes are effectively immediately. It is
+  **critical** that the admin interface is :ref:`properly secured
+  <operations_admin_interface_security>`.

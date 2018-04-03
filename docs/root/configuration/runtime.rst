@@ -10,6 +10,13 @@ added at the :ref:`/runtime_modify admin endpoint <operations_admin_interface_ru
 runtime is not configured, an empty provider is used which has the effect of using all defaults
 built into the code, except for any values added via `/runtime_modify`.
 
+.. attention::
+
+  Use the :ref:`/runtime_modify<operations_admin_interface_runtime_modify>` endpoint with care.
+  Changes are effectively immediately. It is **critical** that the admin interface is :ref:`properly
+  secured <operations_admin_interface_security>`.
+
+
 * :ref:`v1 API reference <config_runtime_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Runtime>`
 
