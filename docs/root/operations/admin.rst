@@ -182,15 +182,15 @@ The fields are:
   aggregation. This command is very useful for local debugging. See :ref:`here <operations_stats>`
   for more information.
 
-  .. http:get:: /stats?format=json
+.. http:get:: /stats?format=json
 
   Outputs /stats in JSON format. This can be used for programmatic access of stats.
 
-  .. http:get:: /stats?format=prometheus
+.. http:get:: /stats?format=prometheus
 
   or alternatively,
 
-  .. http:get:: /stats/prometheus
+.. http:get:: /stats/prometheus
 
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
@@ -204,10 +204,10 @@ The fields are:
   :ref:`here <arch_overview_runtime>` for more information on how these values are configured
   and utilized.
 
-  .. http:post:: /runtime?format=json
+.. http:post:: /runtime?format=json
 
-  Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
+   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
   
-  .. http::post:: /runtime_modify
+.. http::post:: /runtime_modify
 
   TODO(jsedgewick): document this.
