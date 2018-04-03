@@ -193,8 +193,9 @@ message WeightedCluster {
     // For instance, if the metadata is intended for the Router filter,
     // the filter name should be specified as *envoy.router*.
     //
-    // On runtime, this object will a merged with the cluster_metadata from the enclosing
-    // :ref:`envoy_api_msg_route.RouteAction`.
+    // On runtime, this object will a merged with the
+    // :ref:`cluster_metadata <envoy_api_field_route.RouteAction.cluster_metadata>` from the
+    // enclosing :ref:`envoy_api_msg_route.RouteAction`.
     core.Metadata cluster_metadata = 7;
   }
 
