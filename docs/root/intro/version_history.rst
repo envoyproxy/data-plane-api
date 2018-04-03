@@ -9,6 +9,7 @@ Version history
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
 * admin: added :ref:`/config_dump endpoint <operations_admin_interface_config_dump>` for dumping current configs
+* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
 * admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
 * access log: ability to format START_TIME
 * admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
