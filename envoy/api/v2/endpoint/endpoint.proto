@@ -35,7 +35,7 @@ message Endpoint {
     // as the host's serving address port. This provides an alternative health
     // check port. If set it allows an upstream host to have different
     // health check address port.
-    uint32 health_check_port = 2;
+    uint32 health_check_port = 1;
   }
 }
 
