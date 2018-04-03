@@ -205,48 +205,44 @@ The fields are:
   indicate no value, and the final active value from the stack also is included in a separate key.
   Example output:
 
-  .. code-block:: json
+.. code-block:: json
+
   {
-      "layers": [
-          "disk",
-          "override",
-          "admin"
-      ],
-      "entries": {
-          "my_key": {
-              "layer_values": [
-                  "my_disk_value",
-                  "",
-                  ""
-              ],
-              "final_value": "my_disk_value"
-          },
-          "my_second_key": {
-              "layer_values": [
-                  "my_second_disk_value",
-                  "my_disk_override_value",
-                  "my_admin_override_value"
-              ],
-              "final_value": "my_admin_override_value"
-          }
+    "layers": [
+      "disk",
+      "override",
+      "admin",
+    ],
+    "entries": {
+      "my_key": {
+        "layer_values": [
+          "my_disk_value",
+          "",
+          ""
+        ],
+        "final_value": "my_disk_value"
+      },
+      "my_second_key": {
+        "layer_values": [
+          "my_second_disk_value",
+          "my_disk_override_value",
+          "my_admin_override_value"
+        ],
+        "final_value": "my_admin_override_value"
       }
+    }
   }
-
-
-  .. http:get:: /runtime
-
-  Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
 
 .. _operations_admin_interface_runtime_modify:
 
 .. http:post:: /runtime_modify?key1=value1&key2=value2&keyN=valueN
 
   Adds or modifies runtime values as passed in query parameters. To delete a previously added key,
-  use an empty string as the value.  Note that deletion only applies to overrides added via this
+  use an empty string as the value. Note that deletion only applies to overrides added via this
   endpoint; values loaded from disk can be modified via override but not deleted.
 
 .. attention::
 
-  Use the /runtime_modify endpoint with care.  Changes are effectively immediately. It is
+  Use the /runtime_modify endpoint with care. Changes are effectively immediately. It is
   **critical** that the admin interface is :ref:`properly secured
   <operations_admin_interface_security>`.
