@@ -29,6 +29,9 @@ modify different aspects of the server:
 
   In the future additional security options will be added to the administration interface. This
   work is tracked in `this <https://github.com/envoyproxy/envoy/issues/2763>`_ issue.
+  
+  All mutations should be sent as http POST operations. For a limited time, they will continue to work
+  with http GET, with a warning logged.
 
 .. http:get:: /
 
@@ -112,13 +115,13 @@ modify different aspects of the server:
   :api:`envoy/admin/v2/config_dump.proto` for more information. That proto is in draft state and is
   subject to change.
 
-.. http:get:: /cpuprofiler
+.. http:post:: /cpuprofiler
 
   Enable or disable the CPU profiler. Requires compiling with gperftools.
 
 .. _operations_admin_interface_healthcheck_fail:
 
-.. http:get:: /healthcheck/fail
+.. http:post:: /healthcheck/fail
 
   Fail inbound health checks. This requires the use of the HTTP :ref:`health check filter
   <config_http_filters_health_check>`. This is useful for draining a server prior to shutting it
@@ -127,7 +130,7 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_healthcheck_ok:
 
-.. http:get:: /healthcheck/ok
+.. http:post:: /healthcheck/ok
 
   Negate the effect of :http:get:`/healthcheck/fail`. This requires the use of the HTTP
   :ref:`health check filter <config_http_filters_health_check>`.
@@ -138,16 +141,16 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_logging:
 
-.. http:get:: /logging
+.. http:post:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
   development.
 
-.. http:get:: /quitquitquit
+.. http:post:: /quitquitquit
 
   Cleanly exit the server.
 
-.. http:get:: /reset_counters
+.. http:post:: /reset_counters
 
   Reset all counters to zero. This is useful along with :http:get:`/stats` during debugging. Note
   that this does not drop any data sent to statsd. It just effects local output of the
@@ -201,6 +204,10 @@ The fields are:
   :ref:`here <arch_overview_runtime>` for more information on how these values are configured
   and utilized.
 
-  .. http:get:: /runtime?format=json
+  .. http:post:: /runtime?format=json
 
   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
+  
+  .. http::post:: /runtime_modify
+
+  TODO(jsedgewick): document this.
