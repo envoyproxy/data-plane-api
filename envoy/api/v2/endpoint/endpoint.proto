@@ -23,13 +23,13 @@ message Endpoint {
 
   // [#not-implemented-hide:] The optional health check configuration.
   message HealthCheckConfig {
-    // Optional alternative health check port.
+    // Optional alternative health check port value.
     //
     // By default the health check address port of an upstream host is the same
     // as the host's serving address port. This provides an alternative health
     // check port. If set it allows an upstream host to have different
     // health check address port.
-    uint32 health_check_port = 1;
+    uint32 port_value = 1;
   }
 
   // [#not-implemented-hide:] The optional health check configuration is used as
