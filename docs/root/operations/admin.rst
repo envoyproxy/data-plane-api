@@ -19,6 +19,9 @@ modify different aspects of the server:
   avoid CSRF attacks). This involves setting up an appropriate firewall or optimally only allowing
   access to the administration listener via localhost. This can be accomplished with a v2
   configuration like the following:
+  
+  All mutations should be sent as http POST operations. For a limited time, they will continue to work
+  with http GET, with a warning logged.
 
   .. code-block:: yaml
 
@@ -112,13 +115,13 @@ modify different aspects of the server:
   :api:`envoy/admin/v2/config_dump.proto` for more information. That proto is in draft state and is
   subject to change.
 
-.. http:get:: /cpuprofiler
+.. http:post:: /cpuprofiler
 
   Enable or disable the CPU profiler. Requires compiling with gperftools.
 
 .. _operations_admin_interface_healthcheck_fail:
 
-.. http:get:: /healthcheck/fail
+.. http:post:: /healthcheck/fail
 
   Fail inbound health checks. This requires the use of the HTTP :ref:`health check filter
   <config_http_filters_health_check>`. This is useful for draining a server prior to shutting it
@@ -127,7 +130,7 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_healthcheck_ok:
 
-.. http:get:: /healthcheck/ok
+.. http:post:: /healthcheck/ok
 
   Negate the effect of :http:get:`/healthcheck/fail`. This requires the use of the HTTP
   :ref:`health check filter <config_http_filters_health_check>`.
@@ -138,12 +141,12 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_logging:
 
-.. http:get:: /logging
+.. http:post:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
   development.
 
-.. http:get:: /quitquitquit
+.. http:post:: /quitquitquit
 
   Cleanly exit the server.
 
@@ -204,3 +207,7 @@ The fields are:
   .. http:get:: /runtime?format=json
 
   Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
+  
+  .. http::post:: /runtime_modify
+  
+  TODO(jsedgewick): document this.
