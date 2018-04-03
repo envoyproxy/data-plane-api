@@ -187,7 +187,7 @@ message WeightedCluster {
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     repeated string response_headers_to_remove = 6;
 
-    // [#not-implemented-hide:] The Metadata field can be used to provide additional information
+    // The Metadata field can be used to provide additional information
     // about the cluster chosen for routing. It can be used for configuration, stats, and logging.
     // The metadata should go under the filter namespace that will need it.
     // For instance, if the metadata is intended for the Router filter,
@@ -544,7 +544,7 @@ message RouteAction {
   // Indicates that the route has a CORS policy.
   CorsPolicy cors = 17;
 
-  // [#not-implemented-hide:] The Metadata field can be used to provide additional information
+  // The Metadata field can be used to provide additional information
   // about the routed cluster. It can be used for configuration, stats, and logging.
   // The metadata should go under the filter namespace that will need it.
   // For instance, if the metadata is intended for the Router filter,
