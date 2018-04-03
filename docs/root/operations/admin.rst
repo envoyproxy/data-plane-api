@@ -31,7 +31,7 @@ modify different aspects of the server:
 
   In the future additional security options will be added to the administration interface. This
   work is tracked in `this <https://github.com/envoyproxy/envoy/issues/2763>`_ issue.
-  
+
   All mutations should be sent as HTTP POST operations. For a limited time, they will continue to work
   with HTTP GET, with a warning logged.
 
