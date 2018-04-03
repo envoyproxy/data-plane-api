@@ -6,7 +6,7 @@ option go_package = "v2";
 // [#not-implemented-hide:]
 // [#protodoc-title: Redis]
 // Redis :ref:`configuration overview <config_health_checker_redis>`.
-// Configuration for the Redis extension health checker.
+// Configuration for the Redis custom health checker.
 message Redis {
   // If set, optionally perform ``EXISTS <key>`` instead of ``PING``. A return value
   // from Redis of 0 (does not exist) is considered a passing healthcheck. A return value other
