@@ -134,7 +134,7 @@ modify different aspects of the server:
 
 .. http:post:: /healthcheck/ok
 
-  Negate the effect of :http:get:`/healthcheck/fail`. This requires the use of the HTTP
+  Negate the effect of :http:post:`/healthcheck/fail`. This requires the use of the HTTP
   :ref:`health check filter <config_http_filters_health_check>`.
 
 .. http:get:: /hot_restart_version
