@@ -101,11 +101,11 @@ message VirtualHost {
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 9;
 
-  // [#not-implemented-hide:]
   // The per_filter_config field can be used to provide virtual host-specific
   // configurations for filters. The key should match the filter name, such as
   // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
-  // specific; see the HTTP filter documentation for if and how it is utilized.
+  // specific; see the :ref:`HTTP filter documentation <config_http_filters>`
+  // for if and how it is utilized.
   map<string, google.protobuf.Struct> per_filter_config = 12;
 }
 
@@ -147,11 +147,11 @@ message Route {
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 6;
 
-  // [#not-implemented-hide:]
   // The per_filter_config field can be used to provide route-specific
   // configurations for filters. The key should match the filter name, such as
   // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
-  // specific; see the HTTP filter documentation for if and how it is utilized.
+  // specific; see the :ref:`HTTP filter documentation <config_http_filters>` for
+  // if and how it is utilized.
   map<string, google.protobuf.Struct> per_filter_config = 8;
 }
 
