@@ -31,13 +31,9 @@ Version history
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
  * admin-console mutations must be sent as POSTs, rather than GETs. Mutations include:
-   * /cpuprofiler
-   * /healthcheck/fail
-   * /healthcheck/ok
-   * /logging
-   * /quitquitquit
-   * /reset_counters
-   * /runtime_modify
+   :http:post`/cpuprofiler`, :http:post`/healthcheck/fail`, :http:post`/healthcheck/ok`,
+   :http:post`/logging`, :http:post`/quitquitquit`, :http:post`/reset_counters`,
+   :http:post`/runtime_modify`,
 
 1.6.0
 =====
