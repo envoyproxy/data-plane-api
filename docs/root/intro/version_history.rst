@@ -22,6 +22,7 @@ Version history
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
 * logger: added the ability to optionally set the log format via the :option:`--log-format` option.
+* router: support for :ref:`cluster_metadata <envoy_api_field_route.RouteAction.cluster_metadata>` - adds routed cluster metadata in RouteEntry.
 * sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
   <envoy_api_field_Listener.transparent>`.
 * sockets: added `IP_FREEBIND` socket option support for :ref:`listeners
