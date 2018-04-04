@@ -1,8 +1,8 @@
 Version history
 ---------------
 
-1.7.0
-=====
+1.7.0 (Pending)
+===============
 
 * Added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
@@ -15,8 +15,6 @@ Version history
 * admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
 * cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
   representation of the bootstrap config and overrides --config-path.
-* health check: added support for EDS delivered :ref:`endpoint health status
-  <envoy_api_field_endpoint.LbEndpoint.health_status>`.
 * health check: added ability to set :ref:`additional HTTP headers
   <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
@@ -32,6 +30,14 @@ Version history
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
+ * admin-console mutations must be sent as POSTs, rather than GETs.  Mutations include:
+   * /cpuprofiler
+   * /healthcheck/fail
+   * /healthcheck/ok
+   * /logging
+   * /quitquitquit
+   * /reset_counters
+   * /runtime_modify
 
 1.6.0
 =====
