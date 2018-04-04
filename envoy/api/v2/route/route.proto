@@ -9,6 +9,7 @@ import "envoy/api/v2/auth/auth.proto";
 import "envoy/type/range.proto";
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -99,6 +100,13 @@ message VirtualHost {
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 9;
+
+  // [#not-implemented-hide:]
+  // The per_filter_config field can be used to provide virtual host-specific
+  // configurations for filters. The key should match the filter name, such as
+  // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+  // specific; see the HTTP filter documentation for if and how it is utilized.
+  map<string, google.protobuf.Struct> per_filter_config = 12;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -138,6 +146,13 @@ message Route {
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 6;
+
+  // [#not-implemented-hide:]
+  // The per_filter_config field can be used to provide route-specific
+  // configurations for filters. The key should match the filter name, such as
+  // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+  // specific; see the HTTP filter documentation for if and how it is utilized.
+  map<string, google.protobuf.Struct> per_filter_config = 8;
 }
 
 // Compared to the :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` field that specifies a
