@@ -165,22 +165,26 @@ The following command operators are supported:
     Not implemented ("-").
 
 %DYNAMIC_METADATA(NAMESPACE:KEY*):Z%
-  :ref:`Dynamic Metadata <envoy_api_msg_core.Metadata>` info,
-  where NAMESPACE is the the filter namespace used when setting the metadata, KEY is an optional
-  lookup up key in the namespace with the option of specifying nested keys separated by ':',
-  and Z is an optional parameter denoting string truncation up to Z characters long. Dynamic Metadata
-  can be set by filters using the :repo:`RequestInfo <include/envoy/request_info/request_info.h>` API:
-  *setDynamicMetadata*. The data will be logged as a JSON string. For example, for the following dynamic metadata:
+  HTTP
+    :ref:`Dynamic Metadata <envoy_api_msg_core.Metadata>` info,
+    where NAMESPACE is the the filter namespace used when setting the metadata, KEY is an optional
+    lookup up key in the namespace with the option of specifying nested keys separated by ':',
+    and Z is an optional parameter denoting string truncation up to Z characters long. Dynamic Metadata
+    can be set by filters using the :repo:`RequestInfo <include/envoy/request_info/request_info.h>` API:
+    *setDynamicMetadata*. The data will be logged as a JSON string. For example, for the following dynamic metadata:
 
-  ``com.test.my_filter: {"test_key": "foo", "test_object": {"inner_key": "bar"}}``
+    ``com.test.my_filter: {"test_key": "foo", "test_object": {"inner_key": "bar"}}``
 
-  * %DYNAMIC_METADATA(com.test.my_filter)% will log: ``{"test_key": "foo", "test_object": {"inner_key": "bar"}}``
-  * %DYNAMIC_METADATA(com.test.my_filter:test_key)% will log: ``"foo"``
-  * %DYNAMIC_METADATA(com.test.my_filter:test_object)% will log: ``{"inner_key": "bar"}``
-  * %DYNAMIC_METADATA(com.test.my_filter:test_object:inner_key)% will log: ``"bar"``
-  * %DYNAMIC_METADATA(com.unknown_filter)% will log: ``-``
-  * %DYNAMIC_METADATA(com.test.my_filter:unknown_key)% will log: ``-``
-  * %DYNAMIC_METADATA(com.test.my_filter):25% will log (truncation at 25 characters): ``{"test_key": "foo", "test``
+    * %DYNAMIC_METADATA(com.test.my_filter)% will log: ``{"test_key": "foo", "test_object": {"inner_key": "bar"}}``
+    * %DYNAMIC_METADATA(com.test.my_filter:test_key)% will log: ``"foo"``
+    * %DYNAMIC_METADATA(com.test.my_filter:test_object)% will log: ``{"inner_key": "bar"}``
+    * %DYNAMIC_METADATA(com.test.my_filter:test_object:inner_key)% will log: ``"bar"``
+    * %DYNAMIC_METADATA(com.unknown_filter)% will log: ``-``
+    * %DYNAMIC_METADATA(com.test.my_filter:unknown_key)% will log: ``-``
+    * %DYNAMIC_METADATA(com.test.my_filter):25% will log (truncation at 25 characters): ``{"test_key": "foo", "test``
+
+  TCP
+    Not implemented ("-").
 
 .. _config_access_log_default_format:
 
