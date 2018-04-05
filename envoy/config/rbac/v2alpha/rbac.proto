@@ -8,32 +8,39 @@ package envoy.config.rbac.v2alpha;
 // objects. The protos in this file define the RBAC policies entered by a user.
 
 // ServiceRole specification contains a list of access rules (permissions).
-// This represents the "Spec" part of the ServiceRole object. The name and namespace
-// of the ServiceRole is specified in "metadata" section of the ServiceRole object.
 message ServiceRole {
   // Required. The set of access rules (permissions) that the role has.
   repeated AccessRule rules = 1 [(validate.rules).repeated .min_items = 1];
 }
 
+message StringMatch {
+  oneof match_pattern {
+    // The input string must match exactly the string specified here.
+    // Or it is a "*", which means that it matches any string.
+    string simple = 1;
+
+    // The input string must have the prefix specified here.
+    string prefix = 2;
+
+    // The input string must have the suffix specified here.
+    string suffix = 3;
+
+    // "regex" is a regular expression rule. The input string must
+    // match the regex.
+    string regex = 4;
+  }
+}
+
 // AccessRule defines a permission to access a list of services.
 message AccessRule {
   // Required. A list of service names.
-  // Exact match, prefix match, and suffix match are supported for service names.
-  // For example, the service name "bookstore.mtv.svc.cluster.local" matches
-  // "bookstore.mtv.svc.cluster.local" (exact match), or "bookstore*" (prefix match),
-  // or "*.mtv.svc.cluster.local" (suffix match).
-  // If set to ["*"], it refers to all services in the namespace.
-  repeated string services = 1 [(validate.rules).repeated .min_items = 1];
+  repeated StringMatch services = 1 [(validate.rules).repeated .min_items = 1];
 
   // Optional. A list of HTTP paths or gRPC methods.
   // gRPC methods must be presented as fully-qualified name in the form of
   // packageName.serviceName/methodName.
-  // Exact match, prefix match, and suffix match are supported for paths.
-  // For example, the path "/books/review" matches
-  // "/books/review" (exact match), or "/books/*" (prefix match),
-  // or "*/review" (suffix match).
   // If not specified, it applies to any path.
-  repeated string paths = 2;
+  repeated StringMatch paths = 2;
 
   // Optional. A list of HTTP verbs (e.g., "GET", "POST").
   // It is ignored in gRPC case because the value is always "POST".
@@ -48,11 +55,7 @@ message AccessRule {
     string key = 1;
 
     // List of valid values for the constraint.
-    // Exact match, prefix match, and suffix match are supported for constraint values.
-    // For example, the value "v1alpha2" matches
-    // "v1alpha2" (exact match), or "v1*" (prefix match),
-    // or "*alpha2" (suffix match).
-    repeated string values = 2 [(validate.rules).repeated .min_items = 1];
+    repeated StringMatch values = 2 [(validate.rules).repeated .min_items = 1];
   }
 
   // Optional. Extra constraints in the ServiceRole specification.
@@ -61,9 +64,6 @@ message AccessRule {
 }
 
 // ServiceRoleBinding assigns a ServiceRole to a list of subjects.
-// This represents the "Spec" part of the ServiceRoleBinding object. The name and namespace
-// of the ServiceRoleBinding is specified in "metadata" section of the ServiceRoleBinding
-// object.
 message ServiceRoleBinding {
   // Required. List of subjects that are assigned the ServiceRole object.
   repeated Subject subjects = 1 [(validate.rules).repeated .min_items = 1];

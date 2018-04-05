@@ -26,14 +26,9 @@ and can potentially be used by any other modules that consumes request context.
 Some examples of the attributes are:
 ```
   source.principal (string)
-  source.service (string)
-  source.labels (string map)
   destination.principal (string)
-  destination.service (string)
-  destination.labels (string map)
   request.method (string)
   request.headers (string map)
-  request.path (string)
 ```
 
 ## User-Facing RBAC Policies
@@ -68,12 +63,12 @@ Here is an example of a ServiceRole "service-admin", which has full access to al
     name: service-admin
   spec:
     rules:
-    - services: ["*"]
+    - services: [simple:"*"]
       verbs: ["*"]
 ```
 
-Here is another role "product-viewer", which has read ("GET" and "HEAD") access to service
-"products.default.svc.cluster.local".
+Here is another role "product-viewer", which has read ("GET" and "HEAD") access to service that has prefix
+"products".
 
 ```
   kind: ServiceRole
@@ -81,7 +76,7 @@ Here is another role "product-viewer", which has read ("GET" and "HEAD") access 
     name: products-viewer
   spec:
     rules:
-    - services: ["products.defaults.svc.cluster.local"]
+    - services: [prefix:"products"]
       verbs: ["GET", "HEAD"]
 ```
 
@@ -100,11 +95,11 @@ must be "v1" or "v2".
     name: products-viewer
   spec:
     rules:
-    - services: ["products.defaults.svc.cluster.local"]
+    - services: [prefix:"products"]
       verbs: ["GET", "HEAD"]
-      constraints"
+      constraints:
       - key: request.headers["version"]
-        values: ["v1", "v2"]
+        values: [simple:"v1", simple:"v2"]
 ```
 
 
@@ -161,7 +156,7 @@ Here is an example of RBAC filter configuration, which contains policies for a s
        "service-admin":
          spec:
            rules:
-           - services: [“*”]
+           - services: [simple:“*”]
              verbs: [“*”]
          bindings:
            "bind-service-admin":
@@ -170,8 +165,8 @@ Here is an example of RBAC filter configuration, which contains policies for a s
        "product-viewer":
          spec:
            rules:
-           - services: [“products.default.svc.cluster.local”]
-             paths: [“/products/*”, “*/reviews”]
+           - services: [prefix:“products”]
+             paths: [prefix:“/products”, suffix:“/reviews”]
              verbs: [“GET”, “HEAD”]
          bindings:
            "bind-product-viewer":
