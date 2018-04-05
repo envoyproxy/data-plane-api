@@ -7,41 +7,8 @@ import "envoy/config/rbac/v2alpha/rbac.proto";
 // LocalRBAC specifies RBAC policies that apply to the local RBAC engine
 // that typically runs on a proxy. There can be multiple services running behind
 // a proxy.
-//
-// Here is an example of local RBAC policy, which contains policies for a single service.
-// {
-//   "products.default.svc.cluster.local": {
-//     policies: {
-//       "service-admin": {
-//         spec:
-//           rules:
-//           - services: [“*”]
-//             verbs: [“*”]
-//          bindings: {
-//            "bind-service-admin": {
-//              subjects:
-//              - user: “cluster.local/ns/default/sa/admin”
-//            },
-//          }
-//        },
-//        "product-viewer": {
-//          spec:
-//            rules:
-//            - services: [“products.default.svc.cluster.local”]
-//              paths: [“/products/*”, “*/reviews”]
-//              verbs: [“GET”, “HEAD”]
-//          bindings: {
-//            "bind-product-viewer": {
-//               subjects:
-//               - user: “alice@yahoo.com”
-//             },
-//           }
-//         },
-//       }
-//     },
-//  }
 message LocalRBAC {
-  // Maps from the fully qualified service name to ServicePolicy.
+  // Maps from the service name to ServicePolicy.
   map<string, ServicePolicy> service_policies = 1;
 }
 

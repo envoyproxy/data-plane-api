@@ -5,66 +5,7 @@ import "validate/validate.proto";
 package envoy.config.rbac.v2alpha;
 
 // RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
-// objects.
-//
-// A ServiceRole specification includes a list of rules (permissions). Each rule has
-// the following standard fields:
-// * services: a list of services.
-// * verbs: HTTP verbs. In the case of gRPC, this field is ignored because the value is always
-// "POST".
-// * paths: HTTP paths or gRPC methods. Note that gRPC methods should be
-//   presented in the form of "packageName.serviceName/methodName".
-//
-// The fields used in ServiceRole definition map to attributes defined in AttributeContext
-// (//envoy/service/auth/v2/attribute_context.proto) as follows:
-//   service: destination.service
-//   method: request.http.method
-//   path: request.http.path
-//
-//  In addition, users can specify "constraints" on any attributes defined in AttributeContext
-//  (//envoy/service/auth/v2/attribute_context.proto).
-//
-// Below is an example of ServiceRole object "product-viewer", which has "read" ("GET" and "HEAD")
-// access to "products.default.svc.cluster.local" service at versions "v1" and "v2".
-//
-//     kind: ServiceRole
-//     metadata:
-//       name: products-viewer
-//       namespace: default
-//     spec:
-//       rules:
-//       - services: ["products.default.svc.cluster.local"]
-//         paths: ["/products/*"]
-//         verbs: ["GET", "HEAD"]
-//         constraints:
-//         - key: request.http.headers["version"]
-//           values: ["v1", "v2"]
-//
-// A ServiceRoleBinding specification includes two parts:
-// * "roleRef" refers to a ServiceRole object.
-// * A list of "subjects" that are assigned the roles.
-//
-// A subject can be a "user" or a "group", or represented with a set of attributes. Specifically,
-// "user" is mapped to "source.principal" attribute. "group" is currently undefined. It is reserved
-// to be used in the future.
-//
-// Below is an example of ServiceRoleBinding object "test-binding-products", which binds two
-// subjects to ServiceRole "product-viewer":
-//   * User (service account) "cluster.local/ns/default/sa/bookinfo-reviews"
-//   * Service "reviews.default.svc.cluster.local" at version "v1".
-//
-//     kind: ServiceRoleBinding
-//     metadata:
-//       name: test-binding-products
-//       namespace: default
-//     spec:
-//       subjects:
-//       - user: cluster.local/ns/default/sa/bookinfo-reviews
-//       - attributes:
-//           source.service: "reviews.default.svc.cluster.local"
-//           source.labels["version"]: "v1"
-//       roleRef:
-//         name: "products-viewer"
+// objects. The protos in this file define the RBAC policies entered by a user.
 
 // ServiceRole specification contains a list of access rules (permissions).
 // This represents the "Spec" part of the ServiceRole object. The name and namespace
@@ -100,7 +41,7 @@ message AccessRule {
   repeated string verbs = 3;
 
   // Definition of a custom constraint. The key in the constraint refers to an attribute defined in
-  // AttributeContext (//envoy/service/auth/v2/attribute_context.proto). For example,
+  // :ref: `AttributeContext <envoy_api_msg_service.auth.v2alpha.AttributeContext>`. For example,
   // destination.labels["app"], request.http.headers["version"].
   message Constraint {
     // Key of the constraint.
@@ -128,14 +69,14 @@ message ServiceRoleBinding {
   repeated Subject subjects = 1 [(validate.rules).repeated .min_items = 1];
 
   // Optional. Reference to the ServiceRole object.
-  // RoleRef is needed when a user defines a ServiceRoleBinding object.
+  // role_ref is needed when a user defines a ServiceRoleBinding object.
   // When used in a proxy filter configuration, this field is optional.
   RoleRef role_ref = 2 [(validate.rules).message.required = true];
 }
 
 // Subject defines an identity or a group of identities. The identity is either a user or
 // a group or identified by a set of attributes. The attribute names are defined in
-// AttributeContext (//envoy/service/auth/v2/attribute_context.proto).
+// :ref: `AttributeContext <envoy_api_msg_service.auth.v2alpha.AttributeContext>`.
 // For example, source.service, source.labels["app"], request.http.headers["version"].
 message Subject {
   // Optional. The user name/ID that the subject represents.
