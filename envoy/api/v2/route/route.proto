@@ -212,6 +212,13 @@ message WeightedCluster {
     // :ref:`cluster_metadata <envoy_api_field_route.RouteAction.cluster_metadata>` from the
     // enclosing :ref:`envoy_api_msg_route.RouteAction`.
     core.Metadata cluster_metadata = 7;
+
+    // The per_filter_config field can be used to provide weighted cluster-specific
+    // configurations for filters. The key should match the filter name, such as
+    // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+    // specific; see the :ref:`HTTP filter documentation <config_http_filters>`
+    // for if and how it is utilized.
+    map<string, google.protobuf.Struct> per_filter_config = 8;
   }
 
   // Specifies one or more upstream clusters associated with the route.
