@@ -1,35 +1,39 @@
 Version history
 ---------------
 
-1.7.0
-=====
+1.7.0 (Pending)
+===============
 
-* Added :ref:`weighted round robin
+* access log: ability to format START_TIME
+* admin: added :http:get:`/config_dump` for dumping current configs
+* admin: added :http:get:`/stats/prometheus` as an alternative endpoint for getting stats in prometheus format.
+* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
+* admin: mutations must be sent as POSTs, rather than GETs. Mutations include:
+  :http:post:`/cpuprofiler`, :http:post:`/healthcheck/fail`, :http:post:`/healthcheck/ok`,
+  :http:post:`/logging`, :http:post:`/quitquitquit`, :http:post:`/reset_counters`,
+  :http:post:`/runtime_modify?key1=value1&key2=value2&keyN=valueN`,
+* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
+* cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
+  representation of the bootstrap config and overrides --config-path.
+* health check: added ability to set :ref:`additional HTTP headers
+  <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
+* health check: added support for EDS delivered :ref:`endpoint health status
+  <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* listeners: added :ref:`tcp_fast_open_queue_length <envoy_api_field_Listener.tcp_fast_open_queue_length>` option.
+* load balancing: added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
-* admin: added :ref:`/config_dump endpoint <operations_admin_interface_config_dump>` for dumping current configs
-* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
-* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
-* access log: ability to format START_TIME
-* admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
-* cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
-  representation of the bootstrap config and overrides --config-path.
-* health check: added support for EDS delivered :ref:`endpoint health status
-  <envoy_api_field_endpoint.LbEndpoint.health_status>`.
-* health check: added ability to set :ref:`additional HTTP headers
-  <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
-* listeners: added :ref:`tcp_fast_open_queue_length <envoy_api_field_Listener.tcp_fast_open_queue_length>` option.
+* logger: added the ability to optionally set the log format via the :option:`--log-format` option.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
-* logger: added the ability to optionally set the log format via the :option:`--log-format` option.
-* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
-  <envoy_api_field_Listener.transparent>`.
 * sockets: added `IP_FREEBIND` socket option support for :ref:`listeners
   <envoy_api_field_Listener.freebind>` and upstream connections via
   :ref:`cluster manager wide
   <envoy_api_field_config.bootstrap.v2.ClusterManager.upstream_bind_config>` and
   :ref:`cluster specific <envoy_api_field_Cluster.upstream_bind_config>` options.
+* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
+  <envoy_api_field_Listener.transparent>`.
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.

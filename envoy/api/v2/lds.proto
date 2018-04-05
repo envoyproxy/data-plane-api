@@ -150,4 +150,20 @@ message Listener {
   // (default), the socket is not modified, i.e. the option is neither enabled
   // nor disabled.
   google.protobuf.BoolValue freebind = 11;
+
+  // Whether the listener should accept TCP Fast Open (TFO) connections.
+  // When this flag is set to a value greater than 0, the option TCP_FASTOPEN is enabled on
+  // the socket, with a queue length of the specified size
+  // (see `details in RFC7413 <https://tools.ietf.org/html/rfc7413#section-5.1>`_).
+  // When this flag is set to 0, the option TCP_FASTOPEN is disabled on the socket.
+  // When this flag is not set (default), the socket is not modified,
+  // i.e. the option is neither enabled nor disabled.
+  //
+  // On Linux, the net.ipv4.tcp_fastopen kernel parameter must include flag 0x2 to enable
+  // TCP_FASTOPEN.
+  // See `ip-sysctl.txt <https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt>`_.
+  //
+  // On macOS, only values of 0, 1, and unset are valid; other values may result in an error.
+  // To set the queue length on macOS, set the net.inet.tcp.fastopen_backlog kernel parameter.
+  google.protobuf.UInt32Value tcp_fast_open_queue_length = 12;
 }
