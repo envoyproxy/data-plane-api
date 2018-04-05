@@ -8,11 +8,15 @@ Version history
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
-* admin: added :ref:`/config_dump endpoint <operations_admin_interface_config_dump>` for dumping current configs
-* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
-* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
 * access log: ability to format START_TIME
-* admin: added ``/stats/prometheus`` as an alternative endpoint for getting stats in prometheus format.
+* admin: added :http:get:`/config_dump` for dumping current configs
+* admin: added :http:get:`/stats/prometheus` as an alternative endpoint for getting stats in prometheus format.
+* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
+* admin: mutations must be sent as POSTs, rather than GETs. Mutations include:
+  :http:post:`/cpuprofiler`, :http:post:`/healthcheck/fail`, :http:post:`/healthcheck/ok`,
+  :http:post:`/logging`, :http:post:`/quitquitquit`, :http:post:`/reset_counters`,
+  :http:post:`/runtime_modify?key1=value1&key2=value2&keyN=valueN`,
+* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
 * cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
   representation of the bootstrap config and overrides --config-path.
 * health check: added ability to set :ref:`additional HTTP headers
@@ -30,10 +34,6 @@ Version history
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
- * admin-console mutations must be sent as POSTs, rather than GETs. Mutations include:
-   :http:post`/cpuprofiler`, :http:post`/healthcheck/fail`, :http:post`/healthcheck/ok`,
-   :http:post`/logging`, :http:post`/quitquitquit`, :http:post`/reset_counters`,
-   :http:post`/runtime_modify`,
 
 1.6.0
 =====
