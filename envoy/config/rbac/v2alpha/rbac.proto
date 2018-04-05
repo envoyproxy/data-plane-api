@@ -24,10 +24,6 @@ message StringMatch {
 
     // The input string must have the suffix specified here.
     string suffix = 3;
-
-    // "regex" is a regular expression rule. The input string must
-    // match the regex.
-    string regex = 4;
   }
 }
 

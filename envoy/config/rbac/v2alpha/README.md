@@ -102,9 +102,6 @@ must be "v1" or "v2".
         values: [simple:"v1", simple:"v2"]
 ```
 
-
-You can find more ServiceRole examples in [Istio RBAC page](https://istio.io/docs/concepts/security/rbac.html).
-
 ### ServiceRoleBinding
 
 A ServiceRoleBinding specification includes two parts:
