@@ -21,16 +21,18 @@ Version history
   representation of the bootstrap config and overrides --config-path.
 * health check: added ability to set :ref:`additional HTTP headers
   <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
+* health check: added support for EDS delivered :ref:`endpoint health status
+  <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* logger: added the ability to optionally set the log format via the :option:`--log-format` option.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.
-* logger: added the ability to optionally set the log format via the :option:`--log-format` option.
-* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
-  <envoy_api_field_Listener.transparent>`.
 * sockets: added `IP_FREEBIND` socket option support for :ref:`listeners
   <envoy_api_field_Listener.freebind>` and upstream connections via
   :ref:`cluster manager wide
   <envoy_api_field_config.bootstrap.v2.ClusterManager.upstream_bind_config>` and
   :ref:`cluster specific <envoy_api_field_Cluster.upstream_bind_config>` options.
+* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
+  <envoy_api_field_Listener.transparent>`.
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
