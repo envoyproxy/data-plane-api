@@ -202,16 +202,7 @@ message WeightedCluster {
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     repeated string response_headers_to_remove = 6;
 
-    // [#not-implemented-hide:] The Metadata field can be used to provide additional information
-    // about the cluster chosen for routing. It can be used for configuration, stats, and logging.
-    // The metadata should go under the filter namespace that will need it.
-    // For instance, if the metadata is intended for the Router filter,
-    // the filter name should be specified as *envoy.router*.
-    //
-    // On runtime, this object will a merged with the
-    // :ref:`cluster_metadata <envoy_api_field_route.RouteAction.cluster_metadata>` from the
-    // enclosing :ref:`envoy_api_msg_route.RouteAction`.
-    core.Metadata cluster_metadata = 7;
+    reserved 7;
 
     // The per_filter_config field can be used to provide weighted cluster-specific
     // configurations for filters. The key should match the filter name, such as
@@ -566,12 +557,7 @@ message RouteAction {
   // Indicates that the route has a CORS policy.
   CorsPolicy cors = 17;
 
-  // [#not-implemented-hide:] The Metadata field can be used to provide additional information
-  // about the routed cluster. It can be used for configuration, stats, and logging.
-  // The metadata should go under the filter namespace that will need it.
-  // For instance, if the metadata is intended for the Router filter,
-  // the filter name should be specified as *envoy.router*.
-  core.Metadata cluster_metadata = 21;
+  reserved 21;
 }
 
 message RedirectAction {
