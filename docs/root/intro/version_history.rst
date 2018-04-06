@@ -19,6 +19,8 @@ Version history
   <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
 * health check: added support for EDS delivered :ref:`endpoint health status
   <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* http: added the ability to pass DNS type Subject Alternative Names of the client certificate in the
+  :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
 * load balancing: added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
@@ -80,8 +82,6 @@ Version history
 * http: added support for :ref:`proxying 100-Continue responses
   <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.proxy_100_continue>`.
 * http: added the ability to pass a URL encoded PEM encoded peer certificate in the
-  :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
-* http: added the ability to pass DNS type Subject Alternative Names of the client certificate in the
   :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
 * http: added support for trusting additional hops in the
   :ref:`config_http_conn_man_headers_x-forwarded-for` request header.
