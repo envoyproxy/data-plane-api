@@ -10,4 +10,4 @@ flag files are:
 
 drain
   If this file exists, Envoy will start in HC failing mode, similar to after the
-  :http:get:`/healthcheck/fail` command has been executed.
+  :http:post:`/healthcheck/fail` command has been executed.

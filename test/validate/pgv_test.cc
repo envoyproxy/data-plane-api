@@ -8,6 +8,7 @@
 #include "envoy/api/v2/lds.pb.validate.h"
 #include "envoy/api/v2/rds.pb.validate.h"
 #include "envoy/api/v2/core/protocol.pb.validate.h"
+#include "envoy/config/health_checker/redis/v2/redis.pb.validate.h"
 #include "envoy/config/filter/accesslog/v2/accesslog.pb.validate.h"
 #include "envoy/config/filter/http/buffer/v2/buffer.pb.validate.h"
 #include "envoy/config/filter/http/fault/v2/fault.pb.validate.h"

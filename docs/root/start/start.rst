@@ -24,19 +24,13 @@ A very minimal Envoy configuration that can be used to validate basic plain HTTP
 proxying is available in :repo:`configs/google_com_proxy.v2.yaml`. This is not
 intended to represent a realistic Envoy deployment.
 
-Copy both :repo:`configs/Dockerfile` and
-:repo:`configs/google_com_proxy.v2.yaml` to the same directory on your local
-disk. Then, build and run the Dockerfile, and test out Envoy by sending a
-request to port 10000::
-
-  $ docker build -t envoy-google-test:v1 .
-  $ docker run -d -p 10000:10000 envoy-google-test:v1
+  $ docker pull envoyproxy/envoy:latest
+  $ docker run --rm -d -p 10000:10000 envoyproxy/envoy:latest
   $ curl -v localhost:10000
 
-The Dockerfile will build a container containing the latest version of Envoy,
-and copy a basic Envoy configuration into the container. This basic
-configuration tells Envoy to route incoming requests to \*.google.com.
-
+The Docker image used will contain the latest version of Envoy
+and a basic Envoy configuration. This basic configuration tells
+Envoy to route incoming requests to \*.google.com.
 
 Simple Configuration
 --------------------
@@ -112,9 +106,7 @@ You can refer to the :ref:`Command line options <operations_cli>`.
 .. code-block:: none
 
   FROM envoyproxy/envoy:latest
-  RUN apt-get update
-  COPY envoy.yaml /etc/envoy.yaml
-  CMD /usr/local/bin/envoy -c /etc/envoy.yaml
+  COPY envoy.yaml /etc/envoy/envoy.yaml
 
 Build the Docker image that runs your configuration using::
 
@@ -127,6 +119,20 @@ And now you can execute it with::
 And finally test is using::
 
   $ curl -v localhost:10000
+
+If you would like to use envoy with docker-compose you can overwrite the provided configuration file
+by using a volume.
+
+.. code-block: yaml
+
+  version: '3'
+  services:
+    envoy:
+      image: envoyproxy/envoy:latest
+      ports:
+        - "10000:10000"
+      volumes:
+        - ./envoy.yaml:/etc/envoy/envoy.yaml
 
 
 Sandboxes
