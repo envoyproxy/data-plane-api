@@ -3,7 +3,6 @@ syntax = "proto3";
 package envoy.config.health_checker.redis.v2;
 option go_package = "v2";
 
-// [#not-implemented-hide:]
 // [#protodoc-title: Redis]
 // Redis :ref:`configuration overview <config_health_checker_redis>`.
 // Configuration for the Redis custom health checker.
