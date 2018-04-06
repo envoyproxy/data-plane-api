@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+import "validate/validate.proto";
+
+package envoy.config.rbac.v2alpha;
+
+// RBAC (Role Based Access Control) defines ServiceRole and ServiceRoleBinding
+// objects. The protos in this file define the RBAC policies entered by a user.
+
+// ServiceRole specification contains a list of access rules (permissions).
+message ServiceRole {
+  // Required. The set of access rules (permissions) that the role has.
+  repeated AccessRule rules = 1 [(validate.rules).repeated .min_items = 1];
+}
+
+message StringMatch {
+  oneof match_pattern {
+    // The input string must match exactly the string specified here.
+    // Or it is a "*", which means that it matches any string.
+    string simple = 1;
+
+    // The input string must have the prefix specified here.
+    string prefix = 2;
+
+    // The input string must have the suffix specified here.
+    string suffix = 3;
+  }
+}
+
+// AccessRule defines a permission to access a list of services.
+message AccessRule {
+  // Required. A list of service names.
+  repeated StringMatch services = 1 [(validate.rules).repeated .min_items = 1];
+
+  // Optional. A list of HTTP paths or gRPC methods.
+  // gRPC methods must be presented as fully-qualified name in the form of
+  // packageName.serviceName/methodName.
+  // If not specified, it applies to any path.
+  repeated StringMatch paths = 2;
+
+  // Optional. A list of HTTP verbs (e.g., "GET", "POST").
+  // It is ignored in gRPC case because the value is always "POST".
+  // If set to ["*"] or not specified, it applies to any verb.
+  repeated string verbs = 3;
+
+  // Definition of a custom constraint. The key in the constraint refers to an attribute defined in
+  // :ref: `AttributeContext <envoy_api_msg_service.auth.v2alpha.AttributeContext>`. For example,
+  // destination.labels["app"], request.http.headers["version"].
+  message Constraint {
+    // Key of the constraint.
+    string key = 1;
+
+    // List of valid values for the constraint.
+    repeated StringMatch values = 2 [(validate.rules).repeated .min_items = 1];
+  }
+
+  // Optional. Extra constraints in the ServiceRole specification.
+  // The above ServiceRole examples shows an example of constraint "version".
+  repeated Constraint constraints = 4;
+}
+
+// ServiceRoleBinding assigns a ServiceRole to a list of subjects.
+message ServiceRoleBinding {
+  // Required. List of subjects that are assigned the ServiceRole object.
+  repeated Subject subjects = 1 [(validate.rules).repeated .min_items = 1];
+
+  // Optional. Reference to the ServiceRole object.
+  // role_ref is needed when a user defines a ServiceRoleBinding object.
+  // When used in a proxy filter configuration, this field is optional.
+  RoleRef role_ref = 2 [(validate.rules).message.required = true];
+}
+
+// Subject defines an identity or a group of identities. The identity is either a user or
+// a group or identified by a set of attributes. The attribute names are defined in
+// :ref: `AttributeContext <envoy_api_msg_service.auth.v2alpha.AttributeContext>`.
+// For example, source.service, source.labels["app"], request.http.headers["version"].
+message Subject {
+  // Optional. The user name/ID that the subject represents.
+  string user = 1;
+
+  // Optional. The group that the subject belongs to.
+  string group = 2;
+
+  // Optional. The set of attributes that identify the subject.
+  map<string, string> attributes = 3;
+}
+
+// RoleRef refers to a role object.
+message RoleRef {
+  // Required. The name of the ServiceRole object being referenced.
+  string name = 2;
+}

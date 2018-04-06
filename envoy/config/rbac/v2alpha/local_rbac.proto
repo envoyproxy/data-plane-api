@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package envoy.config.rbac.v2alpha;
+
+import "envoy/config/rbac/v2alpha/rbac.proto";
+
+// LocalRBAC specifies RBAC policies that apply to the local RBAC engine
+// that typically runs on a proxy. There can be multiple services running behind
+// a proxy.
+message LocalRBAC {
+  // Maps from the service name to ServicePolicy.
+  map<string, ServicePolicy> service_policies = 1;
+}
+
+// ServicePolicy specifies the RBAC policies that apply to a service.
+message ServicePolicy {
+  // Maps from role name to RoleInfo
+  map<string, RoleInfo> policies = 1;
+}
+
+// RoleInfo specifies a ServiceRole and the associated ServiceRoleBindings.
+message RoleInfo {
+  // The ServiceRole specification.
+  ServiceRole spec = 1;
+
+  // The ServiceRoleBindings that are associated with the given ServiceRole.
+  // The key of the map is the name of the ServiceRoleBinding.
+  // The value of the map is ServiceRoleBinding spec.
+  map<string, ServiceRoleBinding> bindings = 2;
+}
