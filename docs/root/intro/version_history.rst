@@ -37,8 +37,8 @@ Version history
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
 
-1.6.0
-=====
+1.6.0 (March 20, 2018)
+======================
 
 * access log: added DOWNSTREAM_REMOTE_ADDRESS, DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT, and
   DOWNSTREAM_LOCAL_ADDRESS :ref:`access log formatters <config_access_log_format>`.
@@ -158,8 +158,8 @@ Version history
   <envoy_api_field_Cluster.alt_stat_name>` while emitting stats for clusters.
 * Many small bug fixes and performance improvements not listed.
 
-1.5.0
-=====
+1.5.0 (December 4, 2017)
+========================
 
 * access log: added fields for :ref:`UPSTREAM_LOCAL_ADDRESS and DOWNSTREAM_ADDRESS
   <config_access_log_format>`.
@@ -224,8 +224,8 @@ Version history
 * tracing: added :ref:`custom trace span decorators <envoy_api_field_route.Route.decorator>`.
 * Many small bug fixes and performance improvements not listed.
 
-1.4.0
-=====
+1.4.0 (August 24, 2017)
+=======================
 
 * macOS is :repo:`now supported </bazel#quick-start-bazel-build-for-developers>`. (A few features
   are missing such as hot restart and original destination routing).
@@ -271,8 +271,8 @@ Version history
   `NamedHttpFilterConfigFactory`.
 * Many small bug fixes and performance improvements not listed.
 
-1.3.0
-=====
+1.3.0 (May 17, 2017)
+====================
 
 * As of this release, we now have an official :repo:`breaking change policy
   </CONTRIBUTING.md#breaking-change-policy>`. Note that there are numerous breaking configuration
@@ -342,8 +342,8 @@ Version history
 * Zipkin has been added as a supported :ref:`tracing provider <arch_overview_tracing>`.
 * Numerous small changes and fixes not listed here.
 
-1.2.0
-=====
+1.2.0 (March 7, 2017)
+=====================
 
 * :ref:`Cluster discovery service (CDS) API <config_cluster_manager_cds>`.
 * :ref:`Outlier detection <arch_overview_outlier_detection>` (passive health checking).
@@ -374,8 +374,8 @@ Version history
   savings for large meshes.
 * Numerous small changes and fixes not listed here.
 
-1.1.0
-=====
+1.1.0 (November 30, 2016)
+=========================
 
 * Switch from Jannson to RapidJSON for our JSON library (allowing for a configuration schema in
   1.2.0).
@@ -405,7 +405,7 @@ Version history
 * Support Mongo 3.2 in the :ref:`Mongo sniffing filter <config_network_filters_mongo_proxy>`.
 * Lots of other small fixes and enhancements not listed.
 
-1.0.0
-=====
+1.0.0 (September 12, 2016)
+==========================
 
 Initial open source release.
