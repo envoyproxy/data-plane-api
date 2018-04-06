@@ -59,6 +59,11 @@ currently support weighting.
 When priority based load balancing is in use, the priority level is also chosen by hash, so the
 endpoint selected will still be consistent when the set of backends is stable.
 
+.. note::
+
+  The ring hash load balancer does not support :ref:`locality weighted load
+  balancing <arch_overview_load_balancing_locality_weighted_lb>`.
+
 .. _arch_overview_load_balancing_types_maglev:
 
 Maglev
