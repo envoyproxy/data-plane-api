@@ -81,6 +81,8 @@ Version history
   <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.proxy_100_continue>`.
 * http: added the ability to pass a URL encoded PEM encoded peer certificate in the
   :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
+* http: added the ability to pass DNS type Subject Alternative Names of the client certificate in the
+  :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
 * http: added support for trusting additional hops in the
   :ref:`config_http_conn_man_headers_x-forwarded-for` request header.
 * http: added support for :ref:`incoming HTTP/1.0
