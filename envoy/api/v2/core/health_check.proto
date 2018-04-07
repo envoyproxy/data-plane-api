@@ -2,7 +2,10 @@ syntax = "proto3";
 
 package envoy.api.v2.core;
 
+import "envoy/api/v2/core/base.proto";
+
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -76,6 +79,10 @@ message HealthCheck {
     // the health checked cluster. See the :ref:`architecture overview
     // <arch_overview_health_checking_identity>` for more information.
     string service_name = 5;
+
+    // Specifies a list of HTTP headers that should be added to each request that is sent to the
+    // health checked cluster.
+    repeated core.HeaderValueOption request_headers_to_add = 6;
   }
 
   message TcpHealthCheck {
@@ -109,6 +116,16 @@ message HealthCheck {
     string service_name = 1;
   }
 
+  // [#not-implemented-hide:] Custom health check.
+  message CustomHealthCheck {
+    // The registered name of the custom health check.
+    string name = 1 [(validate.rules).string.min_bytes = 1];
+
+    // A custom health checker specific configuration which depends on the custom health checker
+    // being instantiated. See :api:`envoy/config/health_checker` for reference.
+    google.protobuf.Struct config = 2;
+  }
+
   oneof health_checker {
     option (validate.required) = true;
 
@@ -123,6 +140,9 @@ message HealthCheck {
 
     // gRPC health check.
     GrpcHealthCheck grpc_health_check = 11;
+
+    // [#not-implemented-hide:] Custom health check.
+    CustomHealthCheck custom_health_check = 13;
   }
 
   // The "no traffic interval" is a special health check interval that is used when a cluster has
@@ -135,9 +155,9 @@ message HealthCheck {
   google.protobuf.Duration no_traffic_interval = 12;
 }
 
-// [#not-implemented-hide:] Part of HDS.
+// Endpoint health status.
 enum HealthStatus {
-  // UNKNOWN should be treated by Envoy as HEALTHY.
+  // The health status is not known. This is interpreted by Envoy as *HEALTHY*.
   UNKNOWN = 0;
 
   // Healthy.
@@ -147,12 +167,13 @@ enum HealthStatus {
   UNHEALTHY = 2;
 
   // Connection draining in progress. E.g.,
-  // https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/
+  // `<https://aws.amazon.com/blogs/aws/elb-connection-draining-remove-instances-from-service-with-care/>`_
   // or
-  // https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining.
+  // `<https://cloud.google.com/compute/docs/load-balancing/enabling-connection-draining>`_.
+  // This is interpreted by Envoy as *UNHEALTHY*.
   DRAINING = 3;
 
-  // This value is used by HDS Remote server. From Envoy’s perspective
-  // TIMEOUT = UNHEALTHY in case EDS returns HealthStatus.
+  // Health check timed out. This is part of HDS and is interpreted by Envoy as
+  // *UNHEALTHY*.
   TIMEOUT = 4;
 }
