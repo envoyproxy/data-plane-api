@@ -36,6 +36,8 @@ Version history
 * tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
   to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
   is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
+* sockets: added `SO_KEEPALIVE` socket option for upstream connections via :ref:`cluster manager wide
+  <envoy_api_field_config.bootstrap.v2.ClusterManager.upstream_bind_config>` options.
 
 1.6.0 (March 20, 2018)
 ======================
