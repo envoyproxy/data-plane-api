@@ -157,6 +157,14 @@ message StatsdSink {
   }
   // [#not-implemented-hide:] Optional custom prefix for StatsdSink. If
   // specified, this will override the default prefix.
+  // For example:
+  // .. code-block:: json
+  //   prefix : "envoy-prod"
+  // will change emitted stats to
+  // .. code-block:: cpp
+  //   envoy-prod.test_counter:1|c
+  //   envoy-prod.test_timer:5|ms
+
   string prefix = 3;
 }
 
