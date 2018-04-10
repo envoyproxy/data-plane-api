@@ -68,8 +68,11 @@ message TcpKeepalive {
   // overridden, Linux defaults to 7200s (ie 2 hours.)
   google.protobuf.UInt32Value keepalive_time = 2;
   // The number of seconds between keep-alive probes. Default is to use the OS
-  // level configuration (unless overridden, Linux defaults to 75s.
+  // level configuration (unless overridden, Linux defaults to 75s.)
   google.protobuf.UInt32Value keepalive_interval = 3;
+  // Flag to explicitly disable keepalive probes, allows overriding of settings
+  // inherited by a cluster from the cluster manager. Default is false.
+  google.protobuf.BoolValue disable = 4;
 }
 
 message BindConfig {
