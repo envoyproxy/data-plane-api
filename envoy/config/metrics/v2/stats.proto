@@ -164,6 +164,13 @@ message StatsdSink {
   // .. code-block:: cpp
   //   envoy-prod.test_counter:1|c
   //   envoy-prod.test_timer:5|ms
+  //
+  // Note that the default prefix, "envoy", will be used if a prefix is not
+  // specified. 
+  // Stats with default prefix:
+  // .. code-block:: cpp
+  //   envoy.test_counter:1|c
+  //   envoy.test_timer:5|ms
 
   string prefix = 3;
 }
