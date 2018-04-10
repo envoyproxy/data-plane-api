@@ -5,8 +5,8 @@ option go_package = "v2";
 
 import "envoy/api/v2/core/address.proto";
 import "envoy/api/v2/core/base.proto";
+import "envoy/api/v2/route/route.proto";
 import "envoy/type/percent.proto";
-import "envoy/type/range.proto";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -332,6 +332,9 @@ message AccessLogFilter {
 
     // Or filter.
     OrFilter or_filter = 7;
+
+    // [#not-implemented-hide:] Header filter.
+    HeaderFilter header_filter = 8;
   }
 }
 
@@ -416,41 +419,10 @@ message OrFilter {
 }
 
 // [#not-implemented-hide:] Filters requests based on the presence or value of a request header.
-message HeaderValueFilter {
-  // Specifies the name of the request header to filter on.
-  string name = 1 [(validate.rules).string.min_bytes = 1];
-
-  // Specifies how the header match will be performed to filter the request.
-  // If absent, any request with the header present will match, regardless of the header's value.
-  oneof header_match_specifier {
-    // Filter will only allow requests where the header's value equals `exact_match`.
-    string exact_match = 2;
-
-    // A regular expression rule which the *entire* header's value must match.
-    // Filter will not allow requests where only a subsequence of the header's value
-    // matches the regex.
-    // The regex grammar used in the value field is defined
-    // `here <http://en.cppreference.com/w/cpp/regex/ecmascript>`_.
-    //
-    // Examples:
-    //
-    // * The regex *\d{3}* matches the value *123*
-    // * The regex *\d{3}* does not match the value *1234*
-    // * The regex *\d{3}* does not match the value *123.456*
-    string regex_match = 3;
-
-    // The rule will match if the header's value is within the specified range.
-    // The *entire* request header value must represent an integer in base 10 notation: consisting
-    // of an optional plus or minus sign followed by a sequence of digits. The rule will not match
-    // if the header value does not represent an integer. Match will fail for empty values, floating
-    // point numbers or if only a subsequence of the header value is an integer.
-    //
-    // Examples:
-    //
-    // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9,
-    //   "-1somestring"
-    envoy.type.Int64Range range_match = 4;
-  }
+message HeaderFilter {
+  // Only requests with a header which matches the specified HeaderMatcher will pass the filter
+  // check.
+  envoy.api.v2.route.HeaderMatcher header = 1 [(validate.rules).message.required = true];
 }
 
 // Custom configuration for an AccessLog that writes log entries directly to a file.
