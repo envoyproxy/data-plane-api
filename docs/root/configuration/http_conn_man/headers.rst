@@ -354,7 +354,7 @@ x-ot-span-context
 -----------------
 
 The *x-ot-span-context* HTTP header is used by Envoy to establish proper parent-child relationships
-between tracing spans. This header can be used with both LightStep and Zipkin tracers.
+between tracing spans when used with the LightStep tracer.
 For example, an egress span is a child of an ingress
 span (if the ingress span was present). Envoy injects the *x-ot-span-context* header on ingress requests and
 forwards it to the local service. Envoy relies on the application to propagate *x-ot-span-context* on
@@ -398,7 +398,7 @@ x-b3-sampled
 ------------
 
 The *x-b3-sampled* HTTP header is used by the Zipkin tracer in Envoy.
-When the Sampled flag is 1, the soan will be reported to the tracing
+When the Sampled flag is either not specified or set to 1, the span will be reported to the tracing
 system. Once Sampled is set to 0 or 1, the same
 value should be consistently sent downstream. See more on zipkin tracing
 `here <https://github.com/openzipkin/b3-propagation>`.

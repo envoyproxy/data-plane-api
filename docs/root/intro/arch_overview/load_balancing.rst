@@ -20,7 +20,12 @@ Supported load balancers
 Round robin
 ^^^^^^^^^^^
 
-This is a simple policy in which each healthy upstream host is selected in round robin order.
+This is a simple policy in which each healthy upstream host is selected in round
+robin order. If :ref:`weights
+<envoy_api_field_endpoint.LbEndpoint.load_balancing_weight>` are assigned to
+endpoints in a locality, then a weighted round robin schedule is used, where
+higher weighted endpoints will appear more often in the rotation to achieve the
+effective weighting.
 
 .. _arch_overview_load_balancing_types_least_request:
 
@@ -46,11 +51,10 @@ The ring/modulo hash load balancer implements consistent hashing to upstream hos
 based on mapping all hosts onto a circle such that the addition or removal of a host from the host
 set changes only affect 1/N requests. This technique is also commonly known as `"ketama"
 <https://github.com/RJ/ketama>`_ hashing. A consistent hashing load balancer is only effective
-when protocol routing is used that specifies a value to hash on. The default minimum ring size is
-specified in :ref:`runtime <config_cluster_manager_cluster_runtime_ring_hash>`. The minimum ring
-size governs the replication factor for each host in the ring. For example, if the minimum ring
-size is 1024 and there are 16 hosts, each host will be replicated 64 times. The ring hash load
-balancer does not currently support weighting.
+when protocol routing is used that specifies a value to hash on. The minimum ring size governs the
+replication factor for each host in the ring. For example, if the minimum ring size is 1024 and
+there are 16 hosts, each host will be replicated 64 times. The ring hash load balancer does not
+currently support weighting.
 
 When priority based load balancing is in use, the priority level is also chosen by hash, so the
 endpoint selected will still be consistent when the set of backends is stable.
@@ -248,6 +252,62 @@ with regard to percentage relations in the local zone between originating and up
   in the originating cluster (if needed).
 
 Note that when using multiple priorities, zone aware routing is currently only supported for P=0.
+
+.. _arch_overview_load_balancing_locality_weighted_lb:
+
+Locality weighted load balancing
+--------------------------------
+
+Another approach to determining how to weight assignments across different zones
+and geographical locations is by using explicit weights supplied via EDS in the
+:ref:`LocalityLbEndpoints <envoy_api_msg_endpoint.LocalityLbEndpoints>` message.
+This approach is mutually exclusive with the above zone aware routing, since in
+the case of locality aware LB, we rely on the management server to provide the
+locality weighting, rather than the Envoy-side heuristics used in zone aware
+routing.
+
+When all endpoints are healthy, the locality is picked using a weighted
+round-robin schedule, where the locality weight is used for weighting. When some
+endpoints in a locality are unhealthy, we adjust the locality weight to reflect
+this. As with :ref:`priority levels
+<arch_overview_load_balancing_priority_levels>`, we assume an over-provision
+factor (currently hardcoded at 1.4), which means we do not perform any weight
+adjustment when only a small number of endpoints in a locality are unhealthy.
+
+Assume a simple set-up with 2 localities X and Y, where X has a locality weight
+of 1 and Y has a locality weight of 2, L=Y 100% healthy.
+
++----------------------------+---------------------------+----------------------------+
+| L=X healthy endpoints      | Percent of traffic to L=X |  Percent of traffic to L=Y |
++============================+===========================+============================+
+| 100%                       | 33%                       |   67%                      |
++----------------------------+---------------------------+----------------------------+
+| 70%                        | 33%                       |   67%                      |
++----------------------------+---------------------------+----------------------------+
+| 69%                        | 32%                       |   68%                      |
++----------------------------+---------------------------+----------------------------+
+| 50%                        | 26%                       |   74%                      |
++----------------------------+---------------------------+----------------------------+
+| 25%                        | 15%                       |   85%                      |
++----------------------------+---------------------------+----------------------------+
+| 0%                         | 0%                        |   100%                     |
++----------------------------+---------------------------+----------------------------+
+
+
+To sum this up in pseudo algorithms:
+
+::
+
+  health(L_X) = 140 * healthy_X_backends / total_X_backends
+  effective_weight(L_X) = locality_weight_X * min(100, health(L_X))
+  load to L_X = effective_weight(L_X) / Σ_c(effective_weight(L_c))
+
+Note that the locality weighted pick takes place after the priority level is
+picked. The load balancer follows these steps:
+
+1. Pick :ref:`priority level <arch_overview_load_balancing_priority_levels>`.
+2. Pick locality (as described in this section) within priority level from (1).
+3. Pick endpoint using cluster specified load balancer within locality from (2).
 
 .. _arch_overview_load_balancer_subsets:
 

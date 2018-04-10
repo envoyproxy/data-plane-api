@@ -1,14 +1,166 @@
 Version history
 ---------------
 
-1.6.0
-=====
+1.7.0 (Pending)
+===============
+
+* access log: ability to format START_TIME
+* access log: added DYNAMIC_METADATA :ref:`access log formatter <config_access_log_format>`.
+* admin: added :http:get:`/config_dump` for dumping current configs
+* admin: added :http:get:`/stats/prometheus` as an alternative endpoint for getting stats in prometheus format.
+* admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
+* admin: mutations must be sent as POSTs, rather than GETs. Mutations include:
+  :http:post:`/cpuprofiler`, :http:post:`/healthcheck/fail`, :http:post:`/healthcheck/ok`,
+  :http:post:`/logging`, :http:post:`/quitquitquit`, :http:post:`/reset_counters`,
+  :http:post:`/runtime_modify?key1=value1&key2=value2&keyN=valueN`,
+* admin: removed `/routes` endpoint; route configs can now be found at the :ref:`/config_dump endpoint <operations_admin_interface_config_dump>`.
+* cli: added --config-yaml flag to the Envoy binary. When set its value is interpreted as a yaml
+  representation of the bootstrap config and overrides --config-path.
+* health check: added ability to set :ref:`additional HTTP headers
+  <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
+* health check: added support for EDS delivered :ref:`endpoint health status
+  <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* load balancing: added :ref:`weighted round robin
+  <arch_overview_load_balancing_types_round_robin>` support. The round robin
+  scheduler now respects endpoint weights and also has improved fidelity across
+  picks.
+* logger: added the ability to optionally set the log format via the :option:`--log-format` option.
+* logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
+  at run-time: trace debug info warning error critical.
+* sockets: added `IP_FREEBIND` socket option support for :ref:`listeners
+  <envoy_api_field_Listener.freebind>` and upstream connections via
+  :ref:`cluster manager wide
+  <envoy_api_field_config.bootstrap.v2.ClusterManager.upstream_bind_config>` and
+  :ref:`cluster specific <envoy_api_field_Cluster.upstream_bind_config>` options.
+* sockets: added `IP_TRANSPARENT` socket option support for :ref:`listeners
+  <envoy_api_field_Listener.transparent>`.
+* tracing: the sampling decision is now delegated to the tracers, allowing the tracer to decide when and if
+  to use it. For example, if the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header
+  is supplied with the client request, its value will override any sampling decision made by the Envoy proxy.
+
+1.6.0 (March 20, 2018)
+======================
+
+* access log: added DOWNSTREAM_REMOTE_ADDRESS, DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT, and
+  DOWNSTREAM_LOCAL_ADDRESS :ref:`access log formatters <config_access_log_format>`.
+  DOWNSTREAM_ADDRESS access log formatter has been deprecated.
+* access log: added less than or equal (LE) :ref:`comparison filter
+  <envoy_api_msg_config.filter.accesslog.v2.ComparisonFilter>`.
+* access log: added configuration to :ref:`runtime filter
+  <envoy_api_msg_config.filter.accesslog.v2.RuntimeFilter>` to set default sampling rate, divisor,
+  and whether to use independent randomness or not.
+* admin: added :ref:`/runtime <operations_admin_interface_runtime>` admin endpoint to read the
+  current runtime values.
+* build: added support for :repo:`building Envoy with exported symbols
+  <bazel#enabling-optional-features>`. This change allows scripts loaded with the Lua filter to
+  load shared object libraries such as those installed via `LuaRocks <https://luarocks.org/>`_.
+* config: added support for sending error details as
+  `grpc.rpc.Status <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`_
+  in :ref:`DiscoveryRequest <envoy_api_msg_DiscoveryRequest>`.
+* config: added support for :ref:`inline delivery <envoy_api_msg_core.DataSource>` of TLS
+  certificates and private keys.
+* config: added restrictions for the backing :ref:`config sources <envoy_api_msg_core.ConfigSource>`
+  of xDS resources. For filesystem based xDS the file must exist at configuration time. For cluster
+  based xDS the backing cluster must be statically defined and be of non-EDS type.
+* grpc: the Google gRPC C++ library client is now supported as specified in the :ref:`gRPC services
+  overview <arch_overview_grpc_services>` and :ref:`GrpcService <envoy_api_msg_core.GrpcService>`.
+* grpc-json: Added support for :ref:`inline descriptors
+  <envoy_api_field_config.filter.http.transcoder.v2.GrpcJsonTranscoder.proto_descriptor_bin>`.
+* health check: added :ref:`gRPC health check <envoy_api_field_core.HealthCheck.grpc_health_check>`
+  based on `grpc.health.v1.Health <https://github.com/grpc/grpc/blob/master/src/proto/grpc/health/v1/health.proto>`_
+  service.
+* health check: added ability to set :ref:`host header value
+  <envoy_api_field_core.HealthCheck.HttpHealthCheck.host>` for http health check.
+* health check: extended the health check filter to support computation of the health check response
+  based on the :ref:`percentage of healthy servers in upstream clusters
+  <envoy_api_field_config.filter.http.health_check.v2.HealthCheck.cluster_min_healthy_percentages>`.
+* health check: added setting for :ref:`no-traffic
+  interval<envoy_api_field_core.HealthCheck.no_traffic_interval>`.
 * http : added idle timeout for :ref:`upstream http connections
   <envoy_api_field_core.HttpProtocolOptions.idle_timeout>`.
+* http: added support for :ref:`proxying 100-Continue responses
+  <envoy_api_field_config.filter.network.http_connection_manager.v2.HttpConnectionManager.proxy_100_continue>`.
+* http: added the ability to pass a URL encoded PEM encoded peer certificate in the
+  :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
+* http: added support for trusting additional hops in the
+  :ref:`config_http_conn_man_headers_x-forwarded-for` request header.
+* http: added support for :ref:`incoming HTTP/1.0
+  <envoy_api_field_core.Http1ProtocolOptions.accept_http_10>`.
+* hot restart: added SIGTERM propagation to children to :ref:`hot-restarter.py
+  <operations_hot_restarter>`, which enables using it as a parent of containers.
+* ip tagging: added :ref:`HTTP IP Tagging filter<config_http_filters_ip_tagging>`.
+* listeners: added support for :ref:`listening for both IPv4 and IPv6
+  <envoy_api_field_core.SocketAddress.ipv4_compat>` when binding to ::.
+* listeners: added support for listening on :ref:`UNIX domain sockets
+  <envoy_api_field_core.Address.pipe>`.
+* listeners: added support for :ref:`abstract unix domain sockets <envoy_api_msg_core.Pipe>` on
+  Linux. The abstract namespace can be used by prepending '@' to a socket path.
+* load balancer: added cluster configuration for :ref:`healthy panic threshold
+  <envoy_api_field_Cluster.CommonLbConfig.healthy_panic_threshold>` percentage.
+* load balancer: added :ref:`Maglev <arch_overview_load_balancing_types_maglev>` consistent hash
+  load balancer.
+* load balancer: added support for
+  :ref:`LocalityLbEndpoints<envoy_api_msg_endpoint.LocalityLbEndpoints>` priorities.
+* lua: added headers :ref:`replace() <config_http_filters_lua_header_wrapper>` API.
+* lua: extended to support :ref:`metadata object <config_http_filters_lua_metadata_wrapper>` API.
+* redis: added local `PING` support to the :ref:`Redis filter <arch_overview_redis>`.
+* redis: added `GEORADIUS_RO` and `GEORADIUSBYMEMBER_RO` to the :ref:`Redis command splitter
+  <arch_overview_redis>` whitelist.
+* router: added DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT, DOWNSTREAM_LOCAL_ADDRESS,
+  DOWNSTREAM_LOCAL_ADDRESS_WITHOUT_PORT, PROTOCOL, and UPSTREAM_METADATA :ref:`header
+  formatters <config_http_conn_man_headers_custom_request_headers>`. The CLIENT_IP header formatter
+  has been deprecated.
+* router: added gateway-error :ref:`retry-on <config_http_filters_router_x-envoy-retry-on>` policy.
+* router: added support for route matching based on :ref:`URL query string parameters
+  <envoy_api_msg_route.QueryParameterMatcher>`.
+* router: added support for more granular weighted cluster routing by allowing the :ref:`total_weight
+  <envoy_api_field_route.WeightedCluster.total_weight>` to be specified in configuration.
+* router: added support for :ref:`custom request/response headers
+  <config_http_conn_man_headers_custom_request_headers>` with mixed static and dynamic values.
+* router: added support for :ref:`direct responses <envoy_api_field_route.Route.direct_response>`.
+  I.e., sending a preconfigured HTTP response without proxying anywhere.
+* router: added support for :ref:`HTTPS redirects
+  <envoy_api_field_route.RedirectAction.https_redirect>` on specific routes.
+* router: added support for :ref:`prefix_rewrite
+  <envoy_api_field_route.RedirectAction.prefix_rewrite>` for redirects.
+* router: added support for :ref:`stripping the query string
+  <envoy_api_field_route.RedirectAction.strip_query>` for redirects.
+* router: added support for downstream request/upstream response
+  :ref:`header manipulation <config_http_conn_man_headers_custom_request_headers>` in :ref:`weighted
+  cluster <envoy_api_msg_route.WeightedCluster>`.
+* router: added support for :ref:`range based header matching
+  <envoy_api_field_route.HeaderMatcher.range_match>` for request routing.
+* squash: added support for the :ref:`Squash microservices debugger <config_http_filters_squash>`.
+  Allows debugging an incoming request to a microservice in the mesh.
+* stats: added metrics service API implementation.
+* stats: added native :ref:`DogStatsd <envoy_api_msg_config.metrics.v2.DogStatsdSink>` support.
+* stats: added support for :ref:`fixed stats tag values
+  <envoy_api_field_config.metrics.v2.TagSpecifier.fixed_value>` which will be added to all metrics.
+* tcp proxy: added support for specifying a :ref:`metadata matcher
+  <envoy_api_field_config.filter.network.tcp_proxy.v2.TcpProxy.metadata_match>` for upstream
+  clusters in the tcp filter.
+* tcp proxy: improved TCP proxy to correctly proxy TCP half-close.
+* tcp proxy: added :ref:`idle timeout
+  <envoy_api_field_config.filter.network.tcp_proxy.v2.TcpProxy.idle_timeout>`.
+* tcp proxy: access logs now bring an IP address without a port when using DOWNSTREAM_ADDRESS.
+  Use :ref:`DOWNSTREAM_REMOTE_ADDRESS <config_access_log_format>` instead.
+* tracing: added support for dynamically loading an :ref:`OpenTracing tracer
+  <envoy_api_msg_config.trace.v2.DynamicOtConfig>`.
+* tracing: when using the Zipkin tracer, it is now possible for clients to specify the sampling
+  decision (using the :ref:`x-b3-sampled <config_http_conn_man_headers_x-b3-sampled>` header) and
+  have the decision propagated through to subsequently invoked services.
+* tracing: when using the Zipkin tracer, it is no longer necessary to propagate the
+  :ref:`x-ot-span-context <config_http_conn_man_headers_x-ot-span-context>` header.
+  See more on trace context propagation :ref:`here <arch_overview_tracing>`.
+* transport sockets: added transport socket interface to allow custom implementations of transport
+  sockets. A transport socket provides read and write logic with buffer encryption and decryption
+  (if applicable). The existing TLS implementation has been refactored with the interface.
+* upstream: added support for specifying an :ref:`alternate stats name
+  <envoy_api_field_Cluster.alt_stat_name>` while emitting stats for clusters.
+* Many small bug fixes and performance improvements not listed.
 
-
-1.5.0
-=====
+1.5.0 (December 4, 2017)
+========================
 
 * access log: added fields for :ref:`UPSTREAM_LOCAL_ADDRESS and DOWNSTREAM_ADDRESS
   <config_access_log_format>`.
@@ -73,13 +225,13 @@ Version history
 * tracing: added :ref:`custom trace span decorators <envoy_api_field_route.Route.decorator>`.
 * Many small bug fixes and performance improvements not listed.
 
-1.4.0
-=====
+1.4.0 (August 24, 2017)
+=======================
 
 * macOS is :repo:`now supported </bazel#quick-start-bazel-build-for-developers>`. (A few features
   are missing such as hot restart and original destination routing).
 * YAML is now directly supported for :ref:`config files <config_overview_v1>`.
-* Added :ref:`/routes <operations_admin_interface_routes>` admin endpoint.
+* Added /routes admin endpoint.
 * End-to-end flow control is now supported for TCP proxy, HTTP/1, and HTTP/2. HTTP flow control
   that includes filter buffering is incomplete and will be implemented in 1.5.0.
 * Log verbosity :repo:`compile time flag </bazel#log-verbosity>` added.
@@ -120,8 +272,8 @@ Version history
   `NamedHttpFilterConfigFactory`.
 * Many small bug fixes and performance improvements not listed.
 
-1.3.0
-=====
+1.3.0 (May 17, 2017)
+====================
 
 * As of this release, we now have an official :repo:`breaking change policy
   </CONTRIBUTING.md#breaking-change-policy>`. Note that there are numerous breaking configuration
@@ -191,8 +343,8 @@ Version history
 * Zipkin has been added as a supported :ref:`tracing provider <arch_overview_tracing>`.
 * Numerous small changes and fixes not listed here.
 
-1.2.0
-=====
+1.2.0 (March 7, 2017)
+=====================
 
 * :ref:`Cluster discovery service (CDS) API <config_cluster_manager_cds>`.
 * :ref:`Outlier detection <arch_overview_outlier_detection>` (passive health checking).
@@ -223,8 +375,8 @@ Version history
   savings for large meshes.
 * Numerous small changes and fixes not listed here.
 
-1.1.0
-=====
+1.1.0 (November 30, 2016)
+=========================
 
 * Switch from Jannson to RapidJSON for our JSON library (allowing for a configuration schema in
   1.2.0).
@@ -254,7 +406,7 @@ Version history
 * Support Mongo 3.2 in the :ref:`Mongo sniffing filter <config_network_filters_mongo_proxy>`.
 * Lots of other small fixes and enhancements not listed.
 
-1.0.0
-=====
+1.0.0 (September 12, 2016)
+==========================
 
 Initial open source release.

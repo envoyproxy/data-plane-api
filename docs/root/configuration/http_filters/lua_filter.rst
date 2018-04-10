@@ -269,6 +269,29 @@ passed to subsequent filters. Meaning, the following Lua code is invalid:
 *headers* is a table of key/value pairs to send. Note that the *:status* header
 must be set. *body* is a string and supplies the optional response body. May be nil.
 
+metadata()
+^^^^^^^^^^
+
+.. code-block:: lua
+
+  metadata = handle:metadata()
+
+Returns the current route entry metadata. Note that the metadata should be specified
+under the filter name i.e. *envoy.lua*. Below is an example of a *metadata* in a
+:ref:`route entry <config_http_conn_man_route_table_route>`.
+
+.. code-block:: yaml
+
+  metadata:
+    filter_metadata:
+      envoy.lua:
+        foo: bar
+        baz:
+          - bad
+          - baz
+
+Returns a :ref:`metadata object <config_http_filters_lua_metadata_wrapper>`.
+
 .. _config_http_filters_lua_header_wrapper:
 
 Header object API
@@ -301,7 +324,7 @@ get()
 
   headers:get(key)
 
-Gets a header. *key* is a string that suplies the header key. Returns a string that is the header
+Gets a header. *key* is a string that supplies the header key. Returns a string that is the header
 value or nil if there is no such header.
 
 __pairs()
@@ -365,3 +388,30 @@ Get bytes from the buffer. By default Envoy will not copy all buffer bytes to Lu
 cause a buffer segment to be copied. *index* is an integer and supplies the buffer start index to
 copy. *length* is an integer and supplies the buffer length to copy. *index* + *length* must be
 less than the buffer length.
+
+.. _config_http_filters_lua_metadata_wrapper:
+
+Metadata object API
+-------------------
+
+get()
+^^^^^
+
+.. code-block:: lua
+
+  metadata:get(key)
+
+Gets a metadata. *key* is a string that supplies the metadata key. Returns the corresponding
+value of the given metadata key. The type of the value can be: *null*, *boolean*, *number*,
+*string* and *table*.
+
+__pairs()
+^^^^^^^^^
+
+.. code-block:: lua
+
+  for key, value in pairs(metadata) do
+  end
+
+Iterates through every *metadata* entry. *key* is a string that supplies a *metadata*
+key. *value* is *metadata* entry value.

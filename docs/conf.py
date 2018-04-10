@@ -38,7 +38,10 @@ release_level = os.environ['ENVOY_DOCS_RELEASE_LEVEL']
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinxcontrib.httpdomain', 'sphinx.ext.extlinks', 'sphinx.ext.ifconfig']
-extlinks = {'repo': ('https://github.com/envoyproxy/envoy/blob/master/%s', '')}
+extlinks = {
+  'repo': ('https://github.com/envoyproxy/envoy/blob/master/%s', ''),
+  'api': ('https://github.com/envoyproxy/data-plane-api/blob/master/%s', ''),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

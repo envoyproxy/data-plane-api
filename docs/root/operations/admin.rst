@@ -9,6 +9,8 @@ modify different aspects of the server:
 * :ref:`v1 API reference <config_admin_v1>`
 * :ref:`v2 API reference <envoy_api_msg_config.bootstrap.v2.Admin>`
 
+.. _operations_admin_interface_security:
+
 .. attention::
 
   The administration interface in its current form both allows destructive operations to be
@@ -29,6 +31,9 @@ modify different aspects of the server:
 
   In the future additional security options will be added to the administration interface. This
   work is tracked in `this <https://github.com/envoyproxy/envoy/issues/2763>`_ issue.
+
+  All mutations should be sent as HTTP POST operations. For a limited time, they will continue
+  to work with HTTP GET, with a warning logged.
 
 .. http:get:: /
 
@@ -101,15 +106,26 @@ modify different aspects of the server:
     */failed_active_hc*: The host has failed an :ref:`active health check
     <config_cluster_manager_cluster_hc>`.
 
+    */failed_eds_health*: The host was marked unhealthy by EDS.
+
     */failed_outlier_check*: The host has failed an outlier detection check.
 
-.. http:get:: /cpuprofiler
+.. _operations_admin_interface_config_dump:
+
+.. http:get:: /config_dump
+
+  Dump currently loaded configuration from various Envoy components as JSON-serialized proto
+  messages. Currently, only route configs are available but more are on the way. See
+  :api:`envoy/admin/v2/config_dump.proto` for more information. That proto is in draft state and is
+  subject to change.
+
+.. http:post:: /cpuprofiler
 
   Enable or disable the CPU profiler. Requires compiling with gperftools.
 
 .. _operations_admin_interface_healthcheck_fail:
 
-.. http:get:: /healthcheck/fail
+.. http:post:: /healthcheck/fail
 
   Fail inbound health checks. This requires the use of the HTTP :ref:`health check filter
   <config_http_filters_health_check>`. This is useful for draining a server prior to shutting it
@@ -118,37 +134,31 @@ modify different aspects of the server:
 
 .. _operations_admin_interface_healthcheck_ok:
 
-.. http:get:: /healthcheck/ok
+.. http:post:: /healthcheck/ok
 
-  Negate the effect of :http:get:`/healthcheck/fail`. This requires the use of the HTTP
+  Negate the effect of :http:post:`/healthcheck/fail`. This requires the use of the HTTP
   :ref:`health check filter <config_http_filters_health_check>`.
 
 .. http:get:: /hot_restart_version
 
   See :option:`--hot-restart-version`.
 
-.. http:get:: /logging
+.. _operations_admin_interface_logging:
+
+.. http:post:: /logging
 
   Enable/disable different logging levels on different subcomponents. Generally only used during
   development.
 
-.. http:get:: /quitquitquit
+.. http:post:: /quitquitquit
 
   Cleanly exit the server.
 
-.. http:get:: /reset_counters
+.. http:post:: /reset_counters
 
   Reset all counters to zero. This is useful along with :http:get:`/stats` during debugging. Note
   that this does not drop any data sent to statsd. It just effects local output of the
   :http:get:`/stats` command.
-
-.. _operations_admin_interface_routes:
-
-.. http:get:: /routes?route_config_name=<name>
-
-  This endpoint is only available if envoy has HTTP routes configured via RDS.
-  The endpoint dumps all the configured HTTP route tables, or only ones that
-  match the ``route_config_name`` query, if a query is specified.
 
 .. http:get:: /server_info
 
@@ -182,16 +192,62 @@ The fields are:
 
   .. http:get:: /stats?format=prometheus
 
+  or alternatively,
+
+  .. http:get:: /stats/prometheus
+
   Outputs /stats in `Prometheus <https://prometheus.io/docs/instrumenting/exposition_formats/>`_
   v0.0.4 format. This can be used to integrate with a Prometheus server. Currently, only counters and
   gauges are output. Histograms will be output in a future update.
 
+.. _operations_admin_interface_runtime:
+
 .. http:get:: /runtime
 
-  Outputs all runtime values on demand in a human-readable format. See
-  :ref:`here <arch_overview_runtime>` for more information on how these values are configured
-  and utilized.
+  Outputs all runtime values on demand in JSON format. See :ref:`here <arch_overview_runtime>` for
+  more information on how these values are configured and utilized. The output include the list of
+  the active runtime override layers and the stack of layer values for each key. Empty strings
+  indicate no value, and the final active value from the stack also is included in a separate key.
+  Example output:
 
-  .. http:get:: /runtime?format=json
+.. code-block:: json
 
-  Outputs /runtime in JSON format. This can be used for programmatic access of runtime values.
+  {
+    "layers": [
+      "disk",
+      "override",
+      "admin",
+    ],
+    "entries": {
+      "my_key": {
+        "layer_values": [
+          "my_disk_value",
+          "",
+          ""
+        ],
+        "final_value": "my_disk_value"
+      },
+      "my_second_key": {
+        "layer_values": [
+          "my_second_disk_value",
+          "my_disk_override_value",
+          "my_admin_override_value"
+        ],
+        "final_value": "my_admin_override_value"
+      }
+    }
+  }
+
+.. _operations_admin_interface_runtime_modify:
+
+.. http:post:: /runtime_modify?key1=value1&key2=value2&keyN=valueN
+
+  Adds or modifies runtime values as passed in query parameters. To delete a previously added key,
+  use an empty string as the value. Note that deletion only applies to overrides added via this
+  endpoint; values loaded from disk can be modified via override but not deleted.
+
+.. attention::
+
+  Use the /runtime_modify endpoint with care. Changes are effectively immediately. It is
+  **critical** that the admin interface is :ref:`properly secured
+  <operations_admin_interface_security>`.

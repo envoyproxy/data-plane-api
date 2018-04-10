@@ -9,6 +9,7 @@ import "envoy/api/v2/auth/auth.proto";
 import "envoy/type/range.proto";
 
 import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 
 import "validate/validate.proto";
@@ -99,6 +100,13 @@ message VirtualHost {
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 9;
+
+  // The per_filter_config field can be used to provide virtual host-specific
+  // configurations for filters. The key should match the filter name, such as
+  // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+  // specific; see the :ref:`HTTP filter documentation <config_http_filters>`
+  // for if and how it is utilized.
+  map<string, google.protobuf.Struct> per_filter_config = 12;
 }
 
 // A route is both a specification of how to match a request as well as an indication of what to do
@@ -138,6 +146,13 @@ message Route {
   // [#not-implemented-hide:]
   // Return a 401/403 when auth checks fail.
   auth.AuthAction auth = 6;
+
+  // The per_filter_config field can be used to provide route-specific
+  // configurations for filters. The key should match the filter name, such as
+  // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+  // specific; see the :ref:`HTTP filter documentation <config_http_filters>` for
+  // if and how it is utilized.
+  map<string, google.protobuf.Struct> per_filter_config = 8;
 }
 
 // Compared to the :ref:`cluster <envoy_api_field_route.RouteAction.cluster>` field that specifies a
@@ -186,6 +201,15 @@ message WeightedCluster {
     // Specifies a list of headers to be removed from responses when this cluster is selected
     // through the enclosing :ref:`envoy_api_msg_route.RouteAction`.
     repeated string response_headers_to_remove = 6;
+
+    reserved 7;
+
+    // The per_filter_config field can be used to provide weighted cluster-specific
+    // configurations for filters. The key should match the filter name, such as
+    // *envoy.buffer* for the HTTP buffer filter. Use of this field is filter
+    // specific; see the :ref:`HTTP filter documentation <config_http_filters>`
+    // for if and how it is utilized.
+    map<string, google.protobuf.Struct> per_filter_config = 8;
   }
 
   // Specifies one or more upstream clusters associated with the route.
@@ -532,6 +556,8 @@ message RouteAction {
 
   // Indicates that the route has a CORS policy.
   CorsPolicy cors = 17;
+
+  reserved 21;
 }
 
 message RedirectAction {
@@ -815,7 +841,6 @@ message HeaderMatcher {
   // * The regex *\d{3}* does not match the value *123.456*
   google.protobuf.BoolValue regex = 3;
 
-  // [#not-implemented-hide:]
   // Specifies how the header match will be performed to route the request.
   // If header_match_specifier is absent, a request that has the
   // :ref:`envoy_api_msg_route.HeaderMatcher.name` header will match, regardless of the header's
@@ -836,7 +861,6 @@ message HeaderMatcher {
     // * The regex *\d{3}* does not match the value *123.456*
     string regex_match = 5;
 
-    // [#not-implemented-hide:]
     // If specified, header match will be performed based on range.
     // The rule will match if the request header value is within this range.
     // The entire request header value must represent an integer in base 10 notation: consisting of
@@ -847,7 +871,7 @@ message HeaderMatcher {
     // Examples:
     //
     // * For range [-10,0), route will match for header value -1, but not for 0, "somestring", 10.9,
-    // "-1somestring"
+    //   "-1somestring"
     envoy.type.Int64Range range_match = 6;
   }
 }
