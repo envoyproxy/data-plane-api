@@ -166,6 +166,10 @@ message ClusterManager {
   // <envoy_api_field_core.ApiConfigSource.api_type>` :ref:`GRPC
   // <envoy_api_enum_value_core.ApiConfigSource.ApiType.GRPC>`.
   envoy.api.v2.core.ApiConfigSource load_stats_config = 4;
+
+  // Optional options for upstream connections.
+  // This may be overridden on a per-cluster basis by upstream_connection_options in the cds_config.
+  envoy.api.v2.UpstreamConnectionOptions upstream_connection_options = 5;
 }
 
 // Envoy process watchdog configuration. When configured, this monitors for

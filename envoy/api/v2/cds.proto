@@ -429,6 +429,10 @@ message Cluster {
 
   // Determines how Envoy selects the protocol used to speak to upstream hosts.
   ClusterProtocolSelection protocol_selection = 26;
+
+  // Optional options for upstream connections.
+  // This overrides any upstream_connection_options specified in the bootstrap proto.
+  envoy.api.v2.UpstreamConnectionOptions upstream_connection_options = 27;
 }
 
 // An extensible structure containing the address Envoy should bind to when
@@ -436,4 +440,9 @@ message Cluster {
 message UpstreamBindConfig {
   // The address Envoy should bind to when establishing upstream connections.
   core.Address source_address = 1;
+}
+
+message UpstreamConnectionOptions {
+  // If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.
+  core.TcpKeepalive tcp_keepalive = 1;
 }

@@ -72,7 +72,7 @@ message TcpKeepalive {
   google.protobuf.UInt32Value keepalive_interval = 3;
   // Flag to explicitly disable keepalive probes, allows overriding of settings
   // inherited by a cluster from the cluster manager. Default is false.
-  google.protobuf.BoolValue disable = 4;
+  bool disable = 4;
 }
 
 message BindConfig {
@@ -88,9 +88,6 @@ message BindConfig {
   // flag is not set (default), the socket is not modified, i.e. the option is
   // neither enabled nor disabled.
   google.protobuf.BoolValue freebind = 2;
-
-  // If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.
-  TcpKeepalive tcp_keepalive = 3;
 }
 
 // Addresses specify either a logical or physical address and port, which are
