@@ -394,13 +394,11 @@ message Cluster {
     }
     // Configuration for :ref:`locality weighted load balancing
     // <arch_overview_load_balancing_locality_weighted_lb>`
-    // [#not-implemented-hide:]
     message LocalityWeightedLbConfig {
     }
     oneof locality_config_specifier {
       // [#not-implemented-hide:]
       ZoneAwareLbConfig zone_aware_lb_config = 2;
-      // [#not-implemented-hide:]
       LocalityWeightedLbConfig locality_weighted_lb_config = 3;
     }
   }
