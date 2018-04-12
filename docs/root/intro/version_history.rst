@@ -20,6 +20,10 @@ Version history
   <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
 * health check: added support for EDS delivered :ref:`endpoint health status
   <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* health check: added interval overrides for health state transitions from :ref:`healthy to unhealthy
+  <envoy_api_field_core.HealthCheck.unhealthy_edge_interval>`, :ref:`unhealthy to healthy
+  <envoy_api_field_core.HealthCheck.healthy_edge_interval>` and for subsequent checks on
+  :ref:`unhealthy hosts <envoy_api_field_core.HealthCheck.unhealthy_interval>`.
 * load balancing: added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
