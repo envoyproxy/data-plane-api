@@ -35,6 +35,7 @@ message HealthCheck {
   // [#not-implemented-hide:]
   // Specifies a set of health check request headers to match on. The health check filter will
   // check a request’s headers against all the specified headers. A request will be considered a
-  // health check request if all headers are present.
+  // health check request if all headers are present. Notice that if specificed, the ``:path``
+  // header must also match the value specified in the ``endpoint`` field.
   repeated envoy.api.v2.route.HeaderMatcher headers = 5;
 }
