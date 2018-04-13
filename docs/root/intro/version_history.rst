@@ -5,6 +5,7 @@ Version history
 ===============
 
 * access log: ability to format START_TIME
+* access log: added DYNAMIC_METADATA :ref:`access log formatter <config_access_log_format>`.
 * admin: added :http:get:`/config_dump` for dumping current configs
 * admin: added :http:get:`/stats/prometheus` as an alternative endpoint for getting stats in prometheus format.
 * admin: added :ref:`/runtime_modify endpoint <operations_admin_interface_runtime_modify>` to add or change runtime values
@@ -19,12 +20,18 @@ Version history
   <envoy_api_field_core.HealthCheck.HttpHealthCheck.request_headers_to_add>` for HTTP health check.
 * health check: added support for EDS delivered :ref:`endpoint health status
   <envoy_api_field_endpoint.LbEndpoint.health_status>`.
+* health check: added interval overrides for health state transitions from :ref:`healthy to unhealthy
+  <envoy_api_field_core.HealthCheck.unhealthy_edge_interval>`, :ref:`unhealthy to healthy
+  <envoy_api_field_core.HealthCheck.healthy_edge_interval>` and for subsequent checks on
+  :ref:`unhealthy hosts <envoy_api_field_core.HealthCheck.unhealthy_interval>`.
 * http: added the ability to pass DNS type Subject Alternative Names of the client certificate in the
   :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header.
 * load balancing: added :ref:`weighted round robin
   <arch_overview_load_balancing_types_round_robin>` support. The round robin
   scheduler now respects endpoint weights and also has improved fidelity across
   picks.
+* load balancer: :ref:`Locality weighted load balancing
+  <arch_overview_load_balancer_subsets>` is now supported.
 * logger: added the ability to optionally set the log format via the :option:`--log-format` option.
 * logger: all :ref:`logging levels <operations_admin_interface_logging>` can be configured
   at run-time: trace debug info warning error critical.

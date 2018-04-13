@@ -209,13 +209,22 @@ message HttpConnectionManager {
     // Whether to forward the subject of the client cert. Defaults to false.
     google.protobuf.BoolValue subject = 1;
 
-    // Whether to forward the SAN of the client cert. Defaults to false.
-    google.protobuf.BoolValue san = 2;
+    // Whether to forward the URI type Subject Alternative Name of the client cert. Defaults to
+    // false. This field is deprecated, use URI field instead.
+    google.protobuf.BoolValue san = 2 [deprecated = true];
 
     // Whether to forward the entire client cert in URL encoded PEM format. This will appear in the
     // XFCC header comma separated from other values with the value Cert="PEM".
     // Defaults to false.
     bool cert = 3;
+
+    // Whether to forward the DNS type Subject Alternative Names of the client cert.
+    // Defaults to false.
+    bool dns = 4;
+
+    // Whether to forward the URI type Subject Alternative Name of the client cert. Defaults to
+    // false.
+    bool uri = 5;
   };
 
   // This field is valid only when :ref:`forward_client_cert_details
@@ -223,7 +232,8 @@ message HttpConnectionManager {
   // is APPEND_FORWARD or SANITIZE_SET and the client connection is mTLS. It specifies the fields in
   // the client certificate to be forwarded. Note that in the
   // :ref:`config_http_conn_man_headers_x-forwarded-client-cert` header, *Hash* is always set, and
-  // *By* is always set when the client certificate presents the SAN value.
+  // *By* is always set when the client certificate presents the URI type Subject Alternative Name
+  // value.
   SetCurrentClientCertDetails set_current_client_cert_details = 17;
 
   // If proxy_100_continue is true, Envoy will proxy incoming "Expect:
