@@ -15,6 +15,7 @@ api_proto_library(
         "//envoy/api/v2/core:address",
         "//envoy/api/v2/core:base",
         "//envoy/api/v2/core:grpc_service",
+        "//envoy/api/v2/route",
         "//envoy/type:percent",
     ],
 )
@@ -26,6 +27,7 @@ api_go_proto_library(
         "//envoy/api/v2/core:address_go_proto",
         "//envoy/api/v2/core:base_go_proto",
         "//envoy/api/v2/core:grpc_service_go_proto",
+        "//envoy/api/v2/route:route_go_proto",
         "//envoy/type:percent_go_proto",
     ],
 )
