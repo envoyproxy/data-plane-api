@@ -431,7 +431,6 @@ message Cluster {
   ClusterProtocolSelection protocol_selection = 26;
 
   // Optional options for upstream connections.
-  // This overrides any upstream_connection_options specified in the bootstrap proto.
   envoy.api.v2.UpstreamConnectionOptions upstream_connection_options = 30;
 }
 
