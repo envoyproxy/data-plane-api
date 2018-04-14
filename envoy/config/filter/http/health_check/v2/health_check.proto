@@ -21,7 +21,7 @@ message HealthCheck {
 
   // Specifies the incoming HTTP endpoint that should be considered the
   // health check endpoint. For example */healthcheck*.
-  string endpoint = 2 [deprecated = true];
+  string endpoint = 2 [(validate.rules).string.min_bytes = 1, deprecated = true];
 
   // If operating in pass through mode, the amount of time in milliseconds
   // that the filter should cache the upstream response.
@@ -35,7 +35,7 @@ message HealthCheck {
   // [#not-implemented-hide:]
   // Specifies a set of health check request headers to match on. The health check filter will
   // check a request’s headers against all the specified headers. To specify the health check
-  // endpoint, set the ``:path`` header to match on. Notice that if the
+  // endpoint, set the ``:path`` header to match on. Note that if the
   // :ref:`endpoint <envoy_api_field_config.filter.http.health_check.v2.HealthCheck.endpoint>`
   // field is set, it will overwrite any ``:path`` header to match.
   repeated envoy.api.v2.route.HeaderMatcher headers = 5;
