@@ -18,19 +18,6 @@ if [[ "$1" == "bazel.test" ]]; then
   bazel --batch build ${BAZEL_BUILD_OPTIONS} //envoy/...
   bazel --batch test ${BAZEL_TEST_OPTIONS} //test/... //tools/...
   exit 0
-elif [[ "$1" == "bazel.docs" ]]; then
-  echo "generating docs..."
-  ./docs/build.sh
-elif [[ "$1" == "fix_format" ]]; then
-  echo "fix_format..."
-  cd "${ENVOY_SRCDIR}"
-  ./tools/check_format.py fix
-  exit 0
-elif [[ "$1" == "check_format" ]]; then
-  echo "check_format..."
-  cd "${ENVOY_SRCDIR}"
-  ./tools/check_format.py check
-  exit 0
 else
   echo "Invalid do_ci.sh target. The valid targets are bazel.{docs,test} and {check,fix}_format."
   exit 1
