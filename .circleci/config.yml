@@ -12,31 +12,9 @@ jobs:
      steps:
        - checkout
        - run: ci/do_ci.sh bazel.test
-   docs:
-     docker:
-       - image: *envoy-build-image
-     resource_class: xlarge
-     working_directory: /source
-     steps:
-       - checkout
-       - run: ci/do_ci.sh bazel.docs
-       - add_ssh_keys
-       - run: docs/publish.sh
-       - store_artifacts:
-           path: generated/docs
-   format:
-     docker:
-       - image: *envoy-build-image
-     resource_class: xlarge
-     working_directory: /source
-     steps:
-       - checkout
-       - run: ci/do_ci.sh check_format
 
 workflows:
   version: 2
   all:
     jobs:
       - test
-      - docs
-      - format
