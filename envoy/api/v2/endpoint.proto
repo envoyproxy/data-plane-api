@@ -1,21 +1,21 @@
 syntax = "proto3";
 
-package envoy.config.endpoint.v3alpha;
+package envoy.api.v2;
 
-import "envoy/config/endpoint/v3alpha/endpoint_components.proto";
-import "envoy/type/v3alpha/percent.proto";
+import "envoy/api/v2/endpoint/endpoint_components.proto";
+import "envoy/type/percent.proto";
 
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
-import "udpa/annotations/versioning.proto";
-
+import "udpa/annotations/migrate.proto";
 import "validate/validate.proto";
 
-option java_package = "io.envoyproxy.envoy.config.endpoint.v3alpha";
+option java_package = "io.envoyproxy.envoy.api.v2";
 option java_outer_classname = "EndpointProto";
 option java_multiple_files = true;
+option (udpa.annotations.file_migrate).move_to_package = "envoy.config.endpoint.v3alpha";
 
 // [#protodoc-title: Endpoint configuration]
 // Endpoint discovery :ref:`architecture overview <arch_overview_service_discovery_types_eds>`
@@ -31,23 +31,15 @@ option java_multiple_files = true;
 // then an endpoint within that locality will be chose based on its weight.
 // [#next-free-field: 6]
 message ClusterLoadAssignment {
-  option (udpa.annotations.versioning).previous_message_type = "envoy.api.v2.ClusterLoadAssignment";
-
   // Load balancing policy settings.
   // [#next-free-field: 6]
   message Policy {
-    option (udpa.annotations.versioning).previous_message_type =
-        "envoy.api.v2.ClusterLoadAssignment.Policy";
-
     message DropOverload {
-      option (udpa.annotations.versioning).previous_message_type =
-          "envoy.api.v2.ClusterLoadAssignment.Policy.DropOverload";
-
       // Identifier for the policy specifying the drop.
       string category = 1 [(validate.rules).string = {min_bytes: 1}];
 
       // Percentage of traffic that should be dropped for the category.
-      type.v3alpha.FractionalPercent drop_percentage = 2;
+      type.FractionalPercent drop_percentage = 2;
     }
 
     reserved 1;
@@ -108,17 +100,17 @@ message ClusterLoadAssignment {
   }
 
   // Name of the cluster. This will be the :ref:`service_name
-  // <envoy_api_field_config.cluster.v3alpha.Cluster.EdsClusterConfig.service_name>` value if
-  // specified in the cluster :ref:`EdsClusterConfig
-  // <envoy_api_msg_config.cluster.v3alpha.Cluster.EdsClusterConfig>`.
+  // <envoy_api_field_Cluster.EdsClusterConfig.service_name>` value if specified
+  // in the cluster :ref:`EdsClusterConfig
+  // <envoy_api_msg_Cluster.EdsClusterConfig>`.
   string cluster_name = 1 [(validate.rules).string = {min_bytes: 1}];
 
   // List of endpoints to load balance to.
-  repeated LocalityLbEndpoints endpoints = 2;
+  repeated endpoint.LocalityLbEndpoints endpoints = 2;
 
   // Map of named endpoints that can be referenced in LocalityLbEndpoints.
   // [#not-implemented-hide:]
-  map<string, Endpoint> named_endpoints = 5;
+  map<string, endpoint.Endpoint> named_endpoints = 5;
 
   // Load balancing policy settings.
   Policy policy = 4;
