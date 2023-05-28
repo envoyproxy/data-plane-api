@@ -1,0 +1,38 @@
+name: Sync Envoy
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+    if: |
+      ${{
+          !contains(github.actor, '[bot]')
+          || github.actor == 'sync-envoy[bot]'
+      }}
+    steps:
+    # Checkout the repo at provided commit
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+
+    # Checkout the Envoy repo at latest commit
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+      with:
+        repository: envoyproxy/envoy
+        fetch-depth: 0
+        path: upstream
+
+    - run: mv upstream ../envoy
+    - run: ci/mirror.sh
+      working-directory: ../envoy
