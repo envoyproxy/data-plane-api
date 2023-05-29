@@ -41,7 +41,7 @@ for sha in "${SHAS[@]}"; do
     git commit -m "$QUALIFIED_COMMIT_MSG"
 done
 
-if [[ "${#SHAS[@]}" -ne 0 ]; then
+if [[ "${#SHAS[@]}" -ne 0 ]]; then
     echo "Pushing..."
     git push origin "${API_MAIN_BRANCH}"
 else
