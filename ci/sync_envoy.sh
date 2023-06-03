@@ -3,6 +3,9 @@
 set -e
 
 API_MAIN_BRANCH="main"
+COMMITTER_NAME="${GITHUB_NAME:-}"
+COMMITTER_EMAIL="${GITHUB_EMAIL:-}"
+
 
 if [[ -z "$ENVOY_SRC_DIR" ]]; then
     echo "ENVOY_SRC_DIR not set, it should point to a cloned Envoy repo" >&2
@@ -11,6 +14,9 @@ elif [[ ! -e "$ENVOY_SRC_DIR" ]]; then
     echo "ENVOY_SRC_DIR ($ENVOY_SRC_DIR) not found, did you clone it?" >&2
     exit 1
 fi
+
+git config --global user.email "$COMMITTER_EMAIL"
+git config --global user.name "$COMMITTER_NAME"
 
 
 # Determine last envoyproxy/envoy SHA in envoyproxy/data-plane-api
