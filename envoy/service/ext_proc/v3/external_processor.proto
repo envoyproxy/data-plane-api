@@ -115,6 +115,9 @@ message ProcessingRequest {
     // in the filter configuration.
     HttpTrailers response_trailers = 7;
   }
+
+  // Dynamic metadata associated with the request.
+  config.core.v3.Metadata metadata_context = 8;
 }
 
 // For every ProcessingRequest received by the server with the ``async_mode`` field
