@@ -15,8 +15,8 @@ elif [[ ! -e "$ENVOY_SRC_DIR" ]]; then
     exit 1
 fi
 
-git config --global user.email "$COMMITTER_EMAIL"
-git config --global user.name "$COMMITTER_NAME"
+# git config --global user.email "$COMMITTER_EMAIL"
+# git config --global user.name "$COMMITTER_NAME"
 
 
 # Determine last envoyproxy/envoy SHA in envoyproxy/data-plane-api
@@ -49,7 +49,8 @@ done
 
 if [[ "${#SHAS[@]}" -ne 0 ]]; then
     echo "Pushing..."
-    git push origin "${API_MAIN_BRANCH}"
+    echo "SIKE"
+    # git push origin "${API_MAIN_BRANCH}"
 else
     echo "Nothing to push"
 fi
