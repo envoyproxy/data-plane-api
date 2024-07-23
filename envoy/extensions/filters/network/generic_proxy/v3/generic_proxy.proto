@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package envoy.extensions.filters.network.generic_proxy.v3;
 
-import "contrib/envoy/extensions/filters/network/generic_proxy/v3/route.proto";
 import "envoy/config/accesslog/v3/accesslog.proto";
 import "envoy/config/core/v3/config_source.proto";
 import "envoy/config/core/v3/extension.proto";
+import "envoy/extensions/filters/network/generic_proxy/v3/route.proto";
 import "envoy/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto";
 
 import "xds/annotations/v3/status.proto";
@@ -16,7 +16,7 @@ import "validate/validate.proto";
 option java_package = "io.envoyproxy.envoy.extensions.filters.network.generic_proxy.v3";
 option java_outer_classname = "GenericProxyProto";
 option java_multiple_files = true;
-option go_package = "github.com/envoyproxy/go-control-plane/contrib/envoy/extensions/filters/network/generic_proxy/v3;generic_proxyv3";
+option go_package = "github.com/envoyproxy/go-control-plane/envoy/extensions/filters/network/generic_proxy/v3;generic_proxyv3";
 option (udpa.annotations.file_status).package_version_status = ACTIVE;
 option (xds.annotations.v3.file_status).work_in_progress = true;
 
