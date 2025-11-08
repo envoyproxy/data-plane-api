@@ -25,7 +25,8 @@ export TEST_TMPDIR=/build/tmp
 export BAZEL="bazel"
 
 # Not sandboxing, since non-privileged Docker can't do nested namespaces.
-BAZEL_OPTIONS="--package_path %workspace%:/source"
+# Note: --package_path is removed as it's incompatible with bzlmod (MODULE.bazel)
+BAZEL_OPTIONS=""
 export BAZEL_QUERY_OPTIONS="${BAZEL_OPTIONS}"
 export BAZEL_BUILD_OPTIONS="--strategy=Genrule=standalone --spawn_strategy=standalone \
   --verbose_failures ${BAZEL_OPTIONS} --jobs=${NUM_CPUS} \
