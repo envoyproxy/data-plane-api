@@ -44,6 +44,10 @@ for sha in "${SHAS[@]}"; do
     rsync -acv --delete --exclude "ci/" --exclude ".*" --exclude LICENSE \
           "${API_WORKING_DIR}/api/" .
     git add .
+    if git diff --cached --quiet; then
+        echo "Nothing to commit for ${sha}, skipping"
+        continue
+    fi
     git commit -m "$QUALIFIED_COMMIT_MSG"
 done
 
