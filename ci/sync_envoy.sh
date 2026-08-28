@@ -44,7 +44,7 @@ for sha in "${SHAS[@]}"; do
     rsync -acv --delete --exclude "ci/" --exclude ".*" --exclude LICENSE \
           "${API_WORKING_DIR}/api/" .
     git add .
-    git commit -m "$QUALIFIED_COMMIT_MSG"
+    git commit --allow-empty -m "$QUALIFIED_COMMIT_MSG"
 done
 
 if [[ "${#SHAS[@]}" -ne 0 ]]; then
